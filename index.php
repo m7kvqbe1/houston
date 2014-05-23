@@ -7,6 +7,9 @@ require_once(__DIR__.'/system/silex/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new Silex\Provider\SessionServiceProvider());
+
 // Autoload application controllers and models
 /*spl_autoload_register(null, false);
 spl_autoload_extensions('.php, .class.php');
@@ -37,6 +40,11 @@ foreach (glob(__DIR__."/application/routes/*.php") as $filename) {
     include $filename;
 }
 
-// Check authenticated session (see auth.class.php)
+$app->before(function() use ($app) {
+	// Check authenticated session before every request is fulfilled (see auth.class.php)
+});
+
+// If you want to logout, access to 'auth/logout'
+$app->mount('/auth', new Silex\Provider\BasicAuthControllerProvider());
 
 $app->run();
