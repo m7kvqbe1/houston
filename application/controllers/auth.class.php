@@ -33,6 +33,7 @@ class BasicAuthControllerProvider implements ControllerProviderInterface
  
             if ($app['login.username'] === $username && $app['login.password'] === $password) {
                 $app['session']->set('isAuthenticated', true);
+                //header('Location: /');
                 return $app->redirect($app['url_generator']->generate($app['login.redirect']));
             }
             return $app['login.basic_login_response'];

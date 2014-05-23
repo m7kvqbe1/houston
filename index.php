@@ -40,11 +40,7 @@ foreach (glob(__DIR__."/application/routes/*.php") as $filename) {
     include $filename;
 }
 
-$app->before(function() use ($app) {
-	// Check authenticated session before every request is fulfilled (see auth.class.php)
-});
-
-// If you want to logout, access to 'auth/logout'
+// Check authenticated session before every request is fulfilled (see auth.class.php)
 $app->mount('/auth', new Silex\Provider\BasicAuthControllerProvider());
 
 $app->run();
