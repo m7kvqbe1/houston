@@ -8,4 +8,8 @@ class LoginController {
 	public function test() {
 		return 'LoginController';
 	}
+	
+	public function foo($arg) {
+		return $arg;
+	}
 }
