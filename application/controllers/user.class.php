@@ -1,12 +1,12 @@
 <?php
-namespace Houston\Login\Controller;
+namespace Houston\User\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class LoginController {
+class UserController {
 	public function test() {
-		return 'LoginController';
+		return 'UserController';
 	}
 	
 	public function foo($arg) {

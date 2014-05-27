@@ -5,20 +5,20 @@
 *
 */
 
-$app->get('/login', function() {
-	$login = new Houston\Login\Controller\LoginController();
-	return $login->test();
+$app->get('/user', function() {
+	$user = new Houston\User\Controller\UserController();
+	return $user->test();
 	
 	// Service initial content for this view
 });
 
-$app->get('/login/{method}', function(Silex\Application $app, $method) {
+$app->get('/user/{method}', function(Silex\Application $app, $method) {
 	// Instantiate controller
-    $login = new Houston\Login\Controller\LoginController();
+    $user = new Houston\User\Controller\UserController();
     
     // Check if method exists
-    if(method_exists($login, $method)) {
+    if(method_exists($user, $method)) {
     	// Call method dynamically based on route
-		return $login->{$method}('Hello World');    
+		return $user->{$method}('Bar');
     };    
 });
