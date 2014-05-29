@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lib/underscore-min.js"></script>
+	<script type="text/javascript" src="js/lib/backbone-min.js"></script>
+	<script type="text/javascript" src="js/lib/handlebars.js"></script>
+	
+	<script type="text/javascript" src="js/models/ticketlist.js"></script>	
+	<script type="text/javascript" src="js/models/ticketmodel.js"></script>
+	<script type="text/javascript" src="js/collections/tickets.js"></script>
+	<script type="text/javascript" src="js/views/ticketview.js"></script>
+	<script type="text/javascript" src="js/views/ticketsview.js"></script>
+	<script type="text/javascript" src="js/views/formview.js"></script>
+	<script type="text/javascript" src="js/views/filterview.js"></script>
+	<script type="text/javascript" src="js/views/sortview.js"></script>
+	
+	<script type="text/javascript" src="js/app.js"></script>
+	
+</head>
+<body>
+<div class="mob-menu">
+	<img class="logo" src="img/logo.png" />
+	<ul>
+		<li><a href=""><i class="icon-comment"></i>All Tickets</a></li>
+		<li><a href=""><i class="icon-user"></i>People</a></li>
+		<li><a href=""><i class="icon-cog"></i>Account</a></li>
+		<li><a href=""><i class="icon-logout"></i>Log Out</a></li>
+	</ul>
+	<div class="mob-peek">
+	</div>
+</div>
+<div class="outer-wrap">
+    <div class="app-wrap">
+		<header>
+			<img class="logo" src="img/logo.png" />
+			<div class="grip">
+				<i class="icon-menu"></i>
+			</div>
+			<nav>
+				<a href="#">Tickets</a>
+				<a href="">People</a>
+				<a href="">Account</a>
+				<a href="">Log Out</a>
+			</nav>
+		</header>
+		<div id="app" class="box-app-wrap">
+			
+		</div>
+		<footer>
+			<div class="copy">
+				&copy;Copyright 2014 Houston Support Desk
+			</div>
+		</footer>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$('.grip').click(function(){
+			if($('.outer-wrap').css('right') == '0px'){
+				$('.outer-wrap').animate({right: '268px'}, 400);
+			} else {
+				$('.outer-wrap').animate({right: '0px'}, 400);
+			}
+		});
+	});
+</script>
+</body>
+</html>
