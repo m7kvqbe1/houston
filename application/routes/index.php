@@ -1,7 +1,7 @@
 <?php
 $app->get('/', function() {
-    $foo = new Houston\Index\Controller\IndexController();
-    return $foo->test();
+    $index = new Houston\Index\Controller\IndexController();
     
-    // Serve initial content
+	// Serve initial content
+    return $index->buildPayload();
 });

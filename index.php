@@ -2,10 +2,14 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+// Setup application constants
+define('DOCUMENT_ROOT', dirname(__FILE__));
+
 // Instantiate Silex
 require_once(__DIR__.'/system/silex/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
+
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -41,6 +45,6 @@ foreach (glob(__DIR__."/application/routes/*.php") as $filename) {
 }
 
 // Check authenticated session before every request is fulfilled (see auth.class.php)
-$app->mount('/auth', new Silex\Provider\BasicAuthControllerProvider());
+//$app->mount('/auth', new Silex\Provider\BasicAuthControllerProvider());
 
 $app->run();
