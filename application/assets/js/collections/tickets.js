@@ -11,10 +11,28 @@ var Tickets = Backbone.Collection.extend({
 	},
 
 	byFilter: function(key, value){
+		console.log(this);
 		filtered = this.filter(function(data){
 			return data.get(key) === value;
 		});
 		return new Tickets(filtered);
+	},
+	
+	byDate: function() {
+		this.comparator = function(ticketA, ticketB) {
+		  if (ticketA.get('date') > ticketB.get('date')) return -1; // before
+		  if (ticketB.get('date') > ticketA.get('date')) return 1; // after
+		  return 0; // equal
+		};
+		this.sort();
+	},
+		
+	byCompany: function(){
+		console.log('trend');
+		this.comparator = function(model) {
+			return model.get('company');
+		}
+		this.sort();
 	}
 	
 });

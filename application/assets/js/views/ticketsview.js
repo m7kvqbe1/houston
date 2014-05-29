@@ -60,21 +60,12 @@ var TicketView = Backbone.View.extend({
 		return this;
 	},
 	
-	sortByDate: function() {
-		this.collection.comparator = function(ticketA, ticketB) {
-		  if (ticketA.get('date') > ticketB.get('date')) return -1; // before
-		  if (ticketB.get('date') > ticketA.get('date')) return 1; // after
-		  return 0; // equal
-		};
-		this.collection.sort();
+	sortByDate: function(){
+		this.collection.byDate();
 	},
-		
+	
 	sortByCompany: function(){
-		console.log('trend');
-		this.collection.comparator = function(model) {
-			return model.get('company');
-		}
-		this.collection.sort();
+		this.collection.byCompany();
 	}
 		
 
