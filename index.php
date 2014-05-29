@@ -2,10 +2,14 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+// Setup application constants
+define('DOCUMENT_ROOT', dirname(__FILE__));
+
 // Instantiate Silex
 require_once(__DIR__.'/system/silex/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
+
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());

@@ -5,7 +5,8 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController {
-	public function test() {		
-		return 'DefaultController';
+	public function buildPayload() {
+		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/index.html');
+		return $template;
 	}
 }
