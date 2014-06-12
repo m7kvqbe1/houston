@@ -28,13 +28,11 @@ class BasicAuthControllerProvider implements ControllerProviderInterface {
         $app['login.password'] = (isset($app['login.password']))? $app['login.password']: "password";
         $app['login.redirect'] = (isset($app['login.redirect']))? $app['login.redirect']: "home";
         
-        
-        
         $app['login.basic_login_response'] = function() {
             $response = new Response();
             $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'Basic Login'));
             $response->setStatusCode(401, 'Please sign in.');
-            return $response;            
+            return $response;
         };
         // Controllers
         $controllers = $app['controllers_factory'];
