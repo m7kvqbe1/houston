@@ -243,7 +243,7 @@ footer {
 	padding: 24px 0 25px;
 }
 
-.box-pass input[type="submit"] {
+.box-pass button.reset {
 	margin-top: 16px;
 }
 

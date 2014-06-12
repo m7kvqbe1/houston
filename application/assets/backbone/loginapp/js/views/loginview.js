@@ -33,7 +33,7 @@ var LoginView = Backbone.View.extend({
 			'<h2>Welcome to Houston</h2>'+
 			'<h3 class="wel-tag">Super-fast, easy to use frontline support</h3>'+
 				'<h3>Get Houston!</h3>'+
-				'<a href="">Try Houston for 60 days, absolutely free!</a>'+
+				'<a href="/#/register">Try Houston for 60 days, absolutely free!</a>'+
 		'</div>'+
 		'<div class="box box-pass">'+
 			'<h2>Reset Your Password</h2>'+
@@ -72,9 +72,6 @@ var LoginView = Backbone.View.extend({
 		this.$el.html(this.templatePass());
 	},
 	
-	reset: function() {
-		console.log('reset');
-	},
 	
 	login: function() {
 		this.model.urlRoot = '';
@@ -89,7 +86,8 @@ var LoginView = Backbone.View.extend({
 				}
 			}
 		);
-	}
+	},
+	
 	reset: function() {
 		this.model.urlRoot = '';
 		this.model.set({
