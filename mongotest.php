@@ -22,4 +22,4 @@ $c_users = $db->users;
 $cursor = $db->users->find();
 foreach($cursor as $document) {
 	echo $document['first_name'];
-} 
+}
