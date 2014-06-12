@@ -9,14 +9,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  
-class BasicAuthControllerProvider implements ControllerProviderInterface
-{
-    public function connect(Application $app)
-    {
+class BasicAuthControllerProvider implements ControllerProviderInterface {
+	public function register() {
+		
+	}
+	
+	public function login() {
+		
+	}
+	
+	public function authenticated() {
+		return false;
+	}
+
+    public function connect(Application $app) {
         // Init
         $app['login.username'] = (isset($app['login.username']))? $app['login.username']: "houston";
         $app['login.password'] = (isset($app['login.password']))? $app['login.password']: "password";
         $app['login.redirect'] = (isset($app['login.redirect']))? $app['login.redirect']: "home";
+        
+        
+        
         $app['login.basic_login_response'] = function() {
             $response = new Response();
             $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'Basic Login'));
@@ -50,8 +63,7 @@ class BasicAuthControllerProvider implements ControllerProviderInterface
         return $controllers;
     }
  
-    private function addCheckAuthEvent($app)
-    {	
+    private function addCheckAuthEvent($app) {	
     	// Check login
     	$app->before( function(Request $request) use ($app) {
             if ($request->getRequestUri() === $app['url_generator']->generate('login')) {

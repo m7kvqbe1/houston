@@ -8,8 +8,4 @@ class UserController {
 	public function test() {
 		return 'UserController';
 	}
-	
-	public function foo($arg) {
-		return $arg;
-	}
 }
