@@ -2,6 +2,8 @@
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
+
+// Login to system
 $app->post('/auth/login', function(Request $request, Application $app) {
 	session_start();
 
@@ -19,4 +21,11 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	} else {
 		return -1;
 	}
+});
+
+
+// Logout of system
+$app->get('/auth/logout', function(Request $request, Application $app){
+	$app['session']->set('isAuthenticated', false);
+	return $app->redirect('/');
 });
