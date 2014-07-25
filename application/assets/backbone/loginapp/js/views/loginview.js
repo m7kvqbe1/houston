@@ -74,9 +74,9 @@ var LoginView = Backbone.View.extend({
 	
 	
 	login: function() {
-		this.model.urlRoot = '';
+		this.model.urlRoot = '/auth/login';
 		this.model.set({
-			emailAddress: this.$el.find('input[name="log-e"]').val(),
+			user: this.$el.find('input[name="log-e"]').val(),
 			password: this.$el.find('input[name="log-p"]').val()
 		});
 		this.model.save(this.model.attributes,

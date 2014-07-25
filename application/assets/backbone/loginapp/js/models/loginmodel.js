@@ -1,5 +1,5 @@
 var LoginModel = Backbone.Model.extend({
-	//urlRoot:'',
+	urlRoot: '/auth/login',
 	defaults: {
 	}
 });
