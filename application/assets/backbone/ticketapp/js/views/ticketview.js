@@ -12,7 +12,7 @@ var TicketDetail = Backbone.View.extend({
 						'<div class="msg-dtl-inr">'+
 							'<h3 class="msg-agent">{{name}}</h3>'+
 							'<h4 class="msg-company">{{company}}</h4>'+
-							'<div class="msg-date">{{date}}</div>'+
+							'<div class="msg-date">{{convertToDateTime date}}</div>'+
 						'</div>'+
 						'<div class="msg-tri"></div>'+
 					'</div>'+
@@ -103,6 +103,10 @@ var TicketDetail = Backbone.View.extend({
 				item.$last  = index === arr.length-1;
 				return options.fn(item);
 			}).join('');
+		});
+		
+		Handlebars.registerHelper("convertToDateTime", function(attribute) {
+			return houston.convertToDateTime(attribute);
 		});
 	},
 

@@ -102,17 +102,13 @@ var FormView = Backbone.View.extend({
 	
 	},
 	setModelData: function(){
-		var newDate = new Date();
-		var newDateHuman = houston.convertDate(newDate);
 		this.model.set({
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			id: null,
 			url: this.$el.find('input[name="new-sub"]').val(),
 			name: user.name,
 			company: user.company,
-			date: newDate,
-			//dateHuman: 'trens'
-			datehuman: newDateHuman
+			date: new Date()
 		});
 	}
 });
