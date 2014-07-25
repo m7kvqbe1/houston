@@ -1,0 +1,22 @@
+<?php
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
+
+$app->post('/auth/login', function(Request $request, Application $app) {
+	session_start();
+
+	$auth = array(
+		'username' => 'houston',
+		'password' => 'password'
+	);
+	
+	$json = json_decode(file_get_contents('php://input'));
+	
+	if($json->user === $auth['username'] && $json->password === $auth['password']) {
+		$app['session']->set('isAuthenticated', true);
+		
+		return 1;
+	} else {
+		return -1;
+	}
+});
