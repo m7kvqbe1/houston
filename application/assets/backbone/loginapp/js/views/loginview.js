@@ -74,6 +74,7 @@ var LoginView = Backbone.View.extend({
 	
 	
 	login: function() {
+		console.log('login');
 		this.model.urlRoot = '/auth/login';
 		this.model.set({
 			user: this.$el.find('input[name="log-e"]').val(),
@@ -81,8 +82,11 @@ var LoginView = Backbone.View.extend({
 		});
 		this.model.save(this.model.attributes,
 			{
-				success: function(){
-					
+				success: function(response){
+					console.log(response);
+					if(response === 1){
+						location.reload();
+					}
 				}
 			}
 		);
