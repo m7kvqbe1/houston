@@ -12,9 +12,9 @@ var TicketView = Backbone.View.extend({
 						'<a class="sortByCompany mid-link">Sort By Company</a>' +
 					'</div>' +
 					'<div class="filter">' +
-						'<a href="#">All Tickets</a>' +
-						'<a class="mid-link" href="/#/filter/my-tickets">My Tickets</a>' +
-						'<a href="/#/filter/Completed">Completed Tickets</a>' +
+						'<a class="allTickets">All Tickets</a>' +
+						'<a class="myTickets mid-link">My Tickets</a>' +
+						'<a class="completedTickets">Completed Tickets</a>' +
 					'</div>' +
 				'</div>' +
 				'<ul id="ticket-stream">' +
@@ -22,7 +22,7 @@ var TicketView = Backbone.View.extend({
 						'<a href="/#/tickets/{{attributes.url}}">'+
 							'<div class="update-alert {{attributes.updated}}"></div>' +
 							'<div class="ticket-info">' +					
-								'<div class="date">{{attributes.date}}</div>' +
+								'<div class="date">{{attributes.datehuman}}</div>' +
 								'<div class="ticket-info-inner">' +
 									'<div class="name">{{attributes.name}}</div>' +
 									'<div class="company-name">{{attributes.company}}</div>' +
@@ -30,7 +30,7 @@ var TicketView = Backbone.View.extend({
 								'</div>' +
 							'</div>' +
 							'<div class="ticket-status">' +
-								'<div class="btn">{{attributes.status}}</div>' +
+								'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
 								'<div class="ticket-agent">{{attributes.agent}}</div>' +
 							'</div>' +
 						'</a>'+
@@ -39,34 +39,54 @@ var TicketView = Backbone.View.extend({
 			'</div>' 
 	),
 	
-	initialize: function() {
-		this.listenTo(this.collection, "reset", this.render);
-		this.listenTo(this.collection, "add", this.render);
-		this.listenTo(this.collection, "remove", this.render);
-		this.listenTo(this.collection, "change", this.render);
-		
-		this.listenTo(this.collection, "refresh", this.render);
-		this.listenTo(this.collection, "sort", this.render);
-		
-		//this.listenTo(this.collection, "change", this.collection.fetch({update: true, remove: false}));
+	initialize: function() {	
+		this.listenTo(this.collection, "reset add remove change sort", this.render);
+		//http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers
+		Handlebars.registerHelper("convertToClass", function(attribute) {
+			var cssClass = attribute.toLowerCase().split(' ').join('-');
+			return cssClass;
+		});
 	},
 		
 	render: function() {
-		this.$el.html(this.template(this.collection));
+		this.$el.html(this.template(this.collection));	
+		
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',
-			'click .sortByCompany': 'sortByCompany'
+			'click .sortByCompany': 'sortByCompany',
+			'click .myTickets': 'byAgent',
+			'click .completedTickets': 'byCompleted',
+			'click .allTickets': 'all'
 		});
-		return this;
+		return this;		
 	},
 	
-	sortByDate: function(){
-		this.collection.byDate();
+	all: function(){
+		var results = app.tickets.allTickets();
+		this.collection.reset(results);
+		this.$el.html(this.template(this.collection));
+	},
+	
+	byAgent: function(){
+		//var results = app.tickets.byFilter("agent", "Edd N.");
+		var results = app.tickets.byAgent();
+		this.collection.reset(results);
+		this.$el.html(this.template(this.collection));
+	},
+	
+	byCompleted: function(){
+		//var results = app.tickets.byFilter("status", "Completed");
+		var results = app.tickets.byCompleted();
+		this.collection.reset(results);
+		this.$el.html(this.template(this.collection));	
+	},
+	
+	sortByDate: function(){	
+		app.tickets.byDate();	
 	},
 	
 	sortByCompany: function(){
-		this.collection.byCompany();
+		app.tickets.byCompany();
 	}
-		
-
+			
 });

@@ -6,7 +6,7 @@ var FormView = Backbone.View.extend({
 		'</div>' +
 		'<div class="box-app">' +
 			'<form id="form-new">' +
-				'<input type="text" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
+				'<input type="text" class="new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
 				'<div class="char-count"><span>75</span> Characters Remaining</div>' +
 				'<textarea name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>' +		
 				'<div class="attach-files">' +
@@ -54,10 +54,38 @@ var FormView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(this.template());
 		this.delegateEvents({
-			'click .save': 'save'
+			'click .save': 'save',
+			'input .new-sub': 'count'
 		});
 		return this;
 	},
+	
+	count: function(){
+		var max = 75;
+		var input = this.$el.find('.new-sub');
+		var value = input.val();
+		var length = value.length;
+		if(length >= max){
+			input.val(value.substr(0, max));
+			length = max;
+		}
+		
+		var count = max - length; 
+		this.$el.find('.char-count span').text(count);
+		if(count <= 10){
+			this.$el.find('.char-count span').addClass('count');
+		} else {
+			this.$el.find('.char-count span').removeClass('count');
+		}
+		
+		if(count == 0){
+			this.$el.find('.char-count').addClass('count');
+		} else {
+			this.$el.find('.char-count').removeClass('count');
+		}
+		
+	},
+	
 	save: function(){
 		this.setModelData();
 		this.model.save(this.model.attributes,
@@ -74,13 +102,17 @@ var FormView = Backbone.View.extend({
 	
 	},
 	setModelData: function(){
+		var newDate = new Date();
+		var newDateHuman = houston.convertDate(newDate);
 		this.model.set({
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			id: null,
 			url: this.$el.find('input[name="new-sub"]').val(),
-			name: "Pete Smith",
-			company: "Pebble Recruitment",
-			date: "20 Mar"
+			name: user.name,
+			company: user.company,
+			date: newDate,
+			//dateHuman: 'trens'
+			datehuman: newDateHuman
 		});
 	}
 });

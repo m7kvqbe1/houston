@@ -1,6 +1,14 @@
 var Tickets = Backbone.Collection.extend({
 	model: TicketModel,
+	
 	url: '/tickets',
+	
+	initialize: function(models){
+		this.filtered = new Backbone.Collection(models);
+		this.on("reset add", function(){		
+			this.filtered.reset(this.allTickets());
+		});
+	},
 	
 	comparator: function(a,b) {
 		if(a.get('date') < b.get('date')) {
@@ -8,45 +16,58 @@ var Tickets = Backbone.Collection.extend({
 		} else if(b.get('date') > a.get('date')){
 			return -1;
 		}
+		return 0;
+	},
+	
+	allTickets: function(){
+		//possible refactor
+		filtered = this.filter(function(data){
+			return data.get('status') !== 'Completed';
+		});
+		return filtered;
+	},
+	
+	byAgent: function(){
+		filtered = this.filter(function(data){
+			return data.get('agent') === 'Edd N.' && data.get('status') !== 'Completed';
+			//return data.get(key) === value && data.get('status') !== 'Completed';
+		});
+		return filtered;	
+	},
+	
+	byCompleted: function(){
+		filtered = this.filter(function(data){
+			return data.get('status') === 'Completed';
+			//return data.get(key) === value && data.get('status') !== 'Completed';
+		});
+		return filtered;	
 	},
 
 	byFilter: function(key, value){
-		console.log(this);
 		filtered = this.filter(function(data){
 			return data.get(key) === value;
+			//return data.get(key) === value && data.get('status') !== 'Completed';
 		});
-		return new Tickets(filtered);
+		return filtered;
 	},
 	
 	byDate: function() {
-		this.comparator = function(ticketA, ticketB) {
-		  if (ticketA.get('date') > ticketB.get('date')) return -1; // before
-		  if (ticketB.get('date') > ticketA.get('date')) return 1; // after
-		  return 0; // equal
+		this.filtered.comparator = function(a, b) {
+			if(a.get('date') < b.get('date')) {
+				return 1;	
+			} else if(b.get('date') > a.get('date')){
+				return -1;
+			}
+			return 0;
 		};
-		this.sort();
+		this.filtered.sort();
 	},
 		
 	byCompany: function(){
-		console.log('trend');
-		this.comparator = function(model) {
+		this.filtered.comparator = function(model) {
 			return model.get('company');
 		}
-		this.sort();
+		this.filtered.sort();
 	}
 	
 });
-
-	//comparator: 'date',
-	//byStatus: function(status){
-		//filtered = this.filter(function(data){
-			//return data.get("status") === status;
-		//});
-	    //return new Tickets(filtered);	
-	//},
-	//byAgent: function(agent){
-		//filtered = this.filter(function(data){
-			//return data.get("agent") === agent;
-		//});
-	    //return new Tickets(filtered);	
-	//},

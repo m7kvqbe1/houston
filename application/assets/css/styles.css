@@ -243,7 +243,7 @@ footer {
 	padding: 24px 0 25px;
 }
 
-.box-pass button.reset {
+.box-pass input[type="submit"] {
 	margin-top: 16px;
 }
 
@@ -276,10 +276,17 @@ h4 {
 	color: #9b8d75;
 }
 
+h5 {
+	font-size: 14px;
+	font-weight: 900;
+	color: #000;
+}
+
 a {
 	font-weight: 600;
 	text-decoration: underline;
 	color: #008884;
+	cursor: pointer;
 }
 
 :focus {
@@ -594,6 +601,12 @@ input.inp-lst {
 	color: #635748;
 }
 
+.box-app-top h2 a {
+	text-decoration: none;
+	font-weight: 900;
+	color: #635748;
+}
+
 .box-app-nav {
 	height: 50px;
 }
@@ -784,13 +797,20 @@ input.inp-lst {
 .char-count {
 	margin-bottom: 15px;
 	font-weight: 900;
+	color: #01d48f;
+}
 
+.char-count.count {
 	color: #ff6e3e;
 }
 
 .char-count span {
+	font-weight: 900;	
+}
+
+.char-count span.count {
 	font-weight: 900;
-	color: #01d48f;
+	color: #ff6e3e;	
 }
 
 .attach-files {
@@ -1070,7 +1090,8 @@ input.inp-lst {
 		height: 100px;
 	}
 	
-	.grip {
+	.grip,
+	.mob-peek {
 		display: none;
 	}
 	
@@ -1307,6 +1328,7 @@ input.inp-lst {
 	}
 	
 	.msg {
+		overflow: hidden;
 		width: 680px;
 		width: 664px;
 	}
