@@ -1,12 +1,12 @@
 <?php
 $app->get('/tickets', function() {
-	$tickets = new Houston\Tickets\Controller\TicketsController();
+	$tickets = new Houston\Ticket\Model\TicketModel();
 	return $tickets->getTickets();
 });
 
 $app->get('/tickets/{method}', function(Silex\Application $app, $method) {
 	// Instantiate controller
-    $tickets = new Houston\Tickets\Controller\TicketsController();
+    $tickets = new Houston\Ticket\Model\TicketModel();
     
     // Check if method exists
     if(method_exists($user, $method)) {

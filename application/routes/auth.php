@@ -2,9 +2,10 @@
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
-
 // Login to system
 $app->post('/auth/login', function(Request $request, Application $app) {
+	$user = new Houston\User\Model\UserModel();
+
 	session_start();
 
 	$auth = array(
@@ -22,7 +23,6 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 		return -1;
 	}
 });
-
 
 // Logout of system
 $app->get('/auth/logout', function(Request $request, Application $app){
