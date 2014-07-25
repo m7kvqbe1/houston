@@ -29,6 +29,11 @@ function controllerLoader($class) {
 }
 spl_autoload_register('controllerLoader');*/
 
+// Setup MongoDB
+$database = 'houston';
+$m = new MongoClient("mongodb://localhost");
+$db = $m->$database;
+
 // Autoload controllers
 foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
     include $filename;

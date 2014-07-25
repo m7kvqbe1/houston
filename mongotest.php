@@ -1,16 +1,16 @@
 <?php
 $user = array(
-	'first_name' => 'MongoDB',
-	'last_name' => 'Fan',
-	'tags' => array('developer','user')
+	'user' => 'tom@muska.co.uk',
+	'password' => 'password',
+	'first_name' => 'Tom',
+	'last_name' => 'Humphris'
 );
 
 // Config
-$host = 'localhost';
-$database = 'test';
+$database = 'houston';
 
 // Connect to test database
-$m = new Mongo("mongodb://$host");
+$m = new MongoClient("mongodb://localhost");
 $db = $m->$database;
 
 // Get the users collection

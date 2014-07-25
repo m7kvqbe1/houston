@@ -1,15 +1,11 @@
 <?php
-namespace Houston\Tickets\Controller;
+namespace Houston\Ticket\Model;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class TicketsController {
-	public function test() {
-		return 'TicketsController';
-	}
-		
-	public function getTickets($user = null) {
+class TicketModel {		
+	public function getTickets($username = null) {
 		// Temporary return dummy tickets
 		$tickets = file_get_contents(DOCUMENT_ROOT.'/tmp/data/tickets.json');
 		return $tickets;		
