@@ -1,8 +1,22 @@
-{
-	"ID": 01,
-	"Username":	"tom@muska.co.uk",
-	"Profile": {
-		"First Name": "Thomas",
-		"Surname": "Humphris"
+[
+	{
+		"Email":	"tom@muska.co.uk",
+		"Password": "password",
+		"Profile": {
+			"First Name": "Thomas",
+			"Surname": "Humphris"
+		},
+		"Company": "Optimal Internet"
 	}
-}
+	
+	
+	{
+		"Email":	"edd.neal@hotmail.com",
+		"Password": "password",
+		"Profile": {
+			"First Name": "Edd",
+			"Surname": "Neal"
+		},
+		"Company": "Optimal Internet"
+	}
+]
