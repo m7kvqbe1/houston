@@ -2,8 +2,30 @@ var TicketDetail = Backbone.View.extend({
 	template: Handlebars.compile(
 			'<div class="box-app-top msg-top">'+
 				'<h2><a href="#">< All Tickets</a></h2>'+
-				'<a class="btn in-progress">In Progress<i class="icon-down-dir-1"></i></a>'+
-				'<a class="btn sel-agent">Thomas Humphris<i class="icon-down-dir-1"></i></a>'+			
+				'<div class="dropdown dropswitch">'+
+				'<div class="drop-inner">'+
+					'<div class="drop-top on-hold rounded">'+
+						'<div class="btn in-progress drop-slct">In Progress<i class="icon-down-dir-1"></i></div>'+
+					'</div>'+
+					'<ul class="drop on-hold">'+
+						'<li class="slct" data-class="in-progress">In Progress</li>'+
+						'<li class="n-slct" data-class="on-hold">On Hold</li>'+
+					'</ul>'+
+				'</div>'+
+				'</div>'+
+				'<div class="dropdown droplist">'+
+					'<div class="drop-top rounded">'+
+						'<div class="btn in-progress drop-slct">Thomas Humphris<i class="icon-down-dir-1"></i></div>'+
+					'</div>'+						
+					'<ul class="drop">'+
+						'<li class="slct">Thomas Humphris</li>'+
+						'<li>Edd Neal</li>'+
+						'<li>Mark Neale</li>'+
+						'<li>James Brown</li>'+
+						'<li>Kirk Hammet</li>'+
+						'<li>Catherine Bradshaw</li>'+
+					'</ul>'+
+				'</div>'+		
 			'</div>'+
 			'<ul id="msg-stream" class="box-app">'+
 				'<li class="msg from-client">'+
