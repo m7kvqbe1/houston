@@ -85,10 +85,10 @@ var TicketDetail = Backbone.View.extend({
 						'{{/each}}'+
 						'</ul>'+
 					'{{#if $last}}'+						
-						'<a class="btn">Reply</a>'+
+						'<a class="btn reply-btn">Reply</a>'+
 					'</div>'+
 					'<div class="reply">'+
-						'<form id="form-new">' +
+						'<form id="form-reply">' +
 							'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
 							'<div class="attach-files">' +
 								'<a class="attach-link" href="">Attach files to this ticket</a>' + 
@@ -102,7 +102,7 @@ var TicketDetail = Backbone.View.extend({
 							'</div>' +
 							'<button class="save" type="button">Submit</button>' +
 							'<div class="beige or">or</div>' +
-							'<a class="cancel-btn ib" href="">Cancel</a>' +
+							'<a class="cancel-btn ib">Cancel</a>' +
 						'</form>' +
 					'</div>'+
 					'{{else}}'+
@@ -134,6 +134,30 @@ var TicketDetail = Backbone.View.extend({
 
 	render: function (){		
 		this.$el.html(this.template(this.model.attributes));
+		
+		this.delegateEvents({
+			'click .drop-slct': 'dropSelect',
+			'click .dropdown li': 'dropDown',
+			'click .reply-btn': 'reply',
+			'click .cancel-btn': 'cancelReply'
+		});
 		return this;
+	},
+	
+	dropSelect: function(e){
+		houston.dropSelect(e.currentTarget);
+	},
+	
+	dropDown: function(e){
+		houston.dropDown(e.currentTarget);
+	},
+	
+	reply: function(){
+		houston.replyToggle();
+	},
+	
+	cancelReply: function(){
+		houston.replyToggle();
 	}
+	
 });

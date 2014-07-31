@@ -3,7 +3,7 @@
 		"id": "colin-pearson",
 		"url": "colin-pearson",
 		"name": "Colin Pearson",
-		"avatar": "img/avatar.png",
+		"avatar": "application/assets/img/avatar.png",
 		"company": "Control Room Solutions",
 		"subject": "I've just updated Wordpress and my site has gone!",
 		"message": "Opening Message",
@@ -28,7 +28,7 @@
 			{
 				"author": "Thomas Humphris",
 				"role": "agent",
-				"avatar": "img/avatar.png",
+				"avatar": "application/assets/img/avatar.png",
 				"company": "Optimal Internet",
 				"date": "29th Mar 2015 10:12am",
 				"message": "First Response"
@@ -36,7 +36,7 @@
 			{
 				"author": "Colin Pearson",
 				"role": "client",
-				"avatar": "img/avatar.png",
+				"avatar": "application/assets/img/avatar.png",
 				"company": "Control Room Solutions",
 				"date": "30th Mar 2015 10:12am",
 				"message": "Second Response",

@@ -45,5 +45,52 @@ var houston = {
 						
 		date = day+suffix+' '+monthNames[month]+' '+year+' '+hour+':'+min+period;	
 		return date;	
+	},
+	
+	dropSelect: function(button){
+		var button = $(button);
+		var droptop = button.closest('.drop-top');
+		var drop = button.closest('.dropdown').find('.drop');
+		if(droptop.hasClass('rounded')){
+			drop.slideToggle(200);
+			droptop.toggleClass('rounded');
+		} else { 
+			drop.slideToggle(200, function(){
+				droptop.toggleClass('rounded');
+			});
+		}
+	},
+	
+	dropDown: function(button){
+		var item = $(button);
+		var css = item.data('class');
+		var text = item.text();
+		var text = text+'<i class="icon-down-dir-1"></i>';
+		var dropdown = item.closest('.dropdown');
+			
+		dropdown.find('.drop-slct').removeClass('on-hold in-progress').addClass(css).html(text);
+
+		var drop = item.closest('.drop');
+		drop.slideToggle(200, function(){
+			$(this).closest('.dropdown').find('.drop-top').toggleClass('rounded on-hold');
+			drop.toggleClass('on-hold');
+				
+			if(dropdown.hasClass('dropswitch')){					
+				drop.find('li').each(function(){
+					var li = $(this);												
+					li.toggleClass('slct');	
+					li.toggleClass('n-slct');
+				});
+			} else {
+				drop.find('li').removeClass('slct');
+				item.addClass('slct');
+			}				
+		});
+	},
+	
+	replyToggle: function(){
+		$('.reply').slideToggle();
+		var scroll = $(document).scrollTop()+ 195;
+		$("html, body").animate({ scrollTop: scroll });
 	}
 }
