@@ -29,3 +29,14 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 	$app['session']->set('isAuthenticated', false);
 	return $app->redirect('/');
 });
+
+// Register new user
+$app->post('/auth/register', function(Request $request, Application $app) {
+	$user = new Houston\User\Model\UserModel();
+	
+	session_start();
+	
+	$json = json_decode(file_get_contents('php://input'));
+	
+	return $json;
+});
