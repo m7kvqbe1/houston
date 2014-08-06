@@ -1,5 +1,5 @@
 var RegisterModel = Backbone.Model.extend({
-	//urlRoot:'',
+	urlRoot:'/auth/register',
 	defaults: {
 	}
 });
