@@ -3,10 +3,12 @@
 	logo: #f6f0e6;
 	h3: #ff6e3e;
 	button: #01d48f;
+	button:hover: #1ac38c;
 	a: #008884;
 	h4: #9b8d75;
 	input text: #c3bdb2;
 	cancel button: #cfc3af;
+	cancel:hover: #9b8d75;
 	"Open Tickets": #635748;
 	scheduled: #ffab37;
 	in-progress: #00c3d9;
@@ -336,6 +338,10 @@ body .ib {
 	color: #fff;
 }
 
+.btn-can:hover {
+	background: #9b8d75;
+}
+
 input[type="text"],
 input[type="password"] {
 	display: block;
@@ -386,8 +392,16 @@ textarea:focus {
 input[type="text"]:focus,
 input[type="password"]:focus,
 textarea:focus {
-	border: 1px solid #f69228;
+	border-color: #f69228;
 }
+
+input[type="text"].in-use,
+input[type="text"].error,
+input[type="password"].error,
+textarea.error {
+	border-color: #ff6e3e;
+}
+
 
 button,
 input[type="submit"] {
@@ -400,6 +414,18 @@ input[type="submit"] {
 	line-height: 36px;
 	background: #01d48f;
 	color: #fff;
+}
+
+.vld-button,
+.vld-button:hover {
+	background: #cfc3af;
+	cursor: default;
+}
+
+.btn:hover,
+button:hover,
+input[type="submit"]:hover {
+	background: #1ac38c;
 }
 
 input.inp-spa,
@@ -425,7 +451,7 @@ input.inp-lst {
 }
 
 #form-pass h3{
-	margin: 0 auto;
+	margin: 0 auto 16px;
 	width: 276px;
 }
 
@@ -441,6 +467,14 @@ input.inp-lst {
 	width: 258px;
 }
 
+#form-reg button {	
+	-webkit-transition: all 800ms ease-out;
+	-moz-transition: all 800ms ease-out;
+	-ms-transition: all 800ms ease-out;
+	-o-transition: all 800ms ease-out;
+	transition: all 800ms ease-out;
+}
+
 .or {
 	padding: 0 8px;
 }
@@ -449,31 +483,61 @@ input.inp-lst {
 	display: inline-block;
 }
 
-.vld-wrap {
+.vld-box {
 	display: none;
 	float: left;
 	width: 56px;
-	margin-bottom: 9px;
+	margin-bottom: 27px;
 	overflow: hidden;
 }
 
 .vld {
+		position: relative;
     height: 62px;
 	margin: 23px 0 72px;
+		margin: 23px 0;
 }
 
 .vld-line {
 	width: 100%;
-	height: 60px;
+	height: 30px;
+		height: 30px;
 	margin-left: 22px;
-	border: 1px solid #9b8d75;
+	border-top: 1px solid #9b8d75;
+	border-left: 1px solid #9b8d75;
 	border-radius: 7px;
+	
+	-webkit-transition: all 500ms ease-out;
+	-moz-transition: all 500ms ease-out;
+	-ms-transition: all 500ms ease-out;
+	-o-transition: all 500ms ease-out;
+	transition: all 500ms ease-out;
+}
+
+.vld-a  .vld-line {
+	border-color: #01d48f;
+}
+
+.vld-line.line-btm {
+	height: 29px;
+	margin-bottom: 1px;
+	border-top: none;
+	border-bottom: 1px solid #9b8d75;
+	border-left: 1px solid #9b8d75;
+}
+
+.vld-b  .vld-line.line-btm {
+	border-color: #01d48f;
 }
 
 .vld-cir {
+		position: absolute;
+		top: 0;
+
 	width: 46px;
 	height: 46px;
 	margin: 7px 0 7px -23px;
+			margin: 7px 0 7px 0px;
 	-webkit-border-radius: 50%;
 	border-radius: 50%;
 	line-height: 46px;
@@ -482,6 +546,25 @@ input.inp-lst {
 	font-size: 24px;
 	background: #cfc3af;
 	color: #fff;
+	
+	-webkit-transition: all 1200ms ease-out;
+	-moz-transition: all 1200ms ease-out;
+	-ms-transition: all 1200ms ease-out;
+	-o-transition: all 1200ms ease-out;
+	transition: all 1200ms ease-out;
+}
+
+.vld-a.vld-b .vld-cir {
+	background: #01d48f;
+}
+
+.vld-a .vld-aa,
+.vld-b .vld-bb {
+	border-color: #01d48f;
+}
+
+.reg-vrf {
+	position: relative;
 }
 
 .vrf-wrap {
@@ -491,6 +574,10 @@ input.inp-lst {
 }
 
 .vrf {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 3px;
 	height: 46px;
 	margin-bottom: 15px;
 }
@@ -513,7 +600,19 @@ input.inp-lst {
 	background: #01d48f;	
 }
 
+.vrf-count {
+	margin-right: 0;
+	font-weight: 900;
+	
+	-webkit-transition: background 400ms ease-out;
+	-moz-transition: background 400ms ease-out;
+	-ms-transition: background 400ms ease-out;
+	-o-transition: background 400ms ease-out;
+	transition: background 400ms ease-out;
+}
+
 .vrf-msg {
+	display: none;
 	float: left;
 	margin: 5px 0;
 	line-height: 1.3em;
@@ -628,10 +727,10 @@ input.inp-lst {
 }
 
 .drop-slct {
-	-webkit-transition: background 100ms ease-out;
-	-moz-transition: background 100ms ease-out;
-	-ms-transition: background 100ms ease-out;
-	-o-transition: background 100ms ease-out;
+	-webkit-transition: background 200ms ease-out;
+	-moz-transition: background 200ms ease-out;
+	-ms-transition: background 200ms ease-out;
+	-o-transition: background 200ms ease-out;
 	transition: background 200ms ease-out;
 }
 
@@ -1097,7 +1196,7 @@ input.inp-lst {
 	.box-wel,
 	.box-try,
 	.vrf-wrap,
-	.vld-wrap,
+	.vld-box,
 	.get-houston{
 		display: block;
 	}
@@ -1472,6 +1571,27 @@ input.inp-lst {
 		font-size: 14px;
 	}
 
+/* Register */
+
+	#form-reg,
+	.reg-vrf{
+		width: 408px;
+	}
+
+	#form-reg input[type="text"],
+	#form-reg input[type="password"] {
+		margin-left: 0;
+	}
+	
+	.vrf {
+		right: 0;
+		width: 94px;
+	}
+	
+	.vrf-msg {
+		display: block;
+	}
+	
 }
 	
 @media only screen and (min-width: 1000px) { 
