@@ -21,7 +21,11 @@ var AppRouter = Backbone.Router.extend({
 		this.registerModel = new RegisterModel();
 		
 		//instantiate the register view and set it the register model
-		this.registerView = new RegisterView ({});
+		this.registerView = new RegisterView (
+			{
+				model: this.registerModel
+			}
+		);
 
 	},
 	
