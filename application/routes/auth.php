@@ -89,13 +89,13 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 });
 
 // Get user object
-$app->get('/user/self', function(Request $request, Application $app, $userID) {
+$app->get('/user/self', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
 	$db = $db->houston;
 
 	try {
-		$criteria = array('_id' => $_SESSION['u']);
+		 $criteria = array('_id' => $app['session']->get('u'));
 		$users = $db->users->findOne($criteria);
 		
 		if(empty($users)) {
