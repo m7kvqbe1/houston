@@ -44,7 +44,7 @@ foreach (glob(__DIR__."/application/models/*.php") as $filename) {
     include $filename;
 }
 
-// Autoload routes / controllers
+// Autoload routes & controllers
 foreach (glob(__DIR__."/application/routes/*.php") as $filename) {
     include $filename;
 }
