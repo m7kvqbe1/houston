@@ -28,10 +28,10 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	try {
-		$collection = $db->tickets;
-		$collection->save($json);
+		$tickets = $db->tickets;
+		$tickets->save($json);
 		
-		return 1;
+		return json_encode($json);
 	} catch(MongoConnectionException $e) {
 		die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
@@ -41,6 +41,12 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 
 // Edit ticket
 $app->put('/tickets/add', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	var_dump($json);
+});
+
+// Get ticket
+$app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	var_dump($json);
 });
