@@ -31,11 +31,11 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 			return -1;
 	    }
 	    
-	    // Does password match?
-		if($users['password'] === $json->password) {
-			$app['session']->set('isAuthenticated', true);	
+	    // Does password hashes match?
+	    if($userModel::hashPassword($json->password) === $users['password']) {
+		    $app['session']->set('isAuthenticated', true);	
 	    } else {
-			return -1;
+		    return -1;
 	    }
 	    
 		return 1;
@@ -59,7 +59,7 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 
 	// Hash password
-	$json->password = $userModel->hashPassword($json->password);
+	$json->password = $userModel::hashPassword($json->password);
 	
 	// Check if user exists and save to database
 	try {
