@@ -33,13 +33,13 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	    
 	    // Does password hashes match?
 	    if($userModel::hashPassword($json->password) === $users['password']) {
+	    	$app['session']->set('u', $users['_id']);
 		    $app['session']->set('isAuthenticated', true);	
 	    } else {
 		    return -1;
 	    }
 	    
-	    unset($users['password']);
-		return json_encode($users);
+		return 1;
 	} catch(MongoConnectionException $e) {
 	    die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
@@ -73,9 +73,11 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 		
 		$collection = $db->users;
 	    $collection->save($json);
-	    	
-	    // Send user validation email
-	    	
+	    
+	    // Validation email
+	    mail($json->emailAddress, 'Welcome to Houston!', 'Welcome to Houston!');
+	    
+	    $app['session']->set('u', $users['_id']);
 		$app['session']->set('isAuthenticated', true);
 	    		    
 	    return 1;
@@ -83,5 +85,28 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	    die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
 	    die('Error: '.$e->getMessage());
+	}
+});
+
+// Get user object
+$app->get('/user/{userID}', function(Request $request, Application $app, $userID) {
+	$connections = $app['mongo'];
+	$db = $connections['default'];
+	$db = $db->houston;
+
+	try {
+		$criteria = array('_id' => $userID);
+		$users = $db->users->findOne($criteria);
+		
+		if(empty($users)) {
+			return -1;
+		}
+		
+		unset($users['password']);
+		return json_encode($users);	
+	} catch(MongoConnectionException $e) {
+		die('Error connecting to MongoDB server');
+	} catch(MongoException $e) {
+		die('Error: '.$e->getMessage());
 	}
 });
