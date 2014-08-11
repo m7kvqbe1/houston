@@ -1,5 +1,5 @@
 var UserModel = Backbone.Model.extend({
-	urlRoot: '/user',
+	urlRoot: '/user/self',
 	defaults: {
 		sessionid: '',
 		name: 'testname',
