@@ -6,13 +6,24 @@ ini_set("display_errors", 1);
 define('DOCUMENT_ROOT', dirname(__FILE__));
 
 // Instantiate Silex
-require_once(__DIR__.'/system/silex/autoload.php');
+require_once(__DIR__.'/vendor/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
+
+// Setup MongoDB Connection
+use Mongo\Silex\Provider\MongoServiceProvider;
+$app->register(new MongoServiceProvider, array(
+    'mongo.connections' => array(
+        'default' => array(
+            'server' => "mongodb://localhost:27017",
+            'options' => array("connect" => true)
+        )
+    ),
+));
 
 // Autoload application controllers and models
 /*spl_autoload_register(null, false);
@@ -28,11 +39,6 @@ function controllerLoader($class) {
     include $file;
 }
 spl_autoload_register('controllerLoader');*/
-
-// Setup MongoDB
-$database = 'houston';
-$m = new MongoClient("mongodb://localhost");
-$db = $m->$database;
 
 // Autoload controllers
 foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {

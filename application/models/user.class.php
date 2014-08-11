@@ -1,16 +1,11 @@
 <?php
 namespace Houston\User\Model;
 
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
 
 class UserModel {
-	public function lookupUser($username) {
-		$c_users = $db->users;
-		return $c_users;
-	}
-	
-	public function checkPassword() {
-		
+	public static function hashPassword($password) {
+		return $password;
 	}
 }

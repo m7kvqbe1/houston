@@ -17,7 +17,7 @@ $db = $m->$database;
 $c_users = $db->users;
 
 // Insert this new document into the users collection
-//$c_users->save($user);
+$c_users->save($user);
 
 $cursor = $db->users->find();
 foreach($cursor as $document) {
