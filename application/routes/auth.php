@@ -38,7 +38,7 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 		    return -1;
 	    }
 	    
-		return 1;
+		return $users;
 	} catch(MongoConnectionException $e) {
 	    die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
@@ -72,6 +72,8 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 		
 		$collection = $db->users;
 	    $collection->save($json);
+	    	
+	    // Send user validation email
 	    	
 		$app['session']->set('isAuthenticated', true);
 	    		    
