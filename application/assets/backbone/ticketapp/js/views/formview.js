@@ -90,9 +90,8 @@ var FormView = Backbone.View.extend({
 		this.setModelData();
 		this.model.save(this.model.attributes,
 			{
-				success: function(model,response){
-					console.log(model);
-					console.log(response);
+				success: function(model){
+					model.attributes.id = model.attributes._id.$id;
 					app.tickets.add(model);
 					//ensure menu form always uses a fresh model
 					app.formView.model = new TicketModel();
