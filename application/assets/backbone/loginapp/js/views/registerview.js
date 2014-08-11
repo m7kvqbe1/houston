@@ -24,7 +24,7 @@ var RegisterView = Backbone.View.extend({
 			'</div>'+
 			*/
 				'<form id="form-reg" action="">'+				
-					'<div class="vld-wrap">'+
+					'<div class="vld-wrap vld-pair-one">'+
 						'<div class="vld-box">'+
 							'<div class="vld">'+
 								'<div class="vld-line"></div>'+
@@ -35,7 +35,7 @@ var RegisterView = Backbone.View.extend({
 						'<input type="text" name="reg-fn" placeholder="First Name" class="vld-aa" data-vld="vld-a" />'+
 						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="Last Name" data-vld="vld-b" />'+						
 					'</div>'+
-					'<div class="vld-wrap">'+
+					'<div class="vld-wrap vld-pair-two">'+
 						'<div class="vld-box">'+
 							'<div class="vld">'+
 								'<div class="vld-line"></div>'+
@@ -52,7 +52,7 @@ var RegisterView = Backbone.View.extend({
 						'</div>'+
 						'<input class="inp-spa vld-bb" type="text" name="reg-c" placeholder="Company" data-vld="vld-b" />'+
 					'</div>'+
-					'<div class="vld-wrap">'+	
+					'<div class="vld-wrap vld-pair-three">'+	
 						'<div class="vld-box">'+
 							'<div class="vld">'+
 								'<div class="vld-line"></div>'+
@@ -68,10 +68,12 @@ var RegisterView = Backbone.View.extend({
 								'</div>'+						
 							'</div>'+
 							'<div class="reg-vrf">'+
-								'<input class="inp-lst vld-bb" type="password" name="register-password-confirm" placeholder="Repeat Password" data-vld="vld-b" />'+
+								'<input class="inp-lst vld-bb" type="password" name="register-password-confirm" placeholder="Repeat Password" data-vld="vld-b" disabled="disabled" />'+
 								'<div class="vrf">'+
-									'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
-									'<div class="vrf-msg">No<br />Match</div>'+
+									'<div class="vrf-cir ok"><i class="icon-ok-1"></i></i></div>'+
+									'<div class="vrf-msg"></div>'+
+									//'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
+									//'<div class="vrf-msg">No<br />Match</div>'+
 								'</div>'+
 							'</div>'+
 					'</div>'+
@@ -121,10 +123,21 @@ var RegisterView = Backbone.View.extend({
 			'click .create': 'create',
 			'blur input': 'validate',
 			'focus .reg-p': 'showCount',
-			'blur .reg-p': 'showCount',
-			'input .reg-p': 'passCount'
+			//'input .reg-p': 'showCount',
+			'blur .reg-p': 'hideCount',
+			'input .reg-p': 'passCount',
+			'input .inp-lst': 'passMatch',
+			'input input': 'createCheck'
 		});
 		return this;
+	},
+	
+	createCheck: function(e){
+		login.registerCreateCheck(e.currentTarget);
+	},
+	
+	passMatch: function(e){
+		login.registerPassMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
@@ -133,8 +146,11 @@ var RegisterView = Backbone.View.extend({
 	},
 	
 	showCount: function(e) {	
-		var input = $(e.currentTarget);
-		input.closest('.reg-vrf').find('.vrf').fadeToggle();
+		login.registerShowCount(e.currentTarget);
+	},
+	
+	hideCount: function(e) {	
+		login.registerHideCount(e.currentTarget);
 	},
 	
 	validate: function(e){
@@ -145,8 +161,10 @@ var RegisterView = Backbone.View.extend({
 		this.setModelData();
 		this.model.save(this.model.attributes,
 			{
-				success: function(){
-					this.$el.html(this.templateSuccess());
+				success: function(model,response,options){
+					if(response === 1){
+						this.$el.html(this.templateSuccess());
+					}
 				}
 			}
 		);

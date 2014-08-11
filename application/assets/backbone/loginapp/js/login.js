@@ -46,19 +46,31 @@ var login = {
 		
 		//check password count of first password input
 		if(input.hasClass('reg-p')){
-			pFlag = login.regFlag;
+			pFlag = login.regPassFlag;
+			//if repeat password has already been verified, check if password has changed and now doesnt match, display error on repeat password
+			if(login.regMatchFlag == true && input.val() != $('.inp-lst').val()){
+				login.regMatchFlag = false;
+				$('.inp-lst').closest('.vld-wrap').removeClass('vld-b');				
+				$('.inp-lst').val('');
+				$('.inp-lst').prop('disabled', true);
+			}
 		}
 		
 		//check passwords match
 		if(input.hasClass('inp-lst')){
-			var first = $('.reg-p').val();
-			if(input.val() != first){
+			var regVrf = input.closest('.reg-vrf');
+			var vrf = regVrf.find('.vrf');
+			var vrfCir = vrf.find('.vrf-cir');
+			var vrfMsg = vrf.find('.vrf-msg');
+			if(!login.regMatchFlag){
 				qflag = false;	
 				input.addClass('error');
-				input.closest('.reg-vrf').find('.vrf').fadeIn();				
+				vrfCir.removeClass('ok').html('<i class="icon-cancel"></i>');
+				vrfMsg.html('No<br />Match');
+				vrf.fadeIn();				
 			} else {
 				input.removeClass('error');
-				input.closest('.reg-vrf').find('.vrf').fadeOut				();
+				vrf.fadeOut();
 			}
 		}
 				
@@ -69,15 +81,46 @@ var login = {
 			wrapper.removeClass(css);
 		}
 
-		if($('div.vld-a').length == 3 && $('div.vld-b').length  == 3){			
+		/*if($('div.vld-a').length == 3 && $('div.vld-b').length  == 3){			
 			$('button').addClass('create').removeClass('vld-button');	
+		} else {
+			$('button').addClass('vld-button').removeClass('create');
+		}*/
+	},
+	
+	registerCreateCheck: function(input){
+		//if(($('div.vld-a').length == 3 && $('div.vld-b').length  == 3) || ($('div.vld-a').length == 3 && $('div.vld-b').length  == 2 && login.regMatchFlag)){
+		if($('div.vld-a').length == 3 && $('div.vld-b').length  == 2 && login.regMatchFlag){
+			$('button').addClass('create').removeClass('vld-button');
+
+			if($(input).hasClass('inp-lst')) {
+				$(input).closest('.vld-wrap').addClass('vld-b');
+			}
 		} else {
 			$('button').addClass('vld-button').removeClass('create');
 		}
 	},
 	
-	regFlag: true,
+	regMatchFlag: false,
+	registerPassMatch: function(input){
+		var input = $(input);
+		var regVrf = input.closest('.reg-vrf');
+		var first = $('.reg-p').val();
+			if(input.val() != first || input.val() == ''){			
+				login.regMatchFlag = false;	
+				regVrf.find('.vrf').fadeOut();				
+			} else {
+				login.regMatchFlag = true;
+				var vrf = regVrf.find('.vrf');
+				var vrfCir = vrf.find('.vrf-cir');
+				var vrfMsg = vrf.find('.vrf-msg');
+				vrfCir.addClass('ok').html('<i class="icon-ok-1"></i>');
+				vrfMsg.html('');
+				vrf.fadeIn();
+			}	
+	},
 	
+	regPassFlag: true,	
 	registerPassCount: function(input){
 		var input = $(input);
 		var length = input.val().length;
@@ -86,11 +129,29 @@ var login = {
 		if(length < 8){
 			counter.text(counterValue - length);
 			counter.removeClass('ok');
-			login.regFlag = false;
+			login.regPassFlag = false;
+			login.regShowVal = 1;
+			//fade counter back in if pass field edited under 8 characters
+			input.closest('.reg-vrf').find('.vrf').fadeIn();
 		} else {
-			login.regFlag = true;
+			login.regShowVal = input.val();
+			login.regPassFlag = true;
 			counter.html('<i class="icon-ok-1"></i>');
 			counter.addClass('ok');
+			$(".inp-lst").prop('disabled', false);
 		}
+	},
+	
+	regShowVal: 1,
+	registerShowCount: function(input) {	
+		var input = $(input);
+		if(login.regShowVal !== input.val()){
+			input.closest('.reg-vrf').find('.vrf').fadeIn();
+		}
+	},
+	
+	registerHideCount: function(input){
+		var input = $(input);
+		input.closest('.reg-vrf').find('.vrf').fadeOut();
 	}
 }
