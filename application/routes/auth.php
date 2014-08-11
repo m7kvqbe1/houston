@@ -31,7 +31,7 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 			return -1;
 	    }
 	    
-	    // Does password hashes match?
+	    // Do password hashes match?
 	    if($userModel::hashPassword($json->password) === $users['password']) {
 	    	$app['session']->set('u', $users['_id']);
 		    $app['session']->set('isAuthenticated', true);	
@@ -95,7 +95,7 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	$db = $db->houston;
 
 	try {
-		 $criteria = array('_id' => $app['session']->get('u'));
+		$criteria = array('_id' => $app['session']->get('u'));
 		$users = $db->users->findOne($criteria);
 		
 		if(empty($users)) {
