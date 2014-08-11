@@ -20,7 +20,12 @@ $app->get('/tickets/{method}', function(Silex\Application $app, $method) {
 });
 
 // New code!
-$app->post('/ticket/add', function(Request $request, Application $app) {
+$app->post('/tickets/add', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	var_dump($json);
+});
+
+$app->put('/tickets/add', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	var_dump($json);
 });

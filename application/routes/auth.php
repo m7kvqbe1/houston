@@ -38,7 +38,8 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 		    return -1;
 	    }
 	    
-		return $users;
+	    unset($users['password']);
+		return json_encode($users);
 	} catch(MongoConnectionException $e) {
 	    die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
