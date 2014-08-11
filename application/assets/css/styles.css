@@ -80,7 +80,33 @@
 .icon-comment:before { content: '\67'; } /* 'g' */
 .icon-cog:before { content: '\63'; } /* 'c' */
 
+/* Placeholder text */
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #cfc3af;
+}
 
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #cfc3af;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #cfc3af;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #cfc3af;
+}
+
+/* Text highlighting */
+::selection     {
+     background: #cfc3af;
+     color: #fff;
+}
+
+::-moz-selection  {
+     background: #cfc3af;
+     color: #fff;
+}
 
 /* Reset */
 html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -361,6 +387,10 @@ input[type="password"] {
 	transition: all 500ms ease-out;
 }
 
+input[type="password"]:disabled {
+	background: #fff;
+}
+
 textarea {
 	display: block;
 	width: 290px;
@@ -409,6 +439,9 @@ input[type="submit"] {
 	height: 36px;
 	padding: 0;
 	border: none;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	lin;
 	-webkit-border-radius: 6px;
 	border-radius: 6px;
 	line-height: 36px;
@@ -667,13 +700,7 @@ input.inp-lst {
 	margin: 40px 0 0;
 }
 
-.app-wrap header nav a {
-	margin-left: 10px;
-}
-
-.box-app {
-	padding: 0 15px;
-	background: #fff;
+.app-wrap header nav a {ckground: #fff;
 }
 
 .box-app-top {
