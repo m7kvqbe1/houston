@@ -106,7 +106,7 @@ var FormView = Backbone.View.extend({
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			id: null,
 			url: this.$el.find('input[name="new-sub"]').val(),
-			name: user.name,
+			username: user.email,
 			company: user.company,
 			date: new Date()
 		});

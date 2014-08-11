@@ -703,6 +703,11 @@ input.inp-lst {
 .app-wrap header nav a {ckground: #fff;
 }
 
+.box-app {
+	padding: 0 15px;
+	background: #fff;
+}
+
 .box-app-top {
 	/*height: 52px;
 	padding: 0 15px;*/
