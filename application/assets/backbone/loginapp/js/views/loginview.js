@@ -84,7 +84,7 @@ var LoginView = Backbone.View.extend({
 				success: function(model,response,options){
 					if(response){
 						console.log(response);
-						//location.reload();
+						location.reload();
 					}
 				},
 				error: function(model){
