@@ -7,6 +7,11 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	initialize: function() {
+		
+		this.user = new UserModel();
+		var userID = '';
+		this.user.urlRoot = '/user/' + userID;
+		this.user.fetch();
 	
 		//instantiate the collection
 		this.tickets = new Tickets();
