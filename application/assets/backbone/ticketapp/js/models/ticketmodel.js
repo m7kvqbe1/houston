@@ -1,5 +1,5 @@
 var TicketModel = Backbone.Model.extend({
-	urlRoot: '/tickets',
+	urlRoot: '/tickets/add',
 	defaults: {
 		status: 'New',
 		agent: "Awaiting Agent",

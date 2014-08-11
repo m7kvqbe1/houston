@@ -163,7 +163,9 @@ var RegisterView = Backbone.View.extend({
 			{
 				success: function(model,response,options){
 					if(response === 1){
-						app.registerView.$el.html(this.templateSuccess());
+						$('#app').html(app.registerView.templateSuccess());
+						//this.$el.html(app.registerView.templateSuccess());
+						//app.registerView.$el.html(this.templateSuccess());
 					}
 				}
 			}
