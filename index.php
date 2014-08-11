@@ -10,11 +10,10 @@ require_once(__DIR__.'/vendor/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
-
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
-// Setup MongoDB Connection
+// Setup MongoDB connection
 use Mongo\Silex\Provider\MongoServiceProvider;
 $app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
@@ -40,17 +39,12 @@ function controllerLoader($class) {
 }
 spl_autoload_register('controllerLoader');*/
 
-// Autoload controllers
-foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
-    include $filename;
-}
-
 // Autoload models
 foreach (glob(__DIR__."/application/models/*.php") as $filename) {
     include $filename;
 }
 
-// Autoload routes
+// Autoload routes / controllers
 foreach (glob(__DIR__."/application/routes/*.php") as $filename) {
     include $filename;
 }
