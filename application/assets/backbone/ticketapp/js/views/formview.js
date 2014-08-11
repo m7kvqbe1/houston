@@ -90,7 +90,9 @@ var FormView = Backbone.View.extend({
 		this.setModelData();
 		this.model.save(this.model.attributes,
 			{
-				success: function(model){
+				success: function(model,response){
+					console.log(model);
+					console.log(response);
 					app.tickets.add(model);
 					//ensure menu form always uses a fresh model
 					app.formView.model = new TicketModel();
@@ -104,10 +106,12 @@ var FormView = Backbone.View.extend({
 	setModelData: function(){
 		this.model.set({
 			subject: this.$el.find('input[name="new-sub"]').val(),
+			message: this.$el.find('textarea[name="new-textarea"]').val(),
 			id: null,
-			url: this.$el.find('input[name="new-sub"]').val(),
-			username: app.user.emailAddress,
-			company: app.user.company,
+			url: '',
+			username: app.user.attributes.emailAddress,
+			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+			company: app.user.attributes.company,
 			date: new Date()
 		});
 	}
