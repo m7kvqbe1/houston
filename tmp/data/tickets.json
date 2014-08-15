@@ -110,7 +110,8 @@
 		"datehuman": "26 Jun",
 		"agent": "Edd N.",
 		"status": "On Hold",
-		"updated": "updated"
+		"updated": "updated",
+		"messages": []
 	},
 	{
 		"id": "butch-viviers",

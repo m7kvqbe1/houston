@@ -28,7 +28,7 @@ var houston = {
 					case 3: return 'rd';
 				}
 			}
-			return 'TH';
+			return 'th';
 		}
 					
 		var suffix = ordinal_suffix(day);

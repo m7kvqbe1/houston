@@ -4,5 +4,6 @@ var TicketModel = Backbone.Model.extend({
 		status: 'New',
 		agent: "Awaiting Agent",
 		updated: "updated",
+		messages: []
 	}
 });

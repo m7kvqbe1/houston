@@ -131,6 +131,10 @@ var TicketDetail = Backbone.View.extend({
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
 			return houston.convertToDateTime(attribute);
 		});
+		
+
+		
+		});
 	},
 
 	render: function (){		
