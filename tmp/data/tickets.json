@@ -67,7 +67,38 @@
 		"datehuman": "22 Jun",
 		"agent": "Hide This",
 		"status": "Completed",
-		"updated": "updated"
+		"updated": "updated",
+		"messages": [
+			{
+				"author": "Thomas Humphris",
+				"role": "agent",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Optimal Internet",
+				"date": "29th Mar 2015 10:12am",
+				"message": "First Response"
+			},
+			{
+				"author": "Colin Pearson",
+				"role": "client",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Control Room Solutions",
+				"date": "30th Mar 2015 10:12am",
+				"message": "Second Response",
+				"files": [
+					{
+						"filename": "Screenshot_1",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_1.jpg"
+					},
+					{
+						"filename": "Screenshot_2",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_2.jpg"
+					}
+				]
+
+			}
+		]
 	},
 	{
 		"id": "tim-casey",
@@ -91,7 +122,38 @@
 		"datehuman": "20 Jun",
 		"agent": "Edd N.",
 		"status": "Completed",
-		"updated": "updated"
+		"updated": "updated",
+		"messages": [
+			{
+				"author": "Thomas Humphris",
+				"role": "agent",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Optimal Internet",
+				"date": "29th Mar 2015 10:12am",
+				"message": "First Response"
+			},
+			{
+				"author": "Colin Pearson",
+				"role": "client",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Control Room Solutions",
+				"date": "30th Mar 2015 10:12am",
+				"message": "Second Response",
+				"files": [
+					{
+						"filename": "Screenshot_1",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_1.jpg"
+					},
+					{
+						"filename": "Screenshot_2",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_2.jpg"
+					}
+				]
+
+			}
+		]
 	},
 	{
 		"id": "mark-roberts",
@@ -103,7 +165,38 @@
 		"datehuman": "19 Jun",
 		"agent": "Thomas H.",
 		"status": "In Progress",
-		"updated": "false"
+		"updated": "false",
+		"messages": [
+			{
+				"author": "Thomas Humphris",
+				"role": "agent",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Optimal Internet",
+				"date": "29th Mar 2015 10:12am",
+				"message": "First Response"
+			},
+			{
+				"author": "Colin Pearson",
+				"role": "client",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Control Room Solutions",
+				"date": "30th Mar 2015 10:12am",
+				"message": "Second Response",
+				"files": [
+					{
+						"filename": "Screenshot_1",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_1.jpg"
+					},
+					{
+						"filename": "Screenshot_2",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_2.jpg"
+					}
+				]
+
+			}
+		]
 	},
 	{
 		"id": "chris-smith",
@@ -115,6 +208,37 @@
 		"datehuman": "26 Jun",
 		"agent": "Hide This",
 		"status": "Completed",
-		"updated": "updated"
+		"updated": "updated",
+		"messages": [
+			{
+				"author": "Thomas Humphris",
+				"role": "agent",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Optimal Internet",
+				"date": "29th Mar 2015 10:12am",
+				"message": "First Response"
+			},
+			{
+				"author": "Colin Pearson",
+				"role": "client",
+				"avatar": "application/assets/img/avatar.png",
+				"company": "Control Room Solutions",
+				"date": "30th Mar 2015 10:12am",
+				"message": "Second Response",
+				"files": [
+					{
+						"filename": "Screenshot_1",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_1.jpg"
+					},
+					{
+						"filename": "Screenshot_2",
+						"filetype": "jpg",
+						"filelocation": "files/Screenshot_2.jpg"
+					}
+				]
+
+			}
+		]
 	}
 ]

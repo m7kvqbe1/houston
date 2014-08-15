@@ -91,8 +91,11 @@ var FormView = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model){
-					model.attributes.id = model.attributes._id.$id;
+					//model.attributes.id = model.attributes._id.$id;
+					//model.attributes.url = model.attributes.id;
+					model.set('id', model.attributes._id.$id);
 					app.tickets.add(model);
+					
 					//ensure menu form always uses a fresh model
 					app.formView.model = new TicketModel();
 					//app.navigate('contacts/' + model.get('url'), {trigger: true});

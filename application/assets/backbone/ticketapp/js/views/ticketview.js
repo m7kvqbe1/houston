@@ -114,7 +114,8 @@ var TicketDetail = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "change", this.render);		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
+		this.listenTo(this.model, "change", this.render);		
+		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("foreach",function(arr,options) {
 			if(options.inverse && !arr.length)
 				return options.inverse(this);
@@ -134,7 +135,6 @@ var TicketDetail = Backbone.View.extend({
 
 	render: function (){		
 		this.$el.html(this.template(this.model.attributes));
-		
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
 			'click .dropdown li': 'dropDown',
