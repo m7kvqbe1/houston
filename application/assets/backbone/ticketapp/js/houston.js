@@ -67,7 +67,6 @@ var houston = {
 		var text = item.text();
 		var text = text+'<i class="icon-down-dir-1"></i>';
 		var dropdown = item.closest('.dropdown');
-		console.log(dropdown);
 			
 		dropdown.find('.drop-slct').removeClass('on-hold in-progress').addClass(css).html(text);
 

@@ -56,8 +56,32 @@ var TicketDetail = Backbone.View.extend({
 								'<a href="">Delete</a>'+
 							'</li>'+	
 						'{{/each}}'+
-						'</ul>'+						
+						'</ul>'+
+					'{{#if messages}}'+
+						'</div>'+					
+						
+					'{{else}}'+
+					'<a class="btn reply-btn">Reply</a>'+
 					'</div>'+
+					'<div class="reply">'+
+						'<form id="form-reply">' +
+							'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+							'<div class="attach-files">' +
+								'<a class="attach-link" href="">Attach files to this ticket</a>' + 
+								'<div class="supported">Supported -</div>' + 
+								'<ul class="filetypes">' +
+								'<li>Jpg</li>' +
+								'<li>Png</li>' +
+								'<li>Gif</li>' +
+								'<li>Pdf</li>' +
+								'</ul>' +
+							'</div>' +
+							'<button class="save" type="button">Submit</button>' +
+							'<div class="beige or">or</div>' +
+							'<a class="cancel-btn ib">Cancel</a>' +
+						'</form>' +
+					'</div>'+					
+					'{{/if}}'+						
 				'</li>'+
 			'{{#foreach messages}}'+
 				'<li class="msg from-{{role}}">'+
@@ -130,10 +154,6 @@ var TicketDetail = Backbone.View.extend({
 		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
 			return houston.convertToDateTime(attribute);
-		});
-		
-
-		
 		});
 	},
 
