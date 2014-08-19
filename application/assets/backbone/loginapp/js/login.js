@@ -1,4 +1,36 @@
 var login = {
+	loginValidate: function(input){
+		var input = $(input);
+		var form = input.closest('form');
+		var email = form.find('input[name="log-e"]');
+		var pass = form.find('input[name="log-p"]');
+		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+		var eflag = true;
+		var pflag = true;
+		
+		if(re.test(email.val())){
+			email.removeClass('error');
+			eflag = true;
+		} else {			
+			email.addClass('error');
+			eflag = false;
+		}
+		
+		if(pass.val().length < 1){
+			pass.addClass('error');
+			pflag = false;
+		} else {
+			pass.removeClass('error');
+			pflag = true;
+		}
+		
+		if (!eflag || !pflag){
+			return false;
+		} else {
+			return true;
+		}
+	},
+
 	registerValidate: function(input){
 		//set up flags
 		var lFlag = true;
@@ -33,8 +65,12 @@ var login = {
 			//check if email already in use
 			if(address == "eddneal@hotmail.com"){
 				iFlag = false;
-					//var abbr = address.substr(0,9)+'...';
-					//input.val(abbr);
+				login.emailVal = address;
+				//add ellipsis if mobile view
+				if($(window).width() < 768){
+					var abbr = address.substr(0,13)+'...';
+					input.val(abbr);
+				}
 				input.addClass('in-use');
 				input.closest('.reg-vrf').find('.vrf').fadeIn();			
 			} else {
@@ -81,25 +117,8 @@ var login = {
 			wrapper.removeClass(css);
 		}
 
-		/*if($('div.vld-a').length == 3 && $('div.vld-b').length  == 3){			
-			$('button').addClass('create').removeClass('vld-button');	
-		} else {
-			$('button').addClass('vld-button').removeClass('create');
-		}*/
 	},
 	
-	registerCreateCheck: function(input){
-		//if(($('div.vld-a').length == 3 && $('div.vld-b').length  == 3) || ($('div.vld-a').length == 3 && $('div.vld-b').length  == 2 && login.regMatchFlag)){
-		if($('div.vld-a').length == 3 && $('div.vld-b').length  == 2 && login.regMatchFlag){
-			$('button').addClass('create').removeClass('vld-button');
-
-			if($(input).hasClass('inp-lst')) {
-				$(input).closest('.vld-wrap').addClass('vld-b');
-			}
-		} else {
-			$('button').addClass('vld-button').removeClass('create');
-		}
-	},
 	
 	regMatchFlag: false,
 	registerPassMatch: function(input){
@@ -142,6 +161,15 @@ var login = {
 		}
 	},
 	
+	emailVal: 1,	
+	registerHideInUse: function(input){	
+		if(login.emailVal != 1){
+			$(input).val(login.emailVal);
+		}
+		login.registerHideVrf(input);
+		login.emailVal = 1;
+	},
+	
 	regShowVal: 1,
 	registerShowCount: function(input) {	
 		var input = $(input);
@@ -150,8 +178,19 @@ var login = {
 		}
 	},
 	
-	registerHideCount: function(input){
+	registerHideVrf: function(input){
 		var input = $(input);
 		input.closest('.reg-vrf').find('.vrf').fadeOut();
+	},
+	
+	registerCreateValidate: function(){
+		if($('div.vld-a').length == 3 && $('div.vld-b').length  == 3){
+			console.log('passed');
+			return true;
+		} else {
+			console.log('failed');
+			return false;
+		}
 	}
+	
 }

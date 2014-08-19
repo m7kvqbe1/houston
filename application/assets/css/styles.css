@@ -449,11 +449,11 @@ input[type="submit"] {
 	color: #fff;
 }
 
-.vld-button,
+/*.vld-button,
 .vld-button:hover {
 	background: #cfc3af;
 	cursor: default;
-}
+}*/
 
 .btn:hover,
 button:hover,
@@ -634,7 +634,6 @@ input.inp-lst {
 }
 
 .vrf-count {
-	margin-right: 0;
 	font-weight: 900;
 	
 	-webkit-transition: background 400ms ease-out;

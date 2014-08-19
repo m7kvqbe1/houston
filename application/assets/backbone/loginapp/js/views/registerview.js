@@ -4,25 +4,6 @@ var RegisterView = Backbone.View.extend({
 			'<h2>Create an Account</h2>'+
 			'<h3>Just this one easy form and you\'re done!</h3>'+
 			'<div class="reg-form-wrap">'+
-			/*
-			'<div class="vld-box">'+
-				'<div class="vld">'+
-					'<div class="vld-line"></div>'+
-					'<div class="vld-line line-btm"></div>'+
-					'<div class="vld-cir vld-name">1</div>'+									
-				'</div>'+
-				'<div class="vld">'+
-					'<div class="vld-line"></div>'+
-					'<div class="vld-line line-btm"></div>'+
-					'<div class="vld-cir vld-email">2</div>'+	
-				'</div>'+
-				'<div class="vld">'+
-					'<div class="vld-line"></div>'+
-					'<div class="vld-line line-btm"></div>'+
-					'<div class="vld-cir vld-pass">3</div>'+	
-				'</div>'+
-			'</div>'+
-			*/
 				'<form id="form-reg" action="">'+				
 					'<div class="vld-wrap vld-pair-one">'+
 						'<div class="vld-box">'+
@@ -72,33 +53,13 @@ var RegisterView = Backbone.View.extend({
 								'<div class="vrf">'+
 									'<div class="vrf-cir ok"><i class="icon-ok-1"></i></i></div>'+
 									'<div class="vrf-msg"></div>'+
-									//'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
-									//'<div class="vrf-msg">No<br />Match</div>'+
 								'</div>'+
 							'</div>'+
 					'</div>'+
-					'<button class="vld-button" type="button">Create</button>'+
+					'<button class="create" type="button">Create</button>'+
 					'<div class="beige or">or</div>'+
 					'<a class="btn-can" href="/#/">Cancel</a>'+
 				'</form>'+
-				//'<div class="vrf-wrap">'+
-					//'<div class="vrf">'+
-					//'</div>'+
-					//'<div class="vrf inp-spa">'+
-					//'</div>'+
-					//'<div class="vrf">'+
-						//'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
-						//'<div class="vrf-msg">Already<br />In Use</div>'+
-					//'</div>'+
-					//'<div class="vrf inp-spa">'+
-						//'<div class="vrf-cir ok"><i class="icon-ok"></i></div>'+
-						//'<div class="vrf-msg"></div>'+
-					//'</div>'+
-					//'<div class="vrf">'+
-					//'</div>'+
-					//'<div class="vrf inp-spa">'+
-					//'</div>'+
-				//'</div>'+
 		'</div>'
 	),
 	
@@ -123,17 +84,16 @@ var RegisterView = Backbone.View.extend({
 			'click .create': 'create',
 			'blur input': 'validate',
 			'focus .reg-p': 'showCount',
-			//'input .reg-p': 'showCount',
 			'blur .reg-p': 'hideCount',
 			'input .reg-p': 'passCount',
 			'input .inp-lst': 'passMatch',
-			'input input': 'createCheck'
+			'focus .email': 'hideInUse'
 		});
 		return this;
 	},
 	
-	createCheck: function(e){
-		login.registerCreateCheck(e.currentTarget);
+	hideInUse: function(e){
+		login.registerHideInUse(e.currentTarget)
 	},
 	
 	passMatch: function(e){
@@ -150,27 +110,28 @@ var RegisterView = Backbone.View.extend({
 	},
 	
 	hideCount: function(e) {	
-		login.registerHideCount(e.currentTarget);
+		login.registerHideVrf(e.currentTarget);
 	},
 	
 	validate: function(e){
 		login.registerValidate(e.currentTarget);
 	},
 	
-	create: function(){
-		this.setModelData();
+	create: function(e){
+		if(login.registerCreateValidate(e.currentTarget)){
+			console.log('registering');
+		/*this.setModelData();
 		this.model.save(this.model.attributes,
 			{
-				success: function(model,response,options){
+				success: _.bind(function(model,response,options){
 					if(response === 1){
-						$('#app').html(app.registerView.templateSuccess());
-						//this.$el.html(app.registerView.templateSuccess());
-						//app.registerView.$el.html(this.templateSuccess());
+					
+						this.$el.html(app.registerView.templateSuccess());
 					}
-				}
+				}, this)
 			}
-		);
-	
+		);*/
+		}
 	},
 	setModelData: function(){
 		this.model.set({
