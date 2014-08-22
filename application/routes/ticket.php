@@ -40,9 +40,27 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 });
 
 // Edit ticket
-$app->put('/tickets/add', function(Request $request, Application $app) {
+$app->put('/tickets/edit/{ticketID}', function(Request $request, Application $app) {
+	$connections = $app['mongo'];
+	$db = $connections['default'];
+	$db = $db->houston;
+	
 	$json = json_decode(file_get_contents('php://input'));
-	var_dump($json);
+	die($json);
+	
+	try {
+		$mongoID = new MongoID($json._id);
+		
+		
+		$tickets = $db->tickets;
+		$tickets->update({_id: $mongoID}, $json);
+		
+		return json_encode($json);
+	} catch(MongoConnectionException $e) {
+		die('Error connecting to MongoDB server');
+	} catch(MongoException $e) {
+		die('Error: '.$e->getMessage());
+	}
 });
 
 // Get ticket
@@ -50,3 +68,10 @@ $app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	var_dump($json);
 });
+
+// Get all tickets
+$app->get('/tickets/all', function(){
+	$json = json_decode(file_get_contents('php://input'));
+	var_dump($json);
+});
+
