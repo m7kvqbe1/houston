@@ -45,11 +45,13 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	$db = $connections['default'];
 	$db = $db->houston;
 	
-	$json = json_decode(file_get_contents('php://input'));
-	die($json);
+	$json = file_get_contents('php://input');
+	$json = str_replace('$', '', $json);
+	$json = json_decode($json);
 	
 	try {
-		$mongoID = new MongoID($json._id);
+		$mongoID = new MongoID($json->_id->id);
+		unset($json->_id);
 		
 		$tickets = $db->tickets;
 		$tickets->update(array('_id' => $mongoID), $json);
