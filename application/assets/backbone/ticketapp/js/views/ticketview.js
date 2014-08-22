@@ -206,6 +206,9 @@ var TicketDetail = Backbone.View.extend({
 			//messages[0].company: app.user.attributes.company,
 			//messages[0].date: new Date(),
 			//messages[0].message: this.$el.find('textarea[name="new-textarea"]').val()
+
+			//stackoverflow.com/questions/13644080/store-push-to-an-array-in-a-backbone-model
+			//messages : this.model.get('units').concat($('#addUnit').val())
 		});
 	}
 	
