@@ -51,9 +51,8 @@ $app->put('/tickets/edit/{ticketID}', function(Request $request, Application $ap
 	try {
 		$mongoID = new MongoID($json._id);
 		
-		
 		$tickets = $db->tickets;
-		$tickets->update({_id: $mongoID}, $json);
+		$tickets->update(array('_id' => $mongoID), $json);
 		
 		return json_encode($json);
 	} catch(MongoConnectionException $e) {
