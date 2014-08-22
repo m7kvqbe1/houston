@@ -162,8 +162,9 @@ var TicketDetail = Backbone.View.extend({
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
 			'click .dropdown li': 'dropDown',
-			'click .reply-btn': 'reply',
-			'click .cancel-btn': 'cancelReply'
+			'click .reply-btn': 'showReply',
+			'click .cancel-btn': 'cancelReply',
+			'click .save': 'save'
 		});
 		return this;
 	},
@@ -176,12 +177,36 @@ var TicketDetail = Backbone.View.extend({
 		houston.dropDown(e.currentTarget);
 	},
 	
-	reply: function(){
+	showReply: function(){
 		houston.replyToggle();
 	},
 	
 	cancelReply: function(){
 		houston.replyToggle();
+	},
+	
+	save: function(){
+		this.setModelData();
+		this.model.save(this.model.attributes,
+			{
+				success: function(model){
+					//app.navigate('', {trigger: true});
+				}
+			}
+		);
+	
+	},
+	
+	setModelData: function(){
+		this.model.set({
+			subject: this.$el.find('textarea[name="new-textarea"]').val()
+			//messages[0].author: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+			//messages[0].role: 'agent',
+			//messages[0].avatar: 'application/assets/img/avatar.png',//should use user object
+			//messages[0].company: app.user.attributes.company,
+			//messages[0].date: new Date(),
+			//messages[0].message: this.$el.find('textarea[name="new-textarea"]').val()
+		});
 	}
 	
 });
