@@ -40,7 +40,7 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 });
 
 // Edit ticket
-$app->put('/tickets/edit/{ticketID}', function(Request $request, Application $app) {
+$app->put('/tickets/add/{ticketID}', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
 	$db = $db->houston;
