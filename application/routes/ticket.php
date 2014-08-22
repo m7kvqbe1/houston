@@ -49,12 +49,12 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	$json = str_replace('$', '', $json);
 	$json = json_decode($json);
 	
-	try {
-		$mongoID = new MongoID($json->_id->id);
-		unset($json->_id);
+	try {	
+		$json->_id = new MongoID($json->_id->id);
+		unset($json->id);
 		
 		$tickets = $db->tickets;
-		$tickets->update(array('_id' => $mongoID), $json);
+		$tickets->update(array('_id' => $json->_id), $json);
 		
 		return json_encode($json);
 	} catch(MongoConnectionException $e) {
