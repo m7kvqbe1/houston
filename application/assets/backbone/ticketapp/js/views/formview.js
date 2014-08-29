@@ -90,9 +90,15 @@ var FormView = Backbone.View.extend({
 		this.setModelData();
 		this.model.save(this.model.attributes,
 			{
-				success: function(model){
+				success: function(model, response, options){
 					//set model id to $id returned by mongo
-					model.set('id', model.attributes._id.$id);
+					//model.set('id', model.attributes._id.$id);
+				
+					//attempt to set idAttribute to value returned by mongo
+					//model.set('idAttribute', model.attributes._id.$id);
+					//stackoverflow.com/questions/12169822/backbone-js-id-vs-idattribute-vs-cid
+					//stackoverflow.com/questions/9816274/ways-to-save-backbone-js-model-data
+					
 					//add model to collection
 					app.tickets.add(model);
 					
