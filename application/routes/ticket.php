@@ -50,11 +50,11 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	$json = json_decode($json);
 	
 	try {	
-		$json->_id = new MongoID($json->_id->id);
-		unset($json->id);
+		$json->id = new MongoID($json->id);
+		unset($json->id);	// Remove additional backbone psuedo ID
 		
 		$tickets = $db->tickets;
-		$tickets->update(array('_id' => $json->_id), $json);
+		$tickets->update(array('_id' => $json->id), $json);
 		
 		return json_encode($json);
 	} catch(MongoConnectionException $e) {
