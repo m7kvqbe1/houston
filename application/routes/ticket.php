@@ -2,7 +2,6 @@
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
-<<<<<<< HEAD
 // Deprecated!
 /*$app->get('/tickets/{method}', function(Silex\Application $app, $method) {
 	// Instantiate controller
@@ -40,8 +39,6 @@ $app->get('/tickets/all', function(Request $request, Application $app) {
 	}
 });
 
-=======
->>>>>>> 6d5163021a8106eecc7a51f669689b4b0a6bf361
 // Add new ticket
 $app->post('/tickets/add', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
@@ -87,9 +84,6 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	} catch(MongoException $e) {
 		die('Error: '.$e->getMessage());
 	}
-<<<<<<< HEAD
-});
-=======
 });
 
 // Get ticket
@@ -102,5 +96,3 @@ $app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
 $app->get('/tickets/all', function(){
 	return 'test';
 });
-
->>>>>>> 6d5163021a8106eecc7a51f669689b4b0a6bf361
