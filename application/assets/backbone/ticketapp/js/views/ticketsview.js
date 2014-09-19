@@ -33,7 +33,11 @@ var TicketView = Backbone.View.extend({
 							'</div>' +
 							'<div class="ticket-status">' +
 								'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
-								'<div class="ticket-agent">{{attributes.agent}}</div>' +
+								'{{#if attributes.agent}}'+
+									'<div class="ticket-agent">{{attributes.agent}}</div>' +
+								'{{else}}'+
+									'<div class="ticket-agent">Awaiting Agent</div>'+
+								'{{/if}}'+								
 							'</div>' +
 						'</a>'+
 					'</li>{{/each}}' +	

@@ -64,8 +64,8 @@ var houston = {
 	dropDown: function(button){
 		var item = $(button);
 		var css = item.data('class');
-		var text = item.text();
-		var text = text+'<i class="icon-down-dir-1"></i>';
+		var val = item.text();
+		var text = val+'<i class="icon-down-dir-1"></i>';
 		var dropdown = item.closest('.dropdown');
 			
 		dropdown.find('.drop-slct').removeClass('on-hold in-progress').addClass(css).html(text);
@@ -81,11 +81,22 @@ var houston = {
 					li.toggleClass('slct');	
 					li.toggleClass('n-slct');
 				});
+				houston.dropDownAttribute = 'status';
 			} else {
 				drop.find('li').removeClass('slct');
 				item.addClass('slct');
+				houston.dropDownAttribute = 'agent';			
 			}				
 		});
+		
+		var output; 
+		if(dropdown.hasClass('dropswitch')){
+			output = {param: 'status', value: val}; 
+		}else {
+			output = {param: 'agent', value: val};
+		}
+		
+		return output;
 	},
 	
 	replyToggle: function(){

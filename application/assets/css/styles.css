@@ -725,6 +725,12 @@ input.inp-lst {
 	line-height: 38px;
 }
 
+.box-app-top .btn.new {
+	width: 90px;
+	margin-left: 12px;
+	text-align: center;
+}
+
 .msg-top .btn {
 /*Change*/
 	width: inherit;
@@ -1104,6 +1110,7 @@ input.inp-lst {
 /* Single Ticket */
 
 #msg-stream {
+	overflow: hidden;
 	padding-bottom: 15px;
 }
 

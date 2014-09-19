@@ -1,32 +1,42 @@
 var TicketDetail = Backbone.View.extend({
 	template: Handlebars.compile(
 			'<div class="box-app-top msg-top">'+
-				'<h2><a href="#">< All Tickets</a></h2>'+
-				'<div class="dropdown dropswitch">'+
-				'<div class="drop-inner">'+
-					'<div class="drop-top on-hold rounded">'+
-						'<div class="btn in-progress drop-slct">In Progress<i class="icon-down-dir-1"></i></div>'+
+				'{{#if agent}}'+
+					'<h2><a href="#">< All Tickets</a></h2>'+
+					'{{generateDropSwitch status}}'+
+					
+					
+					'<div class="dropdown droplist">'+
+						'<div class="drop-top rounded">'+
+							'<div class="btn in-progress drop-slct">{{agent}}<i class="icon-down-dir-1"></i></div>'+
+						'</div>'+						
+						'<ul class="drop">'+
+							'<li class="slct">Thomas Humphris</li>'+
+							'<li>Edd Neal</li>'+
+							'<li>Mark Neale</li>'+
+							'<li>James Brown</li>'+
+							'<li>Kirk Hammet</li>'+
+							'<li>Catherine Bradshaw</li>'+
+						'</ul>'+
 					'</div>'+
-					'<ul class="drop on-hold">'+
-						'<li class="slct" data-class="in-progress">In Progress</li>'+
-						'<li class="n-slct" data-class="on-hold">On Hold</li>'+
-					'</ul>'+
-				'</div>'+
-				'</div>'+
-				'<div class="dropdown droplist">'+
-					'<div class="drop-top rounded">'+
-						'<div class="btn in-progress drop-slct">Thomas Humphris<i class="icon-down-dir-1"></i></div>'+
-					'</div>'+						
-					'<ul class="drop">'+
-						'<li class="slct">Thomas Humphris</li>'+
-						'<li>Edd Neal</li>'+
-						'<li>Mark Neale</li>'+
-						'<li>James Brown</li>'+
-						'<li>Kirk Hammet</li>'+
-						'<li>Catherine Bradshaw</li>'+
-					'</ul>'+
-				'</div>'+		
-			'</div>'+
+				'{{else}}'+
+					'<h2><a href="#">< All Tickets</a></h2>'+
+					'<div class="btn new">New</div>'+
+					'<div class="dropdown droplist">'+
+						'<div class="drop-top rounded">'+
+							'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
+						'</div>'+						
+						'<ul class="drop">'+
+							'<li>Thomas Humphris</li>'+
+							'<li>Edd Neal</li>'+
+							'<li>Mark Neale</li>'+
+							'<li>James Brown</li>'+
+							'<li>Kirk Hammet</li>'+
+							'<li>Catherine Bradshaw</li>'+
+						'</ul>'+
+					'</div>'+
+				'{{/if}}'+
+			'</div>'+			
 			'<ul id="msg-stream" class="box-app">'+
 				'<li class="msg from-client">'+
 					'<div class="msg-dtl">'+
@@ -58,8 +68,7 @@ var TicketDetail = Backbone.View.extend({
 						'{{/each}}'+
 						'</ul>'+
 					'{{#if messages}}'+
-						'</div>'+					
-						
+						'</div>'+											
 					'{{else}}'+
 					'<a class="btn reply-btn">Reply</a>'+
 					'</div>'+
@@ -76,7 +85,7 @@ var TicketDetail = Backbone.View.extend({
 								'<li>Pdf</li>' +
 								'</ul>' +
 							'</div>' +
-							'<button class="save" type="button">Submit</button>' +
+							'<button class="add-message" type="button">Submit</button>' +
 							'<div class="beige or">or</div>' +
 							'<a class="cancel-btn ib">Cancel</a>' +
 						'</form>' +
@@ -90,7 +99,7 @@ var TicketDetail = Backbone.View.extend({
 						'<div class="msg-dtl-inr">'+
 							'<h3 class="msg-agent">{{author}}</h3>'+
 							'<h4 class="msg-company">{{company}}</h4>'+
-							'<div class="msg-date">{{date}}</div>'+
+							'<div class="msg-date">{{convertToDateTime date}}</div>'+
 						'</div>'+
 						'<div class="msg-tri"></div>'+
 					'</div>'+
@@ -124,7 +133,7 @@ var TicketDetail = Backbone.View.extend({
 								'<li>Pdf</li>' +
 								'</ul>' +
 							'</div>' +
-							'<button class="save" type="button">Submit</button>' +
+							'<button class="add-message" type="button">Submit</button>' +
 							'<div class="beige or">or</div>' +
 							'<a class="cancel-btn ib">Cancel</a>' +
 						'</form>' +
@@ -138,8 +147,8 @@ var TicketDetail = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "change", this.render);	
-		//this.listenTo(this.model, "save", this.render);
+		this.listenTo(this.model, "change", this.render);
+		this.listenTo(this.model, "save", this.render);		
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("foreach",function(arr,options) {
@@ -157,6 +166,35 @@ var TicketDetail = Backbone.View.extend({
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
 			return houston.convertToDateTime(attribute);
 		});
+		
+		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
+			if(attribute === 'In Progress') {
+				return new Handlebars.SafeString('<div class="dropdown dropswitch">'+
+					'<div class="drop-inner">'+				
+						'<div class="drop-top on-hold rounded">'+
+							'<div class="btn in-progress drop-slct">In Progress<i class="icon-down-dir-1"></i></div>'+
+						'</div>'+
+						'<ul class="drop on-hold">'+
+							'<li class="slct" data-class="in-progress">In Progress</li>'+
+							'<li class="n-slct" data-class="on-hold">On Hold</li>'+
+						'</ul>'+
+					'</div>'+
+				'</div>');
+			} else {
+				return new Handlebars.SafeString( '<div class="dropdown dropswitch">'+
+					'<div class="drop-inner">'+				
+						'<div class="drop-top in-progress rounded">'+
+							'<div class="btn on-hold drop-slct">On Hold<i class="icon-down-dir-1"></i></div>'+
+						'</div>'+
+						'<ul class="drop in-progress">'+
+							'<li class="slct" data-class="on-hold">On Hold</li>'+
+							'<li class="n-slct" data-class="in-progress">In Progress</li>'+
+						'</ul>'+
+					'</div>'+
+				'</div>');
+			}
+			
+		});
 	},
 
 	render: function (){		
@@ -167,17 +205,37 @@ var TicketDetail = Backbone.View.extend({
 			'click .dropdown li': 'dropDown',
 			'click .reply-btn': 'showReply',
 			'click .cancel-btn': 'cancelReply',
-			'click .save': 'save'
+			'click .add-message': 'addMessage'
 		});
 		return this;
 	},
 	
 	dropSelect: function(e){
-		houston.dropSelect(e.currentTarget);
+		houston.dropSelect(e.currentTarget);		
 	},
 	
 	dropDown: function(e){
-		houston.dropDown(e.currentTarget);
+		var update = houston.dropDown(e.currentTarget);
+		//look for way to do without if
+		if(update.param == 'status') {
+			this.model.set({
+				status: update.value
+			});
+		} else {
+			this.model.set({
+				agent: update.value
+			});
+			//if setting agent for the first time add status of in progress
+			var currentStatus = this.model.get('status');
+			if(currentStatus = 'New'){
+				this.model.set({
+					status: 'In Progress'
+				});
+				//this.render();
+			}			
+		}
+		//console.log(this.model);
+		this.save();
 	},
 	
 	showReply: function(){
@@ -189,32 +247,33 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	save: function(){
-		this.setModelData();
 		console.log(this.model);
 		this.model.save(this.model.attributes,
 			{
 				success: function(model){
-					//app.navigate('', {trigger: true});
-					
+					console.log(model);
+					app.navigate('', {trigger: true});
 				}
 			}
 		);
 	
 	},
 	
-	setModelData: function(){
+	addMessage: function(){
+	//stackoverflow.com/questions/13644080/store-push-to-an-array-in-a-backbone-model
+		var msg =
+			{
+				"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+				"role": "agent",
+				"avatar": "application/assets/img/avatar.png", //should use user object
+				"company": app.user.attributes.company,
+				"date": new Date(),
+				"message": this.$el.find('textarea[name="new-textarea"]').val()
+			};
 		this.model.set({
-			subject: this.$el.find('textarea[name="new-textarea"]').val()
-			//messages[0].author: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
-			//messages[0].role: 'agent',
-			//messages[0].avatar: 'application/assets/img/avatar.png',//should use user object
-			//messages[0].company: app.user.attributes.company,
-			//messages[0].date: new Date(),
-			//messages[0].message: this.$el.find('textarea[name="new-textarea"]').val()
-
-			//stackoverflow.com/questions/13644080/store-push-to-an-array-in-a-backbone-model
-			//messages : this.model.get('units').concat($('#addUnit').val())
+			messages: this.model.get('messages').concat(msg)
 		});
+		this.save();
 	}
 	
 });
