@@ -147,7 +147,7 @@ var TicketDetail = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "change", this.render);
+		//this.listenTo(this.model, "change", this.render);
 		this.listenTo(this.model, "save", this.render);		
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
@@ -227,14 +227,12 @@ var TicketDetail = Backbone.View.extend({
 			});
 			//if setting agent for the first time add status of in progress
 			var currentStatus = this.model.get('status');
-			if(currentStatus = 'New'){
+			if(currentStatus == 'New'){
 				this.model.set({
 					status: 'In Progress'
 				});
-				//this.render();
 			}			
 		}
-		//console.log(this.model);
 		this.save();
 	},
 	
@@ -246,14 +244,15 @@ var TicketDetail = Backbone.View.extend({
 		houston.replyToggle();
 	},
 	
+	//Saves and stays within ticketview
 	save: function(){
-		console.log(this.model);
 		this.model.save(this.model.attributes,
 			{
-				success: function(model){
-					console.log(model);
-					app.navigate('', {trigger: true});
-				}
+				success: _.bind(function(model){
+					console.log('save success');
+					//app.navigate('', {trigger: true});
+					this.render();
+				}, this)
 			}
 		);
 	
