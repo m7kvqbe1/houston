@@ -8,7 +8,10 @@ var AppRouter = Backbone.Router.extend({
 	
 	initialize: function() {
 		
+		//instantiate the user model
 		this.user = new UserModel();
+		
+		//fetch user data
 		this.user.fetch();
 	
 		//instantiate the collection
