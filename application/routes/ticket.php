@@ -51,7 +51,7 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	
 	try {	
 		$json->id = new MongoID($json->id);
-		unset($json->id);	// Remove additional backbone psuedo ID
+		//unset($json->id);
 		
 		$tickets = $db->tickets;
 		$tickets->update(array('_id' => $json->id), $json);
