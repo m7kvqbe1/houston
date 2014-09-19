@@ -1,3 +1,7 @@
+String.prototype.capitalize = function() {
+	return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
+
 var login = {
 	loginValidate: function(input){
 		var input = $(input);
@@ -192,5 +196,5 @@ var login = {
 			return false;
 		}
 	}
-	
+			
 }

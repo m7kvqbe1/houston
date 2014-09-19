@@ -120,23 +120,24 @@ var RegisterView = Backbone.View.extend({
 	create: function(e){
 		if(login.registerCreateValidate(e.currentTarget)){
 			console.log('registering');
-		/*this.setModelData();
-		this.model.save(this.model.attributes,
-			{
-				success: _.bind(function(model,response,options){
-					if(response === 1){
-					
-						this.$el.html(app.registerView.templateSuccess());
-					}
-				}, this)
-			}
-		);*/
+			this.setModelData();
+			console.log(this.model);
+			this.model.save(this.model.attributes,
+				{
+					success: _.bind(function(model,response,options){
+						if(response === 1){
+						
+							this.$el.html(app.registerView.templateSuccess());
+						}
+					}, this)
+				}
+			);
 		}
 	},
 	setModelData: function(){
 		this.model.set({
-			firstName: this.$el.find('input[name="reg-fn"]').val(),
-			lastName: this.$el.find('input[name="reg-ln"]').val(),
+			firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
+			lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),
 			emailAddress: this.$el.find('input[name="reg-e"]').val(),
 			company: this.$el.find('input[name="reg-c"]').val(),
 			password: this.$el.find('input[name="reg-p"]').val()

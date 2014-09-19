@@ -29,7 +29,7 @@ var Tickets = Backbone.Collection.extend({
 	
 	byAgent: function(){
 		filtered = this.filter(function(data){
-			return data.get('agent') === 'Edd N.' && data.get('status') !== 'Completed';
+			return data.get('agent') == app.user.attributes.firstName + ' ' + app.user.attributes.lastName && data.get('status') !== 'Completed';
 			//return data.get(key) === value && data.get('status') !== 'Completed';
 		});
 		return filtered;	
