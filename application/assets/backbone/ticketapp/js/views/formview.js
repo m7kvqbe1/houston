@@ -116,7 +116,7 @@ var FormView = Backbone.View.extend({
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			message: this.$el.find('textarea[name="new-textarea"]').val(),
 			id: null,
-			url: '',
+			//url: '',
 			username: app.user.attributes.emailAddress,
 			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 			company: app.user.attributes.company,

@@ -133,6 +133,10 @@ var TicketDetail = Backbone.View.extend({
 								'<li>Pdf</li>' +
 								'</ul>' +
 							'</div>' +
+							'<label>'+
+								'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
+								'Mark ticket as completed'+
+							'</label>'+
 							'<button class="add-message" type="button">Submit</button>' +
 							'<div class="beige or">or</div>' +
 							'<a class="cancel-btn ib">Cancel</a>' +
@@ -148,7 +152,7 @@ var TicketDetail = Backbone.View.extend({
 	
 	initialize: function() {
 		//this.listenTo(this.model, "change", this.render);
-		this.listenTo(this.model, "save", this.render);		
+		this.listenTo(this.model, "sync", this.render);		
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("foreach",function(arr,options) {
@@ -199,6 +203,10 @@ var TicketDetail = Backbone.View.extend({
 
 	render: function (){		
 		this.$el.html(this.template(this.model.attributes));
+		//Unset updated attribute
+		//this.model.set({
+			//updated: null
+		//});
 		console.log('rendering ticketview');
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
@@ -246,6 +254,10 @@ var TicketDetail = Backbone.View.extend({
 	
 	//Saves and stays within ticketview
 	save: function(){
+		//Set updated attribute
+		//this.model.set({
+			//updated: 'updated'
+		//});
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model){
@@ -272,6 +284,13 @@ var TicketDetail = Backbone.View.extend({
 		this.model.set({
 			messages: this.model.get('messages').concat(msg)
 		});
+		
+		//if ticket marked as complete
+		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
+			this.model.set({
+				status: 'Completed'
+			});		
+		}		
 		this.save();
 	}
 	
