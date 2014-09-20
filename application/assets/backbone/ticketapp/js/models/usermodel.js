@@ -5,5 +5,6 @@ var UserModel = Backbone.Model.extend({
 		lastName: '',
 		emailAddress: '',
 		company: '',
+		avatar: "application/assets/img/avatar.png"
 	}
 });

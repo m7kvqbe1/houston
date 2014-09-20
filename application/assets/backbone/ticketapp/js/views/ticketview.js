@@ -207,7 +207,7 @@ var TicketDetail = Backbone.View.extend({
 		//this.model.set({
 			//updated: null
 		//});
-		console.log('rendering ticketview');
+		console.log(this.model);
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
 			'click .dropdown li': 'dropDown',
@@ -276,7 +276,7 @@ var TicketDetail = Backbone.View.extend({
 			{
 				"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 				"role": "agent",
-				"avatar": "application/assets/img/avatar.png", //should use user object
+				"avatar": app.user.attributes.avatar, 
 				"company": app.user.attributes.company,
 				"date": new Date(),
 				"message": this.$el.find('textarea[name="new-textarea"]').val()
