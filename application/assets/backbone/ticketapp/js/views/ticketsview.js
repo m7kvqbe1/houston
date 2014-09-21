@@ -2,47 +2,49 @@ var TicketView = Backbone.View.extend({
 	template: Handlebars.compile(
 		
 		'<div class="box-app-top">' +
-				'<h2>Open Tickets</h2>' +
-				'<a href="#/tickets/new" class="btn">New Ticket</a>' +
-			'</div>' +
-			'<div class="box-app">' +
-				'<div class="box-app-nav">' +
-					'<div class="sort">' +
-						'<a class="sortByDate">Sort By Date</a>' +
-						'<a class="sortByCompany mid-link">Sort By Company</a>' +
-					'</div>' +
-					'<div class="filter">' +
-						'<a class="allTickets">All Tickets</a>' +
-						'<a class="myTickets mid-link">My Tickets</a>' +
-						'<a class="completedTickets">Completed Tickets</a>' +
-					'</div>' +
+			'<h2>Open Tickets</h2>' +
+			'<a href="#/tickets/new" class="btn">New Ticket</a>' +
+		'</div>' +
+		'<div class="box-app">' +
+			'<div class="box-app-nav">' +
+				'<div class="sort">' +
+					'<a class="sortByDate">Sort By Date</a>' +
+					'<a class="sortByCompany mid-link">Sort By Company</a>' +
 				'</div>' +
-				'<ul id="ticket-stream">' +
-					'{{#each models}}<li class="ticket">' +
-						//'<a href="/#/tickets/{{attributes.url}}">'+
-						'<a href="/#/tickets/{{attributes.id}}">'+
-						//'<a href="/#/tickets/{{attributes._id}}">'+
-							'<div class="update-alert {{attributes.updated}}"></div>' +
-							'<div class="ticket-info">' +					
-								'<div class="date">{{convertToDate attributes.date}}</div>' +
-								'<div class="ticket-info-inner">' +
-									'<div class="name">{{attributes.name}}</div>' +
-									'<div class="company-name">{{attributes.company}}</div>' +
-									'<div class="summary">{{attributes.subject}}</div>' +
-								'</div>' +
+				'<div class="filter">' +
+					'<a class="allTickets">All Tickets</a>' +
+					'<a class="myTickets mid-link">My Tickets</a>' +
+					'<a class="completedTickets">Completed Tickets</a>' +
+				'</div>' +
+			'</div>' +
+			'<ul id="ticket-stream">' +
+			'{{#each models}}'+
+				'<li class="ticket">' +
+					//'<a href="/#/tickets/{{attributes.url}}">'+
+					'<a href="/#/tickets/{{attributes.id}}">'+
+					//'<a href="/#/tickets/{{attributes._id}}">'+
+						'<div class="update-alert {{attributes.updated}}"></div>' +
+						'<div class="ticket-info">' +					
+							'<div class="date">{{convertToDate attributes.date}}</div>' +
+							'<div class="ticket-info-inner">' +
+								'<div class="name">{{attributes.name}}</div>' +
+								'<div class="company-name">{{attributes.company}}</div>' +
+								'<div class="summary">{{attributes.subject}}</div>' +
 							'</div>' +
-							'<div class="ticket-status">' +
-								'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
-								'{{#if attributes.agent}}'+
-									'<div class="ticket-agent">{{attributes.agent}}</div>' +
-								'{{else}}'+
-									'<div class="ticket-agent">Awaiting Agent</div>'+
-								'{{/if}}'+								
-							'</div>' +
-						'</a>'+
-					'</li>{{/each}}' +	
-				'</ul>' +
-			'</div>' 
+						'</div>' +
+						'<div class="ticket-status">' +
+							'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
+							'{{#if attributes.agent}}'+
+								'<div class="ticket-agent">{{attributes.agent}}</div>' +
+							'{{else}}'+
+								'<div class="ticket-agent">Awaiting Agent</div>'+
+							'{{/if}}'+								
+						'</div>' +
+					'</a>'+
+				'</li>'+
+			'{{/each}}'+					
+			'</ul>' +
+		'</div>' 
 	),
 	
 	initialize: function() {	

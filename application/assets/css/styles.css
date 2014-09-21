@@ -980,15 +980,15 @@ input.inp-lst {
 
 .box-companies-header {
 	overflow: hidden;
-	padding: 0 15px;
+	padding: 16px 15px;
 	background: #f3f0ea;
+	
 }
 
 .box-companies-header .btn {
 	float: right;
 	width: 116px;
 	height: 36px;
-	margin: 8px 0;
 	line-height: 38px;
 }
 
@@ -1375,10 +1375,6 @@ input.inp-lst {
 		margin: 0;
 	}
 	
-	.box-companies-header .btn {
-		margin: 20px 0 19px;
-	}
-	
 	.box-app-wrap {
 		-webkit-border-radius: 3px;
 		border-radius: 3px;
@@ -1480,8 +1476,7 @@ input.inp-lst {
 	}
 	
 	.box-companies-header {
-		height: 75px;
-		padding: 0 30px;
+		padding: 20px 30px;
 	}
 	
 	.person {
