@@ -151,8 +151,10 @@ var TicketDetail = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		//this.listenTo(this.model, "change", this.render);
+		this.listenTo(this.model, "change", this.render);
 		this.listenTo(this.model, "sync", this.render);		
+		this.listenTo(this.model, "request", this.render);	
+		this.listenTo(this.model, "all", this.listening);
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("foreach",function(arr,options) {
@@ -201,13 +203,18 @@ var TicketDetail = Backbone.View.extend({
 		});
 	},
 
+	listening: function(){
+		console.log('listening');
+	},
+	
 	render: function (){		
 		this.$el.html(this.template(this.model.attributes));
-		//Unset updated attribute
-		//this.model.set({
-			//updated: null
-		//});
 		console.log(this.model);
+		//Add user to updated array if not already there
+		if(!this.checkIfAlreadySeenUpdate()){
+			this.update();
+		}
+
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
 			'click .dropdown li': 'dropDown',
@@ -216,6 +223,16 @@ var TicketDetail = Backbone.View.extend({
 			'click .add-message': 'addMessage'
 		});
 		return this;
+	},
+	
+	checkIfAlreadySeenUpdate: function(){
+		var haveSeen = this.model.get('updated');
+		var i;
+		for (i = 0; i < haveSeen.length; ++i) {
+			if(haveSeen[i] == app.user.attributes.id) {					
+				return true;
+			}
+		}
 	},
 	
 	dropSelect: function(e){
@@ -252,15 +269,32 @@ var TicketDetail = Backbone.View.extend({
 		houston.replyToggle();
 	},
 	
-	//Saves and stays within ticketview
-	save: function(){
-		//Set updated attribute
-		//this.model.set({
-			//updated: 'updated'
-		//});
+	update: function() {
+		this.model.set({
+			updated: this.model.get('updated').concat(app.user.attributes.id)
+		});
 		this.model.save(this.model.attributes,
 			{
-				success: _.bind(function(model){
+				success: _.bind(function(model, response, options){
+					console.log('update success');
+					//app.navigate('', {trigger: true});
+					//this.render();
+				}, this)
+			}
+		);
+	
+	},
+	
+	//Saves and stays within ticketview
+	save: function(){
+		//Set updated attribute to empty array
+		this.model.set({
+			//updated: [app.user.attributes.id]
+			updated: []
+		});
+		this.model.save(this.model.attributes,
+			{
+				success: _.bind(function(model, response, options){
 					console.log('save success');
 					//app.navigate('', {trigger: true});
 					this.render();
@@ -282,7 +316,7 @@ var TicketDetail = Backbone.View.extend({
 				"message": this.$el.find('textarea[name="new-textarea"]').val()
 			};
 		this.model.set({
-			messages: this.model.get('messages').concat(msg)
+			messages: this.model.get('messages').concat(msg)			
 		});
 		
 		//if ticket marked as complete

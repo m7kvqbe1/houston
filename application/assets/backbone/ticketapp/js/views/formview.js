@@ -121,7 +121,8 @@ var FormView = Backbone.View.extend({
 			username: app.user.attributes.emailAddress,
 			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 			company: app.user.attributes.company,
-			date: new Date()
+			date: new Date(),
+			updated: this.model.get('updated').concat(app.user.attributes.id)
 		});
 	}
 });

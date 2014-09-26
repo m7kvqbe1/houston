@@ -14,7 +14,7 @@ var TicketModel = Backbone.Model.extend({
 		status: 'New',
 		//agent: "Awaiting Agent",
 		agent: false,
-		updated: "updated",
+		updated: [],
 		url: '/tickets/add',
 		messages: []
 	}

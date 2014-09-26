@@ -23,7 +23,7 @@ var TicketView = Backbone.View.extend({
 					//'<a href="/#/tickets/{{attributes.url}}">'+
 					'<a href="/#/tickets/{{attributes.id}}">'+
 					//'<a href="/#/tickets/{{attributes._id}}">'+
-						'<div class="update-alert {{attributes.updated}}"></div>' +
+						'<div class="update-alert {{showUpdates attributes.updated}}"></div>' +
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
@@ -49,6 +49,7 @@ var TicketView = Backbone.View.extend({
 	
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort", this.render);
+		this.listenTo(this.collection, "sort", this.listening);
 		//http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers
 		Handlebars.registerHelper("convertToClass", function(attribute) {
 			return houston.convertToClass(attribute);
@@ -56,7 +57,29 @@ var TicketView = Backbone.View.extend({
 		Handlebars.registerHelper("convertToDate", function(attribute) {
 			return houston.convertToDate(attribute);
 		});
+		Handlebars.registerHelper("showUpdates", function(arr, options) { 
+		//stackoverflow.com/questions/3943494/how-to-loop-through-array-in-jquery
+			var i;
+			for (i = 0; i < arr.length; ++i) {
+				if(arr[i] == app.user.attributes.id) {					
+					return new Handlebars.SafeString('update-seen');
+				}
+			}
+				
+			/*why arr.map method not working?
+			arr.map(function(item) {
+				console.log(item);
+				if(item == app.user.attributes.firstName + ' ' + app.user.attributes.lastName) {
+					
+					return new Handlebars.SafeString('update-seen');
+				}
+			});*/
+		});
 		
+	},
+	
+	listening: function(){
+		console.log('listening');
 	},
 		
 	render: function() {
