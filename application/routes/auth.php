@@ -79,13 +79,29 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	    
 	    $app['session']->set('u', $users['_id']);
 		$app['session']->set('isAuthenticated', true);
-	    		    
-	    return 1;
 	} catch(MongoConnectionException $e) {
 	    die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
 	    die('Error: '.$e->getMessage());
 	}
+	
+	// Create company
+	$companyJSON = '{"companyName": "", "users": [{"name": ""}]}';
+	$company = json_decode($companyJSON);
+	
+	$company->companyName = $json->company;
+	$company->users[0]->name = $json->firstName.' '.$json->lastName;
+	
+	try {
+		$collection = $db->companies;
+		$collection->save($company);		
+	} catch(MongoConnectionException $e) {
+		die('Error connecting to MongoDB server');
+	} catch(MongoException $e) {
+		die('Error: '.$e->getMessage());
+	}
+	
+	return 1;
 });
 
 // Get user object
