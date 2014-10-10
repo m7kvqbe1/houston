@@ -115,7 +115,7 @@ var TicketView = Backbone.View.extend({
 		this.$el.html(this.template(this.collection));	
 	},
 	
-	sortByDate: function(){	
+	sortByDate: function(e){
 		app.tickets.byDate();	
 	},
 	

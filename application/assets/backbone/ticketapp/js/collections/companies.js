@@ -1,6 +1,6 @@
 var Companies = Backbone.Collection.extend({
 	model: CompanyModel,	
-	url: '/people',	
+	url: '/companies/all',	
 	initialize: function(){
 	}
 });
