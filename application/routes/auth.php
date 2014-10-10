@@ -10,7 +10,7 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 
 // Login to system
 $app->post('/auth/login', function(Request $request, Application $app) {
-	$userModel = new Houston\User\Model\UserModel();
+	$userModel = new Houston\User\Model\UserModel($app);
 	
 	session_start();
 	
