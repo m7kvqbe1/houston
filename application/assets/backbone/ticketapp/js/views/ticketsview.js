@@ -20,9 +20,7 @@ var TicketView = Backbone.View.extend({
 			'<ul id="ticket-stream">' +
 			'{{#each models}}'+
 				'<li class="ticket">' +
-					//'<a href="/#/tickets/{{attributes.url}}">'+
 					'<a href="/#/tickets/{{attributes.id}}">'+
-					//'<a href="/#/tickets/{{attributes._id}}">'+
 						'<div class="update-alert {{showUpdates attributes.updated}}"></div>' +
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
@@ -57,7 +55,7 @@ var TicketView = Backbone.View.extend({
 		Handlebars.registerHelper("convertToDate", function(attribute) {
 			return houston.convertToDate(attribute);
 		});
-		Handlebars.registerHelper("showUpdates", function(arr, options) { 
+		Handlebars.registerHelper("showUpdates", function(arr) { 
 		//stackoverflow.com/questions/3943494/how-to-loop-through-array-in-jquery
 			var i;
 			for (i = 0; i < arr.length; ++i) {
@@ -65,7 +63,9 @@ var TicketView = Backbone.View.extend({
 					return new Handlebars.SafeString('update-seen');
 				}
 			}
-				
+			
+			//return new Handlebars.SafeString(houston.showUpdates(arr));
+			
 			/*why arr.map method not working?
 			arr.map(function(item) {
 				console.log(item);

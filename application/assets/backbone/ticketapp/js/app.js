@@ -127,6 +127,7 @@ $(function() {
 Houston To Do List:
 # Add avatar to user object
 # Get Mark to make default user icon
+# Sort by date/company reverse order
 
 People Page Users
 # A user has a people collection of persons

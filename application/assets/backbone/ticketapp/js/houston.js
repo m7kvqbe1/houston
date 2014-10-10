@@ -103,5 +103,14 @@ var houston = {
 		$('.reply').slideToggle();
 		var scroll = $(document).scrollTop()+ 195;
 		$("html, body").animate({ scrollTop: scroll });
-	}
+	}/*,
+	
+	showUpdates: function(arr){
+		var i;
+		for (i = 0; i < arr.length; ++i) {
+			if(arr[i] == app.user.attributes.id) {					
+				return 'update-seen';
+			}
+		}
+	}*/
 }

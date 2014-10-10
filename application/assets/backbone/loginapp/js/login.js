@@ -67,7 +67,7 @@ var login = {
 			}
 			
 			//check if email already in use
-			if(address == "eddneal@hotmail.com"){
+			if(address == "eddneal@hotmail.co.uk"){
 				iFlag = false;
 				login.emailVal = address;
 				//add ellipsis if mobile view
