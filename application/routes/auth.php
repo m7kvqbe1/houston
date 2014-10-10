@@ -21,30 +21,24 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	// Check if user exists and password matches
-	try {
-	    $criteria = array('emailAddress' => $json->user);
-	    $users = $db->users->findOne($criteria);
-	    
-	    
-	    // Does user exist?
-	    if(empty($users)) {
-			return -1;
-	    }
-	    
-	    // Do password hashes match?
-	    if($userModel::hashPassword($json->password) === $users['password']) {
-	    	$app['session']->set('u', $users['_id']);
-		    $app['session']->set('isAuthenticated', true);	
-	    } else {
-		    return -1;
-	    }
-	    
-		return 1;
-	} catch(MongoConnectionException $e) {
-	    die('Error connecting to MongoDB server');
-	} catch(MongoException $e) {
-	    die('Error: '.$e->getMessage());
+	$criteria = array('emailAddress' => $json->user);
+	$users = $db->users->findOne($criteria);
+	
+	
+	// Does user exist?
+	if(empty($users)) {
+	    return -1;
 	}
+	
+	// Do password hashes match?
+	if($userModel::hashPassword($json->password) === $users['password']) {
+	    $app['session']->set('u', $users['_id']);
+	    $app['session']->set('isAuthenticated', true);
+	} else {
+	    return -1;
+	}
+	
+	return 1;
 });
 
 // Register new user
@@ -62,29 +56,31 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	// Hash password
 	$json->password = $userModel::hashPassword($json->password);
 	
-	// Check if user exists and save to database
-	try {
-		$criteria = array('emailAddress' => $json->emailAddress);
-		$users = $db->users->findOne($criteria);
+	// Check if user or company exists
+	$criteria = array('emailAddress' => $json->emailAddress);
+	$users = $db->users->findOne($criteria);
 	
-	    if(!empty($users)) {
-	    	return -1;
-	    }
-		
+	if(!empty($users)) {
+	    return -1;
+	}
+	
+	$criteria = array('company' => $json->company);
+	$company = $db->users->findOne($criteria);
+	
+	if(!empty($company)) {
+	    return -1;
+	}
+	
+	// Save user to database
+	try {
 		$collection = $db->users;
 	    $collection->save($json);
-	    
-	    // Validation email
-	    mail($json->emailAddress, 'Welcome to Houston!', 'Welcome to Houston!');
-	    
-	    $app['session']->set('u', $users['_id']);
-		$app['session']->set('isAuthenticated', true);
 	} catch(MongoConnectionException $e) {
 	    die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
 	    die('Error: '.$e->getMessage());
 	}
-	
+		
 	// Create company
 	$companyJSON = '{"companyName": "", "users": [{"name": ""}]}';
 	$company = json_decode($companyJSON);
@@ -100,6 +96,12 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	} catch(MongoException $e) {
 		die('Error: '.$e->getMessage());
 	}
+	
+	// Send validation email
+	mail($json->emailAddress, 'Welcome to Houston!', 'Welcome to Houston!');
+	
+	$app['session']->set('u', $users['_id']);
+	$app['session']->set('isAuthenticated', true);
 	
 	return 1;
 });

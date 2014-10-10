@@ -8,21 +8,12 @@ $app->get('/companies/all', function(Request $request, Application $app) {
 	$db = $connections['default'];
 	$db = $db->houston;
 	
-	try {
-	    $companies = $db->companies;
-	    $result = $companies->find();
-	    
-	    $docs = array();
-	    foreach($result as $doc) {
-		    array_push($docs, $doc);
-	    }
-	    
-	    $docs = json_encode($docs);
-	    
-	    return $docs;
-	} catch(MongoConnectionException $e) {
-	    die('Error connecting to MongoDB server');
-	} catch(MongoException $e) {
-	    die('Error: '.$e->getMessage());
-	}
+	// Only get companies for your user
+	$userModel = new Houston\User\Model\UserModel($app);
+	$companyName = $userModel->getCompanyName($app['session']->get('u'));
+	
+	$criteria = array('companyName' => $companyName);
+	$company = $db->companies->findOne($criteria);
+	    	    	    
+	return json_encode($company);
 });

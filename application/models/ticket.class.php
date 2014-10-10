@@ -5,7 +5,9 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class TicketModel {		
-	public function getTickets($username = null) {
+	protected $app;
 
+	public function __construct(Application $app) {
+		$this->app = $app;
 	}
 }
