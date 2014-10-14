@@ -45,50 +45,9 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the company model
 		this.companyModel = new CompanyModel();
 		//instantiate the companies collection
-		this.companies = new Companies([
-					{
-						"id": null,
-						'companyName': 'Paramount Recruitment',
-						'users': [
-							{
-								'name': 'Eugene McDaid',
-								'position': 'Director',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'Dan Berryman',
-								'position': 'Director',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'Joe Bloggs',
-								'position': 'Minion',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'James Brown',
-								'position': 'Sex Machine',
-								'avatar': 'application/assets/img/avatar.png'
-							}						
-						]						
-					},
-					{
-						"id": null,
-						'companyName': 'Anatech Resource',
-						'users': [
-							{
-								'name': 'Colin Pearson',
-								'position': 'Director',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'Nick Wilkins',
-								'position': 'Associate Director',
-								'avatar': 'application/assets/img/avatar.png'
-							}						
-						]
-					}
-				]);
+		this.companies = new Companies();
+		//fetch companies collection data from server
+		this.companies.fetch();
 		//instantiate the people view and set it the companies collection
 		this.peopleView = new PeopleView(
 			{
@@ -154,3 +113,49 @@ A user loads a single company model
 After user is authenticated and user object is instantiated Company name is used to fetch company object
 */
 
+
+/*[
+					{
+						"id": null,
+						'companyName': 'Paramount Recruitment',
+						
+						'users': [
+							{
+								'name': 'Eugene McDaid',
+								'position': 'Director',
+								'avatar': 'application/assets/img/avatar.png'
+							},
+							{
+								'name': 'Dan Berryman',
+								'position': 'Director',
+								'avatar': 'application/assets/img/avatar.png'
+							},
+							{
+								'name': 'Joe Bloggs',
+								'position': 'Minion',
+								'avatar': 'application/assets/img/avatar.png'
+							},
+							{
+								'name': 'James Brown',
+								'position': 'Sex Machine',
+								'avatar': 'application/assets/img/avatar.png'
+							}						
+						]						
+					},
+					{
+						"id": null,
+						'companyName': 'Anatech Resource',
+						'users': [
+							{
+								'name': 'Colin Pearson',
+								'position': 'Director',
+								'avatar': 'application/assets/img/avatar.png'
+							},
+							{
+								'name': 'Nick Wilkins',
+								'position': 'Associate Director',
+								'avatar': 'application/assets/img/avatar.png'
+							}						
+						]
+					}
+				]*/

@@ -209,7 +209,6 @@ var TicketDetail = Backbone.View.extend({
 	
 	render: function (){		
 		this.$el.html(this.template(this.model.attributes));
-		console.log(this.model);
 		//Add user to updated array if not already there
 		if(!this.checkIfAlreadySeenUpdate()){
 			this.update();
@@ -276,7 +275,6 @@ var TicketDetail = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model, response, options){
-					console.log('update success');
 					//app.navigate('', {trigger: true});
 					//this.render();
 				}, this)
@@ -295,7 +293,6 @@ var TicketDetail = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model, response, options){
-					console.log('save success');
 					//app.navigate('', {trigger: true});
 					this.render();
 				}, this)

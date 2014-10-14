@@ -29,7 +29,7 @@ var PeopleView = Backbone.View.extend({
 			'</li>'+
 		'</ul>'+			
 			'<div class="box-companies-header">'+
-				'<h2>Companies</h2>'+
+				'<h2>Clients</h2>'+
 				'<a class="btn">New Company</a>'+
 			'</div>'+
 		'<ul id="company-stream" class="box-app box-companies">'+
@@ -37,8 +37,8 @@ var PeopleView = Backbone.View.extend({
 			'<li class="company">'+
 				'<div class="company-info">'+
 					'<h3>{{attributes.companyName}}</h3>'+
-					'<a href="">Edit</a>'+
-					'<a href="">New User</a>'+
+					'<a>Edit</a>'+
+					'<a>New User</a>'+
 				'</div>'+
 				'<ul class="client-stream">'+
 				'{{#each attributes.users}}'+
