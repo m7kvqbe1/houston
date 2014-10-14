@@ -4,6 +4,8 @@ ini_set("display_errors", 1);
 
 // Setup application constants
 define('DOCUMENT_ROOT', dirname(__FILE__));
+define('DEFAULT_SALT', 'Adfkjasf93482394!!');
+define('MONGO_HOST', 'mongodb://localhost:27017');
 
 // Instantiate Silex
 require_once(__DIR__.'/vendor/autoload.php');
@@ -18,13 +20,13 @@ use Mongo\Silex\Provider\MongoServiceProvider;
 $app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
-            'server' => "mongodb://localhost:27017",
+            'server' => MONGO_HOST,
             'options' => array("connect" => true)
         )
     ),
 ));
 
-// Autoload application controllers and models
+// Autoload application controllers and models - MAKE THIS WORK!
 /*spl_autoload_register(null, false);
 spl_autoload_extensions('.php, .class.php');
 

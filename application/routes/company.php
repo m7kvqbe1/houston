@@ -2,7 +2,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
-// Get all tickets
+// Get authenticated users companies
 $app->get('/companies/all', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];

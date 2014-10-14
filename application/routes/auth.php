@@ -43,7 +43,7 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 
 // Register new user
 $app->post('/auth/register', function(Request $request, Application $app) {
-	$userModel = new Houston\User\Model\UserModel();
+	$userModel = new Houston\User\Model\UserModel($app);
 	
 	session_start();
 	
@@ -111,20 +111,14 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
 	$db = $db->houston;
-
-	try {
-		$criteria = array('_id' => $app['session']->get('u'));
-		$users = $db->users->findOne($criteria);
-		
-		if(empty($users)) {
-			return -1;
-		}
-		
-		unset($users['password']);
-		return json_encode($users);	
-	} catch(MongoConnectionException $e) {
-		die('Error connecting to MongoDB server');
-	} catch(MongoException $e) {
-		die('Error: '.$e->getMessage());
+	
+	$criteria = array('_id' => $app['session']->get('u'));
+	$users = $db->users->findOne($criteria);
+	
+	if(empty($users)) {
+	    return -1;
 	}
+	
+	unset($users['password']);
+	return json_encode($users);
 });

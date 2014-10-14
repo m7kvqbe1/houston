@@ -12,8 +12,7 @@ class UserModel {
 	}
 
 	public static function hashPassword($password) {
-		$salt = 'Adfkjasf93482394!!';
-		$password = crypt($password, $salt);
+		$password = crypt($password, DEFAULT_SALT);
 		return $password;
 	}
 	
