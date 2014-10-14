@@ -1,3 +1,3 @@
 <?php
 // Serve initial assets
-$app->get('/', 'DefaultModel::generateAssets');
+$app->get('/', 'Houston\Common\Model\CommonModel::generateAssets');

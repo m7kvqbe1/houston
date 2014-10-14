@@ -6,6 +6,8 @@ ini_set("display_errors", 1);
 define('DOCUMENT_ROOT', dirname(__FILE__));
 define('DEFAULT_SALT', 'Adfkjasf93482394!!');
 define('MONGO_HOST', 'mongodb://localhost:27017');
+define('MONGO_USER', '');
+define('MONGO_PASSWORD', '');
 
 // Instantiate Silex
 require_once(__DIR__.'/vendor/autoload.php');

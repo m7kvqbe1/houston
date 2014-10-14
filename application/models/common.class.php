@@ -1,8 +1,10 @@
 <?php
+namespace Houston\Common\Model;
+
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultModel {
+class CommonModel {
 	public function generateAssets(Request $request, Application $app) {
 		// If not authenticated serve login screen initial assets
 		if(!$app['session']->get('isAuthenticated')) {
