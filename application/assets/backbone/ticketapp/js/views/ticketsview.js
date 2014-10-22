@@ -8,8 +8,8 @@ var TicketView = Backbone.View.extend({
 		'<div class="box-app">' +
 			'<div class="box-app-nav">' +
 				'<div class="sort">' +
-					'<a class="sortByDate">Sort By Date</a>' +
-					'<a class="sortByCompany mid-link">Sort By Company</a>' +
+					'<a class="sortByDate">Sort By Date {{dateArrow}}</a>' +
+					'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>' +
 				'</div>' +
 				'<div class="filter">' +
 					'<a class="allTickets">All Tickets</a>' +
@@ -21,7 +21,7 @@ var TicketView = Backbone.View.extend({
 			'{{#each models}}'+
 				'<li class="ticket">' +
 					'<a href="/#/tickets/{{attributes.id}}">'+
-						'<div class="update-alert {{showUpdates attributes.updated}}"></div>' +
+						'<div class="update-alert {{updateCheck attributes.updated}}"></div>' +
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
@@ -55,31 +55,43 @@ var TicketView = Backbone.View.extend({
 		Handlebars.registerHelper("convertToDate", function(attribute) {
 			return houston.convertToDate(attribute);
 		});
-		Handlebars.registerHelper("showUpdates", function(arr) { 
-		//stackoverflow.com/questions/3943494/how-to-loop-through-array-in-jquery
+
+		Handlebars.registerHelper("updateCheck", function(arr) { 
+			return new Handlebars.SafeString(houston.updateCheck(arr));			
+		});
+
+		/*Handlebars.registerHelper("showUpdates", function(arr) { 
+			console.log(app.user);
+			console.log(app.user.attributes.id);
+			console.log(app.user.id);
+
 			var i;
 			for (i = 0; i < arr.length; ++i) {
-				if(arr[i] == app.user.attributes.id) {					
-					return new Handlebars.SafeString('update-seen');
+				if(arr[i] == app.user.id) {					
+					return new Handlebars.SafeString('true');
 				}
 			}
-			
-			//return new Handlebars.SafeString(houston.showUpdates(arr));
-			
-			/*why arr.map method not working?
-			arr.map(function(item) {
-				console.log(item);
-				if(item == app.user.attributes.firstName + ' ' + app.user.attributes.lastName) {
-					
-					return new Handlebars.SafeString('update-seen');
-				}
-			});*/
+		});*/
+
+		Handlebars.registerHelper("dateArrow", function() {
+			if(app.tickets.byDateOrder === 1){
+				return new Handlebars.SafeString('<i class="icon-up-dir"></i>');
+			} else if(app.tickets.byDateOrder === 2){
+				return new Handlebars.SafeString('<i class="icon-down-dir-1"></i>');
+			}	
+		});
+		Handlebars.registerHelper("companyArrow", function() {
+			if(app.tickets.byCompanyOrder === 1){
+				return new Handlebars.SafeString('<i class="icon-up-dir"></i>');
+			} else if(app.tickets.byCompanyOrder === 2){
+				return new Handlebars.SafeString('<i class="icon-down-dir-1"></i>');
+			}	
 		});
 		
 	},
 	
 	listening: function(){
-		console.log('listening');
+		//console.log('listening');
 	},
 		
 	render: function() {
@@ -98,24 +110,19 @@ var TicketView = Backbone.View.extend({
 	all: function(){
 		var results = app.tickets.allTickets();
 		this.collection.reset(results);
-		this.$el.html(this.template(this.collection));
 	},
 	
 	byAgent: function(){
-		//var results = app.tickets.byFilter("agent", "Edd N.");
 		var results = app.tickets.byAgent();
 		this.collection.reset(results);
-		this.$el.html(this.template(this.collection));
 	},
 	
 	byCompleted: function(){
-		//var results = app.tickets.byFilter("status", "Completed");
 		var results = app.tickets.byCompleted();
-		this.collection.reset(results);
-		this.$el.html(this.template(this.collection));	
+		this.collection.reset(results);	
 	},
 	
-	sortByDate: function(e){
+	sortByDate: function(){
 		app.tickets.byDate();	
 	},
 	

@@ -103,14 +103,57 @@ var houston = {
 		$('.reply').slideToggle();
 		var scroll = $(document).scrollTop()+ 195;
 		$("html, body").animate({ scrollTop: scroll });
-	}/*,
-	
-	showUpdates: function(arr){
+	},
+
+	updateCheck: function(arr){
+		var updateSeen = false;
 		var i;
 		for (i = 0; i < arr.length; ++i) {
+			//could use app.user.id
 			if(arr[i] == app.user.attributes.id) {					
-				return 'update-seen';
+				updateSeen = true;
 			}
 		}
-	}*/
+		return updateSeen;
+	},
+
+	populateAgentDropdown: function(){
+		var arr = app.companyModel.attributes.users;
+		var i;
+		var str = '';
+		for (i = 0; i < arr.length; ++i) {
+			str += '<li>'+arr[i].name+'</li>';
+		}
+		return str;
+
+	},
+
+	generateDropSwitch: function(attribute){
+		if(attribute === 'In Progress') {
+			return '<div class="dropdown dropswitch">'+
+						'<div class="drop-inner">'+				
+							'<div class="drop-top on-hold rounded">'+
+								'<div class="btn in-progress drop-slct">In Progress<i class="icon-down-dir-1"></i></div>'+
+							'</div>'+
+							'<ul class="drop on-hold">'+
+								'<li class="slct" data-class="in-progress">In Progress</li>'+
+								'<li class="n-slct" data-class="on-hold">On Hold</li>'+
+							'</ul>'+
+						'</div>'+
+					'</div>';
+		} else {
+			return '<div class="dropdown dropswitch">'+
+						'<div class="drop-inner">'+				
+							'<div class="drop-top in-progress rounded">'+
+								'<div class="btn on-hold drop-slct">On Hold<i class="icon-down-dir-1"></i></div>'+
+							'</div>'+
+							'<ul class="drop in-progress">'+
+								'<li class="slct" data-class="on-hold">On Hold</li>'+
+								'<li class="n-slct" data-class="in-progress">In Progress</li>'+
+							'</ul>'+
+						'</div>'+
+					'</div>';
+		}
+	}
+
 }

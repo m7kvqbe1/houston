@@ -13,13 +13,19 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the user model
 		this.user = new UserModel();
 		//fetch user data
-		this.user.fetch();
+		this.user.fetch({
+			reset: true,
+			success: _.bind(function(){
+				//fetch ticket collection data from server
+				//is it better to render the view here and call the ticketdata as soon as spossible?
+				this.tickets.fetch();
+			}, this)
+		});
 	
 		//TICKETS
 		//instantiate the ticket collection
 		this.tickets = new Tickets();		
-		//fetch ticket collection data from server
-		this.tickets.fetch();		
+				
 		//instantiate the ticket model
 		this.ticketModel = new TicketModel();		
 		//instantiate the ticket view and set it the ticket model
@@ -44,14 +50,16 @@ var AppRouter = Backbone.Router.extend({
 		//PEOPLE/COMPANIES
 		//instantiate the company model
 		this.companyModel = new CompanyModel();
+		this.companyModel.fetch();
+		//console.log(this.companyModel.attributes.users);
 		//instantiate the companies collection
-		this.companies = new Companies();
+		//this.companies = new Companies();
 		//fetch companies collection data from server
-		this.companies.fetch();
-		//instantiate the people view and set it the companies collection
+		//this.companies.fetch();
+		//instantiate the people view and set it the company model
 		this.peopleView = new PeopleView(
 			{
-				collection: this.companies
+				model: this.companyModel
 			}
 		); 
 		

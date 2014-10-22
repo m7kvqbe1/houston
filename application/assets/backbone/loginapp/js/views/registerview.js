@@ -125,10 +125,13 @@ var RegisterView = Backbone.View.extend({
 			this.model.save(this.model.attributes,
 				{
 					success: _.bind(function(model,response,options){
+					console.log(response);
 						if(response === 1){
-						
 							this.$el.html(app.registerView.templateSuccess());
 						}
+					}, this),
+					error: _.bind(function(model,response,options){
+					console.log(response);
 					}, this)
 				}
 			);

@@ -1,5 +1,6 @@
 var CompanyModel = Backbone.Model.extend({
 	urlRoot: '/companies/all',
+	url: '/companies/all',
 	parse: function(response){
 	if(response._id){
 		response.id = response._id['$id'];
@@ -9,6 +10,7 @@ var CompanyModel = Backbone.Model.extend({
 	}/*,
 	defaults: {
 		companyName: '',
-		users: []
+		users: [],
+		clients: []
 	}*/
 });

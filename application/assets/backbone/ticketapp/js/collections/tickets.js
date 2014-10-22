@@ -30,7 +30,6 @@ var Tickets = Backbone.Collection.extend({
 	byAgent: function(){
 		filtered = this.filter(function(data){
 			return data.get('agent') == app.user.attributes.firstName + ' ' + app.user.attributes.lastName && data.get('status') !== 'Completed';
-			//return data.get(key) === value && data.get('status') !== 'Completed';
 		});
 		return filtered;	
 	},
@@ -38,7 +37,6 @@ var Tickets = Backbone.Collection.extend({
 	byCompleted: function(){
 		filtered = this.filter(function(data){
 			return data.get('status') === 'Completed';
-			//return data.get(key) === value && data.get('status') !== 'Completed';
 		});
 		return filtered;	
 	},
@@ -51,21 +49,49 @@ var Tickets = Backbone.Collection.extend({
 		return filtered;
 	},
 	
+	byDateOrder: 2,
 	byDate: function() {
-		this.filtered.comparator = function(a, b) {
-			if(a.get('date') < b.get('date')) {
-				return 1;	
-			} else if(b.get('date') > a.get('date')){
-				return -1;
-			}
-			return 0;
-		};
+		this.byCompanyOrder = false;
+		
+		if(this.byDateOrder === 1 || !this.byDateOrder){
+			this.byDateOrder = 2;
+			this.filtered.comparator = function(a, b) {
+				if(a.get('date') < b.get('date')) {
+					return 1;	
+				} else if(b.get('date') > a.get('date')){
+					return -1;
+				}
+				return 0;
+			};
+		} else if(this.byDateOrder === 2) {
+			this.byDateOrder = 1;
+			this.filtered.comparator = function(model) {
+				return model.get('date');
+			}			
+		}
 		this.filtered.sort();
 	},
-		
+
+	byCompanyOrder: false,		
 	byCompany: function(){
-		this.filtered.comparator = function(model) {
-			return model.get('company');
+		
+		this.byDateOrder = false;
+
+		if(this.byCompanyOrder === 1 || !this.byCompanyOrder){
+			this.byCompanyOrder = 2;
+			this.filtered.comparator = function(model) {
+				return model.get('company');
+			}
+		} else if(this.byCompanyOrder === 2) {
+			this.byCompanyOrder = 1;
+			this.filtered.comparator = function(a, b) {
+				if(a.get('company') < b.get('company')) {
+					return 1;	
+				} else if(b.get('company') > a.get('company')){
+					return -1;
+				}
+				return 0;
+			};			
 		}
 		this.filtered.sort();
 	}
