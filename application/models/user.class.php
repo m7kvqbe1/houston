@@ -16,6 +16,25 @@ class UserModel {
 		return $password;
 	}
 	
+	public static function generateVerificationToken($username) {
+		return md5(DEFAULT_SALT.$username);
+	}
+	
+	public function verifyAccount($username) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		try {
+			$collection = $db->users;						
+			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('verify' => true)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
+	
 	public function getCompanyName($userID) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];

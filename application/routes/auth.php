@@ -21,7 +21,7 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	// Check if user exists and password matches
-	$criteria = array('emailAddress' => $json->user);
+	$criteria = array('emailAddress' => $json->user, 'verify' => true);
 	$users = $db->users->findOne($criteria);
 	
 	
@@ -52,25 +52,24 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	$db = $db->houston;
 	
 	$json = json_decode(file_get_contents('php://input'));
-
-	// Hash password
-	$json->password = $userModel::hashPassword($json->password);
 	
 	// Check if user or company exists
 	$criteria = array('emailAddress' => $json->emailAddress);
 	$users = $db->users->findOne($criteria);
 	
-	if(!empty($users)) {
-	    return -1;
-	}
-	
 	$criteria = array('company' => $json->company);
 	$company = $db->users->findOne($criteria);
 	
-	if(!empty($company)) {
+	if(!empty($users) || !empty($company)) {
 	    return -1;
 	}
+
+	// Hash password
+	$json->password = $userModel::hashPassword($json->password);
 	
+	// Generate email verification token
+	$json->verify = $userModel::generateVerificationToken($json->emailAddress);
+
 	// Save user to database
 	try {
 		$collection = $db->users;
@@ -97,13 +96,34 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 		die('Error: '.$e->getMessage());
 	}
 	
-	// Send validation email
-	mail($json->emailAddress, 'Welcome to Houston!', 'Welcome to Houston!');
+	// Send verification email
+	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: http://tom.houston.com/verify/".$json->verify);
 	
+	return 1;
+});
+
+// Verify user registration
+$app->get('/verify/{token}', function(Request $request, Application $app, $token) {
+	$userModel = new Houston\User\Model\UserModel($app);
+	
+	session_start();
+	
+	$connections = $app['mongo'];
+	$db = $connections['default'];
+	$db = $db->houston;
+	
+	$criteria = array('verify' => $token);
+	$users = $db->users->findOne($criteria);
+	
+	if(empty($users)) return -1;
+	
+	// Set account as verified
+	$userModel->verifyAccount($users['emailAddress']);
+				
 	$app['session']->set('u', $users['_id']);
 	$app['session']->set('isAuthenticated', true);
 	
-	return 1;
+	return $app->redirect('/');
 });
 
 // Get user object
