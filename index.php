@@ -4,6 +4,8 @@ ini_set("display_errors", 1);
 
 // Setup application constants
 define('DOCUMENT_ROOT', dirname(__FILE__));
+define('DOMAIN', 'http://tom.houston.com');
+define('DOMAIN_SSL', 'https://tom.houston.com');
 define('DEFAULT_SALT', 'Adfkjasf93482394!!');
 define('MONGO_HOST', 'mongodb://localhost:27017');
 define('MONGO_USER', '');
