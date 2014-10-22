@@ -3,20 +3,13 @@ var TicketDetail = Backbone.View.extend({
 			'<div class="box-app-top msg-top">'+
 				'{{#if agent}}'+
 					'<h2><a href="#">< All Tickets</a></h2>'+
-					'{{generateDropSwitch status}}'+
-					
-					
+					'{{generateDropSwitch status}}'+					
 					'<div class="dropdown droplist">'+
 						'<div class="drop-top rounded">'+
 							'<div class="btn in-progress drop-slct">{{agent}}<i class="icon-down-dir-1"></i></div>'+
 						'</div>'+						
 						'<ul class="drop">'+
-							'<li class="slct">Thomas Humphris</li>'+
-							'<li>Edd Neal</li>'+
-							'<li>Mark Neale</li>'+
-							'<li>James Brown</li>'+
-							'<li>Kirk Hammet</li>'+
-							'<li>Catherine Bradshaw</li>'+
+							'{{populateAgentDropdown}}'+
 						'</ul>'+
 					'</div>'+
 				'{{else}}'+
@@ -27,12 +20,7 @@ var TicketDetail = Backbone.View.extend({
 							'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
 						'</div>'+						
 						'<ul class="drop">'+
-							'<li>Thomas Humphris</li>'+
-							'<li>Edd Neal</li>'+
-							'<li>Mark Neale</li>'+
-							'<li>James Brown</li>'+
-							'<li>Kirk Hammet</li>'+
-							'<li>Catherine Bradshaw</li>'+
+							'{{populateAgentDropdown}}'+
 						'</ul>'+
 					'</div>'+
 				'{{/if}}'+
@@ -169,37 +157,17 @@ var TicketDetail = Backbone.View.extend({
 			}).join('');
 		});
 		
+		Handlebars.registerHelper("populateAgentDropdown", function(){			
+			return new Handlebars.SafeString(houston.populateAgentDropdown());
+		});
+		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
 			return houston.convertToDateTime(attribute);
 		});
 		
 		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
-			if(attribute === 'In Progress') {
-				return new Handlebars.SafeString('<div class="dropdown dropswitch">'+
-					'<div class="drop-inner">'+				
-						'<div class="drop-top on-hold rounded">'+
-							'<div class="btn in-progress drop-slct">In Progress<i class="icon-down-dir-1"></i></div>'+
-						'</div>'+
-						'<ul class="drop on-hold">'+
-							'<li class="slct" data-class="in-progress">In Progress</li>'+
-							'<li class="n-slct" data-class="on-hold">On Hold</li>'+
-						'</ul>'+
-					'</div>'+
-				'</div>');
-			} else {
-				return new Handlebars.SafeString( '<div class="dropdown dropswitch">'+
-					'<div class="drop-inner">'+				
-						'<div class="drop-top in-progress rounded">'+
-							'<div class="btn on-hold drop-slct">On Hold<i class="icon-down-dir-1"></i></div>'+
-						'</div>'+
-						'<ul class="drop in-progress">'+
-							'<li class="slct" data-class="on-hold">On Hold</li>'+
-							'<li class="n-slct" data-class="in-progress">In Progress</li>'+
-						'</ul>'+
-					'</div>'+
-				'</div>');
-			}
-			
+			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
+
 		});
 	},
 
@@ -210,9 +178,15 @@ var TicketDetail = Backbone.View.extend({
 	render: function (){		
 		this.$el.html(this.template(this.model.attributes));
 		//Add user to updated array if not already there
-		if(!this.checkIfAlreadySeenUpdate()){
+		//refactored to not need checkIfUpdateSeen method
+		if(!houston.updateCheck(this.model.get('updated'))){
 			this.update();
 		}
+
+		//Add user to updated array if not already there
+		//if(!this.checkIfAlreadySeenUpdate()){
+			//this.update();
+		//}
 
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
@@ -224,7 +198,12 @@ var TicketDetail = Backbone.View.extend({
 		return this;
 	},
 	
-	checkIfAlreadySeenUpdate: function(){
+	/*checkIfUpdateSeen: function(){
+		var updated = this.model.get('updated');
+		houston.updateCheck(updated);
+	},*/
+
+	/*checkIfAlreadySeenUpdate: function(){
 		var haveSeen = this.model.get('updated');
 		var i;
 		for (i = 0; i < haveSeen.length; ++i) {
@@ -232,7 +211,7 @@ var TicketDetail = Backbone.View.extend({
 				return true;
 			}
 		}
-	},
+	},*/
 	
 	dropSelect: function(e){
 		houston.dropSelect(e.currentTarget);		

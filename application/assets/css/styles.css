@@ -17,11 +17,11 @@
 
 @font-face {
   font-family: 'fontello-houston';
-  src: url('../font/fontello-houston.eot?13261918');
-  src: url('../font/fontello-houston.eot?13261918#iefix') format('embedded-opentype'),
-       url('../font/fontello-houston.woff?13261918') format('woff'),
-       url('../font/fontello-houston.ttf?13261918') format('truetype'),
-       url('../font/fontello-houston.svg?13261918#fontello-houston') format('svg');
+  src: url('../font/fontello-houston.eot?67698540');
+  src: url('../font/fontello-houston.eot?67698540#iefix') format('embedded-opentype'),
+       url('../font/fontello-houston.woff?67698540') format('woff'),
+       url('../font/fontello-houston.ttf?67698540') format('truetype'),
+       url('../font/fontello-houston.svg?67698540#fontello-houston') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -67,18 +67,19 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.icon-ok-1:before { content: '\69'; } /* 'i' */
-.icon-logout:before { content: '\68'; } /* 'h' */
-.icon-cancel:before { content: '\6a'; } /* 'j' */
-.icon-cancel-circled:before { content: '\62'; } /* 'b' */
-.icon-down-dir-1:before { content: '\6b'; } /* 'k' */
-.icon-menu:before { content: '\6c'; } /* 'l' */
 .icon-ok-circled:before { content: '\61'; } /* 'a' */
+.icon-cancel-circled:before { content: '\62'; } /* 'b' */
+.icon-cog:before { content: '\63'; } /* 'c' */
 .icon-heart-empty:before { content: '\64'; } /* 'd' */
 .icon-user:before { content: '\65'; } /* 'e' */
 .icon-ok:before { content: '\66'; } /* 'f' */
 .icon-comment:before { content: '\67'; } /* 'g' */
-.icon-cog:before { content: '\63'; } /* 'c' */
+.icon-logout:before { content: '\68'; } /* 'h' */
+.icon-ok-1:before { content: '\69'; } /* 'i' */
+.icon-cancel:before { content: '\6a'; } /* 'j' */
+.icon-down-dir-1:before { content: '\6b'; } /* 'k' */
+.icon-menu:before { content: '\6c'; } /* 'l' */
+.icon-up-dir:before { content: '\6d'; } /* 'm' */
 
 /* Placeholder text */
 ::-webkit-input-placeholder { /* WebKit browsers */
@@ -856,7 +857,6 @@ input.inp-lst {
 	margin: 15px 20px 0;
 }
 
-
 .ticket {
 	overflow: hidden;
 	padding: 12px 0 10px;
@@ -882,7 +882,7 @@ input.inp-lst {
 	background: #01d48f;
 }
 
-.ticket .update-alert.update-seen {
+.ticket .update-alert.true {
 	width: 0;
 	margin-right: 0;
 	background: transparent;
