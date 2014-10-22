@@ -142,7 +142,7 @@ var TicketDetail = Backbone.View.extend({
 		this.listenTo(this.model, "change", this.render);
 		this.listenTo(this.model, "sync", this.render);		
 		this.listenTo(this.model, "request", this.render);	
-		this.listenTo(this.model, "all", this.listening);
+		this.listenTo(this.model, "sync", this.listening);
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("foreach",function(arr,options) {
@@ -191,27 +191,13 @@ var TicketDetail = Backbone.View.extend({
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
 			'click .dropdown li': 'dropDown',
-			'click .reply-btn': 'showReply',
-			'click .cancel-btn': 'cancelReply',
+			'click .reply-btn': 'replyToggle',
+			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage'
 		});
 		return this;
 	},
 	
-	/*checkIfUpdateSeen: function(){
-		var updated = this.model.get('updated');
-		houston.updateCheck(updated);
-	},*/
-
-	/*checkIfAlreadySeenUpdate: function(){
-		var haveSeen = this.model.get('updated');
-		var i;
-		for (i = 0; i < haveSeen.length; ++i) {
-			if(haveSeen[i] == app.user.attributes.id) {					
-				return true;
-			}
-		}
-	},*/
 	
 	dropSelect: function(e){
 		houston.dropSelect(e.currentTarget);		
@@ -239,11 +225,7 @@ var TicketDetail = Backbone.View.extend({
 		this.save();
 	},
 	
-	showReply: function(){
-		houston.replyToggle();
-	},
-	
-	cancelReply: function(){
+	replyToggle: function(){
 		houston.replyToggle();
 	},
 	
@@ -251,19 +233,13 @@ var TicketDetail = Backbone.View.extend({
 		this.model.set({
 			updated: this.model.get('updated').concat(app.user.attributes.id)
 		});
-		this.model.save(this.model.attributes,
-			{
-				success: _.bind(function(model, response, options){
-					//app.navigate('', {trigger: true});
-					//this.render();
-				}, this)
-			}
-		);
+		this.model.save(this.model.attributes);
 	
 	},
 	
 	//Saves and stays within ticketview
 	save: function(){
+		console.log('s');
 		//Set updated attribute to empty array
 		this.model.set({
 			//updated: [app.user.attributes.id]
@@ -273,7 +249,8 @@ var TicketDetail = Backbone.View.extend({
 			{
 				success: _.bind(function(model, response, options){
 					//app.navigate('', {trigger: true});
-					this.render();
+					// this.render();
+					console.log(app.ticketDetailView.model);
 				}, this)
 			}
 		);
@@ -305,3 +282,18 @@ var TicketDetail = Backbone.View.extend({
 	}
 	
 });
+
+	/*checkIfUpdateSeen: function(){
+		var updated = this.model.get('updated');
+		houston.updateCheck(updated);
+	},*/
+
+	/*checkIfAlreadySeenUpdate: function(){
+		var haveSeen = this.model.get('updated');
+		var i;
+		for (i = 0; i < haveSeen.length; ++i) {
+			if(haveSeen[i] == app.user.attributes.id) {					
+				return true;
+			}
+		}
+	},*/

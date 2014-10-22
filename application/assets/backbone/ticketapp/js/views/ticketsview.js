@@ -60,19 +60,6 @@ var TicketView = Backbone.View.extend({
 			return new Handlebars.SafeString(houston.updateCheck(arr));			
 		});
 
-		/*Handlebars.registerHelper("showUpdates", function(arr) { 
-			console.log(app.user);
-			console.log(app.user.attributes.id);
-			console.log(app.user.id);
-
-			var i;
-			for (i = 0; i < arr.length; ++i) {
-				if(arr[i] == app.user.id) {					
-					return new Handlebars.SafeString('true');
-				}
-			}
-		});*/
-
 		Handlebars.registerHelper("dateArrow", function() {
 			if(app.tickets.byDateOrder === 1){
 				return new Handlebars.SafeString('<i class="icon-up-dir"></i>');
@@ -91,7 +78,7 @@ var TicketView = Backbone.View.extend({
 	},
 	
 	listening: function(){
-		//console.log('listening');
+		// console.log('listening');
 	},
 		
 	render: function() {
@@ -131,3 +118,16 @@ var TicketView = Backbone.View.extend({
 	}
 			
 });
+
+		/*Handlebars.registerHelper("showUpdates", function(arr) { 
+			console.log(app.user);
+			console.log(app.user.attributes.id);
+			console.log(app.user.id);
+
+			var i;
+			for (i = 0; i < arr.length; ++i) {
+				if(arr[i] == app.user.id) {					
+					return new Handlebars.SafeString('true');
+				}
+			}
+		});*/

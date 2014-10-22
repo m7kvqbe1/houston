@@ -70,7 +70,9 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	ticketDetails: function(ticket) {
-		this.ticketDetailView.model = this.tickets.get(ticket);
+		// this.ticketDetailView.model = this.tickets.get(ticket);
+		var theTicket = this.tickets.get(ticket);
+		this.ticketDetailView.model.set(theTicket.attributes);
 		$('#app').html(this.ticketDetailView.render().el);
 	},
 
