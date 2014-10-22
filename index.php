@@ -14,7 +14,10 @@ require_once(__DIR__.'/vendor/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
+// Setup URL generator
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+// Setup session handling
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 // Setup MongoDB connection
