@@ -18,7 +18,7 @@ var LoginView = Backbone.View.extend({
 				'</label>'+
 				'<button class="login" type="button">Sign In</button>'+
 			'</form>'+
-			'<h3 class="ib">Help!</h3>'+
+			'<h3 class="ib">Help!</h3>&nbsp;'+
 			'<a class="forgot">Ive forgotten my password</a>'+
 		'</div>'+
 		'<div class="box box-try">'+

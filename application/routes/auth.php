@@ -9,9 +9,7 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 });
 
 // Login to system
-$app->post('/auth/login', function(Request $request, Application $app) {
-	$userModel = new Houston\User\Model\UserModel($app);
-	
+$app->post('/auth/login', function(Request $request, Application $app) {	
 	session_start();
 	
 	$connections = $app['mongo'];
@@ -20,19 +18,17 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	
 	$json = json_decode(file_get_contents('php://input'));
 	
-	// Check if user exists and password matches
-	$criteria = array('emailAddress' => $json->user, 'verify' => true);
-	$users = $db->users->findOne($criteria);
-	
-	
-	// Does user exist?
-	if(empty($users)) {
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->loadUser($json->user);
+		
+	// Does verified user exist?
+	if(!$userModel->verified($json->user)) {
 	    return -1;
 	}
 	
 	// Do password hashes match?
-	if($userModel::hashPassword($json->password) === $users['password']) {
-	    $app['session']->set('u', $users['_id']);
+	if($userModel::hashPassword($json->password) === $userModel->user['password']) {
+	    $app['session']->set('u', $userModel->user['_id']);
 	    $app['session']->set('isAuthenticated', true);
 	} else {
 	    return -1;
