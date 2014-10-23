@@ -27,6 +27,21 @@ class UserModel {
 		}
 	}
 	
+	public function loadUserByID($id) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$criteria = array('_id' => $id);
+		$this->user = $db->users->findOne($criteria);
+		if(!empty($this->user)) { 
+			return $this->user;
+		} else {
+			throw new Exception('User not found.');
+			return false;
+		}
+	}
+	
 	public function unsetUser() {
 		unset($this->user);
 	}
@@ -40,14 +55,19 @@ class UserModel {
 		return md5(DEFAULT_SALT.$username);
 	}
 	
-	public function verified($username = null) {
-		if(!isset($username)) $username = $this->user['emailAddress'];
-		
+	public function isVerified($username = null, $token = null) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		// Check if user exists and password matches
+		if(isset($token)) {
+			$criteria = array('verify' => $token);
+			$this->user = $db->users->findOne($criteria);
+			return;
+		}
+		
+		if(!isset($username)) $username = $this->user['emailAddress'];
+		
 		$criteria = array('emailAddress' => $username, 'verify' => true);
 		$user = $db->users->findOne($criteria);
 		

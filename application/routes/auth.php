@@ -11,18 +11,14 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 // Login to system
 $app->post('/auth/login', function(Request $request, Application $app) {	
 	session_start();
-	
-	$connections = $app['mongo'];
-	$db = $connections['default'];
-	$db = $db->houston;
-	
+		
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new Houston\User\Model\UserModel($app);
 	$userModel->loadUser($json->user);
 		
 	// Does verified user exist?
-	if(!$userModel->verified($json->user)) {
+	if(!$userModel->isVerified($json->user)) {
 	    return -1;
 	}
 	
@@ -100,41 +96,33 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 
 // Verify user registration
 $app->get('/verify/{token}', function(Request $request, Application $app, $token) {
-	$userModel = new Houston\User\Model\UserModel($app);
-	
 	session_start();
 	
-	$connections = $app['mongo'];
-	$db = $connections['default'];
-	$db = $db->houston;
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->isVerified(null, $token);
 	
-	$criteria = array('verify' => $token);
-	$users = $db->users->findOne($criteria);
-	
-	if(empty($users)) return -1;
+	if(!isset($userModel->user)) return 'The verification code supplied was invalid.';	// Update to redirect to invalid token error page
 	
 	// Set account as verified
-	$userModel->verifyAccount($users['emailAddress']);
-				
-	$app['session']->set('u', $users['_id']);
+	$userModel->verifyAccount($userModel->user['emailAddress']);
+	
+	// Authenticate session
+	$app['session']->set('u', $userModel->user['_id']);
 	$app['session']->set('isAuthenticated', true);
 	
+	// Redirect to load authenticated assets
 	return $app->redirect('/');
 });
 
 // Get user object
-$app->get('/user/self', function(Request $request, Application $app) {
-	$connections = $app['mongo'];
-	$db = $connections['default'];
-	$db = $db->houston;
+$app->get('/user/self', function(Request $request, Application $app) {	
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->loadUserByID($app['session']->get('u'));
 	
-	$criteria = array('_id' => $app['session']->get('u'));
-	$users = $db->users->findOne($criteria);
-	
-	if(empty($users)) {
+	if(!isset($userModel->user)) {
 	    return -1;
 	}
 	
-	unset($users['password']);
-	return json_encode($users);
+	unset($userModel->user['password']);
+	return json_encode($userModel->user);
 });
