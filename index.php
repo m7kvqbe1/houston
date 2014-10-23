@@ -54,7 +54,7 @@ foreach (glob(__DIR__."/application/models/*.php") as $filename) {
 }
 
 // Autoload routes & controllers
-foreach (glob(__DIR__."/application/routes/*.php") as $filename) {
+foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
     include $filename;
 }
 
