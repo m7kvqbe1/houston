@@ -1,8 +1,8 @@
 <?php
 namespace Houston\User\Model;
 
-use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserModel {
 	protected $app;
@@ -23,7 +23,6 @@ class UserModel {
 			return $this->user;
 		} else {
 			throw new Exception('User not found.');
-			return false;
 		}
 	}
 	
@@ -38,7 +37,6 @@ class UserModel {
 			return $this->user;
 		} else {
 			throw new Exception('User not found.');
-			return false;
 		}
 	}
 	
@@ -87,6 +85,28 @@ class UserModel {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
 			die('Error: '.$e->getMessage());
+		}
+	}
+	
+	public function registerUser($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		// Hash password
+		$json->password = $this->hashPassword($json->password);
+		
+		// Generate email verification token
+		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		
+		// Save user to database
+		try {
+			$collection = $db->users;
+		    $collection->save($json);
+		} catch(MongoConnectionException $e) {
+		    die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+		    die('Error: '.$e->getMessage());
 		}
 	}
 	

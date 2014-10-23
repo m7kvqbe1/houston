@@ -1,6 +1,6 @@
 <?php
-use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 // Get user object
 $app->get('/user/self', function(Request $request, Application $app) {	
