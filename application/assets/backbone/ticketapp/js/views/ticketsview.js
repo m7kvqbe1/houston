@@ -47,7 +47,7 @@ var TicketView = Backbone.View.extend({
 	
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort", this.render);
-		this.listenTo(this.collection, "sort", this.listening);
+
 		//http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers
 		Handlebars.registerHelper("convertToClass", function(attribute) {
 			return houston.convertToClass(attribute);
@@ -76,14 +76,9 @@ var TicketView = Backbone.View.extend({
 		});
 		
 	},
-	
-	listening: function(){
-		// console.log('listening');
-	},
 		
 	render: function() {
 		this.$el.html(this.template(this.collection));	
-		
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',
 			'click .sortByCompany': 'sortByCompany',
@@ -95,18 +90,15 @@ var TicketView = Backbone.View.extend({
 	},
 	
 	all: function(){
-		var results = app.tickets.allTickets();
-		this.collection.reset(results);
+		this.collection.reset(app.tickets.allTickets());
 	},
 	
 	byAgent: function(){
-		var results = app.tickets.byAgent();
-		this.collection.reset(results);
+		this.collection.reset(app.tickets.byAgent());
 	},
 	
 	byCompleted: function(){
-		var results = app.tickets.byCompleted();
-		this.collection.reset(results);	
+		this.collection.reset(app.tickets.byCompleted());	
 	},
 	
 	sortByDate: function(){
@@ -118,16 +110,3 @@ var TicketView = Backbone.View.extend({
 	}
 			
 });
-
-		/*Handlebars.registerHelper("showUpdates", function(arr) { 
-			console.log(app.user);
-			console.log(app.user.attributes.id);
-			console.log(app.user.id);
-
-			var i;
-			for (i = 0; i < arr.length; ++i) {
-				if(arr[i] == app.user.id) {					
-					return new Handlebars.SafeString('true');
-				}
-			}
-		});*/

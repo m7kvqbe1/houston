@@ -18,7 +18,7 @@ var AppRouter = Backbone.Router.extend({
 			success: _.bind(function(){
 				//fetch ticket collection data from server
 				//is it better to render the view here and call the ticketdata as soon as spossible?
-				this.tickets.fetch();
+				// this.tickets.fetch();
 			}, this)
 		});
 	
@@ -50,12 +50,8 @@ var AppRouter = Backbone.Router.extend({
 		//PEOPLE/COMPANIES
 		//instantiate the company model
 		this.companyModel = new CompanyModel();
+		//fetch company data
 		this.companyModel.fetch();
-		//console.log(this.companyModel.attributes.users);
-		//instantiate the companies collection
-		//this.companies = new Companies();
-		//fetch companies collection data from server
-		//this.companies.fetch();
 		//instantiate the people view and set it the company model
 		this.peopleView = new PeopleView(
 			{
@@ -66,13 +62,19 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	list: function() {
-		$('#app').html(this.ticketsView.render().el);
+		this.tickets.fetch({
+			reset: true,
+			success: _.bind(function(){
+				$('#app').html(this.ticketsView.render().el);
+			}, this)
+
+		});
+
 	},
 
 	ticketDetails: function(ticket) {
 		// this.ticketDetailView.model = this.tickets.get(ticket);
-		var theTicket = this.tickets.get(ticket);
-		this.ticketDetailView.model.set(theTicket.attributes);
+		this.ticketDetailView.model.set(this.tickets.get(ticket).attributes);
 		$('#app').html(this.ticketDetailView.render().el);
 	},
 

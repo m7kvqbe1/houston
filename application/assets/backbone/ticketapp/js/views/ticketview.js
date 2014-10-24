@@ -139,10 +139,7 @@ var TicketDetail = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "change", this.render);
 		this.listenTo(this.model, "sync", this.render);		
-		this.listenTo(this.model, "request", this.render);	
-		this.listenTo(this.model, "sync", this.listening);
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("foreach",function(arr,options) {
@@ -170,23 +167,14 @@ var TicketDetail = Backbone.View.extend({
 
 		});
 	},
-
-	listening: function(){
-		console.log('listening');
-	},
 	
-	render: function (){		
+	render: function (){	
+	
 		this.$el.html(this.template(this.model.attributes));
 		//Add user to updated array if not already there
-		//refactored to not need checkIfUpdateSeen method
 		if(!houston.updateCheck(this.model.get('updated'))){
 			this.update();
 		}
-
-		//Add user to updated array if not already there
-		//if(!this.checkIfAlreadySeenUpdate()){
-			//this.update();
-		//}
 
 		this.delegateEvents({
 			'click .drop-slct': 'dropSelect',
@@ -230,7 +218,7 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	update: function() {
-		this.model.set({
+		this.model.set({			
 			updated: this.model.get('updated').concat(app.user.attributes.id)
 		});
 		this.model.save(this.model.attributes);
@@ -239,18 +227,14 @@ var TicketDetail = Backbone.View.extend({
 	
 	//Saves and stays within ticketview
 	save: function(){
-		console.log('s');
 		//Set updated attribute to empty array
-		this.model.set({
-			//updated: [app.user.attributes.id]
+		this.model.set({			
 			updated: []
 		});
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model, response, options){
-					//app.navigate('', {trigger: true});
-					// this.render();
-					console.log(app.ticketDetailView.model);
+
 				}, this)
 			}
 		);
@@ -282,18 +266,3 @@ var TicketDetail = Backbone.View.extend({
 	}
 	
 });
-
-	/*checkIfUpdateSeen: function(){
-		var updated = this.model.get('updated');
-		houston.updateCheck(updated);
-	},*/
-
-	/*checkIfAlreadySeenUpdate: function(){
-		var haveSeen = this.model.get('updated');
-		var i;
-		for (i = 0; i < haveSeen.length; ++i) {
-			if(haveSeen[i] == app.user.attributes.id) {					
-				return true;
-			}
-		}
-	},*/
