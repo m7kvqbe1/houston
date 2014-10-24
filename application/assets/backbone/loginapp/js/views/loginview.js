@@ -79,7 +79,7 @@ var LoginView = Backbone.View.extend({
 			this.model.set({
 				user: this.$el.find('input[name="log-e"]').val(),
 				password: this.$el.find('input[name="log-p"]').val(),
-				remember: this.$el.find('input[name="log-r"]').attr('checked')
+				remember: this.$el.find('input[name="log-r"]').is(':checked')
 			});
 			this.model.save(this.model.attributes,
 				{
