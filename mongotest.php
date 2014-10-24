@@ -1,4 +1,6 @@
 <?php
+die('Access Denied');
+
 $user = array(
 	'user' => 'tom@muska.co.uk',
 	'password' => 'password',
