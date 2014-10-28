@@ -704,7 +704,8 @@ input.inp-lst {
 	margin: 40px 0 0;
 }
 
-.app-wrap header nav a {ckground: #fff;
+.app-wrap header nav a {
+	margin: 0 3px;
 }
 
 .box-app {
