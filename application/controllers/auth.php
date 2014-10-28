@@ -9,6 +9,7 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 	$response = Response::create('', 302, array("Location" => "/"));
 	$response->headers->clearCookie('r');
 	
+	$app['session']->set('u', '');
 	$app['session']->set('isAuthenticated', false);
 
 	return $response;

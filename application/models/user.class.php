@@ -57,7 +57,7 @@ class UserModel {
 		$criteria = array('remember' => $token);
 		$user = $db->users->findOne($criteria);
 		
-		$verified = (empty($user)) ? false : true; 
+		$verified = (empty($user)) ? false : $user; 
 		return $verified;
 	}
 	
@@ -143,7 +143,6 @@ class UserModel {
 		    die('Error: '.$e->getMessage());
 		}
 	}
-	
 	
 	// DEPRECATED
 	public function getCompanyName($userID) {
