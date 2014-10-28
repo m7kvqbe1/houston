@@ -1,15 +1,13 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
-// Setup application constants
+// Setup application config
 define('DOCUMENT_ROOT', dirname(__FILE__));
-define('DOMAIN', 'http://tom.houston.com');
-define('DOMAIN_SSL', 'https://tom.houston.com');
-define('DEFAULT_SALT', 'Adfkjasf93482394!!');
-define('MONGO_HOST', 'mongodb://localhost:27017');
-define('MONGO_USER', '');
-define('MONGO_PASSWORD', '');
+require_once(__DIR__.'/application/config.php');
+
+// Error reporting
+if(Config::ERROR_REPORTING === true) {
+	error_reporting(E_ALL);
+	ini_set("display_errors", 1);	
+}
 
 // Instantiate Silex
 require_once(__DIR__.'/vendor/autoload.php');
@@ -27,7 +25,7 @@ use Mongo\Silex\Provider\MongoServiceProvider;
 $app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
-            'server' => MONGO_HOST,
+            'server' => Config::MONGO_HOST,
             'options' => array("connect" => true)
         )
     ),

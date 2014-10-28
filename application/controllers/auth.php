@@ -1,6 +1,8 @@
 <?php
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 // Logout of system
 $app->get('/auth/logout', function(Request $request, Application $app){
@@ -11,7 +13,7 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 // Login to system
 $app->post('/auth/login', function(Request $request, Application $app) {	
 	session_start();
-		
+	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new Houston\User\Model\UserModel($app);
@@ -22,12 +24,26 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	    return -1;
 	}
 	
-	// Do password hashes match?
+	// Do password hashes match or remember token match?
 	if($userModel::hashPassword($json->password) === $userModel->user['password']) {
 	    $app['session']->set('u', $userModel->user['_id']);
 	    $app['session']->set('isAuthenticated', true);
 	} else {
 	    return -1;
+	}
+	
+	// Remember me?
+	if($json->remember == 1) {	
+		$remember = $userModel->rememberMe($json->user);
+		
+		$cookie = new Cookie("remember", $remember);
+		
+		$response = new Response();
+		$response->setContent('1');
+		$response->setStatusCode(Response::HTTP_OK);
+		$response->headers->setCookie($cookie);
+		
+		return $response;
 	}
 	
 	return 1;
