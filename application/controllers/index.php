@@ -10,7 +10,7 @@ $app->get('/', function(Request $request, Application $app){
 	$userModel = new Houston\User\Model\UserModel($app);
 	
 	$cookies = $request->cookies;		
-	$token = $cookies->get('remember');
+	$token = $cookies->get('r');
 	
 	//var_dump($token);
 	//var_dump($app['session']->get('isAuthenticated'));

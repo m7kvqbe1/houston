@@ -61,7 +61,7 @@ class UserModel {
 		return $verified;
 	}
 	
-	public function rememberMe($username) {
+	public function rememberMeSet($username) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;

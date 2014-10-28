@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 // Logout of system
 $app->get('/auth/logout', function(Request $request, Application $app){	
 	$response = Response::create('', 302, array("Location" => "/"));
-	$response->headers->clearCookie('remember');
+	$response->headers->clearCookie('r');
 	
 	$app['session']->set('isAuthenticated', false);
 
@@ -38,9 +38,9 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	
 	// Remember me?
 	if($json->remember == 1) {	
-		$remember = $userModel->rememberMe($json->user);
+		$remember = $userModel->rememberMeSet($json->user);
 		
-		$cookie = new Cookie("remember", $remember, (time() + 3600 * 24 * 30));
+		$cookie = new Cookie('r', $remember, (time() + 3600 * 24 * 30));
 		
 		$response = new Response();
 		$response->setContent('1');
