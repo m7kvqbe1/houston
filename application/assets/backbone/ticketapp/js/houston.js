@@ -7,12 +7,7 @@ var houston = {
 		date = day+' '+monthNames[month];	
 		return date;	
 	},
-	
-	convertToClass: function(attribute){
-		var cssClass = attribute.toLowerCase().split(' ').join('-');
-		return cssClass;
-	},
-	
+
 	convertToDateTime: function(dateObject){
 		var monthNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'); 
 		var date = dateObject.toString();			
@@ -47,6 +42,11 @@ var houston = {
 		return date;	
 	},
 	
+	convertToClass: function(attribute){
+		var cssClass = attribute.toLowerCase().split(' ').join('-');
+		return cssClass;
+	},
+		
 	dropSelect: function(button){
 		var button = $(button);
 		var droptop = button.closest('.drop-top');
@@ -98,35 +98,6 @@ var houston = {
 		
 		return output;
 	},
-	
-	replyToggle: function(){
-		$('.reply').slideToggle();
-		var scroll = $(document).scrollTop()+ 195;
-		$("html, body").animate({ scrollTop: scroll });
-	},
-
-	updateCheck: function(arr){
-		var updateSeen = false;
-		var i;
-		for (i = 0; i < arr.length; ++i) {
-			//could use app.user.id
-			if(arr[i] == app.user.attributes.id) {					
-				updateSeen = true;
-			}
-		}
-		return updateSeen;
-	},
-
-	populateAgentDropdown: function(){
-		var arr = app.companyModel.attributes.users;
-		var i;
-		var str = '';
-		for (i = 0; i < arr.length; ++i) {
-			str += '<li>'+arr[i].name+'</li>';
-		}
-		return str;
-
-	},
 
 	generateDropSwitch: function(attribute){
 		if(attribute === 'In Progress') {
@@ -153,6 +124,94 @@ var houston = {
 							'</ul>'+
 						'</div>'+
 					'</div>';
+		}
+	},
+	
+	replyToggle: function(view){
+		view.find('.reply').slideToggle();
+		view.find('#form-reply textarea').focus();
+		var scroll = view.closest(document).scrollTop()+ 195;
+		view.closest("html, body").animate({ scrollTop: scroll });
+	},
+
+	updateCheck: function(arr){
+		var updateSeen = false;
+		var i;
+		for (i = 0; i < arr.length; ++i) {
+			//could use app.user.id
+			if(arr[i] == app.user.attributes.id) {					
+				updateSeen = true;
+			}
+		}
+		return updateSeen;
+	},
+
+	populateAgentDropdown: function(){
+		var arr = app.companyModel.attributes.users;
+		var i;
+		var str = '';
+		for (i = 0; i < arr.length; ++i) {
+			str += '<li>'+arr[i].name+'</li>';
+		}
+		return str;
+
+	},
+
+	dateArrow: function(){
+		if(app.tickets.byDateOrder === 1){
+			return '<i class="icon-up-dir"></i>';
+		} else if(app.tickets.byDateOrder === 2){
+			return '<i class="icon-down-dir-1"></i>';
+		} else {
+			return '<i class="icon-down-dir-1 inactive"></i>';
+		}
+	},
+
+	companyArrow: function(){
+		if(app.tickets.byCompanyOrder === 1){
+			return '<i class="icon-up-dir"></i>';
+		} else if(app.tickets.byCompanyOrder === 2){
+			return '<i class="icon-down-dir-1"></i>';
+		} else {
+			return '<i class="icon-down-dir-1 inactive"></i>';
+		}	
+	},
+
+	forEach: function(arr, options){
+		if(options.inverse && !arr.length)
+			return options.inverse(this);
+
+		return arr.map(function(item,index) {
+			item.$index = index;
+			item.$first = index === 0;
+			item.$last  = index === arr.length-1;
+			return options.fn(item);
+		}).join('');
+	},
+
+	subjectCharCount: function(view){
+		var max = 75;
+		var input = view.find('.new-sub');
+		var value = input.val();
+		var length = value.length;
+		if(length >= max){
+			input.val(value.substr(0, max));
+			length = max;
+		}
+		
+		var count = max - length;
+		var charSpan = view.find('.char-count span');
+		charSpan.text(count);
+		if(count <= 10){
+			charSpan.addClass('count');
+		} else {
+			charSpan.removeClass('count');
+		}
+		
+		if(count == 0){
+			view.find('.char-count').addClass('count');
+		} else {
+			view.find('.char-count').removeClass('count');
 		}
 	}
 

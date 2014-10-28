@@ -67,10 +67,12 @@ var login = {
 			}
 			
 			//check if email already in use
-			if(address == "eddneal@hotmail.co.uk"){
+			if(address == "eddnealeddneal@hotmail.co.uk"){
 				iFlag = false;
 				login.emailVal = address;
 				//add ellipsis if mobile view
+				//refactor to not use jquery selector, maybe use width of a div not the window?
+				//use css ellipsis? when a class is added to the input?
 				if($(window).width() < 768){
 					var abbr = address.substr(0,13)+'...';
 					input.val(abbr);
@@ -144,7 +146,7 @@ var login = {
 	},
 	
 	regPassFlag: true,	
-	registerPassCount: function(input){
+	registerPassCount: function(input, view){
 		var input = $(input);
 		var length = input.val().length;
 		var counter = input.closest('.reg-vrf').find('.vrf-count');
@@ -156,12 +158,15 @@ var login = {
 			login.regShowVal = 1;
 			//fade counter back in if pass field edited under 8 characters
 			input.closest('.reg-vrf').find('.vrf').fadeIn();
+			//disable repeat password input if password input not valid
+			view.find(".inp-lst").prop('disabled', true);
 		} else {
 			login.regShowVal = input.val();
 			login.regPassFlag = true;
 			counter.html('<i class="icon-ok-1"></i>');
 			counter.addClass('ok');
-			$(".inp-lst").prop('disabled', false);
+			//enable repeat password input
+			view.find(".inp-lst").prop('disabled', false);
 		}
 	},
 	
@@ -187,12 +192,10 @@ var login = {
 		input.closest('.reg-vrf').find('.vrf').fadeOut();
 	},
 	
-	registerCreateValidate: function(){
-		if($('div.vld-a').length == 3 && $('div.vld-b').length  == 3){
-			console.log('passed');
+	registerCreateValidate: function(view){
+		if(view.find('div.vld-a').length == 3 && view.find('div.vld-b').length  == 3){
 			return true;
 		} else {
-			console.log('failed');
 			return false;
 		}
 	}

@@ -857,6 +857,10 @@ input.inp-lst {
 	margin: 15px 20px 0;
 }
 
+.box-app-nav a i.inactive {
+	color: #f3f0ea;
+}
+
 .ticket {
 	overflow: hidden;
 	padding: 12px 0 10px;
@@ -932,6 +936,10 @@ input.inp-lst {
 	line-height: 22px;
 	font-weight: 600;
 	font-size: 12px;
+}
+
+.ticket-status .new:hover {
+	background: #01d48f;
 }
 
 .btn.completed {

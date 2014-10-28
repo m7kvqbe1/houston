@@ -90,6 +90,7 @@ var RegisterView = Backbone.View.extend({
 			'focus .email': 'hideInUse'
 		});
 		return this;
+
 	},
 	
 	hideInUse: function(e){
@@ -101,7 +102,7 @@ var RegisterView = Backbone.View.extend({
 	},
 	
 	passCount: function(e){
-		login.registerPassCount(e.currentTarget);
+		login.registerPassCount(e.currentTarget, this.$el);
 
 	},
 	
@@ -117,11 +118,9 @@ var RegisterView = Backbone.View.extend({
 		login.registerValidate(e.currentTarget);
 	},
 	
-	create: function(e){
-		if(login.registerCreateValidate(e.currentTarget)){
-			console.log('registering');
+	create: function(){
+		if(login.registerCreateValidate(this.$el)){
 			this.setModelData();
-			console.log(this.model);
 			this.model.save(this.model.attributes,
 				{
 					success: _.bind(function(model,response,options){
@@ -137,6 +136,7 @@ var RegisterView = Backbone.View.extend({
 			);
 		}
 	},
+	
 	setModelData: function(){
 		this.model.set({
 			firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
