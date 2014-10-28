@@ -45,8 +45,42 @@ class UserModel {
 	}
 
 	public static function hashPassword($password) {
-		$password = crypt($password, DEFAULT_SALT);
+		$password = crypt($password, \Config::DEFAULT_SALT);
 		return $password;
+	}
+	
+	public function rememberMeLookup($token) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$criteria = array('remember' => $token);
+		$user = $db->users->findOne($criteria);
+		
+		$verified = (empty($user)) ? false : $user; 
+		return $verified;
+	}
+	
+	public function rememberMeSet($username) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		// Generate 'remember me' token
+		$token = $this::hashPassword(rand(0,999999));
+		$seriesID = $this::hashPassword(rand(0,999999));
+		$remember = $username.'/'.$token.'/'.$seriesID;
+				
+		try {
+			$collection = $db->users;						
+			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('remember' => $remember)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+		
+		return $remember;
 	}
 	
 	public static function generateVerificationToken($username) {
@@ -110,6 +144,7 @@ class UserModel {
 		}
 	}
 	
+	// DEPRECATED
 	public function getCompanyName($userID) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
