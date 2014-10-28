@@ -62,8 +62,8 @@ var LoginView = Backbone.View.extend({
 		this.delegateEvents({
 			'click .forgot': 'forgot',
 			'click .btn-can': 'render',
-			// 'click .login': 'login',
-			'submit #form-pass': 'login',
+			'click .login': 'login',
+			// 'submit #form-pass': 'login',
 			'click .reset': 'reset'
 		});
 		return this;
