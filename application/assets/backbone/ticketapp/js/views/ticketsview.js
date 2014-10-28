@@ -61,18 +61,10 @@ var TicketView = Backbone.View.extend({
 		});
 
 		Handlebars.registerHelper("dateArrow", function() {
-			if(app.tickets.byDateOrder === 1){
-				return new Handlebars.SafeString('<i class="icon-up-dir"></i>');
-			} else if(app.tickets.byDateOrder === 2){
-				return new Handlebars.SafeString('<i class="icon-down-dir-1"></i>');
-			}	
+			return new Handlebars.SafeString(houston.dateArrow());
 		});
 		Handlebars.registerHelper("companyArrow", function() {
-			if(app.tickets.byCompanyOrder === 1){
-				return new Handlebars.SafeString('<i class="icon-up-dir"></i>');
-			} else if(app.tickets.byCompanyOrder === 2){
-				return new Handlebars.SafeString('<i class="icon-down-dir-1"></i>');
-			}	
+			return new Handlebars.SafeString(houston.companyArrow());	
 		});
 		
 	},

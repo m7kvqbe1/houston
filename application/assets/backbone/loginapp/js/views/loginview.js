@@ -16,7 +16,7 @@ var LoginView = Backbone.View.extend({
 					'<input id="log-rem" type="checkbox" name="log-r" value="remember" />'+
 					'Remember me on this computer'+
 				'</label>'+
-				'<button class="login" type="button">Sign In</button>'+
+				'<button class="login" type="submit">Sign In</button>'+
 			'</form>'+
 			'<h3 class="ib">Help!</h3>&nbsp;'+
 			'<a class="forgot">Ive forgotten my password</a>'+
@@ -62,7 +62,8 @@ var LoginView = Backbone.View.extend({
 		this.delegateEvents({
 			'click .forgot': 'forgot',
 			'click .btn-can': 'render',
-			'click .login': 'login',
+			// 'click .login': 'login',
+			'submit #form-pass': 'login',
 			'click .reset': 'reset'
 		});
 		return this;

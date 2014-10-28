@@ -80,7 +80,7 @@ var TicketDetail = Backbone.View.extend({
 					'</div>'+					
 					'{{/if}}'+						
 				'</li>'+
-			'{{#foreach messages}}'+
+			'{{#forEach messages}}'+
 				'<li class="msg from-{{role}}">'+
 					'<div class="msg-dtl">'+
 						'<img class="msg-avatar" src="{{avatar}}" alt="{{author}}"/>'+
@@ -134,7 +134,7 @@ var TicketDetail = Backbone.View.extend({
 					'</div>'+
 					'{{/if}}'+					
 				'</li>'+
-			'{{/foreach}}'+	
+			'{{/forEach}}'+	
 			'</ul>'	
 	),
 	
@@ -142,16 +142,8 @@ var TicketDetail = Backbone.View.extend({
 		this.listenTo(this.model, "sync", this.render);		
 		
 		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
-		Handlebars.registerHelper("foreach",function(arr,options) {
-			if(options.inverse && !arr.length)
-				return options.inverse(this);
-
-			return arr.map(function(item,index) {
-				item.$index = index;
-				item.$first = index === 0;
-				item.$last  = index === arr.length-1;
-				return options.fn(item);
-			}).join('');
+		Handlebars.registerHelper("forEach",function(arr,options) {
+			return houston.forEach(arr, options);
 		});
 		
 		Handlebars.registerHelper("populateAgentDropdown", function(){			
@@ -214,7 +206,8 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	replyToggle: function(){
-		houston.replyToggle();
+		houston.replyToggle(this.$el);
+		console.log('toggle');
 	},
 	
 	update: function() {
@@ -225,7 +218,6 @@ var TicketDetail = Backbone.View.extend({
 	
 	},
 	
-	//Saves and stays within ticketview
 	save: function(){
 		//Set updated attribute to empty array
 		this.model.set({			

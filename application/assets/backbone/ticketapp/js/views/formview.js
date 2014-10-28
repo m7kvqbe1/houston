@@ -55,54 +55,24 @@ var FormView = Backbone.View.extend({
 		this.$el.html(this.template());
 		this.delegateEvents({
 			'click .save': 'save',
-			'input .new-sub': 'count'
+			'input .new-sub': 'subjectCharCount'
 		});
 		return this;
 	},
 	
-	count: function(){
-		var max = 75;
-		var input = this.$el.find('.new-sub');
-		var value = input.val();
-		var length = value.length;
-		if(length >= max){
-			input.val(value.substr(0, max));
-			length = max;
-		}
-		
-		var count = max - length; 
-		this.$el.find('.char-count span').text(count);
-		if(count <= 10){
-			this.$el.find('.char-count span').addClass('count');
-		} else {
-			this.$el.find('.char-count span').removeClass('count');
-		}
-		
-		if(count == 0){
-			this.$el.find('.char-count').addClass('count');
-		} else {
-			this.$el.find('.char-count').removeClass('count');
-		}
-		
+	subjectCharCount: function(){
+		return houston.subjectCharCount(this.$el);
 	},
 	
 	save: function(){
 		this.setModelData();
 		this.model.save(this.model.attributes,
 			{
-				success: function(model, response, options){
-					//set model id to $id returned by mongo
-					//model.set('id', model.attributes._id.$id);
-				
-					//attempt to set idAttribute to value returned by mongo
-					//model.set('idAttribute', model.attributes._id.$id);
-					//stackoverflow.com/questions/12169822/backbone-js-id-vs-idattribute-vs-cid
-					//stackoverflow.com/questions/9816274/ways-to-save-backbone-js-model-data
+				success: function(model, response, options){					
+					//add model to collection, no longer required.
+					// app.tickets.add(model);
 					
-					//add model to collection
-					app.tickets.add(model);
-					
-					//ensure menu form always uses a fresh model
+					//ensure formView always uses a fresh model
 					app.formView.model = new TicketModel();
 					//app.navigate('contacts/' + model.get('url'), {trigger: true});
 					app.navigate('', {trigger: true});
@@ -111,12 +81,12 @@ var FormView = Backbone.View.extend({
 		);
 	
 	},
+
 	setModelData: function(){
 		this.model.set({
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			message: this.$el.find('textarea[name="new-textarea"]').val(),
 			id: null,
-			//url: '',
 			avatar: app.user.attributes.avatar,
 			username: app.user.attributes.emailAddress,
 			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
