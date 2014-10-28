@@ -49,19 +49,22 @@ class UserModel {
 		return $password;
 	}
 	
-	public function rememberMe($username, $token = null) {
+	public function rememberMeLookup($token) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		if(isset($token)) {
-			$criteria = array('remember' => $token);
-			$user = $db->users->findOne($criteria);
-			
-			if(empty($user)) return -1;
-			
-			return $user;
-		}
+		$criteria = array('remember' => $token);
+		$user = $db->users->findOne($criteria);
+		
+		$verified = (empty($user)) ? false : true; 
+		return $verified;
+	}
+	
+	public function rememberMe($username) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
 		
 		// Generate 'remember me' token
 		$token = $this::hashPassword(rand(0,999999));
