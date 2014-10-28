@@ -1547,6 +1547,7 @@ input.inp-lst {
 	textarea {
 		width: 100%;
 		max-width: 100%;
+		transition: none;	
 	}
 	
 	.attach-link {
