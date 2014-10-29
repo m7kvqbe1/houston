@@ -5,7 +5,15 @@ var PeopleView = Backbone.View.extend({
 			'<h2>Support Agents</h2>'+
 			'<a class="btn">New Agent</a>'+
 		'</div>'+
-		'<ul id="agent-stream" class="box-app box-people">'+	
+		'<ul id="agent-stream" class="box-app box-people">'+
+			'<div class="add-person">'+
+				'<form id="form-add-agent">'+
+					'<input type="text" placeholder="New Agent\'s Email Address" />'+
+					'<button type="submit">Submit</button>' +
+					'<div class="beige or">or</div>' +
+					'<a class="cancel-btn ib">Cancel</a>' +
+				'</form>'+
+			'</div>'+	
 			'{{#each attributes.users}}'+
 				'<li class="person">'+
 					//'<img class="avatar" src="{{avatar}}" />'+
@@ -50,9 +58,15 @@ var PeopleView = Backbone.View.extend({
 		this.$el.html(this.template(this.model));	
 		
 		this.delegateEvents({
-
+			'click .box-app-top .btn':'addToggle',
+			'click #form-add-agent .cancel':'addToggle'
 		});
 		return this;		
+	},
+
+	addToggle: function() {
+		this.$el.find('.add-person').slideToggle();
 	}
+
 			
 });

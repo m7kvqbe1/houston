@@ -852,6 +852,9 @@ input.inp-lst {
 	display: block;
 	float: left;
 	margin: 15px 0 0;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
 }
 
 .box-app-nav a.mid-link {
@@ -1020,6 +1023,13 @@ input.inp-lst {
 .company-info a {
 	display: inline-block;
 	margin: 0 10px 0 0;
+}
+
+.add-person {
+	display: none;
+	overflow: hidden;
+	margin-bottom: 30px;
+	text-align: center;
 }
 
 /* Single Ticket */
@@ -1529,6 +1539,20 @@ input.inp-lst {
 	.company-info a {
 		margin: 4px 10px 0 0;
 	}
+
+	.add-person {
+		text-align: left;
+	}
+
+	#form-add-agent input[type="text"]{
+		float: left;
+		width: 68%;
+		margin: 0 15px 0;	
+	}
+
+	.add-person button {
+		margin-top: 10px;
+	}
 	
 	/* Create Ticket */
 	
@@ -1537,7 +1561,7 @@ input.inp-lst {
 		text-align: left;
 	}
 	
-	#form-new input[type="text"]{
+	#form-new input[type="text"] {
 		float: left;
 		width: 68%;
 		margin: 0 0 15px;	

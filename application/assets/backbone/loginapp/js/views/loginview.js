@@ -99,7 +99,7 @@ var LoginView = Backbone.View.extend({
 	},
 	
 	reset: function() {
-		this.model.urlRoot = '';
+		this.model.urlRoot = '/auth/reset';
 		this.model.set({
 			emailAddress: this.$el.find('input[name="pass-e"]').val()
 		});
