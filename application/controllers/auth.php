@@ -67,7 +67,7 @@ $app->post('/auth/reset', function(Request $request, Application $app) {
 	$token = $userModel->resetPassword($json->emailAddress);
 	
 	// Send email link
-	mail($json->emailAddress, "Houston Lost Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: http://tom.houston.com/auth/reset/".$token);
+	mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: http://tom.houston.com/auth/reset/".$token);
 	
 	return 1;
 });
