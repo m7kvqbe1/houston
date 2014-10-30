@@ -83,6 +83,30 @@ class UserModel {
 		return $remember;
 	}
 	
+	public function setPassword($password) {
+		
+	}
+	
+	public function resetPassword($username) {		
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		// Generate token
+		$token = $this::hashPassword(rand(0,999999));
+		
+		try {
+			$collection = $db->users;						
+			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('reset' => $token)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+		
+		return $token;
+	}
+	
 	public static function generateVerificationToken($username) {
 		return md5(DEFAULT_SALT.$username);
 	}

@@ -54,6 +54,29 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	return 1;
 });
 
+// Reset password request
+$app->post('/auth/reset', function(Request $request, Application $app) {
+	session_start();
+		
+	$json = json_decode(file_get_contents('php://input'));
+	
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->loadUser($json->emailAddress);
+	
+	// Flag password reset request on user account and generate token
+	$token = $userModel->resetPassword($json->emailAddress);
+	
+	// Send email link
+	mail($json->emailAddress, "Houston Lost Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: http://tom.houston.com/auth/reset/".$token);
+	
+	return 1;
+});
+
+// Reset password
+$app->get('/auth/reset/{token}', function(Request $request, Application $app, $token) {
+	return $token;
+});
+
 // Register new user
 $app->post('/auth/register', function(Request $request, Application $app) {
 	session_start();
