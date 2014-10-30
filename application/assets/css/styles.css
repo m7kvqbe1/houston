@@ -863,6 +863,7 @@ input.inp-lst {
 
 .box-app-nav a i.inactive {
 	color: #f3f0ea;
+	color: #cfc3af;
 }
 
 .ticket {
@@ -1030,6 +1031,10 @@ input.inp-lst {
 	overflow: hidden;
 	margin-bottom: 30px;
 	text-align: center;
+}
+
+.add-person h4 {
+	margin-bottom: 15px;
 }
 
 /* Single Ticket */
@@ -1493,7 +1498,7 @@ input.inp-lst {
 	}
 	
 	.box-companies {
-		padding: 0;
+		padding: 40px 0 0;
 	}
 	
 	.box-companies-header {
@@ -1541,17 +1546,24 @@ input.inp-lst {
 	}
 
 	.add-person {
+		margin-bottom: 15px;
 		text-align: left;
 	}
 
-	#form-add-agent input[type="text"]{
+	.add-person h4 {
+		margin-left: 30px;
+		font-size: 16px;
+	}
+
+
+	.add-person input[type="text"]{
 		float: left;
-		width: 68%;
-		margin: 0 15px 0;	
+		width: 64%;
+		margin: 0 15px 15px 30px;	
 	}
 
 	.add-person button {
-		margin-top: 10px;
+		margin-top: 5px;
 	}
 	
 	/* Create Ticket */

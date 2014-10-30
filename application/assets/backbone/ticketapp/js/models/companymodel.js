@@ -7,10 +7,9 @@ var CompanyModel = Backbone.Model.extend({
 		delete response._id;
 	}
 		return response;
-	}/*,
+	},
 	defaults: {
-		companyName: '',
 		users: [],
 		clients: []
-	}*/
+	}
 });

@@ -16,7 +16,7 @@ var LoginView = Backbone.View.extend({
 					'<input id="log-rem" type="checkbox" name="log-r" value="remember" />'+
 					'Remember me on this computer'+
 				'</label>'+
-				'<button class="login" type="submit">Sign In</button>'+
+				'<button class="login" type="button">Sign In</button>'+
 			'</form>'+
 			'<h3 class="ib">Help!</h3>&nbsp;'+
 			'<a class="forgot">Ive forgotten my password</a>'+
@@ -100,6 +100,7 @@ var LoginView = Backbone.View.extend({
 	
 	reset: function() {
 		this.model.urlRoot = '/auth/reset';
+		//is there the need to set user,password and remember to null values
 		this.model.set({
 			emailAddress: this.$el.find('input[name="pass-e"]').val()
 		});
@@ -107,11 +108,12 @@ var LoginView = Backbone.View.extend({
 			{
 				success: _.bind(function(model,response,options){
 					if(response === 1){
+						this.$el.html(this.template());
 						this.$el.find('.box-log h2').text('Password Sent');
 						this.$el.find('.box-log h3.pass-tag').text('Please check your email');
 					} else {
-						this.$el.find('.box-log h2').text('Oops!');
-						this.$el.find('.box-log h3.pass-tag').text('We dont recognise that email address');
+						this.$el.find('.box-pass h2').text('Oops!');
+						this.$el.find('.box-pass h3.pass-tag').text('We dont recognise that email address');
 					}
 				}, this)
 			}
