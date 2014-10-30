@@ -2,7 +2,8 @@ var AppRouter = Backbone.Router.extend({
 	routes: {
 	//set up routes
 		"": "login",
-		"register": "register"
+		"register": "register",
+		"reset/:token": "reset"
 	},
 	
 	initialize: function() {
@@ -26,7 +27,13 @@ var AppRouter = Backbone.Router.extend({
 				model: this.registerModel
 			}
 		);
-
+		
+		//instantiate the reset view and set it the login model
+		this.resetView = new ResetView(
+			{ 
+				model: this.loginModel 
+			}
+		);
 	},
 	
 	login: function() {
@@ -36,8 +43,12 @@ var AppRouter = Backbone.Router.extend({
 	
 	register: function() {
 		$('#app').html(this.registerView.render().el);
+	},
+	
+	reset: function(token) {
+		this.resetView.model.set('token', token);
+		$('#app').html(this.resetView.render().el);
 	}
-
 });
 
 var app = new AppRouter();

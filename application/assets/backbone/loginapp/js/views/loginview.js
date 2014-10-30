@@ -109,11 +109,11 @@ var LoginView = Backbone.View.extend({
 				success: _.bind(function(model,response,options){
 					if(response === 1){
 						this.$el.html(this.template());
-						this.$el.find('.box-log h2').text('Password Sent');
-						this.$el.find('.box-log h3.pass-tag').text('Please check your email');
+						this.$el.find('.box-log h2').text('Reset Request Sent');
+						this.$el.find('.box-log h3.log-tag').text('Please check your email');
 					} else {
 						this.$el.find('.box-pass h2').text('Oops!');
-						this.$el.find('.box-pass h3.pass-tag').text('We dont recognise that email address');
+						this.$el.find('.box-pass h3.log-tag').text('We dont recognise that email address');
 					}
 				}, this)
 			}

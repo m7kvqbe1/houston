@@ -83,17 +83,33 @@ class UserModel {
 		return $remember;
 	}
 	
-	public function setPassword($password) {
+	public function resetPassword($token, $newPassword) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;		
 		
+		$newPassword = $this::hashPassword($newPassword);
+		
+		try {
+			$collection = $db->users;						
+			$doc = $collection->findAndModify(array('reset' => $token), array('$set' => array('password' => $newPassword)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+		
+		$this->loadUser($doc['emailAddress']);
 	}
 	
-	public function resetPassword($username) {		
+	public function resetPasswordRequest($username) {		
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		// Generate token
+		// Generate url friendly token
 		$token = $this::hashPassword(rand(0,999999));
+		$token = \Houston\Common\Common::urlFriendly($token);
 		
 		try {
 			$collection = $db->users;						
