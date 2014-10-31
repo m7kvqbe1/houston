@@ -92,7 +92,7 @@ class UserModel {
 		
 		try {
 			$collection = $db->users;						
-			$doc = $collection->findAndModify(array('reset' => $token), array('$set' => array('password' => $newPassword)));
+			$doc = $collection->findAndModify(array('reset' => $token), array('$set' => array('password' => $newPassword, 'reset' => '')));
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {

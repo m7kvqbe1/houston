@@ -36,7 +36,7 @@ var ResetView = Backbone.View.extend({
 		
 	reset: function(e) {
 		// verification first needs to be performed on new password		
-		if(this.$el.find('input[name=pass]') !== this.$el.find('input[name="pass-c"]')) {
+		if(this.$el.find('input[name=pass]').val() !== this.$el.find('input[name="pass-c"]').val()) {
 			this.$el.find('.box-log h2').text('Oops!');
 			this.$el.find('.box-log h3.log-tag').text('Please ensure passwords match');
 			
