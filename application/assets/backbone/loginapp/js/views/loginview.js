@@ -82,6 +82,7 @@ var LoginView = Backbone.View.extend({
 				password: this.$el.find('input[name="log-p"]').val(),
 				remember: this.$el.find('input[name="log-r"]').is(':checked')
 			});
+			console.log(this.model);
 			this.model.save(this.model.attributes,
 				{
 				//http://stackoverflow.com/questions/11167698/backbone-js-binding-this-to-success-error-callbacks
@@ -100,10 +101,14 @@ var LoginView = Backbone.View.extend({
 	
 	reset: function() {
 		this.model.urlRoot = '/auth/reset';
-		//is there the need to set user,password and remember to null values
+		//set user,password and remember to null values, possibly use user as value instead of emailAddress when resetting
 		this.model.set({
-			emailAddress: this.$el.find('input[name="pass-e"]').val()
+			emailAddress: this.$el.find('input[name="pass-e"]').val(),
+			user: '',
+			password: '',
+			remember: false
 		});
+		console.log(this.model);
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model,response,options){
@@ -118,6 +123,6 @@ var LoginView = Backbone.View.extend({
 				}, this)
 			}
 		);
-	},
+	}
 	
 });
