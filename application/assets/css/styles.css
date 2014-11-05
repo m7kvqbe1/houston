@@ -1262,6 +1262,29 @@ input.inp-lst {
 	margin-bottom: 24px;
 }
 
+/* File upload testing styles*/
+#progress_bar {
+	margin: 10px 0;
+	padding: 3px;
+	border: 1px solid #000;
+	font-size: 14px;
+	clear: both;
+	opacity: 0;
+	-moz-transition: opacity 1s linear;
+	-o-transition: opacity 1s linear;
+	-webkit-transition: opacity 1s linear;
+}
+
+#progress_bar.loading {
+	opacity: 1.0;
+}
+
+#progress_bar .percent {
+	background-color: #99ccff;
+	height: auto;
+	width: 0;
+}
+
 @media only screen and (min-width: 321px) {
 	
 
@@ -1604,15 +1627,20 @@ input.inp-lst {
 	}
 	
 	.filetypes {
-		margin-bottom: 30px;
+		/*margin-bottom: 30px;*/
 	}
 	
 	.file {
 		float: left;
 		width: 50%;
 		height: 70px;
+		height: 140px;
 	}
 	
+	.file-thumb {
+		height: 70px;
+	}
+
 	.filename {
 		padding: 22px 0 10px;
 	}
@@ -1622,6 +1650,31 @@ input.inp-lst {
 		height: 70px;
 		margin-right: 24px;
 		background-size: 52px 70px;
+	}
+
+	#drop_zone {
+		width: 908px;
+		height: 66px;
+		margin: 15px 0;
+		border: 1px dashed #9b8d75;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		line-height: 68px;
+		text-align: center;
+		font-size: 18px;
+		color: #c3bdb2;
+	}
+
+	#drop_zone.dropping {
+		background: #f3f0ea;
+	}
+
+	#filesInput {
+		margin: 15px 0;
+	}
+
+	.file-input-wrapper {
+		display: none;
 	}
 
 /* Single Ticket */

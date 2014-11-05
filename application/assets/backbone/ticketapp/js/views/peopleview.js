@@ -18,11 +18,11 @@ var PeopleView = Backbone.View.extend({
 				'</div>'+	
 				'{{#each attributes.users}}'+
 					'<li class="person">'+
-						//'<img class="avatar" src="{{avatar}}" />'+
+						// '<img class="avatar" src="{{avatar}}" />'+
 						'<img class="avatar" src="application/assets/img/avatar.png" />'+
 						'<h3>{{name}}</h3>'+
 						'<h4>Support Agent</h4>'+
-						//'<h4>{{position}}</h4>'+
+						// '<h4>{{position}}</h4>'+
 					'</li>'+
 				'{{/each}}'+
 			'</ul>'+
@@ -83,7 +83,7 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log(this.model);
+		// console.log(this.model);
 		this.$el.html(this.template(this.model));	
 		
 		this.delegateEvents({
@@ -92,25 +92,28 @@ var PeopleView = Backbone.View.extend({
 			'click .add-person .cancel-btn':'addToggle',
 			'click .new-client-user':'addToggle',
 			'click #form-add-agent button':'addAgent',
-			'click #form-add-client button':'addClient'
+			'click #form-add-client button':'addClient',
+			'click #form-add-client-user button':'addClientUser'
 		});
 		return this;		
 	},
 
 	addToggle: function(e) {
-		$(e.currentTarget).closest('section').find('.add-person').slideToggle();
+		$(e.currentTarget).closest('section').find('.add-person').slideToggle().find('input[type="text"]').focus();
+
 	},
 
-	addClient: function() {
-		var client =
+
+	addAgent: function() {
+		var agent = 
 			{
-				"clientName": this.$el.find('#form-add-client input[type="text"]').val(),
-				"clientUsers": []
-			};
+				"name": this.$el.find('#form-add-agent input[type="text"]').val(),
+				"position": 'Awaiting Verification',
+				"avatar": 'application/assets/img/avatar.png'
+			}
 		this.model.set({
-			clients: this.model.get('clients').concat(client)			
+			users: this.model.get('users').concat(agent)
 		});
-		
 		// this.model.save(this.model.attributes,
 		// 	{
 		// 		success: _.bind(function(model, response, options){
@@ -120,27 +123,64 @@ var PeopleView = Backbone.View.extend({
 		// );
 	},
 
-	addAgent: function() {
-		var AddUserModel = Backbone.Model.extend({
-			urlRoot: '/user/add'
-		});
-		addUserModel = new AddUserModel();
-		addUserModel.set({
-			newAgent: this.$el.find('#form-add-agent input[type="text"]').val()
-		});
-		console.log(addUserModel);
-		addUserModel.save(this.model.attributes,
+	addClient: function() {
+		var client =
 			{
-				success: _.bind(function(model,response,options){
-					console.log('success');
-					// if(response === 1){
-					// 	this.$el.find('#form-add-agent h4').text('Success');
-					// } else {
-					// 	this.$el.find('#form-add-agent h4').text('Error');
-					// }
-				}, this)
+				"clientName": this.$el.find('#form-add-client input[type="text"]').val(),
+				"clientUsers": []
 			}
-		);
+		this.model.set({
+			clients: this.model.get('clients').concat(client)			
+		});		
+		// this.model.save(this.model.attributes,
+		// 	{
+		// 		success: _.bind(function(model, response, options){
+
+		// 		}, this)
+		// 	}
+		// );
+	},
+
+	addClientUser: function(){
+		//stackoverflow.com/questions/7325004/backbone-js-set-model-array-property
+		//stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
+		var clientUser = 
+			{
+				"name": this.$el.find('#form-add-client-user input[type="text"]').val(),
+				"position": 'Awaiting Verification',
+				"avatar": 'application/assets/img/avatar.png'
+			}
+		 var a = this.model.get('clients');
+		 // a[0].clientUsers.concat(clientUser)
+		 a[0].clientUsers[0] = clientUser;
+			console.log(a[0].clientUsers);
+		this.model.set({
+			clients: a			
+		});
+		console.log(this.model);
 	}
 			
 });
+
+	// addAgent: function() {
+	// 	var AddUserModel = Backbone.Model.extend({
+	// 		urlRoot: '/user/add'
+	// 	});
+	// 	addUserModel = new AddUserModel();
+	// 	addUserModel.set({
+	// 		newAgent: this.$el.find('#form-add-agent input[type="text"]').val()
+	// 	});
+	// 	console.log(addUserModel);
+	// 	addUserModel.save(this.model.attributes,
+	// 		{
+	// 			success: _.bind(function(model,response,options){
+	// 				console.log('success');
+	// 				// if(response === 1){
+	// 				// 	this.$el.find('#form-add-agent h4').text('Success');
+	// 				// } else {
+	// 				// 	this.$el.find('#form-add-agent h4').text('Error');
+	// 				// }
+	// 			}, this)
+	// 		}
+	// 	);
+	// }
