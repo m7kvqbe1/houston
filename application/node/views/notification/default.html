@@ -8,17 +8,23 @@
     </style>
   </head>
   <body>
-    <div id="notice">Example</div>
+    <div id="notice">This is a dummy notification</div>
     
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script>
 		var socket = io();
-		socket.emit('message', 'this is a message');
 		
-		socket.on('message', function(msg) {
-			console.log(msg);
-		});
+		// Listen for new ticket event
+		socket.on('event-newticket', function(data) {
+			$('#notice').html(data);
+			
+			// Inspect event data (JSON)
+			
+			// Perform relevent action (model and display notification)
+			
+			socket.emit('response', 'Response message!');
+		});		
 	</script>
   </body>
 </html>
