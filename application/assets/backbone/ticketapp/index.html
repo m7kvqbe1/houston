@@ -29,7 +29,7 @@
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/app.js"></script>
 	
 </head>
-<body>
+<body>	
 <div class="mob-menu">
 	<img class="logo" src="application/assets/img/logo.png" />
 	<ul>
@@ -74,6 +74,34 @@
 				$('.outer-wrap').animate({right: '0px'}, 400);
 			}
 		});
+	});
+</script>
+
+<div id="notice">Hello World</div>
+
+<style type="text/css">
+	#notice {
+		position: fixed;
+		top: 0;
+		left: 0;		
+		color: #666;
+		background-color: transparent;
+		margin: 10px;
+	}
+</style>
+
+<!-- Node.js Notify -->
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script>
+	var socket = io('http://80.82.116.223:3000');
+	socket.on('event-newticket', function(data) {
+		// Inspect event data (JSON)
+		
+		// Perform relevent action (model and display notification)
+		
+		$('#notice').html(data);
+		
+		socket.emit('response', 'Response message!');
 	});
 </script>
 </body>

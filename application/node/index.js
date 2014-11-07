@@ -13,10 +13,10 @@ io.on('connection', function(socket){
 	});
 });
 
-// Serve assets to client for Socket
-app.get('/', function(req, res){
+// Serve assets to client for Socket - DEPRECATED
+/*app.get('/', function(req, res){
 	res.sendFile(__dirname + '/views/notification/default.html');
-});
+});*/
 
 // Broadcast new ticket event
 app.get('/newticket', function(req, res) {
