@@ -1708,3 +1708,13 @@ input.inp-lst {
 		left: 82px;
 	}
 }
+
+/* Node.JS Notify */
+#notice {
+	position: fixed;
+	top: 0;
+	left: 0;		
+	color: #666;
+	background-color: transparent;
+	margin: 10px;
+}

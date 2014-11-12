@@ -13,31 +13,26 @@ io.on('connection', function(socket){
 	});
 });
 
-// Serve assets to client for Socket - DEPRECATED
-/*app.get('/', function(req, res){
-	res.sendFile(__dirname + '/views/notification/default.html');
-});*/
-
 // Broadcast new ticket event
-app.get('/newticket', function(req, res) {
+app.post('/new/ticket', function(req, res) {
 	console.log('newticket');
-	io.emit('event-newticket', 'New Ticket');
+	io.emit('notify', 'New Ticket');
 	
 	res.end();
 });
 
 // Broadcast reply event
-app.get('/reply', function(req, res) {
+app.post('/new/reply', function(req, res) {
 	console.log('reply');
-	io.emit('event-reply', 'New Reply');
+	io.emit('notify', 'New Reply');
 	
 	res.end();
 });
 
 // Broadcast status event
-app.get('/status', function(req, res) {
+app.post('/new/status', function(req, res) {
 	console.log('status');
-	io.emit('event-status', 'Status Update');
+	io.emit('notify', 'Status Update');
 	
 	res.end();
 });

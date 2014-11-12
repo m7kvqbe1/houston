@@ -56,4 +56,9 @@ foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
     include $filename;
 }
 
+// Autoload extras
+foreach (glob(__DIR__."/application/extras/*.php") as $filename) {
+    include $filename;
+}
+
 $app->run();
