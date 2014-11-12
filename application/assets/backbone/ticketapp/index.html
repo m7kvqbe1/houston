@@ -84,7 +84,7 @@
 <script>
 	var socket = io('http://80.82.116.223:3000');
 	socket.on('notify', function(data) {
-		$('#notice').html(data);
+		$('#notice').html(data).fadeIn(1000, function() { $(this).delay(3000).fadeOut(1000); });
 		socket.emit('response', 'dummy response message');
 	});
 </script>
