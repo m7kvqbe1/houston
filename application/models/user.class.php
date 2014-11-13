@@ -109,7 +109,7 @@ class UserModel {
 		
 		// Generate url friendly token
 		$token = $this::hashPassword(rand(0,999999));
-		$token = \Houston\Common\Common::urlFriendly($token);
+		$token = \Houston\Extra\Helper::urlFriendly($token);
 		
 		try {
 			$collection = $db->users;						
