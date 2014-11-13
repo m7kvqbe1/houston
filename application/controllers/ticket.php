@@ -32,13 +32,16 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 	try {
 		$tickets = $db->tickets;
 		$tickets->save($json);
-		
-		return json_encode($json);
 	} catch(MongoConnectionException $e) {
 		die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
 		die('Error: '.$e->getMessage());
 	}
+	
+	$notify = new Houston\Extra\Notify($app); 
+	$notify->newTicket($json);
+	
+	return json_encode($json);
 });
 
 // Edit ticket
@@ -55,17 +58,19 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	
 	try {	
 		$id = new MongoID($json->id);
-		//unset($json->id);
 		
 		$tickets = $db->tickets;
 		$tickets->update(array('_id' => $id), $json);
-		
-		return json_encode($json);
 	} catch(MongoConnectionException $e) {
 		die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
 		die('Error: '.$e->getMessage());
 	}
+	
+	$notify = new Houston\Extra\Notify($app); 
+	$notify->newReply($json);
+	
+	return json_encode($json);
 });
 
 // Get ticket

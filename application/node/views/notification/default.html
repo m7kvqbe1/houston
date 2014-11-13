@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Notify</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+    </style>
+  </head>
+  <body>
+    <div id="notice">This is a dummy notification</div>
+    
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+		var socket = io();
+		
+		// Listen for new ticket event
+		socket.on('event-newticket', function(data) {
+			$('#notice').html(data);
+			
+			// Inspect event data (JSON)
+			
+			// Perform relevent action (model and display notification)
+			
+			socket.emit('response', 'Response message!');
+		});	
+	</script>
+  </body>
+</html>
