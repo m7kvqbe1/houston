@@ -46,7 +46,7 @@ var TicketDetail = Backbone.View.extend({
 							'{{message}}'+							
 						'</div>'+						
 						'<ul class="files">'+
-						'{{#each files}}'+
+						'{{#each files.models}}'+
 							'<li class="file">'+
 								'<div class="file-icon {{filetype}}"></div>'+
 								'<div class="filename">{{filename}}</div>'+
@@ -141,7 +141,7 @@ var TicketDetail = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);		
 		
-		//http://stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
+		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
 			return houston.forEach(arr, options);
 		});

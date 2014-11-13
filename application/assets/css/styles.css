@@ -1066,6 +1066,7 @@ input.inp-lst {
 
 #form-new button {
 	width: 110px;
+	margin-top: 40px;
 }
 
 .char-count {
@@ -1116,10 +1117,15 @@ input.inp-lst {
 	overflow: hidden;
 }
 
+#drop_zone,
+#filesInput {
+	display: none;
+}
+
 .file {
 	display: block;
 	width: 290px;
-	height: 46px;
+	/*height: 46px;*/
 	margin: 30px auto;
 	text-align: left;
 }
@@ -1129,12 +1135,17 @@ input.inp-lst {
 }
 
 .filename {
+	overflow: hidden;
+	width: 100%;
 	padding: 5px 0 0;
 	line-height: 20px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .file-icon {
-	float: left;
+	/*float: left;*/
+	position: absolute;
 	margin-right: 15px;
 	width: 52px;
 	height: 70px;
@@ -1145,6 +1156,20 @@ input.inp-lst {
 
 .file-icon.jpg {
 	background-image: url(../img/jpg-icon.png);
+}
+
+.file-text {
+	position: relative;
+}
+
+.file-info {
+	padding-left: 48px;
+}
+
+.file-thumb {
+	width: 100%;
+	height: auto;
+	margin-bottom: 15px;
 }
 
 /* Single Ticket */
@@ -1635,10 +1660,14 @@ input.inp-lst {
 		width: 50%;
 		height: 70px;
 		height: 140px;
+		height: inherit;
 	}
 	
 	.file-thumb {
 		height: 70px;
+		width: auto;
+		margin-bottom: 0;
+		padding-left: 76px;
 	}
 
 	.filename {
@@ -1652,8 +1681,14 @@ input.inp-lst {
 		background-size: 52px 70px;
 	}
 
+	.file-info {
+		padding-left: 76px;
+	}
+
 	#drop_zone {
-		width: 908px;
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
 		height: 66px;
 		margin: 15px 0;
 		border: 1px dashed #9b8d75;
@@ -1667,14 +1702,6 @@ input.inp-lst {
 
 	#drop_zone.dropping {
 		background: #f3f0ea;
-	}
-
-	#filesInput {
-		margin: 15px 0;
-	}
-
-	.file-input-wrapper {
-		display: none;
 	}
 
 /* Single Ticket */

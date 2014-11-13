@@ -22,7 +22,24 @@ var FormView = Backbone.View.extend({
 						'<div id="drop_zone">Drop files here</div>'+
 						'<input type="file" id="filesInput" name="files[]" multiple />'+
 					'</div>'+
-					'<ul id="files" class="files">' +
+					'<ul id="files" class="files">'+
+					//PREVIOUSLY WAS forEach files
+						'{{#each files.models}}'+
+						'<li class="file">'+
+							'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
+		        			'<div class="file-text">'+
+		          				'<div class="file-icon jpg"></div>'+
+		          				// '<div class="file-icon {{filetype}}"></div>'+
+		          				'<div class="file-info">'+
+		          					// '<div class="filename">{{name}}</div>'+
+									'<div class="filename">{{attributes.name}}</div>'+
+									'<a class="file-view">View</a>'+
+									'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+								'</div>'+
+							'</div>'+
+						'</li>'+
+						'{{/each}}'+
+
 						// '<li class="file">' +
 						// 	'<img class="file-thumb" src="/application/assets/img/reckitt.jpg"/>'+
 						// 	'<div class="file-icon jpg"></div>' +
@@ -56,18 +73,28 @@ var FormView = Backbone.View.extend({
 			'</form>' +
 		'</div>' 
 	),
-	render: function(){
-		this.$el.html(this.template());
-		this.delegateEvents({
-			'click .save': 'save',
-			'input .new-sub': 'subjectCharCount',
-			'click .attach-link': 'fileToggle',
-			// 'dragover #drop_zone': 'handleDragOver',
-			// 'drop #drop_zone': 'handleDragFileSelect',
-			'change #filesInput': 'handleFileSelect'
-		});
 
-		this.setupEventListener();
+	initialize: function() {
+		this.listenTo(this.model, "change", this.render);	
+		this.listenTo(this.model.attributes.files, "reset add remove change sort", this.render);	
+		
+		//stackoverflow.com/questions/7472055/backbone-js-how-to-get-the-index-of-a-model-in-a-backbone-collection
+		// use when creating collection forEach helper
+	},
+
+	render: function(){
+		jQuery.event.props.push("dataTransfer");
+		this.$el.html(this.template(this.model.attributes));		
+		this.delegateEvents({
+			'click .save': 'setModelData',
+			'input .new-sub': 'subjectCharCount',
+			'click .attach-link': 'fileDialogTrigger',
+			'dragover #drop_zone': 'handleDragOver',
+			'dragleave #drop_zone': 'handleDragLeave',
+			'drop #drop_zone': 'handleDragFileSelect',
+			'change #filesInput': 'handleFileSelect',
+			'click .file-del': 'deleteFile'
+		});
 
 		// Check for the various File API support.
 		if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -77,26 +104,13 @@ var FormView = Backbone.View.extend({
 		}
 		return this;
 	},
-
-	setupEventListener: function(){
-		// var dropZone = document.getElementById('drop_zone');
-		  // dropZone.addEventListener('dragover', handleDragOver, false);
-		  // dropZone.addEventListener('drop', handleFileSelect, false);
-
-	},
 	
 	subjectCharCount: function(){
 		return houston.subjectCharCount(this.$el);
 	},
 
-	fileToggle: function(e){
-		$(e.currentTarget).closest('.attach-files').find('.file-input-wrapper').slideToggle();
-		var dropZone = document.getElementById('drop_zone');
-		console.log(dropZone);
-		dropZone.addEventListener('dragover', this.handleDragOver, false);
-		dropZone.addEventListener('dragleave', this.handleDragLeave, false);
-		dropZone.addEventListener('dragend', this.handleDragLeave, false);
-		dropZone.addEventListener('drop', this.handleDragFileSelect, false);
+	fileDialogTrigger: function(){
+		this.$el.find('#filesInput').trigger('click');
 	},
 	
 	save: function(){
@@ -129,122 +143,320 @@ var FormView = Backbone.View.extend({
 			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id)
 		});
+		console.log(this.model)
 	},
 
-	handleFileSelect: function(evt) {
-		var files = evt.target.files; // FileList object
+	addFiles: function(files){
 
-	    // Loop through the FileList and render file details.
-	    for (var i = 0, f; f = files[i]; i++) {
-
-	        // Only create FileReader for image files.
-	        if (!f.type.match('image.*')) {
-	        	//render file details
-		        var li = document.createElement('li');
-		        li.className = "file";
-		        li.innerHTML = ['<div class="file-icon jpg"></div>' +
-							'<div class="filename">'+escape(f.name)+'</div>' +
-							'<a href="">View</a>' +
-							'<a href="">Delete</a>'].join('');
-		        document.getElementById('files').insertBefore(li, null);
-	        } else {
+		for (var i = 0, f; f = files[i]; i++) {
 
 	        var reader = new FileReader();
+			reader.onerror = this.fileErrorHandler;
+			//is there need for ability to abort whilst file is being uploaded?
+	        reader.onabort = function(e) {
+	        	console.log(e);
+		        alert('File read cancelled');
+		    };
 
 	        // Closure to capture the file information.
-	        reader.onload = (function(theFile) {
+	        reader.onload = _.bind((function(theFile) {
 		        return function(e) {
-			        // Render file details and thumbnail.
-			        var li = document.createElement('li');
-			        li.className = "file";
-			        li.innerHTML = ['<img class="file-thumb" src="', e.target.result,'" title="', escape(theFile.name), '"/>'+
-			          			'<div class="file-icon jpg"></div>' +
-								'<div class="filename">'+escape(theFile.name)+'</div>' +
-								'<a href="">View</a>' +
-								'<a href="">Delete</a>'].join('');
-			        document.getElementById('files').insertBefore(li, null);
+			        theFile["target"] = e.target.result;			        
+					this.model.attributes.files.add(theFile);
+					console.log(this.model);
+					//this.model.set({
+					// 	files: this.model.get('files').concat(theFile)			
+					// });
 		        };
-	        })(f);
+	        })(f), this);
 
 	        // Read in the image file as a data URL.
 	        reader.readAsDataURL(f);
-	  		}
-	    }
+	  	}
+	},
+
+	deleteFile: function(e){
+
+		var button = $(e.currentTarget);
+		var cid = button.data("cid");
+		var fileToDelete = this.model.attributes.files.get(cid);
+		//stackoverflow.com/questions/6280553/destroying-a-backbone-model-in-a-collection-in-one-step
+		this.model.attributes.files.remove(fileToDelete);
+		fileToDelete.destroy();
+
+		//stackoverflow.com/questions/10024866/remove-object-from-array-using-javascript
+		//stackoverflow.com/questions/13682199/backbonejs-delete-item-from-a-model-array
+		// var index = button.data("index");
+		// this.model.get('files').splice(index,1);
+		// this.render();
+	},
+
+	fileErrorHandler: function(evt){
+		//Add in error to view
+		console.log(evt);
+		switch(evt.target.error.code) {
+			case evt.target.error.NOT_FOUND_ERR:
+				alert('File Not Found!');
+				break;
+			case evt.target.error.NOT_READABLE_ERR:
+				alert('File is not readable');
+				break;
+			case evt.target.error.ABORT_ERR:
+				break; // noop
+			default:
+				alert('An error occurred reading this file.');
+		};
+	},
+
+	handleFileSelect: function(evt) {
+
+		this.addFiles(evt.target.files);
 	},
 
 	handleDragFileSelect: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
 
-	    var files = evt.dataTransfer.files; // FileList object.
+	    //remove drag highlight state
+	    $(evt.currentTarget).removeClass('dropping');
 
-	    // Loop through the FileList and render file details.
-	    for (var i = 0, f; f = files[i]; i++) {
+	    this.addFiles(evt.dataTransfer.files);
 
-	        // Only create FileReader for image files.
-	        if (!f.type.match('image.*')) {
-	        	//render file details
-		        var li = document.createElement('li');
-		        li.className = "file";
-		        li.innerHTML = ['<div class="file-icon jpg"></div>' +
-							'<div class="filename">'+escape(f.name)+'</div>' +
-							'<a href="">View</a>' +
-							'<a href="">Delete</a>'].join('');
-		        document.getElementById('files').insertBefore(li, null);
-	        } else {
-
-	        var reader = new FileReader();
-
-	        // Closure to capture the file information.
-	        reader.onload = (function(theFile) {
-		        return function(e) {
-			        // Render file details and thumbnail.
-			        var li = document.createElement('li');
-			        li.className = "file";
-			        li.innerHTML = ['<img class="file-thumb" src="', e.target.result,'" title="', escape(theFile.name), '"/>'+
-			          			'<div class="file-icon jpg"></div>' +
-								'<div class="filename">'+escape(theFile.name)+'</div>' +
-								'<a href="">View</a>' +
-								'<a href="">Delete</a>'].join('');
-			        document.getElementById('files').insertBefore(li, null);
-		        };
-	        })(f);
-
-	        // Read in the image file as a data URL.
-	        reader.readAsDataURL(f);
-	  		}
-	    }
 	},
+
+	abortFileUpload: function(){
+		reader.abort();
+	},
+
 
 	handleDragOver: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
-	    console.log(evt);
 	    // this.$el wouldnt work for some reason
-	    $(evt.srcElement).addClass('dropping');
-
-	    // var files = evt.dataTransfer.files; // FileList object.
-	    //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
-		//stackoverflow.com/questions/14788862/drag-drop-doenst-not-work-dropeffect-of-undefined
+	    //add drag highlight state
+	    $(evt.currentTarget).addClass('dropping');
 	    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 
-	    // evt.originalEvent.dataTransfer.dropEffect = "copy"
+	    //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
+		//stackoverflow.com/questions/14788862/drag-drop-doenst-not-work-dropeffect-of-undefined
+	    
 	},
 
 	handleDragLeave: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
-	    console.log(evt);
-	    // this.$el wouldnt work for some reason
-	    $(evt.srcElement).removeClass('dropping');
+	    // remove drag highlight state
+	    $(evt.currentTarget).removeClass('dropping');
 	}
 
 
+// 	outputFileDetails: function(){
+
+// 		var files = this.filesArray;
+// 		this.$el.find('#files').html('');
+// // document.getElementById('files').innerHTML = null;
+// 		//  Loop through the FileList and render file details.
+// 		for (var i = 0, f; f = files[i]; i++) {
+
+// 	        // Only create FileReader for image files.
+// 	        if (!f.type.match('image.*')) {
+// 	        	//render file details
+// 		        var li = document.createElement('li');
+// 		        li.className = "file";
+// 		        li.innerHTML = ['<div class="file-icon jpg"></div>' +
+// 							'<div class="filename">'+escape(f.name)+'</div>' +
+// 							'<a class="file-view">View</a>' +
+// 							'<a class="file-del">Delete</a>'].join('');
+// 		        document.getElementById('files').insertBefore(li, null);
+// 	        } else {
+
+// 	        var reader = new FileReader();
+// 			reader.onerror = this.fileErrorHandler;
+// 	        reader.onabort = function(e) {
+// 	        	console.log(e);
+// 		        alert('File read cancelled');
+// 		    };
 
 
 
+// 	        // Closure to capture the file information.
+// 	        reader.onload = (function(theFile) {
+// 		        return function(e) {
+// 			        // Render file details and thumbnail.
+// 			        var li = document.createElement('li');
+// 			        li.className = "file";
+// 			        li.innerHTML = ['<img class="file-thumb" src="', e.target.result,'" title="', escape(theFile.name), '"/>'+
+// 			        			'<div class="file-text">'+
+// 			          			'<div class="file-icon jpg"></div>'+
+// 			          			'<div class="file-info">'+
+// 								'<div class="filename">'+escape(theFile.name)+'</div>'+
+// 								'<a class="file-view">View</a>'+
+// 								'<a class="file-del">Delete</a>'+
+// 								'</div>'+
+// 								'</div>'].join('');
+// 			        document.getElementById('files').insertBefore(li, null);
+// 		        };
+// 	        })(f);
+
+// 	        // Read in the image file as a data URL.
+// 	        reader.readAsDataURL(f);
+// 	  		}
+// 	    }
+// 	},
 
 
+	// handleFileSelect: function(evt) {
+
+	// 	var files = evt.target.files;
+	// 	console.log(files);
+
+	// 	for (var i = 0, f; f = files[i]; i++) {
+
+	//         // Only create FileReader for image files.
+	//         if (!f.type.match('image.*')) {
+
+	//         	var file =
+	// 				{
+	// 					src: '/application/assets/img/jpg-icon.png',
+	// 					filename: escape(f.name),			
+	// 					filetype: escape(f.type),
+	// 					id: null
+	// 				};
+
+	//         } else {
+
+	//         var reader = new FileReader();
+	// 		reader.onerror = this.fileErrorHandler;
+	// 		//is there need for an abort whilst file is being uploaded?
+	//         reader.onabort = function(e) {
+	//         	console.log(e);
+	// 	        alert('File read cancelled');
+	// 	    };
+
+	//         // Closure to capture the file information.
+	//         reader.onload = (function(theFile) {
+	// 	        return function(e) {
+
+	// 	        	var file =
+	// 					{
+	// 						src: e.target.result,
+	// 						filename: escape(theFile.name),			
+	// 						filetype: escape(theFile.type),
+	// 						id: null
+	// 					};
+
+	// 	        };
+	//         })(f);
+
+	//         // Read in the image file as a data URL.
+	//         reader.readAsDataURL(f);
+	//   		}
+
+
+	// 		// var file =
+	// 		// 	{
+	// 		// 		src: '/application/assets/img/jpg-icon.png',
+	// 		// 		filename: 'test-filename.jpg',			
+	// 		// 		filetype: 'jpg',
+	// 		// 		id: null
+	// 		// 	};
+
+	// 		this.model.set({
+	// 			files: this.model.get('files').concat(file)			
+	// 		});
+	// 		console.log(this.model);
+	// 	}
+
+
+	// handleFileSelect: function(evt) {
+
+	// 	var files = evt.target.files;
+	// 	console.log(files);
+	// 	// console.log(this.filesArray);
+	// 	for (var i = 0, f; f = files[i]; i++) {
+	// 		this.filesArray[this.filesArray.length] = f;
+	// 		console.log(i);
+	// 		this.filesArray.length += 1;
+	// 	}
+
+	// 	console.log('end');
+	// 	console.log(this.filesArray);
+	//     this.outputFileDetails();
+	// },
+
+
+
+			// console.log(this.filesArray.length);
+		// if(this.filesArray.length === 0) {
+		// 	//if filesArray is empty add files to it
+		// 	this.filesArray = evt.target.files; // FileList object
+		// } else {
+		// 	// this.filesArray[this.filesArray.length] = 'test';
+		// 	var files = evt.target.files;
+		// 	console.log(files);
+		// 	console.log(this.filesArray);
+		// 	for (var i = 0, f; f = files[i]; i++) {
+		// 		this.filesArray[this.filesArray.length] = 'test';
+		// 		console.log(i);
+		// 	}
+		// }
+
+	//adding in progress bars
+	     //    // Closure to capture the file information.
+	     //    reader.onloadstart = (function(theFile) {
+		    //     return function(e) {
+		    //     	console.log(e);
+			   //      // Render file details and thumbnail.
+			   //      var li = document.createElement('li');
+			   //      li.setAttribute("id", escape(theFile.name))
+			   //      li.className = "file";
+			   //      // li.className += e.timeStamp;
+			   //      li.innerHTML = ['<img id="img-', escape(theFile.name), '" class="file-thumb" src="application/assets/img/jpg-icon.png" title="', escape(theFile.name), '"/>'+
+			   //      			'<div class="file-text">'+
+			   //        			'<div class="file-icon jpg"></div>'+
+			   //        			'<div class="file-info">'+
+						// 		'<div class="filename">'+escape(theFile.name)+'</div>'+
+						// 		'<a href="">View</a>'+
+						// 		'<a href="">Delete</a>'+
+						// 		'</div>'+
+						// 		'</div>'].join('');
+			   //      document.getElementById('files').insertBefore(li, null);
+		    //     };
+	     //    })(f);
+
+	     //    reader.onprogress = (function(theFile) {
+		    //     return function(e) {
+		    //     	var li = document.querySelectorAll("li#"+escape(theFile.name)+" div.file-text");
+		    //     	console.log(li);
+		    //     	li.className = 'progress';
+		    //     	// var li = document.getElementById(escape(theFile.name));
+		    //     	// var idString = '#';
+		    //     	// var idString = escape(theFile.name);
+		    //     	// console.log(idString);
+		    //     	// var li = $("#" +idString);
+		    //     	// console.log(li);
+		    //     	// li.find('file-text').addClass('progress');
+		    //     };
+		    // })(f);
+
+	     //    reader.onload = (function(theFile) {
+		    //     return function(e) {
+		    //     	var img = document.getElementById('img-'+escape(theFile.name));
+		    //     	console.log(img);
+		    //     	// var files = document.getElementById('files');
+		    //     	img.setAttribute("src", e.target.result);
+		    //     };
+		    // })(f);
+
+
+	// old handlers
+	// setupDragListeners: function(e){
+	// 	var dropZone = document.getElementById('drop_zone');
+	// 	console.log(dropZone);
+	// 	dropZone.addEventListener('dragover', this.handleDragOver, false);
+	// 	dropZone.addEventListener('dragleave', this.handleDragLeave, false);
+	// 	dropZone.addEventListener('drop', this.handleDragFileSelect, false);
+	// },
 
 
 
