@@ -76,7 +76,7 @@ var FormView = Backbone.View.extend({
 
 	initialize: function() {
 		this.listenTo(this.model, "reset add remove change sort", this.render);	
-		this.listenTo(this.model.attributes.files, "reset add remove change sort", this.render);	
+		this.listenTo(this.model.files, "reset add remove change sort", this.render);	
 		
 		//stackoverflow.com/questions/7472055/backbone-js-how-to-get-the-index-of-a-model-in-a-backbone-collection
 		// use when creating collection forEach helper
@@ -112,19 +112,16 @@ var FormView = Backbone.View.extend({
 		this.model.set({
 			subject: this.$el.find('input[name="new-sub"]').val()
 		});
-		console.log(this.model);
 	},
 
 	setMessage: function(){
 		this.model.set({
 			message: this.$el.find('textarea[name="new-textarea"]').val()
 		});
-		console.log(this.model);
 	},
 	
 	subjectCharCount: function(){
 		return houston.subjectCharCount(this.$el);
-		console.log(this.model);
 	},
 
 	fileDialogTrigger: function(){
@@ -133,13 +130,14 @@ var FormView = Backbone.View.extend({
 	
 	save: function(){
 		this.setModelData();
+		
 		console.log(this.model);
-		this.model.save(this.model.attributes,
+		
+		this.model.save(this.model,
 			{
 				success: function(model, response, options){					
 					//add model to collection, no longer required.
 					// app.tickets.add(model);
-					console.log(model);
 					//ensure formView always uses a fresh model
 					app.formView.model = new TicketModel();
 					//app.navigate('contacts/' + model.get('url'), {trigger: true});
@@ -151,7 +149,6 @@ var FormView = Backbone.View.extend({
 	},
 
 	setModelData: function(){
-		console.log(this.model);
 		this.model.set({
 			// subject: this.$el.find('input[name="new-sub"]').val(),
 			// message: this.$el.find('textarea[name="new-textarea"]').val(),
@@ -182,7 +179,7 @@ var FormView = Backbone.View.extend({
 		        return function(e) {
 			        theFile["target"] = e.target.result;	
 			        console.log(theFile);		        
-					this.model.attributes.files.add(theFile);
+					this.model.files.add(theFile);
 					console.log(this.model);
 					this.model.set({
 						avatar: app.user.attributes.avatar			

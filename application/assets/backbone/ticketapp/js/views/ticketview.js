@@ -144,7 +144,7 @@ var TicketDetail = Backbone.View.extend({
 		this.listenTo(this.model, "sync", this.render);
 
 		this.listenTo(this.model, "reset add remove change sort", this.render)
-		this.listenTo(this.model.attributes.messages, "reset add remove change sort", this.render);		
+		this.listenTo(this.model.messages, "reset add remove change sort", this.render);
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
