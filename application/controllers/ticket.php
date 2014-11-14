@@ -77,7 +77,7 @@ $app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
 });
 
 // Add new reply
-$app->post('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {
+$app->post('/tickets/reply/add/{ticketID}', function(Request $request, Application $app, $ticketID) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
 	$db = $db->houston;
