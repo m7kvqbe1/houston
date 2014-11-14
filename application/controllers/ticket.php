@@ -67,9 +67,31 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 		die('Error: '.$e->getMessage());
 	}
 	
-	$notify = new Houston\Extra\Notify($app); 
-	$notify->newReply($json);
+	return json_encode($json);
+});
+
+// Add new reply
+$app->post('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {
+	$connections = $app['mongo'];
+	$db = $connections['default'];
+	$db = $db->houston;
 	
+	$json = file_get_contents('php://input');
+	var_dump($json);	// Debug
+	
+	$json = json_decode($json);
+	
+	try {	
+		
+	} catch(MongoConnectionException $e) {
+		die('Error connecting to MongoDB server');
+	} catch(MongoException $e) {
+		die('Error: '.$e->getMessage());
+	}
+	
+	$notify = new Houston\Extra\Notify($app); 
+	$notify->newReply($json);	
+
 	return json_encode($json);
 });
 
