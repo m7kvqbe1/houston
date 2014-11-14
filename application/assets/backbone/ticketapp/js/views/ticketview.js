@@ -242,7 +242,7 @@ var TicketDetail = Backbone.View.extend({
 	},
 
 	saveMessage: function(){
-		this.model.messages.url = '/tickets/reply/add' + this.model.id;
+		this.model.messages.url = '/tickets/reply/add/' + this.model.id;
 		console.log(this.model.messages.url);
 		//stackoverflow.com/questions/14492226/backbone-js-sync-cant-find-the-url-property
 		this.model.messages.invoke('save');
