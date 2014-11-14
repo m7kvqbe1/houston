@@ -107,7 +107,7 @@ var TicketDetail = Backbone.View.extend({
 							'</li>'+	
 						'{{/each}}'+
 						'</ul>'+
-					'{{#if $last}}'+						
+					// '{{#if $last}}'+						
 						'<a class="btn reply-btn">Reply</a>'+
 					'</div>'+
 					'<div class="reply">'+
@@ -132,9 +132,9 @@ var TicketDetail = Backbone.View.extend({
 							'<a class="cancel-btn ib">Cancel</a>' +
 						'</form>' +
 					'</div>'+
-					'{{else}}'+
-					'</div>'+
-					'{{/if}}'+					
+					// '{{else}}'+
+					// '</div>'+
+					// '{{/if}}'+					
 				'</li>'+
 			'{{/each}}'+	
 			'</ul>'	
@@ -166,6 +166,9 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	render: function (){	
+		this.model.messages.url = '/tickets/reply/get/' + this.model.id;
+		console.log(this.model.messages.url);
+		this.model.messages.fetch({success: function(){console.log('fetched')}});
 	
 		this.$el.html(this.template(this.model));
 		//Add user to updated array if not already there
@@ -180,7 +183,6 @@ var TicketDetail = Backbone.View.extend({
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage'
 		});
-		console.log(this.model);
 		return this;
 	},
 	
@@ -287,8 +289,7 @@ var TicketDetail = Backbone.View.extend({
 			this.model.set({
 				status: 'Completed'
 			});		
-		}	
-		console.log(this.model);	
+		}		
 		this.saveMessage();
 		// this.save();
 	}
