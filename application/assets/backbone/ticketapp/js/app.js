@@ -58,6 +58,7 @@ var AppRouter = Backbone.Router.extend({
 				model: this.companyModel
 			}
 		); 
+
 		
 	},
 

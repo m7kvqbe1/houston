@@ -55,7 +55,8 @@ var TicketDetail = Backbone.View.extend({
 							'</li>'+	
 						'{{/each}}'+
 						'</ul>'+
-					'{{#if messages}}'+
+					// '{{#if messages}}'+
+					'{{#if messages.models}}'+
 						'</div>'+											
 					'{{else}}'+
 					'<a class="btn reply-btn">Reply</a>'+
@@ -80,14 +81,15 @@ var TicketDetail = Backbone.View.extend({
 					'</div>'+					
 					'{{/if}}'+						
 				'</li>'+
-			'{{#forEach messages}}'+
+			// '{{#forEach messages}}'+
+			'{{#each messages.models}}'+
 				'<li class="msg from-{{role}}">'+
 					'<div class="msg-dtl">'+
 						'<img class="msg-avatar" src="{{avatar}}" alt="{{author}}"/>'+
 						'<div class="msg-dtl-inr">'+
 							'<h3 class="msg-agent">{{author}}</h3>'+
 							'<h4 class="msg-company">{{company}}</h4>'+
-							'<div class="msg-date">{{convertToDateTime date}}</div>'+
+							// '<div class="msg-date">{{convertToDateTime date}}</div>'+
 						'</div>'+
 						'<div class="msg-tri"></div>'+
 					'</div>'+
@@ -134,12 +136,15 @@ var TicketDetail = Backbone.View.extend({
 					'</div>'+
 					'{{/if}}'+					
 				'</li>'+
-			'{{/forEach}}'+	
+			'{{/each}}'+	
 			'</ul>'	
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "sync", this.render);		
+		this.listenTo(this.model, "sync", this.render);
+
+		this.listenTo(this.model, "reset add remove change sort", this.render)
+		this.listenTo(this.model.attributes.messages, "reset add remove change sort", this.render);		
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -207,7 +212,7 @@ var TicketDetail = Backbone.View.extend({
 	
 	replyToggle: function(){
 		houston.replyToggle(this.$el);
-		console.log('toggle');
+		console.log(this.model.attributes);
 	},
 	
 	update: function() {
@@ -223,38 +228,52 @@ var TicketDetail = Backbone.View.extend({
 		this.model.set({			
 			updated: []
 		});
-		this.model.save(this.model.attributes,
-			{
-				success: _.bind(function(model, response, options){
-
-				}, this)
-			}
-		);
+		// this.model.save(this.model.attributes,
+		// 	{
+		// 		success: _.bind(function(model, response, options){
+		// 			console.log('success');
+		// 		}, this)
+		// 	}
+		// );
 	
 	},
 	
 	addMessage: function(){
 	//stackoverflow.com/questions/13644080/store-push-to-an-array-in-a-backbone-model
-		var msg =
-			{
-				"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
-				"role": "agent",
-				"avatar": app.user.attributes.avatar, 
-				"company": app.user.attributes.company,
-				"date": new Date(),
-				"message": this.$el.find('textarea[name="new-textarea"]').val()
-			};
-		this.model.set({
-			messages: this.model.get('messages').concat(msg)			
-		});
+		// var msg =
+		// 	{
+		// 		"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+		// 		"role": "agent",
+		// 		"avatar": app.user.attributes.avatar, 
+		// 		"company": app.user.attributes.company,
+		// 		"date": new Date(),
+		// 		"message": this.$el.find('textarea[name="new-textarea"]').val()
+		// 	};
+		// this.model.set({
+		// 	messages: this.model.get('messages').concat(msg)			
+		// });
 		
+		var msg = {
+			"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+			"role": "agent",
+			"avatar": app.user.attributes.avatar, 
+			"company": app.user.attributes.company,
+			"date": new Date(),
+			"message": this.$el.find('textarea[name="new-textarea"]').val()
+		};
+
+		var msgMdl = new MessageModel(msg);
+
+		this.model.attributes.messages.add(msgMdl);
+
 		//if ticket marked as complete
 		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
 			this.model.set({
 				status: 'Completed'
 			});		
-		}		
-		this.save();
+		}	
+		console.log(this.model.attributes);	
+		// this.save();
 	}
 	
 });

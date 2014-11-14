@@ -4,6 +4,7 @@ var TicketModel = Backbone.Model.extend({
 	//idAttribute: "_id",
 	initialize: function(){
 		this.attributes.files = new Files();
+		this.attributes.messages = new Messages();
 	},
 	parse: function(response){
 	if(response._id){
@@ -19,8 +20,9 @@ var TicketModel = Backbone.Model.extend({
 		agent: false,
 		// ############# ARRAY VERSION CODE BELOW!
 		// files: [],
+		// messages: [],
 		updated: [],
-		url: '/tickets/add',
-		messages: []
+		url: '/tickets/add'
+		
 	}
 });

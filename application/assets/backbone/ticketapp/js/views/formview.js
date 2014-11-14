@@ -69,13 +69,13 @@ var FormView = Backbone.View.extend({
 				'</div>' +
 				'<button class="save" type="button">Create Ticket</button>' +
 				'<div class="beige or">or</div>' +
-				'<a class="cancel-btn ib" href="">Cancel</a>' +
+				'<a class="cancel-btn ib">Cancel</a>' +
 			'</form>' +
 		'</div>' 
 	),
 
 	initialize: function() {
-		this.listenTo(this.model, "change", this.render);	
+		this.listenTo(this.model, "reset add remove change sort", this.render);	
 		this.listenTo(this.model.attributes.files, "reset add remove change sort", this.render);	
 		
 		//stackoverflow.com/questions/7472055/backbone-js-how-to-get-the-index-of-a-model-in-a-backbone-collection
@@ -86,14 +86,17 @@ var FormView = Backbone.View.extend({
 		jQuery.event.props.push("dataTransfer");
 		this.$el.html(this.template(this.model.attributes));		
 		this.delegateEvents({
-			'click .save': 'setModelData',
+			'blur input[type="text"]': 'setSubject',
+			'blur textarea': 'setMessage',
+			'click .save': 'save',
 			'input .new-sub': 'subjectCharCount',
 			'click .attach-link': 'fileDialogTrigger',
 			'dragover #drop_zone': 'handleDragOver',
 			'dragleave #drop_zone': 'handleDragLeave',
 			'drop #drop_zone': 'handleDragFileSelect',
 			'change #filesInput': 'handleFileSelect',
-			'click .file-del': 'deleteFile'
+			'click .file-del': 'deleteFile',
+			'click .cancel-btn': 'cancelTicket'
 		});
 
 		// Check for the various File API support.
@@ -104,9 +107,24 @@ var FormView = Backbone.View.extend({
 		}
 		return this;
 	},
+
+	setSubject: function(){
+		this.model.set({
+			subject: this.$el.find('input[name="new-sub"]').val()
+		});
+		console.log(this.model);
+	},
+
+	setMessage: function(){
+		this.model.set({
+			message: this.$el.find('textarea[name="new-textarea"]').val()
+		});
+		console.log(this.model);
+	},
 	
 	subjectCharCount: function(){
 		return houston.subjectCharCount(this.$el);
+		console.log(this.model);
 	},
 
 	fileDialogTrigger: function(){
@@ -115,12 +133,13 @@ var FormView = Backbone.View.extend({
 	
 	save: function(){
 		this.setModelData();
+		console.log(this.model);
 		this.model.save(this.model.attributes,
 			{
 				success: function(model, response, options){					
 					//add model to collection, no longer required.
 					// app.tickets.add(model);
-					
+					console.log(model);
 					//ensure formView always uses a fresh model
 					app.formView.model = new TicketModel();
 					//app.navigate('contacts/' + model.get('url'), {trigger: true});
@@ -132,18 +151,18 @@ var FormView = Backbone.View.extend({
 	},
 
 	setModelData: function(){
+		console.log(this.model);
 		this.model.set({
-			subject: this.$el.find('input[name="new-sub"]').val(),
-			message: this.$el.find('textarea[name="new-textarea"]').val(),
-			id: null,
+			// subject: this.$el.find('input[name="new-sub"]').val(),
+			// message: this.$el.find('textarea[name="new-textarea"]').val(),
+			// id: null,
 			avatar: app.user.attributes.avatar,
 			username: app.user.attributes.emailAddress,
 			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 			company: app.user.attributes.company,
 			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id)
-		});
-		console.log(this.model)
+		});		
 	},
 
 	addFiles: function(files){
@@ -161,8 +180,13 @@ var FormView = Backbone.View.extend({
 	        // Closure to capture the file information.
 	        reader.onload = _.bind((function(theFile) {
 		        return function(e) {
-			        theFile["target"] = e.target.result;			        
+			        theFile["target"] = e.target.result;	
+			        console.log(theFile);		        
 					this.model.attributes.files.add(theFile);
+					console.log(this.model);
+					this.model.set({
+						avatar: app.user.attributes.avatar			
+					});
 					console.log(this.model);
 					//this.model.set({
 					// 	files: this.model.get('files').concat(theFile)			
@@ -172,6 +196,7 @@ var FormView = Backbone.View.extend({
 
 	        // Read in the image file as a data URL.
 	        reader.readAsDataURL(f);
+	        console.log(this.model);
 	  	}
 	},
 
@@ -189,6 +214,11 @@ var FormView = Backbone.View.extend({
 		// var index = button.data("index");
 		// this.model.get('files').splice(index,1);
 		// this.render();
+	},
+
+	cancelTicket: function(){
+		this.model.clear();
+		app.navigate('', {trigger: true});
 	},
 
 	fileErrorHandler: function(evt){
