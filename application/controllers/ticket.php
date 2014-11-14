@@ -70,19 +70,25 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	return json_encode($json);
 });
 
+// Get ticket - DEPRECATED
+$app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	var_dump($json);
+});
+
 // Add new reply
 $app->post('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
 	$db = $db->houston;
 	
-	$json = file_get_contents('php://input');
-	var_dump($json);	// Debug
+	$json = json_decode(file_get_contents('php://input'));
 	
-	$json = json_decode($json);
+	$json->ticketID = $ticketID;
 	
 	try {	
-		
+		$collection = $db->replies;
+		$collection->save($json);
 	} catch(MongoConnectionException $e) {
 		die('Error connecting to MongoDB server');
 	} catch(MongoException $e) {
@@ -95,8 +101,29 @@ $app->post('/tickets/reply/{ticketID}', function(Request $request, Application $
 	return json_encode($json);
 });
 
-// Get ticket
-$app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
+// Get replies
+$app->get('/tickets/reply/get/{ticketID}', function(Request $request, Application $app, $ticketID) {
+	$connections = $app['mongo'];
+	$db = $connections['default'];
+	$db = $db->houston;
+	
 	$json = json_decode(file_get_contents('php://input'));
-	var_dump($json);
+	
+	try {	
+		$collection = $db->replies;
+		$result = $collection->find(array('ticketID' => $ticketID));
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
+	} catch(MongoConnectionException $e) {
+		die('Error connecting to MongoDB server');
+	} catch(MongoException $e) {
+		die('Error: '.$e->getMessage());
+	}
 });
