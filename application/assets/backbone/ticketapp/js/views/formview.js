@@ -24,7 +24,7 @@ var FormView = Backbone.View.extend({
 					'</div>'+
 					'<ul id="files" class="files">'+
 					//PREVIOUSLY WAS forEach files
-						'{{#each files.models}}'+
+						'{{#each files}}'+
 						'<li class="file">'+
 							'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
 		        			'<div class="file-text">'+
@@ -76,7 +76,7 @@ var FormView = Backbone.View.extend({
 
 	initialize: function() {
 		this.listenTo(this.model, "reset add remove change sort", this.render);	
-		this.listenTo(this.model.files, "reset add remove change sort", this.render);	
+		// this.listenTo(this.model.files, "reset add remove change sort", this.render);	
 		
 		//stackoverflow.com/questions/7472055/backbone-js-how-to-get-the-index-of-a-model-in-a-backbone-collection
 		// use when creating collection forEach helper
@@ -84,19 +84,17 @@ var FormView = Backbone.View.extend({
 
 	render: function(){
 		jQuery.event.props.push("dataTransfer");
-		this.$el.html(this.template(this.model.attributes));		
+		this.$el.html(this.template(this.model));		
 		this.delegateEvents({
-			'blur input[type="text"]': 'setSubject',
-			'blur textarea': 'setMessage',
 			'click .save': 'save',
 			'input .new-sub': 'subjectCharCount',
-			'click .attach-link': 'fileDialogTrigger',
-			'dragover #drop_zone': 'handleDragOver',
-			'dragleave #drop_zone': 'handleDragLeave',
-			'drop #drop_zone': 'handleDragFileSelect',
-			'change #filesInput': 'handleFileSelect',
-			'click .file-del': 'deleteFile',
 			'click .cancel-btn': 'cancelTicket'
+			// 'click .attach-link': 'fileDialogTrigger',
+			// 'dragover #drop_zone': 'handleDragOver',
+			// 'dragleave #drop_zone': 'handleDragLeave',
+			// 'drop #drop_zone': 'handleDragFileSelect',
+			// 'change #filesInput': 'handleFileSelect',
+			// 'click .file-del': 'deleteFile'
 		});
 
 		// Check for the various File API support.
@@ -107,25 +105,9 @@ var FormView = Backbone.View.extend({
 		}
 		return this;
 	},
-
-	setSubject: function(){
-		this.model.set({
-			subject: this.$el.find('input[name="new-sub"]').val()
-		});
-	},
-
-	setMessage: function(){
-		this.model.set({
-			message: this.$el.find('textarea[name="new-textarea"]').val()
-		});
-	},
 	
 	subjectCharCount: function(){
 		return houston.subjectCharCount(this.$el);
-	},
-
-	fileDialogTrigger: function(){
-		this.$el.find('#filesInput').trigger('click');
 	},
 	
 	save: function(){
@@ -133,7 +115,7 @@ var FormView = Backbone.View.extend({
 		
 		console.log(this.model);
 		
-		this.model.save(this.model,
+		this.model.save(this.model.attributes,
 			{
 				success: function(model, response, options){					
 					//add model to collection, no longer required.
@@ -150,9 +132,9 @@ var FormView = Backbone.View.extend({
 
 	setModelData: function(){
 		this.model.set({
-			// subject: this.$el.find('input[name="new-sub"]').val(),
-			// message: this.$el.find('textarea[name="new-textarea"]').val(),
-			// id: null,
+			subject: this.$el.find('input[name="new-sub"]').val(),
+			message: this.$el.find('textarea[name="new-textarea"]').val(),
+			id: null,
 			avatar: app.user.attributes.avatar,
 			username: app.user.attributes.emailAddress,
 			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
@@ -162,120 +144,121 @@ var FormView = Backbone.View.extend({
 		});		
 	},
 
-	addFiles: function(files){
-
-		for (var i = 0, f; f = files[i]; i++) {
-
-	        var reader = new FileReader();
-			reader.onerror = this.fileErrorHandler;
-			//is there need for ability to abort whilst file is being uploaded?
-	        reader.onabort = function(e) {
-	        	console.log(e);
-		        alert('File read cancelled');
-		    };
-
-	        // Closure to capture the file information.
-	        reader.onload = _.bind((function(theFile) {
-		        return function(e) {
-			        theFile["target"] = e.target.result;	
-			        console.log(theFile);		        
-					this.model.files.add(theFile);
-					console.log(this.model);
-					this.model.set({
-						avatar: app.user.attributes.avatar			
-					});
-					console.log(this.model);
-					//this.model.set({
-					// 	files: this.model.get('files').concat(theFile)			
-					// });
-		        };
-	        })(f), this);
-
-	        // Read in the image file as a data URL.
-	        reader.readAsDataURL(f);
-	        console.log(this.model);
-	  	}
-	},
-
-	deleteFile: function(e){
-
-		var button = $(e.currentTarget);
-		var cid = button.data("cid");
-		var fileToDelete = this.model.attributes.files.get(cid);
-		//stackoverflow.com/questions/6280553/destroying-a-backbone-model-in-a-collection-in-one-step
-		this.model.attributes.files.remove(fileToDelete);
-		fileToDelete.destroy();
-
-		//stackoverflow.com/questions/10024866/remove-object-from-array-using-javascript
-		//stackoverflow.com/questions/13682199/backbonejs-delete-item-from-a-model-array
-		// var index = button.data("index");
-		// this.model.get('files').splice(index,1);
-		// this.render();
-	},
-
 	cancelTicket: function(){
 		this.model.clear();
 		app.navigate('', {trigger: true});
-	},
-
-	fileErrorHandler: function(evt){
-		//Add in error to view
-		console.log(evt);
-		switch(evt.target.error.code) {
-			case evt.target.error.NOT_FOUND_ERR:
-				alert('File Not Found!');
-				break;
-			case evt.target.error.NOT_READABLE_ERR:
-				alert('File is not readable');
-				break;
-			case evt.target.error.ABORT_ERR:
-				break; // noop
-			default:
-				alert('An error occurred reading this file.');
-		};
-	},
-
-	handleFileSelect: function(evt) {
-
-		this.addFiles(evt.target.files);
-	},
-
-	handleDragFileSelect: function(evt){
-		evt.stopPropagation();
-	    evt.preventDefault();
-
-	    //remove drag highlight state
-	    $(evt.currentTarget).removeClass('dropping');
-
-	    this.addFiles(evt.dataTransfer.files);
-
-	},
-
-	abortFileUpload: function(){
-		reader.abort();
-	},
-
-
-	handleDragOver: function(evt){
-		evt.stopPropagation();
-	    evt.preventDefault();
-	    // this.$el wouldnt work for some reason
-	    //add drag highlight state
-	    $(evt.currentTarget).addClass('dropping');
-	    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-
-	    //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
-		//stackoverflow.com/questions/14788862/drag-drop-doenst-not-work-dropeffect-of-undefined
-	    
-	},
-
-	handleDragLeave: function(evt){
-		evt.stopPropagation();
-	    evt.preventDefault();
-	    // remove drag highlight state
-	    $(evt.currentTarget).removeClass('dropping');
 	}
 
+	// fileDialogTrigger: function(){
+	// 	this.$el.find('#filesInput').trigger('click');
+	// },
+
+	// addFiles: function(files){
+
+	// 	for (var i = 0, f; f = files[i]; i++) {
+
+	//         var reader = new FileReader();
+	// 		reader.onerror = this.fileErrorHandler;
+	// 		//is there need for ability to abort whilst file is being uploaded?
+	//         reader.onabort = function(e) {
+	//         	console.log(e);
+	// 	        alert('File read cancelled');
+	// 	    };
+
+	//         // Closure to capture the file information.
+	//         reader.onload = _.bind((function(theFile) {
+	// 	        return function(e) {
+	// 		        theFile["target"] = e.target.result;	
+	// 		        console.log(theFile);		        
+	// 				this.model.files.add(theFile);
+	// 				console.log(this.model);
+	// 				//this.model.set({
+	// 				// 	files: this.model.get('files').concat(theFile)			
+	// 				// });
+	// 	        };
+	//         })(f), this);
+
+	//         // Read in the image file as a data URL.
+	//         reader.readAsDataURL(f);
+	//         console.log(this.model);
+	//   	}
+	// },
+
+	// deleteFile: function(e){
+
+	// 	var button = $(e.currentTarget);
+	// 	var cid = button.data("cid");
+	// 	var fileToDelete = this.model.attributes.files.get(cid);
+	// 	//stackoverflow.com/questions/6280553/destroying-a-backbone-model-in-a-collection-in-one-step
+	// 	this.model.attributes.files.remove(fileToDelete);
+	// 	fileToDelete.destroy();
+
+	// 	//stackoverflow.com/questions/10024866/remove-object-from-array-using-javascript
+	// 	//stackoverflow.com/questions/13682199/backbonejs-delete-item-from-a-model-array
+	// 	// var index = button.data("index");
+	// 	// this.model.get('files').splice(index,1);
+	// 	// this.render();
+	// },
+
+
+	// fileErrorHandler: function(evt){
+	// 	//Add in error to view
+	// 	console.log(evt);
+	// 	switch(evt.target.error.code) {
+	// 		case evt.target.error.NOT_FOUND_ERR:
+	// 			alert('File Not Found!');
+	// 			break;
+	// 		case evt.target.error.NOT_READABLE_ERR:
+	// 			alert('File is not readable');
+	// 			break;
+	// 		case evt.target.error.ABORT_ERR:
+	// 			break; // noop
+	// 		default:
+	// 			alert('An error occurred reading this file.');
+	// 	};
+	// },
+
+	// handleFileSelect: function(evt) {
+
+	// 	this.addFiles(evt.target.files);
+	// },
+
+	// handleDragFileSelect: function(evt){
+	// 	evt.stopPropagation();
+	//     evt.preventDefault();
+
+	//     //remove drag highlight state
+	//     $(evt.currentTarget).removeClass('dropping');
+
+	//     this.addFiles(evt.dataTransfer.files);
+
+	// },
+
+	// abortFileUpload: function(){
+	// 	reader.abort();
+	// },
+
+
+	// handleDragOver: function(evt){
+	// 	evt.stopPropagation();
+	//     evt.preventDefault();
+	//     // this.$el wouldnt work for some reason
+	//     //add drag highlight state
+	//     $(evt.currentTarget).addClass('dropping');
+	//     evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+
+	//     //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
+	// 	//stackoverflow.com/questions/14788862/drag-drop-doenst-not-work-dropeffect-of-undefined
+	    
+	// },
+
+	// handleDragLeave: function(evt){
+	// 	evt.stopPropagation();
+	//     evt.preventDefault();
+	//     // remove drag highlight state
+	//     $(evt.currentTarget).removeClass('dropping');
+	// }
+});
 
 // 	outputFileDetails: function(){
 
@@ -515,7 +498,7 @@ var FormView = Backbone.View.extend({
 
 	//     // document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';    				
 	// }
-});
+
 
 // var FormView = Backbone.View.extend({
 // 	template: Handlebars.compile(

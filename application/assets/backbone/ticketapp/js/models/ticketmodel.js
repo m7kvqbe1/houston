@@ -3,8 +3,8 @@ var TicketModel = Backbone.Model.extend({
 	//https://www.google.co.uk/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=backbone%20using%20mongodb%20id
 	//idAttribute: "_id",
 	initialize: function(){
-		this.files = new Files();
 		this.messages = new Messages();
+		this.messages.bind('change', this.save);
 	},
 	parse: function(response){
 	if(response._id){
@@ -18,8 +18,7 @@ var TicketModel = Backbone.Model.extend({
 		status: 'New',
 		//agent: "Awaiting Agent",
 		agent: false,
-		// ############# ARRAY VERSION CODE BELOW!
-		// files: [],
+		files: [],
 		// messages: [],
 		updated: [],
 		url: '/tickets/add'

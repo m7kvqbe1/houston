@@ -1,12 +1,12 @@
 var TicketDetail = Backbone.View.extend({
 	template: Handlebars.compile(
 			'<div class="box-app-top msg-top">'+
-				'{{#if agent}}'+
+				'{{#if attributes.agent}}'+
 					'<h2><a href="#">< All Tickets</a></h2>'+
-					'{{generateDropSwitch status}}'+					
+					'{{generateDropSwitch attributes.status}}'+					
 					'<div class="dropdown droplist">'+
 						'<div class="drop-top rounded">'+
-							'<div class="btn in-progress drop-slct">{{agent}}<i class="icon-down-dir-1"></i></div>'+
+							'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
 						'</div>'+						
 						'<ul class="drop">'+
 							'{{populateAgentDropdown}}'+
@@ -28,25 +28,25 @@ var TicketDetail = Backbone.View.extend({
 			'<ul id="msg-stream" class="box-app">'+
 				'<li class="msg from-client">'+
 					'<div class="msg-dtl">'+
-						'<img class="msg-avatar" src="{{avatar}}" alt="{{author}}"/>'+
+						'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{author}}"/>'+
 						'<div class="msg-dtl-inr">'+
-							'<h3 class="msg-agent">{{name}}</h3>'+
-							'<h4 class="msg-company">{{company}}</h4>'+
-							'<div class="msg-date">{{convertToDateTime date}}</div>'+
+							'<h3 class="msg-agent">{{attributes.name}}</h3>'+
+							'<h4 class="msg-company">{{attributes.company}}</h4>'+
+							'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 						'</div>'+
 						'<div class="msg-tri"></div>'+
 					'</div>'+
 					'<div class="msg-body">'+
 						'<h5>Ticket Subject</h5>'+
 						'<div class="msg-text">'+
-							'{{subject}}'+							
+							'{{attributes.subject}}'+							
 						'</div>'+
 						'<h5>Ticket Message</h5>'+
 						'<div class="msg-text">'+
-							'{{message}}'+							
+							'{{attributes.message}}'+							
 						'</div>'+						
 						'<ul class="files">'+
-						'{{#each files.models}}'+
+						'{{#each attributes.files}}'+
 							'<li class="file">'+
 								'<div class="file-icon {{filetype}}"></div>'+
 								'<div class="filename">{{filename}}</div>'+
@@ -83,22 +83,22 @@ var TicketDetail = Backbone.View.extend({
 				'</li>'+
 			// '{{#forEach messages}}'+
 			'{{#each messages.models}}'+
-				'<li class="msg from-{{role}}">'+
+				'<li class="msg from-{{attributes.role}}">'+
 					'<div class="msg-dtl">'+
-						'<img class="msg-avatar" src="{{avatar}}" alt="{{author}}"/>'+
+						'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
 						'<div class="msg-dtl-inr">'+
-							'<h3 class="msg-agent">{{author}}</h3>'+
-							'<h4 class="msg-company">{{company}}</h4>'+
+							'<h3 class="msg-agent">{{attributes.author}}</h3>'+
+							'<h4 class="msg-company">{{attributes.company}}</h4>'+
 							// '<div class="msg-date">{{convertToDateTime date}}</div>'+
 						'</div>'+
 						'<div class="msg-tri"></div>'+
 					'</div>'+
 					'<div class="msg-body">'+
 						'<div class="msg-text">'+
-							'{{message}}'+							
+							'{{attributes.message}}'+							
 						'</div>'+						
 						'<ul class="files">'+
-						'{{#each files}}'+
+						'{{#each attributes.files}}'+
 							'<li class="file">'+
 								'<div class="file-icon {{filetype}}"></div>'+
 								'<div class="filename">{{filename}}</div>'+
@@ -143,8 +143,8 @@ var TicketDetail = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
 
-		this.listenTo(this.model, "reset add remove change sort", this.render)
-		this.listenTo(this.model.messages, "reset add remove change sort", this.render);
+		// this.listenTo(this.model, "reset add remove change sort", this.render);
+		
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -167,7 +167,7 @@ var TicketDetail = Backbone.View.extend({
 	
 	render: function (){	
 	
-		this.$el.html(this.template(this.model.attributes));
+		this.$el.html(this.template(this.model));
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
 			this.update();
@@ -180,6 +180,7 @@ var TicketDetail = Backbone.View.extend({
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage'
 		});
+		console.log(this.model);
 		return this;
 	},
 	
@@ -212,7 +213,7 @@ var TicketDetail = Backbone.View.extend({
 	
 	replyToggle: function(){
 		houston.replyToggle(this.$el);
-		console.log(this.model.attributes);
+		console.log(this.model);
 	},
 	
 	update: function() {
@@ -228,14 +229,29 @@ var TicketDetail = Backbone.View.extend({
 		this.model.set({			
 			updated: []
 		});
-		// this.model.save(this.model.attributes,
-		// 	{
-		// 		success: _.bind(function(model, response, options){
-		// 			console.log('success');
-		// 		}, this)
-		// 	}
-		// );
+		this.model.save(this.model.attributes,
+			{
+				success: _.bind(function(model, response, options){
+					console.log('success');
+				}, this)
+			}
+		);
 	
+	},
+
+	saveMessage: function(){
+		this.model.messages.url = '/tickets/reply/' + this.model.id;
+		console.log(this.model.messages.url);
+		//stackoverflow.com/questions/14492226/backbone-js-sync-cant-find-the-url-property
+		this.model.messages.invoke('save');
+		// this.model.messages.sync('create',{
+		//     success: function (collection, response, options) {
+
+		//     },
+		//     error: function (collection, response, options) {
+
+		//     }
+		// });
 	},
 	
 	addMessage: function(){
@@ -264,7 +280,7 @@ var TicketDetail = Backbone.View.extend({
 
 		var msgMdl = new MessageModel(msg);
 
-		this.model.attributes.messages.add(msgMdl);
+		this.model.messages.add(msgMdl);
 
 		//if ticket marked as complete
 		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
@@ -272,7 +288,8 @@ var TicketDetail = Backbone.View.extend({
 				status: 'Completed'
 			});		
 		}	
-		console.log(this.model.attributes);	
+		console.log(this.model);	
+		this.saveMessage();
 		// this.save();
 	}
 	
