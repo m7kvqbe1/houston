@@ -1,6 +1,6 @@
 var MessageModel = Backbone.Model.extend({
-	urlRoot: '/tickets/reply',
+	// urlRoot: '/tickets/reply',
 	defaults: {
-		url: 'tickets/reply'
+		// url: 'tickets/reply'
 	}
 });
