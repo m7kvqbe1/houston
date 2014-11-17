@@ -21,8 +21,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 // Setup MongoDB connection
-use Mongo\Silex\Provider\MongoServiceProvider;
-$app->register(new MongoServiceProvider, array(
+$app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
             'server' => Config::MONGO_HOST,
