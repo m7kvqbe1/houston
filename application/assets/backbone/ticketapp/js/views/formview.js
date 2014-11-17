@@ -8,65 +8,67 @@ var FormView = Backbone.View.extend({
 			'<form id="form-new">' +
 				'<input type="text" class="new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
 				'<div class="char-count"><span>75</span> Characters Remaining</div>' +
-				'<textarea name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>' +		
-				'<div class="attach-files">' +
-					'<a class="attach-link">Attach files to this ticket</a>' + 
-					'<div class="supported">Supported -</div>' + 
-					'<ul class="filetypes">' +
-						'<li>Jpg</li>' +
-						'<li>Png</li>' +
-						'<li>Gif</li>' +
-						'<li>Pdf</li>' +
-					'</ul>' +
-					'<div class="file-input-wrapper">'+
-						'<div id="drop_zone">Drop files here</div>'+
-						'<input type="file" id="filesInput" name="files[]" multiple />'+
-					'</div>'+
-					'<ul id="files" class="files">'+
-					//PREVIOUSLY WAS forEach files
-						'{{#each files}}'+
-						'<li class="file">'+
-							'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
-		        			'<div class="file-text">'+
-		          				'<div class="file-icon jpg"></div>'+
-		          				// '<div class="file-icon {{filetype}}"></div>'+
-		          				'<div class="file-info">'+
-		          					// '<div class="filename">{{name}}</div>'+
-									'<div class="filename">{{attributes.name}}</div>'+
-									'<a class="file-view">View</a>'+
-									'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-								'</div>'+
-							'</div>'+
-						'</li>'+
-						'{{/each}}'+
+				'<textarea name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>' +
+				'<div id="file-view-wrap">'+		
+					// '<div class="attach-files">' +
+					// 	'<a class="attach-link">Attach files to this ticket</a>' + 
+					// 	'<div class="supported">Supported -</div>' + 
+					// 	'<ul class="filetypes">' +
+					// 		'<li>Jpg</li>' +
+					// 		'<li>Png</li>' +
+					// 		'<li>Gif</li>' +
+					// 		'<li>Pdf</li>' +
+					// 	'</ul>' +
+					// 	'<div class="file-input-wrapper">'+
+					// 		'<div id="drop_zone">Drop files here</div>'+
+					// 		'<input type="file" id="filesInput" name="files[]" multiple />'+
+					// 	'</div>'+
+					// 	'<ul id="files" class="files">'+
+					// 	//PREVIOUSLY WAS forEach files
+					// 		'{{#each files}}'+
+					// 		// '<li class="file">'+
+					// 		// 	'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
+			  //   //     			'<div class="file-text">'+
+			  //   //       				'<div class="file-icon jpg"></div>'+
+			  //   //       				// '<div class="file-icon {{filetype}}"></div>'+
+			  //   //       				'<div class="file-info">'+
+			  //   //       					// '<div class="filename">{{name}}</div>'+
+					// 		// 			'<div class="filename">{{attributes.name}}</div>'+
+					// 		// 			'<a class="file-view">View</a>'+
+					// 		// 			'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+					// 		// 		'</div>'+
+					// 		// 	'</div>'+
+					// 		// '</li>'+
+					// 		'{{/each}}'+
 
-						// '<li class="file">' +
-						// 	'<img class="file-thumb" src="/application/assets/img/reckitt.jpg"/>'+
-						// 	'<div class="file-icon jpg"></div>' +
-						// 	'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-						// 	'<a href="">View</a>' +
-						// 	'<a href="">Delete</a>' +
-						// '</li>' +
-					// 	'<li class="file">' +
-					// 		'<div class="file-icon jpg"></div>' +
-					// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 		'<a href="">View</a>' +
-					// 		'<a href="">Delete</a>' +
-					// 	'</li>' +
-					// 	'<li class="file">' +
-					// 		'<div class="file-icon jpg"></div>' +
-					// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 		'<a href="">View</a>' +
-					// 		'<a href="">Delete</a>' +
-					// 	'</li>' +
-					// 	'<li class="file">' +
-					// 		'<div class="file-icon jpg"></div>' +
-					// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 		'<a href="">View</a>' +
-					// 		'<a href="">Delete</a>' +
-					// 	'</li>' +							
-					'</ul>' +	
-				'</div>' +
+					// 		// '<li class="file">' +
+					// 		// 	'<img class="file-thumb" src="/application/assets/img/reckitt.jpg"/>'+
+					// 		// 	'<div class="file-icon jpg"></div>' +
+					// 		// 	'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
+					// 		// 	'<a href="">View</a>' +
+					// 		// 	'<a href="">Delete</a>' +
+					// 		// '</li>' +
+					// 	// 	'<li class="file">' +
+					// 	// 		'<div class="file-icon jpg"></div>' +
+					// 	// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
+					// 	// 		'<a href="">View</a>' +
+					// 	// 		'<a href="">Delete</a>' +
+					// 	// 	'</li>' +
+					// 	// 	'<li class="file">' +
+					// 	// 		'<div class="file-icon jpg"></div>' +
+					// 	// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
+					// 	// 		'<a href="">View</a>' +
+					// 	// 		'<a href="">Delete</a>' +
+					// 	// 	'</li>' +
+					// 	// 	'<li class="file">' +
+					// 	// 		'<div class="file-icon jpg"></div>' +
+					// 	// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
+					// 	// 		'<a href="">View</a>' +
+					// 	// 		'<a href="">Delete</a>' +
+					// 	// 	'</li>' +							
+					// 	'</ul>' +	
+					// '</div>' +
+				'</div>'+
 				'<button class="save" type="button">Create Ticket</button>' +
 				'<div class="beige or">or</div>' +
 				'<a class="cancel-btn ib">Cancel</a>' +
@@ -84,17 +86,18 @@ var FormView = Backbone.View.extend({
 
 	render: function(){
 		jQuery.event.props.push("dataTransfer");
-		this.$el.html(this.template(this.model));		
+		this.$el.html(this.template(this.model));	
+
+		var filesCollection = new Files();
+		this.fileView = new FileView({ collection: filesCollection});
+		// fileModel.fetch();
+		this.$('#file-view-wrap').html(this.fileView.$el);
+		this.fileView.render();
+
 		this.delegateEvents({
 			'click .save': 'save',
 			'input .new-sub': 'subjectCharCount',
 			'click .cancel-btn': 'cancelTicket'
-			// 'click .attach-link': 'fileDialogTrigger',
-			// 'dragover #drop_zone': 'handleDragOver',
-			// 'dragleave #drop_zone': 'handleDragLeave',
-			// 'drop #drop_zone': 'handleDragFileSelect',
-			// 'change #filesInput': 'handleFileSelect',
-			// 'click .file-del': 'deleteFile'
 		});
 
 		// Check for the various File API support.
@@ -148,6 +151,188 @@ var FormView = Backbone.View.extend({
 		this.model.clear();
 		app.navigate('', {trigger: true});
 	}
+
+});
+
+var FileView = Backbone.View.extend({
+
+	template: Handlebars.compile(
+		'<div class="attach-files">' +
+			'<a class="attach-link">Attach files to this ticket</a>' + 
+			'<div class="supported">Supported -</div>' + 
+			'<ul class="filetypes">' +
+				'<li>Jpg</li>' +
+				'<li>Png</li>' +
+				'<li>Gif</li>' +
+				'<li>Pdf</li>' +
+			'</ul>' +
+			'<div class="file-input-wrapper">'+
+				'<div id="drop_zone">Drop files here</div>'+
+				'<input type="file" id="filesInput" name="files[]" multiple />'+
+			'</div>'+
+			'<ul id="files" class="files">'+
+			'{{#each models}}'+
+				'<li class="file">'+
+					'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
+					'<div class="file-text">'+
+		  				'<div class="file-icon jpg"></div>'+
+		  				// '<div class="file-icon {{filetype}}"></div>'+
+		  				'<div class="file-info">'+
+		  					// '<div class="filename">{{name}}</div>'+
+							'<div class="filename">{{attributes.name}}</div>'+
+							'<a data-img="{{attributes.target}}" class="file-preview">Preview</a>'+
+							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+						'</div>'+
+					'</div>'+
+				'</li>'+
+			'{{/each}}'+
+			'</ul>' +	
+		'</div>' 
+	),
+
+	initialize : function(){
+		this.listenTo(this.collection, 'add change remove sync', this.render);
+
+		this.delegateEvents({
+			'click .attach-link': 'fileDialogTrigger',
+			'dragover #drop_zone': 'handleDragOver',
+			'dragleave #drop_zone': 'handleDragLeave',
+			'drop #drop_zone': 'handleDragFileSelect',
+			'change #filesInput': 'handleFileSelect',
+			'click .file-preview': 'previewFile',
+			'click .file-del': 'deleteFile',
+			'click .preview-close': 'previewClose'
+		});
+	},
+
+	render : function(){
+		this.$el.html(this.template(this.collection));
+		console.log(app.formView.model);
+	},
+
+	fileDialogTrigger: function(){
+		this.$el.find('#filesInput').trigger('click');
+	},
+
+	previewFile: function(e){
+		var button = $(e.currentTarget);
+		var img = button.data("img");
+		var prevWindow = this.$el.find('.attach-files');
+		prevWindow.after("<div class='preview-window'>"+
+			"<i class='preview-close icon-cancel-circled'></i>"+
+			"<img src='" + img + "' />"+
+			"</div>"
+		);	
+	},
+
+	previewClose: function(){
+		this.$el.find('.preview-window').remove();
+	},
+
+	addFiles: function(files){
+
+		for (var i = 0, f; f = files[i]; i++) {
+
+	        var reader = new FileReader();
+			reader.onerror = this.fileErrorHandler;
+			//is there need for ability to abort whilst file is being uploaded?
+	        reader.onabort = function(e) {
+	        	console.log(e);
+		        alert('File read cancelled');
+		    };
+
+	        // Closure to capture the file information.
+	        reader.onload = _.bind((function(theFile) {
+		        return function(e) {
+			        theFile["target"] = e.target.result;		        
+					// this.collection.add(theFile);
+
+					var fileMdl = new FileModel(theFile);
+					fileMdl.url = '/tickets/file/add/';
+					fileMdl.save();
+
+		        };
+	        })(f), this);
+
+	        // Read in the image file as a data URL.
+	        reader.readAsDataURL(f);
+	  	}
+	},
+
+	deleteFile: function(e){
+
+		var button = $(e.currentTarget);
+		var cid = button.data("cid");
+		var fileToDelete = this.collection.get(cid);
+		//stackoverflow.com/questions/6280553/destroying-a-backbone-model-in-a-collection-in-one-step
+		this.collection.remove(fileToDelete);
+		// fileToDelete.destroy();
+	},
+
+
+	fileErrorHandler: function(evt){
+		//Add in error to view
+		console.log(evt);
+		switch(evt.target.error.code) {
+			case evt.target.error.NOT_FOUND_ERR:
+				alert('File Not Found!');
+				break;
+			case evt.target.error.NOT_READABLE_ERR:
+				alert('File is not readable');
+				break;
+			case evt.target.error.ABORT_ERR:
+				break; // noop
+			default:
+				alert('An error occurred reading this file.');
+		};
+	},
+
+	handleFileSelect: function(evt) {
+
+		this.addFiles(evt.target.files);
+	},
+
+	handleDragFileSelect: function(evt){
+		evt.stopPropagation();
+	    evt.preventDefault();
+
+	    //remove drag highlight state
+	    $(evt.currentTarget).removeClass('dropping');
+
+	    this.addFiles(evt.dataTransfer.files);
+
+	},
+
+	abortFileUpload: function(){
+		reader.abort();
+	},
+
+
+	handleDragOver: function(evt){
+		evt.stopPropagation();
+	    evt.preventDefault();
+	    // this.$el wouldnt work for some reason
+	    //add drag highlight state
+	    $(evt.currentTarget).addClass('dropping');
+	    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+
+	    //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
+		//stackoverflow.com/questions/14788862/drag-drop-doenst-not-work-dropeffect-of-undefined
+	    
+	},
+
+	handleDragLeave: function(evt){
+		evt.stopPropagation();
+	    evt.preventDefault();
+	    // remove drag highlight state
+	    $(evt.currentTarget).removeClass('dropping');
+	}
+
+});
+
+
+
+
 
 	// fileDialogTrigger: function(){
 	// 	this.$el.find('#filesInput').trigger('click');
@@ -258,8 +443,8 @@ var FormView = Backbone.View.extend({
 	//     // remove drag highlight state
 	//     $(evt.currentTarget).removeClass('dropping');
 	// }
-});
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 	outputFileDetails: function(){
 
 // 		var files = this.filesArray;

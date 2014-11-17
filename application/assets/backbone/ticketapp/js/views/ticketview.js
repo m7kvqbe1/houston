@@ -166,9 +166,10 @@ var TicketDetail = Backbone.View.extend({
 	
 	render: function (){	
 		this.$el.html(this.template(this.model));
+
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
-			this.update();
+			this.updateSeen();
 		}
 
 		this.delegateEvents({
@@ -187,15 +188,15 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	dropDown: function(e){
-		var update = houston.dropDown(e.currentTarget);
+		var changed = houston.dropDown(e.currentTarget);
 		//look for way to do without if
-		if(update.param == 'status') {
+		if(changed.param == 'status') {
 			this.model.set({
-				status: update.value
+				status: changed.value
 			});
 		} else {
 			this.model.set({
-				agent: update.value
+				agent: changed.value
 			});
 			//if setting agent for the first time add status of in progress
 			var currentStatus = this.model.get('status');
@@ -213,7 +214,7 @@ var TicketDetail = Backbone.View.extend({
 		console.log(this.model);
 	},
 	
-	update: function() {
+	updateSeen: function() {
 		this.model.set({			
 			updated: this.model.get('updated').concat(app.user.attributes.id)
 		});
@@ -242,8 +243,7 @@ var TicketDetail = Backbone.View.extend({
 			console.log('completion');
 			this.model.set({
 				status: 'Completed'
-			});	
-			this.saveModel();	
+			});		
 		}
 		
 		var msg = {
@@ -259,6 +259,9 @@ var TicketDetail = Backbone.View.extend({
 
 		msgMdl.url = '/tickets/reply/add/' + this.model.id;
 		msgMdl.save();
+
+		//set updated array
+		this.saveModel();
 
 	}
 
