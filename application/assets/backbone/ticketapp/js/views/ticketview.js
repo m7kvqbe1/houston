@@ -1,150 +1,149 @@
 var TicketDetail = Backbone.View.extend({
 	template: Handlebars.compile(
-			'<div class="box-app-top msg-top">'+
-				'{{#if attributes.agent}}'+
-					'<h2><a href="#">< All Tickets</a></h2>'+
-					'{{generateDropSwitch attributes.status}}'+					
-					'<div class="dropdown droplist">'+
-						'<div class="drop-top rounded">'+
-							'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
-						'</div>'+						
-						'<ul class="drop">'+
-							'{{populateAgentDropdown}}'+
-						'</ul>'+
+		'<div class="box-app-top msg-top">'+
+			'{{#if attributes.agent}}'+
+				'<h2><a href="#">< All Tickets</a></h2>'+
+				'{{generateDropSwitch attributes.status}}'+					
+				'<div class="dropdown droplist">'+
+					'<div class="drop-top rounded">'+
+						'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
+					'</div>'+						
+					'<ul class="drop">'+
+						'{{populateAgentDropdown}}'+
+					'</ul>'+
+				'</div>'+
+			'{{else}}'+
+				'<h2><a href="#">< All Tickets</a></h2>'+
+				'<div class="btn new">New</div>'+
+				'<div class="dropdown droplist">'+
+					'<div class="drop-top rounded">'+
+						'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
+					'</div>'+						
+					'<ul class="drop">'+
+						'{{populateAgentDropdown}}'+
+					'</ul>'+
+				'</div>'+
+			'{{/if}}'+
+		'</div>'+			
+		'<ul id="msg-stream" class="box-app">'+
+			'<li class="msg from-client">'+
+				'<div class="msg-dtl">'+
+					'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{author}}"/>'+
+					'<div class="msg-dtl-inr">'+
+						'<h3 class="msg-agent">{{attributes.name}}</h3>'+
+						'<h4 class="msg-company">{{attributes.company}}</h4>'+
+						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
+					'<div class="msg-tri"></div>'+
+				'</div>'+
+				'<div class="msg-body">'+
+					'<h5>Ticket Subject</h5>'+
+					'<div class="msg-text">'+
+						'{{attributes.subject}}'+							
+					'</div>'+
+					'<h5>Ticket Message</h5>'+
+					'<div class="msg-text">'+
+						'{{attributes.message}}'+							
+					'</div>'+						
+					'<ul class="files">'+
+					'{{#each attributes.files}}'+
+						'<li class="file">'+
+							'<div class="file-icon {{filetype}}"></div>'+
+							'<div class="filename">{{filename}}</div>'+
+							'<a href="">View</a>'+
+							'<a href="">Delete</a>'+
+						'</li>'+	
+					'{{/each}}'+
+					'</ul>'+
+				'{{#if messages.models}}'+
+					'</div>'+											
 				'{{else}}'+
-					'<h2><a href="#">< All Tickets</a></h2>'+
-					'<div class="btn new">New</div>'+
-					'<div class="dropdown droplist">'+
-						'<div class="drop-top rounded">'+
-							'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
-						'</div>'+						
-						'<ul class="drop">'+
-							'{{populateAgentDropdown}}'+
-						'</ul>'+
+				'<a class="btn reply-btn">Reply</a>'+
+				'</div>'+
+				'<div class="reply">'+
+					'<form id="form-reply">' +
+						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+						'<div class="attach-files">' +
+							'<a class="attach-link" href="">Attach files to this ticket</a>' + 
+							'<div class="supported">Supported -</div>' + 
+							'<ul class="filetypes">' +
+							'<li>Jpg</li>' +
+							'<li>Png</li>' +
+							'<li>Gif</li>' +
+							'<li>Pdf</li>' +
+							'</ul>' +
+						'</div>' +
+						'<label>'+
+							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
+							'Mark ticket as completed'+
+						'</label>'+
+						'<button class="add-message" type="button">Submit</button>' +
+						'<div class="beige or">or</div>' +
+						'<a class="cancel-btn ib">Cancel</a>' +
+					'</form>' +
+				'</div>'+					
+				'{{/if}}'+						
+			'</li>'+
+		'{{#forEach messages.models}}'+
+			'<li class="msg from-{{attributes.role}}">'+
+				'<div class="msg-dtl">'+
+					'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
+					'<div class="msg-dtl-inr">'+
+						'<h3 class="msg-agent">{{attributes.author}}</h3>'+
+						'<h4 class="msg-company">{{attributes.company}}</h4>'+
+						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
-				'{{/if}}'+
-			'</div>'+			
-			'<ul id="msg-stream" class="box-app">'+
-				'<li class="msg from-client">'+
-					'<div class="msg-dtl">'+
-						'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{author}}"/>'+
-						'<div class="msg-dtl-inr">'+
-							'<h3 class="msg-agent">{{attributes.name}}</h3>'+
-							'<h4 class="msg-company">{{attributes.company}}</h4>'+
-							'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
-						'</div>'+
-						'<div class="msg-tri"></div>'+
-					'</div>'+
-					'<div class="msg-body">'+
-						'<h5>Ticket Subject</h5>'+
-						'<div class="msg-text">'+
-							'{{attributes.subject}}'+							
-						'</div>'+
-						'<h5>Ticket Message</h5>'+
-						'<div class="msg-text">'+
-							'{{attributes.message}}'+							
-						'</div>'+						
-						'<ul class="files">'+
-						'{{#each attributes.files}}'+
-							'<li class="file">'+
-								'<div class="file-icon {{filetype}}"></div>'+
-								'<div class="filename">{{filename}}</div>'+
-								'<a href="">View</a>'+
-								'<a href="">Delete</a>'+
-							'</li>'+	
-						'{{/each}}'+
-						'</ul>'+
-					// '{{#if messages}}'+
-					'{{#if messages.models}}'+
-						'</div>'+											
-					'{{else}}'+
+					'<div class="msg-tri"></div>'+
+				'</div>'+
+				'<div class="msg-body">'+
+					'<div class="msg-text">'+
+						'{{attributes.message}}'+							
+					'</div>'+						
+					'<ul class="files">'+
+					'{{#each attributes.files}}'+
+						'<li class="file">'+
+							'<div class="file-icon {{filetype}}"></div>'+
+							'<div class="filename">{{filename}}</div>'+
+							'<a href="">View</a>'+
+							'<a href="">Delete</a>'+
+						'</li>'+	
+					'{{/each}}'+
+					'</ul>'+
+				'{{#if $last}}'+						
 					'<a class="btn reply-btn">Reply</a>'+
-					'</div>'+
-					'<div class="reply">'+
-						'<form id="form-reply">' +
-							'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-							'<div class="attach-files">' +
-								'<a class="attach-link" href="">Attach files to this ticket</a>' + 
-								'<div class="supported">Supported -</div>' + 
-								'<ul class="filetypes">' +
-								'<li>Jpg</li>' +
-								'<li>Png</li>' +
-								'<li>Gif</li>' +
-								'<li>Pdf</li>' +
-								'</ul>' +
-							'</div>' +
-							'<button class="add-message" type="button">Submit</button>' +
-							'<div class="beige or">or</div>' +
-							'<a class="cancel-btn ib">Cancel</a>' +
-						'</form>' +
-					'</div>'+					
-					'{{/if}}'+						
-				'</li>'+
-			// '{{#forEach messages}}'+
-			'{{#each messages.models}}'+
-				'<li class="msg from-{{attributes.role}}">'+
-					'<div class="msg-dtl">'+
-						'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
-						'<div class="msg-dtl-inr">'+
-							'<h3 class="msg-agent">{{attributes.author}}</h3>'+
-							'<h4 class="msg-company">{{attributes.company}}</h4>'+
-							// '<div class="msg-date">{{convertToDateTime date}}</div>'+
-						'</div>'+
-						'<div class="msg-tri"></div>'+
-					'</div>'+
-					'<div class="msg-body">'+
-						'<div class="msg-text">'+
-							'{{attributes.message}}'+							
-						'</div>'+						
-						'<ul class="files">'+
-						'{{#each attributes.files}}'+
-							'<li class="file">'+
-								'<div class="file-icon {{filetype}}"></div>'+
-								'<div class="filename">{{filename}}</div>'+
-								'<a href="">View</a>'+
-								'<a href="">Delete</a>'+
-							'</li>'+	
-						'{{/each}}'+
-						'</ul>'+
-					// '{{#if $last}}'+						
-						'<a class="btn reply-btn">Reply</a>'+
-					'</div>'+
-					'<div class="reply">'+
-						'<form id="form-reply">' +
-							'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-							'<div class="attach-files">' +
-								'<a class="attach-link" href="">Attach files to this ticket</a>' + 
-								'<div class="supported">Supported -</div>' + 
-								'<ul class="filetypes">' +
-								'<li>Jpg</li>' +
-								'<li>Png</li>' +
-								'<li>Gif</li>' +
-								'<li>Pdf</li>' +
-								'</ul>' +
-							'</div>' +
-							'<label>'+
-								'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
-								'Mark ticket as completed'+
-							'</label>'+
-							'<button class="add-message" type="button">Submit</button>' +
-							'<div class="beige or">or</div>' +
-							'<a class="cancel-btn ib">Cancel</a>' +
-						'</form>' +
-					'</div>'+
-					// '{{else}}'+
-					// '</div>'+
-					// '{{/if}}'+					
-				'</li>'+
-			'{{/each}}'+	
-			'</ul>'	
+				'</div>'+
+				'<div class="reply">'+
+					'<form id="form-reply">' +
+						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+						'<div class="attach-files">' +
+							'<a class="attach-link" href="">Attach files to this ticket</a>' + 
+							'<div class="supported">Supported -</div>' + 
+							'<ul class="filetypes">' +
+							'<li>Jpg</li>' +
+							'<li>Png</li>' +
+							'<li>Gif</li>' +
+							'<li>Pdf</li>' +
+							'</ul>' +
+						'</div>' +
+						'<label>'+
+							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
+							'Mark ticket as completed'+
+						'</label>'+
+						'<button class="add-message" type="button">Submit</button>' +
+						'<div class="beige or">or</div>' +
+						'<a class="cancel-btn ib">Cancel</a>' +
+					'</form>' +
+				'</div>'+
+				'{{else}}'+
+				'</div>'+
+				'{{/if}}'+					
+			'</li>'+
+		'{{/forEach}}'+	
+		'</ul>'	
 	),
 	
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
-
-		// this.listenTo(this.model, "reset add remove change sort", this.render);
-		
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -166,10 +165,6 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	render: function (){	
-		this.model.messages.url = '/tickets/reply/get/' + this.model.id;
-		console.log(this.model.messages.url);
-		this.model.messages.fetch({success: function(){console.log('fetched')}});
-	
 		this.$el.html(this.template(this.model));
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
@@ -210,7 +205,7 @@ var TicketDetail = Backbone.View.extend({
 				});
 			}			
 		}
-		this.save();
+		this.saveModel();
 	},
 	
 	replyToggle: function(){
@@ -226,7 +221,7 @@ var TicketDetail = Backbone.View.extend({
 	
 	},
 	
-	save: function(){
+	saveModel: function(){
 		//Set updated attribute to empty array
 		this.model.set({			
 			updated: []
@@ -234,42 +229,22 @@ var TicketDetail = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model, response, options){
-					console.log('success');
+					
 				}, this)
 			}
 		);
 	
 	},
-
-	saveMessage: function(){
-		this.model.messages.url = '/tickets/reply/add/' + this.model.id;
-		console.log(this.model.messages.url);
-		//stackoverflow.com/questions/14492226/backbone-js-sync-cant-find-the-url-property
-		this.model.messages.invoke('save');
-		// this.model.messages.sync('create',{
-		//     success: function (collection, response, options) {
-
-		//     },
-		//     error: function (collection, response, options) {
-
-		//     }
-		// });
-	},
 	
-	addMessage: function(){
-	//stackoverflow.com/questions/13644080/store-push-to-an-array-in-a-backbone-model
-		// var msg =
-		// 	{
-		// 		"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
-		// 		"role": "agent",
-		// 		"avatar": app.user.attributes.avatar, 
-		// 		"company": app.user.attributes.company,
-		// 		"date": new Date(),
-		// 		"message": this.$el.find('textarea[name="new-textarea"]').val()
-		// 	};
-		// this.model.set({
-		// 	messages: this.model.get('messages').concat(msg)			
-		// });
+	addMessage: function(){	
+		//if ticket marked as complete
+		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
+			console.log('completion');
+			this.model.set({
+				status: 'Completed'
+			});	
+			this.saveModel();	
+		}
 		
 		var msg = {
 			"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
@@ -282,16 +257,18 @@ var TicketDetail = Backbone.View.extend({
 
 		var msgMdl = new MessageModel(msg);
 
-		this.model.messages.add(msgMdl);
+		msgMdl.url = '/tickets/reply/add/' + this.model.id;
+		msgMdl.save();
 
-		//if ticket marked as complete
-		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
-			this.model.set({
-				status: 'Completed'
-			});		
-		}		
-		this.saveMessage();
-		// this.save();
 	}
+
+	// saveMessage: function(){
+	// 	this.model.messages.url = '/tickets/reply/add/' + this.model.id;
+	// 	console.log(this.model.messages.url);
+	// 	//stackoverflow.com/questions/14492226/backbone-js-sync-cant-find-the-url-property
+	// 	this.model.messages.invoke('save');
+	// 	//think this unnecessarily saves all of the models rather than just the new one.
+	
+	// }
 	
 });

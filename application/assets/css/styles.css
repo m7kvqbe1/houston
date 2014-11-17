@@ -731,7 +731,8 @@ input.inp-lst {
 	line-height: 38px;
 }
 
-.box-app-top .btn.new {
+.box-app-top .btn.new,
+.box-app-top .btn.completed {
 	width: 90px;
 	margin-left: 12px;
 	text-align: center;

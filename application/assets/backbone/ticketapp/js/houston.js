@@ -112,7 +112,7 @@ var houston = {
 							'</ul>'+
 						'</div>'+
 					'</div>';
-		} else {
+		} else if(attribute === 'On Hold'){
 			return '<div class="dropdown dropswitch">'+
 						'<div class="drop-inner">'+				
 							'<div class="drop-top in-progress rounded">'+
@@ -124,6 +124,8 @@ var houston = {
 							'</ul>'+
 						'</div>'+
 					'</div>';
+		} else if(attribute === 'Completed'){
+			return '<div class="btn completed">Completed</div>';
 		}
 	},
 	

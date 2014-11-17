@@ -78,7 +78,14 @@ var AppRouter = Backbone.Router.extend({
 
 		// this.ticketDetailView.model.set(this.tickets.get(ticket).attributes);
 		this.ticketDetailView.model.set(this.tickets.get(ticket).attributes);
-		$('#app').html(this.ticketDetailView.render().el);
+		this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
+		this.ticketDetailView.model.messages.fetch({
+			success: _.bind(function(){
+				console.log('fetched');
+				$('#app').html(this.ticketDetailView.render().el);
+			}, this)
+		});
+		
 	},
 
 	ticketForm: function() {

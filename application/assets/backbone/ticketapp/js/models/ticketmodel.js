@@ -4,7 +4,10 @@ var TicketModel = Backbone.Model.extend({
 	//idAttribute: "_id",
 	initialize: function(){
 		this.messages = new Messages();
-		this.messages.bind('change', this.save);
+		this.messages.on("sync",  function(){
+			console.log('messagesSync');
+			app.ticketDetailView.render();
+		});
 	},
 	parse: function(response){
 	if(response._id){
