@@ -29,4 +29,28 @@ class TicketModel {
 	public function unsetTicket() {
 		unset($this->ticket);
 	}
+	
+	public function getAll() {
+		
+	}
+	
+	public function get($ticketID) {
+		
+	}
+	
+	public function add() {
+		
+	}
+	
+	public function edit() {
+		
+	}
+	
+	public function getReplies() {
+		
+	}
+	
+	public function reply() {
+		
+	}
 }

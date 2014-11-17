@@ -21,6 +21,12 @@ $app->get('/tickets/all', function(Request $request, Application $app) {
 	return $docs;
 });
 
+// Get ticket - DEPRECATED
+$app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	var_dump($json);
+});
+
 // Add new ticket
 $app->post('/tickets/add', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
@@ -68,12 +74,6 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	}
 	
 	return json_encode($json);
-});
-
-// Get ticket - DEPRECATED
-$app->get('/tickets/{ticketID}', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
-	var_dump($json);
 });
 
 // Add new reply
