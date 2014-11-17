@@ -31,13 +31,23 @@ class TicketModel {
 	}
 	
 	public function getAll() {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
 		
-	}
-	
-	public function get($ticketID) {
+		$tickets = $db->tickets;
+		$result = $tickets->find();
 		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
 	}
-	
+		
 	public function add($json) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -75,8 +85,22 @@ class TicketModel {
 		}
 	}
 	
-	public function getReplies() {
+	public function getReplies($ticketID) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
 		
+		$collection = $db->replies;
+		$result = $collection->find(array('ticketID' => $ticketID));
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
 	}
 	
 	public function reply($json) {

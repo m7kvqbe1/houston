@@ -4,21 +4,8 @@ use Silex\Application;
 
 // Get all tickets
 $app->get('/tickets/all', function(Request $request, Application $app) {
-	$connections = $app['mongo'];
-	$db = $connections['default'];
-	$db = $db->houston;
-	
-	$tickets = $db->tickets;
-	$result = $tickets->find();
-	
-	$docs = array();
-	foreach($result as $doc) {
-	    array_push($docs, $doc);
-	}
-	
-	$docs = json_encode($docs);
-	
-	return $docs;
+	$ticket = new \Houston\Ticket\Model\TicketModel($app);
+	return $ticket->getAll();
 });
 
 // Add new ticket
@@ -67,15 +54,6 @@ $app->get('/tickets/reply/get/{ticketID}', function(Request $request, Applicatio
 	
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$collection = $db->replies;
-	$result = $collection->find(array('ticketID' => $ticketID));
-	
-	$docs = array();
-	foreach($result as $doc) {
-	    array_push($docs, $doc);
-	}
-	
-	$docs = json_encode($docs);
-	
-	return $docs;
+	$ticket = new \Houston\Ticket\Model\TicketModel($app);
+	return $ticket->getReplies($ticketID);
 });
