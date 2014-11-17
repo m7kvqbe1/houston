@@ -118,11 +118,19 @@ class TicketModel {
 		}
 	}
 	
-	public function uploadAttachment() {
+	public function uploadAttachment($ticketID) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
 		
+		// Upload file
+		
+		// Return MongoID for document
 	}
 	
-	public function downloadAttachment() {
-		
+	public function downloadAttachment($ticketID, $filename) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;		
 	}
 }

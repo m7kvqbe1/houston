@@ -47,13 +47,21 @@ $app->post('/tickets/reply/add/{ticketID}', function(Request $request, Applicati
 });
 
 // Get replies
-$app->get('/tickets/reply/get/{ticketID}', function(Request $request, Application $app, $ticketID) {
-	$connections = $app['mongo'];
-	$db = $connections['default'];
-	$db = $db->houston;
-	
+$app->get('/tickets/reply/get/{ticketID}', function(Request $request, Application $app, $ticketID) {	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->getReplies($ticketID);
+});
+
+// Upload attachment
+$app->post('/tickets/file/add', function(Request $request, Application $app) {
+	$ticket = new \Houston\Ticket\Model\TicketModel($app);
+	return $ticket->uploadAttachment();
+});
+
+// Download attachment
+$app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $filename) {
+	$ticket = new \Houston\Ticket\Model\TicketModel($app);
+	return $ticket->downloadAttachment($ticketID, $filename);
 });

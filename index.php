@@ -1,5 +1,5 @@
 <?php
-// Setup application config
+// Application config
 define('DOCUMENT_ROOT', dirname(__FILE__));
 require_once(__DIR__.'/application/config.php');
 
@@ -14,10 +14,10 @@ require_once(__DIR__.'/vendor/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
-// Setup URL generator
+// Register URL generator
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-// Setup session handling
+// Register session handling
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 // Setup MongoDB connection
@@ -60,5 +60,12 @@ foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
 foreach (glob(__DIR__."/application/extras/*.php") as $filename) {
     include $filename;
 }
+
+// Security - Move to another file!
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+$app->before(function (Request $request) {
+	// Always check for authenticated session
+});
 
 $app->run();
