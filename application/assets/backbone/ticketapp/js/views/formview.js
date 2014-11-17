@@ -248,7 +248,7 @@ var FileView = Backbone.View.extend({
 					// this.collection.add(theFile);
 
 					var fileMdl = new FileModel(theFile);
-					fileMdl.url = '/tickets/file/add/';
+					fileMdl.url = '/tickets/file/add';
 					fileMdl.save();
 
 		        };
