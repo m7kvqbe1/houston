@@ -29,4 +29,100 @@ class TicketModel {
 	public function unsetTicket() {
 		unset($this->ticket);
 	}
+	
+	public function getAll() {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$tickets = $db->tickets;
+		$result = $tickets->find();
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
+	}
+		
+	public function add($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		try {
+			$tickets = $db->tickets;
+			$tickets->save($json);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
+	
+	public function edit($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$json = str_replace('$', '', $json);
+		$json = json_decode($json);	
+		
+		unset($json->_id);
+		
+		try {	
+			$id = new MongoID($json->id);
+			
+			$tickets = $db->tickets;
+			$tickets->update(array('_id' => $id), $json);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
+	
+	public function getReplies($ticketID) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$collection = $db->replies;
+		$result = $collection->find(array('ticketID' => $ticketID));
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
+	}
+	
+	public function reply($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		try {	
+			$collection = $db->replies;
+			$collection->save($json);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
+	
+	public function uploadAttachment() {
+		
+	}
+	
+	public function downloadAttachment() {
+		
+	}
 }
