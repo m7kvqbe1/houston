@@ -33,7 +33,7 @@ $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-// Security handler
+// REST security handler
 $secure = function(Request $request, Application $app) {
 	if(!$app['session']->get('isAuthenticated')) {
 		return $app->redirect('/');
@@ -47,10 +47,7 @@ spl_autoload_extensions('.php, .class.php');
 function controllerLoader($class) {
     $filename = strtolower($class) . '.class.php';
     $file = __DIR__.'/application/controllers/' . $filename;
-    if (!file_exists($file))
-    {
-        return false;
-    }
+    if (!file_exists($file)) return false;
     include $file;
 }
 spl_autoload_register('controllerLoader');*/

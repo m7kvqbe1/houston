@@ -67,7 +67,7 @@ $app->post('/auth/reset', function(Request $request, Application $app) {
 	$token = $userModel->resetPasswordRequest($json->emailAddress);
 	
 	// Send email link
-	mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: http://tom.houston.com/#/reset/".$token);
+	mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not submitted by you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: ".Config::DOMAIN."/#/reset/".$token);
 	
 	return 1;
 });
@@ -105,7 +105,7 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	$companyModel->generateCompany($json);
 
 	// Send verification email
-	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: http://tom.houston.com/verify/".$json->verify);
+	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);
 	
 	return 1;
 });
