@@ -61,7 +61,9 @@ $app->post('/tickets/file/add', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	return $ticket->uploadAttachment($json);
+	$id = $ticket->uploadAttachment($json);
+	
+	return json_encode(array('_id' => $id));
 })->before($secure);
 
 // Download attachment
