@@ -269,20 +269,20 @@ var FileView = Backbone.View.extend({
 	        reader.onloadend = _.bind((function(theFile) {
 		        return function(e) {
 		        	
-			        // theFile["target"] = e.target.result;		        
+			        theFile["target"] = e.target.result;		        
 					// this.collection.add(theFile);
 
-					var result = e.target.result;
-					var hex = "";
-		            for (var i = 0; i < result.length; i++) {
-		                var byteStr = result.charCodeAt(i).toString(16);
-		                if (byteStr.length < 2) {
-		                    byteStr = "0" + byteStr;
-		                }
-		                hex += " " + byteStr;
-		            }
-
-		            theFile["target"] = hex;
+					// var result = e.target.result;
+					// var hex = "";
+		   //          for (var i = 0; i < result.length; i++) {
+		   //              var byteStr = result.charCodeAt(i).toString(16);
+		   //              if (byteStr.length < 2) {
+		   //                  byteStr = "0" + byteStr;
+		   //              }
+		   //              hex += " " + byteStr;
+		   //          }
+		   //          theFile["target"] = hex;
+		            
 					delete theFile["webkitRelativePath"];
 					var fileMdl = new FileModel();
 					fileMdl.url = '/tickets/file/add';
