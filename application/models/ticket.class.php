@@ -139,10 +139,15 @@ class TicketModel {
 		$db = $db->houston;
 			
 		$gridfs = $db->getGridFS();	
-		$file = $gridfs->find(array('id' => $id));
+		$file = $gridfs->findOne(array('_id' => new \MongoId($id)));
 		
-		$binary = $file->getBytes();
+		$fileArr = array(
+			'data' => $file->getBytes(),
+			'fileName' => $file->file['fileName'],
+			'contentType' => $file->file['contentType'],
+			'lastModifiedDate' => $file->file['lastModifiedDate']
+		); 
 		
-		return $binary;
+		return $fileArr;
 	}
 }

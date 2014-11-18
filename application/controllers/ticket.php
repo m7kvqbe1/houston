@@ -65,7 +65,7 @@ $app->post('/tickets/file/add', function(Request $request, Application $app) {
 // Download attachment
 $app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	$binary = $ticket->downloadAttachment($fileID);
+	$file = $ticket->downloadAttachment($fileID);
 	
-	return $binary;
+	return print_r($file, true);;
 })->before($secure);
