@@ -114,22 +114,27 @@ var FormView = Backbone.View.extend({
 	},
 	
 	save: function(){
-		this.setModelData();
-		
-		console.log(this.model);
-		
-		this.model.save(this.model.attributes,
-			{
-				success: function(model, response, options){					
-					//add model to collection, no longer required.
-					// app.tickets.add(model);
-					//ensure formView always uses a fresh model
-					app.formView.model = new TicketModel();
-					//app.navigate('contacts/' + model.get('url'), {trigger: true});
-					app.navigate('', {trigger: true});
+		if(this.$el.find('input[name="new-sub"]').val() !== null){
+
+			this.setModelData();
+			
+			console.log(this.model);
+			
+			this.model.save(this.model.attributes,
+				{
+					success: function(model, response, options){					
+						//add model to collection, no longer required.
+						// app.tickets.add(model);
+						//ensure formView always uses a fresh model
+						app.formView.model = new TicketModel();
+						//app.navigate('contacts/' + model.get('url'), {trigger: true});
+						app.navigate('', {trigger: true});
+					}
 				}
-			}
-		);
+			);
+		} else {
+			console.log('invalid');
+		}
 	
 	},
 
@@ -282,7 +287,7 @@ var FileView = Backbone.View.extend({
 		   //              hex += " " + byteStr;
 		   //          }
 		   //          theFile["target"] = hex;
-		            
+
 					delete theFile["webkitRelativePath"];
 					var fileMdl = new FileModel();
 					fileMdl.url = '/tickets/file/add';
@@ -300,7 +305,7 @@ var FileView = Backbone.View.extend({
 	        })(f), this);
 
 	        // Read in the image file as a data URL.
-	        reader.readAsBinaryString(f);
+	        reader.readAsDataURL(f);
 	  	}
 	},
 
