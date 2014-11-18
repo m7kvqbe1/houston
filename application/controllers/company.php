@@ -16,4 +16,4 @@ $app->get('/companies/all', function(Request $request, Application $app) {
 	$company = $db->companies->findOne($criteria);
 	    	    	    
 	return json_encode($company);
-});
+})->before($secure);

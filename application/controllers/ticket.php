@@ -6,7 +6,7 @@ use Silex\Application;
 $app->get('/tickets/all', function(Request $request, Application $app) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->getAll();
-});
+})->before($secure);
 
 // Add new ticket
 $app->post('/tickets/add', function(Request $request, Application $app) {	
@@ -19,7 +19,7 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 	$notify->newTicket($json);
 	
 	return json_encode($json);
-});
+})->before($secure);
 
 // Edit ticket
 $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app) {	
@@ -29,7 +29,7 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	$ticket->edit($json);
 	
 	return json_encode($json);
-});
+})->before($secure);
 
 // Add new reply
 $app->post('/tickets/reply/add/{ticketID}', function(Request $request, Application $app, $ticketID) {	
@@ -44,7 +44,7 @@ $app->post('/tickets/reply/add/{ticketID}', function(Request $request, Applicati
 	$notify->newReply($json);	
 
 	return json_encode($json);
-});
+})->before($secure);
 
 // Get replies
 $app->get('/tickets/reply/get/{ticketID}', function(Request $request, Application $app, $ticketID) {	
@@ -52,7 +52,7 @@ $app->get('/tickets/reply/get/{ticketID}', function(Request $request, Applicatio
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->getReplies($ticketID);
-});
+})->before($secure);
 
 // Upload attachment
 $app->post('/tickets/file/add', function(Request $request, Application $app) {
@@ -60,7 +60,7 @@ $app->post('/tickets/file/add', function(Request $request, Application $app) {
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->uploadAttachment($json);
-});
+})->before($secure);
 
 // Download attachment
 $app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $fileID) {
@@ -68,4 +68,4 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 	$binary = $ticket->downloadAttachment($fileID);
 	
 	return $binary;
-});
+})->before($secure);

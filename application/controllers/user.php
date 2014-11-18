@@ -11,4 +11,4 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	
 	unset($userModel->user['password']);
 	return json_encode($userModel->user);
-});
+})->before($secure);
