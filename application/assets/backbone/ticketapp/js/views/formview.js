@@ -266,7 +266,7 @@ var FileView = Backbone.View.extend({
 		    };
 
 	        // Closure to capture the file information.
-	        reader.onload = _.bind((function(theFile) {
+	        reader.onloadend = _.bind((function(theFile) {
 		        return function(e) {
 		        	
 			        // theFile["target"] = e.target.result;		        
@@ -300,7 +300,7 @@ var FileView = Backbone.View.extend({
 	        })(f), this);
 
 	        // Read in the image file as a data URL.
-	        reader.readAsDataURL(f);
+	        reader.readAsBinaryString(f);
 	  	}
 	},
 
