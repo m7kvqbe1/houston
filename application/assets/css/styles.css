@@ -1291,6 +1291,7 @@ input.inp-lst {
 /*PREVIEW WINDOW*/
 
 .preview-window {
+	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;

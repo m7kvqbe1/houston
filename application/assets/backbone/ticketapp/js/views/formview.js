@@ -187,11 +187,14 @@ var FileView = Backbone.View.extend({
 				'</li>'+
 			'{{/each}}'+
 			'</ul>' +	
+		'</div>'+
+		'<div class="preview-window">'+
 		'</div>' 
 	),
 
 	initialize : function(){
-		this.listenTo(this.collection, 'add change remove sync', this.render);
+		// this.listenTo(this.collection, 'add change remove sync', this.render);
+		this.listenTo(this.collection, 'sync', this.render);
 
 		this.delegateEvents({
 			'click .attach-link': 'fileDialogTrigger',
@@ -207,7 +210,6 @@ var FileView = Backbone.View.extend({
 
 	render : function(){
 		this.$el.html(this.template(this.collection));
-		console.log(app.formView.model);
 	},
 
 	fileDialogTrigger: function(){
@@ -217,17 +219,39 @@ var FileView = Backbone.View.extend({
 	previewFile: function(e){
 		var button = $(e.currentTarget);
 		var img = button.data("img");
-		var prevWindow = this.$el.find('.attach-files');
-		prevWindow.after("<div class='preview-window'>"+
-			"<i class='preview-close icon-cancel-circled'></i>"+
-			"<img src='" + img + "' />"+
-			"</div>"
+		var prevWindow = this.$el.find('.preview-window');
+		prevWindow.html("<i class='preview-close icon-cancel-circled'></i>"+
+			"<img src='" + img + "' />"
 		);	
 	},
 
 	previewClose: function(){
 		this.$el.find('.preview-window').remove();
 	},
+
+
+	// var fr = new FileReader();
+ //        fr.onloadend = function () {
+ //            var result = this.result;
+ //            var hex = "";
+ //            for (var i = 0; i < this.result.length; i++) {
+ //                var byteStr = result.charCodeAt(i).toString(16);
+ //                if (byteStr.length < 2) {
+ //                    byteStr = "0" + byteStr;
+ //                }
+ //                hex += " " + byteStr;
+ //            }
+            
+ //            // Add file to application object
+ //            application['data'][name] = {
+ //                id: fileList[0]['name'],
+ //                type: 'FILEUPLOAD',
+ //                value: hex
+ //            }
+ //        };
+ //        fr.readAsBinaryString(this.files[0]);
+
+
 
 	addFiles: function(files){
 
@@ -244,12 +268,33 @@ var FileView = Backbone.View.extend({
 	        // Closure to capture the file information.
 	        reader.onload = _.bind((function(theFile) {
 		        return function(e) {
-			        theFile["target"] = e.target.result;		        
+		        	
+			        // theFile["target"] = e.target.result;		        
 					// this.collection.add(theFile);
+
+					var result = e.target.result;
+					var hex = "";
+		            for (var i = 0; i < result.length; i++) {
+		                var byteStr = result.charCodeAt(i).toString(16);
+		                if (byteStr.length < 2) {
+		                    byteStr = "0" + byteStr;
+		                }
+		                hex += " " + byteStr;
+		            }
+
+		            theFile["target"] = hex;
 					delete theFile["webkitRelativePath"];
 					var fileMdl = new FileModel(theFile);
 					fileMdl.url = '/tickets/file/add';
-					fileMdl.save();
+					fileMdl.save({
+						success: function(model, response){
+							console.log(model);
+							console.log(response);
+						},
+						error: function(){
+							console.log('error');
+						}
+					});
 
 		        };
 	        })(f), this);
