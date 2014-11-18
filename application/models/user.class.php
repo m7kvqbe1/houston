@@ -124,7 +124,7 @@ class UserModel {
 	}
 	
 	public static function generateVerificationToken($username) {
-		return md5(DEFAULT_SALT.$username);
+		return md5(\Config::DEFAULT_SALT.$username);
 	}
 	
 	public function isVerified($username = null, $token = null) {
