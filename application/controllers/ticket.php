@@ -1,5 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Silex\Application;
 
 // Get all tickets
@@ -67,5 +69,18 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	$file = $ticket->downloadAttachment($fileID);
 	
-	return print_r($file, true);;
+	$response = new Response();
+	$response->setContent($file['data']);
+	$response->headers->set('Content-Type', $file['contentType']);
+	$response->headers->set('Content-Transfer-Encoding', 'binary');
+	$response->headers->set('Expires', '0');
+	
+	$d = $response->headers->makeDisposition(
+    	ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+		$file['fileName']
+	);
+	$response->headers->set('Content-Disposition', $d);
+	
+	return $response;
+	//return print_r($file, true);
 })->before($secure);
