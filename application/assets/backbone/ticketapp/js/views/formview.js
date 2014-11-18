@@ -284,9 +284,9 @@ var FileView = Backbone.View.extend({
 
 		            theFile["target"] = hex;
 					delete theFile["webkitRelativePath"];
-					var fileMdl = new FileModel(theFile);
+					var fileMdl = new FileModel();
 					fileMdl.url = '/tickets/file/add';
-					fileMdl.save({
+					fileMdl.save(theFile,{
 						success: function(model, response){
 							console.log(model);
 							console.log(response);
