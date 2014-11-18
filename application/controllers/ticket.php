@@ -56,12 +56,16 @@ $app->get('/tickets/reply/get/{ticketID}', function(Request $request, Applicatio
 
 // Upload attachment
 $app->post('/tickets/file/add', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	return $ticket->uploadAttachment();
+	return $ticket->uploadAttachment($json);
 });
 
 // Download attachment
-$app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $filename) {
+$app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	return $ticket->downloadAttachment($ticketID, $filename);
+	$binary = $ticket->downloadAttachment($fileID);
+	
+	return $binary;
 });

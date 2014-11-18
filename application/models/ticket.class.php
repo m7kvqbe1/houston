@@ -118,19 +118,31 @@ class TicketModel {
 		}
 	}
 	
-	public function uploadAttachment($ticketID) {
+	public function uploadAttachment($json) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		// Upload file
-		
-		// Return MongoID for document
+		try {	
+			$gridfs = $db->getGridFS();
+			return $gridfs->storeBytes($json->target, array('contentType' => $json->type, 'fileName' => $json->name, 'lastModifiedDate' => $json->lastModifiedDate)); 
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
 	}
 	
-	public function downloadAttachment($ticketID, $filename) {
+	public function downloadAttachment($id = null, $filename = null) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->houston;		
+		$db = $db->houston;
+			
+		$gridfs = $db->getGridFS();	
+		$file = $gridfs->find(array('id' => $id));
+		
+		$binary = $file->getBytes();
+		
+		return $binary;
 	}
 }
