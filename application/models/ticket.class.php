@@ -123,6 +123,9 @@ class TicketModel {
 		$db = $connections['default'];
 		$db = $db->houston;
 		
+		// Convert hex to binary before storing
+		$json->target = \Houston\Extra\Helper::hex2bin($json->target);
+		
 		try {	
 			$gridfs = $db->getGridFS();
 			return $gridfs->storeBytes($json->target, array('contentType' => $json->type, 'fileName' => $json->name, 'lastModifiedDate' => $json->lastModifiedDate)); 
@@ -139,10 +142,15 @@ class TicketModel {
 		$db = $db->houston;
 			
 		$gridfs = $db->getGridFS();	
-		$file = $gridfs->find(array('id' => $id));
+		$file = $gridfs->findOne(array('_id' => new \MongoId($id)));
 		
-		$binary = $file->getBytes();
+		$fileArr = array(
+			'data' => $file->getBytes(),
+			'fileName' => $file->file['fileName'],
+			'contentType' => $file->file['contentType'],
+			'lastModifiedDate' => $file->file['lastModifiedDate']
+		); 
 		
-		return $binary;
+		return $fileArr;
 	}
 }

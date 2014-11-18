@@ -1,12 +1,14 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Silex\Application;
 
 // Get all tickets
 $app->get('/tickets/all', function(Request $request, Application $app) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->getAll();
-});
+})->before($secure);
 
 // Add new ticket
 $app->post('/tickets/add', function(Request $request, Application $app) {	
@@ -19,7 +21,7 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 	$notify->newTicket($json);
 	
 	return json_encode($json);
-});
+})->before($secure);
 
 // Edit ticket
 $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app) {	
@@ -29,7 +31,7 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 	$ticket->edit($json);
 	
 	return json_encode($json);
-});
+})->before($secure);
 
 // Add new reply
 $app->post('/tickets/reply/add/{ticketID}', function(Request $request, Application $app, $ticketID) {	
@@ -44,7 +46,7 @@ $app->post('/tickets/reply/add/{ticketID}', function(Request $request, Applicati
 	$notify->newReply($json);	
 
 	return json_encode($json);
-});
+})->before($secure);
 
 // Get replies
 $app->get('/tickets/reply/get/{ticketID}', function(Request $request, Application $app, $ticketID) {	
@@ -52,7 +54,7 @@ $app->get('/tickets/reply/get/{ticketID}', function(Request $request, Applicatio
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->getReplies($ticketID);
-});
+})->before($secure);
 
 // Upload attachment
 $app->post('/tickets/file/add', function(Request $request, Application $app) {
@@ -60,12 +62,25 @@ $app->post('/tickets/file/add', function(Request $request, Application $app) {
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->uploadAttachment($json);
-});
+})->before($secure);
 
 // Download attachment
 $app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	$binary = $ticket->downloadAttachment($fileID);
+	$file = $ticket->downloadAttachment($fileID);
 	
-	return $binary;
-});
+	$response = new Response();
+	$response->setContent($file['data']);
+	$response->headers->set('Content-Type', $file['contentType']);
+	$response->headers->set('Content-Transfer-Encoding', 'binary');
+	$response->headers->set('Expires', '0');
+	
+	$d = $response->headers->makeDisposition(
+    	ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+		$file['fileName']
+	);
+	$response->headers->set('Content-Disposition', $d);
+	
+	return $response;
+	//return print_r($file, true);
+})->before($secure);

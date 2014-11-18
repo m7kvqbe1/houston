@@ -30,6 +30,16 @@ $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
     ),
 ));
 
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+
+// REST security handler
+$secure = function(Request $request, Application $app) {
+	if(!$app['session']->get('isAuthenticated')) {
+		return $app->redirect('/');
+	}
+};
+
 // Autoload application controllers and models - MAKE THIS WORK!
 /*spl_autoload_register(null, false);
 spl_autoload_extensions('.php, .class.php');
@@ -37,13 +47,15 @@ spl_autoload_extensions('.php, .class.php');
 function controllerLoader($class) {
     $filename = strtolower($class) . '.class.php';
     $file = __DIR__.'/application/controllers/' . $filename;
-    if (!file_exists($file))
-    {
-        return false;
-    }
+    if (!file_exists($file)) return false;
     include $file;
 }
 spl_autoload_register('controllerLoader');*/
+
+// Autoload extras
+foreach (glob(__DIR__."/application/extras/*.php") as $filename) {
+    include $filename;
+}
 
 // Autoload models
 foreach (glob(__DIR__."/application/models/*.php") as $filename) {
@@ -54,17 +66,5 @@ foreach (glob(__DIR__."/application/models/*.php") as $filename) {
 foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
     include $filename;
 }
-
-// Autoload extras
-foreach (glob(__DIR__."/application/extras/*.php") as $filename) {
-    include $filename;
-}
-
-// Security - Move to another file!
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-$app->before(function (Request $request) {
-	// Always check for authenticated session
-});
 
 $app->run();

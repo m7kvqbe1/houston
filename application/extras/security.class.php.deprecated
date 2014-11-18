@@ -1,0 +1,13 @@
+<?php
+namespace Houston\Extra;
+
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+	
+class Security {
+	public static function secure(Request $request, Application $app) {
+		if(!$app['session']->get('isAuthenticated')) {
+			return $app->redirect('/');
+		}		
+	}
+}
