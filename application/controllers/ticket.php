@@ -82,5 +82,4 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 	$response->headers->set('Content-Disposition', $d);
 	
 	return $response;
-	//return print_r($file, true);
 })->before($secure);

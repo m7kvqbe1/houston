@@ -123,12 +123,13 @@ class TicketModel {
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		// Convert hex to binary before storing
-		$json->target = \Houston\Extra\Helper::hex2bin($json->target);
+		// Remove MimeType from start of Base64 encoded string
+		$data = explode(',', $json->target);
+		$data = $data[1];
 		
 		try {	
 			$gridfs = $db->getGridFS();
-			return $gridfs->storeBytes($json->target, array('contentType' => $json->type, 'fileName' => $json->name, 'lastModifiedDate' => $json->lastModifiedDate)); 
+			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $json->type, 'fileName' => $json->name, 'lastModifiedDate' => $json->lastModifiedDate));
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
