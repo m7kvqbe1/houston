@@ -14,17 +14,17 @@ require_once(__DIR__.'/vendor/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
-// Register URL generator
+// Register URL generator service
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-// Register session handling
+// Register session handling service
 $app->register(new Silex\Provider\SessionServiceProvider());
 
-// Setup MongoDB connection
+// Register MongoDB service
 $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
-            'server' => Config::MONGO_HOST,
+            'server' => 'mongodb://'.Config::MONGO_USER.':'.Config::MONGO_PASSWORD.'@'.Config::MONGO_HOST,
             'options' => array("connect" => true)
         )
     ),
