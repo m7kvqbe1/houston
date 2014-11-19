@@ -22,7 +22,7 @@ class TicketModel {
 		if(!empty($this->ticket)) { 
 			return $this->ticket;
 		} else {
-			throw new Exception('Ticket not found.');
+			throw new Exception('Ticket not found');
 		}
 	}
 	
@@ -123,7 +123,7 @@ class TicketModel {
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		// Remove MimeType from start of Base64 encoded string
+		// Remove MimeType from start of Base64 encoded binary string
 		$data = explode(',', $json->target);
 		$data = $data[1];
 		
