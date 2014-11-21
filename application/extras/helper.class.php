@@ -20,7 +20,7 @@ class Helper {
 		return $sbin;
 	}
 	
-	public static function objectToArray ($object) {
+	public static function objectToArray($object) {
    		if(!is_object($object) && !is_array($object))
    		    return $object;
    		

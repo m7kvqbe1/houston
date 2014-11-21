@@ -154,4 +154,27 @@ class TicketModel {
 		
 		return $fileArr;
 	}
+	
+	public function getFileMeta($fileIDs = array()) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;		
+		
+		$fileArr = array();
+		foreach($fileIDs as $fileID) {
+			$gridfs = $db->getGridFS();
+			$file = $gridfs->findOne(array('_id' => new \MongoId($fileID)));
+			
+			$meta = array(
+				'_id' => $fileID,
+				'fileName' => $file->file['fileName'],
+				'contentType' => $file->file['contentType'],
+				'lastModifiedDate' => $file->file['lastModifiedDate']
+			);
+			
+			array_push($fileArr, $meta);
+		}
+			
+		return $fileArr;
+	}
 }
