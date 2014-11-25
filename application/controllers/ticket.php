@@ -93,15 +93,9 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 })->before($secure);
 
 // Get attachment meta
-$app->get('/tickets/file/meta', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
-	$json = \Houston\Extra\Helper::objectToArray($json);
-	//var_dump($json);
-	
-	$id = array('546f37fed21a58ad1110e190', '546cbb4cd21a58190610e190', '546cbe66d21a58da5e10e1a4');	//debug
-	
+$app->get('/tickets/file/meta/{fileID}', function(Request $request, Application $app, $fileID) {	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	$meta = $ticket->getFileMeta($id);
+	$meta = $ticket->getFileMeta($fileID);
 	
 	return json_encode($meta);
 })->before($secure);

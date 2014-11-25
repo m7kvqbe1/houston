@@ -21,8 +21,7 @@ class Helper {
 	}
 	
 	public static function objectToArray($object) {
-   		if(!is_object($object) && !is_array($object))
-   		    return $object;
+   		if(!is_object($object) && !is_array($object)) return $object;
    		
    		return array_map('\Houston\Extra\Helper::objectToArray', (array) $object);
 	}

@@ -22,7 +22,7 @@ class CompanyModel {
 		if(!empty($this->company)) { 
 			return $this->company;
 		} else {
-			throw new \Exception('Company not found.');
+			throw new \Exception('Company not found');
 		}
 	}
 	
@@ -36,7 +36,7 @@ class CompanyModel {
 		if(!empty($this->company)) { 
 			return $this->company;
 		} else {
-			throw new \Exception('Company not found.');
+			throw new \Exception('Company not found');
 		}
 	}
 	
