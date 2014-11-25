@@ -92,6 +92,12 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 	return $response;
 })->before($secure);
 
+// Delete attachment
+$app->delete('/tickets/file/{$fileID}', function(Request $request, Application $app, $fileID) {
+	$ticket = new \Houston\Ticket\Model\TicketModel($app);
+	return $ticket->deleteAttachment($fileID);
+})->before($secure);
+
 // Get attachment meta
 $app->get('/tickets/file/meta/{fileID}', function(Request $request, Application $app, $fileID) {	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);

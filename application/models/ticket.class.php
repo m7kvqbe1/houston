@@ -18,7 +18,11 @@ class TicketModel {
 		$db = $db->houston;
 				
 		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoId($id)));
-		if(!empty($this->ticket)) { 
+		if(!empty($this->ticket)) {
+			// Bundle attachment meta
+			$fileIDs = (array) $this->ticket['files'];
+			$this->ticket['files'] = $this->getFileMeta($fileIDs);
+			
 			return $this->ticket;
 		} else {
 			throw new \Exception('Ticket not found');
@@ -154,21 +158,30 @@ class TicketModel {
 		return $fileArr;
 	}
 	
-	public function getFileMeta($fileID) {
+	public function deleteAttachment($id) {
+		return 'hello world';
+	}
+	
+	public function getFileMeta($fileIDs = array()) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		$gridfs = $db->getGridFS();
-		$file = $gridfs->findOne(array('_id' => new \MongoId($fileID)));
-		
-		$meta = array(
-			'_id' => $fileID,
-			'fileName' => $file->file['fileName'],
-			'contentType' => $file->file['contentType'],
-			'lastModifiedDate' => $file->file['lastModifiedDate']
-		);
+		$fileArr = array();
+		foreach($fileIDs as $fileID) {
+			$gridfs = $db->getGridFS();
+			$file = $gridfs->findOne(array('_id' => new \MongoId($fileID)));			
+			
+			$meta = array(
+				'_id' => $fileID,
+				'fileName' => $file->file['fileName'],
+				'contentType' => $file->file['contentType'],
+				'lastModifiedDate' => $file->file['lastModifiedDate']
+			);
+			
+			array_push($fileArr, $meta);
+		}
 
-		return $meta;
+		return $fileArr;
 	}
 }
