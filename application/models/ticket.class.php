@@ -18,6 +18,7 @@ class TicketModel {
 		$db = $db->houston;
 				
 		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoId($id)));
+		
 		if(!empty($this->ticket)) {
 			// Bundle attachment meta
 			$fileIDs = (array) $this->ticket['files'];
@@ -159,7 +160,18 @@ class TicketModel {
 	}
 	
 	public function deleteAttachment($id) {
-		return 'hello world';
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		try {
+			$gridfs = $db->getGridFS();
+			return $gridfs->remove(array('_id' => new \MongoId($fileID)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
 	}
 	
 	public function getFileMeta($fileIDs = array()) {
