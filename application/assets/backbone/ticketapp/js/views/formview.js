@@ -9,65 +9,8 @@ var FormView = Backbone.View.extend({
 				'<input type="text" class="new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
 				'<div class="char-count"><span>75</span> Characters Remaining</div>' +
 				'<textarea name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>' +
-				'<div id="file-view-wrap">'+		
-					// '<div class="attach-files">' +
-					// 	'<a class="attach-link">Attach files to this ticket</a>' + 
-					// 	'<div class="supported">Supported -</div>' + 
-					// 	'<ul class="filetypes">' +
-					// 		'<li>Jpg</li>' +
-					// 		'<li>Png</li>' +
-					// 		'<li>Gif</li>' +
-					// 		'<li>Pdf</li>' +
-					// 	'</ul>' +
-					// 	'<div class="file-input-wrapper">'+
-					// 		'<div id="drop_zone">Drop files here</div>'+
-					// 		'<input type="file" id="filesInput" name="files[]" multiple />'+
-					// 	'</div>'+
-					// 	'<ul id="files" class="files">'+
-					// 	//PREVIOUSLY WAS forEach files
-					// 		'{{#each files}}'+
-					// 		// '<li class="file">'+
-					// 		// 	'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
-			  //   //     			'<div class="file-text">'+
-			  //   //       				'<div class="file-icon jpg"></div>'+
-			  //   //       				// '<div class="file-icon {{filetype}}"></div>'+
-			  //   //       				'<div class="file-info">'+
-			  //   //       					// '<div class="filename">{{name}}</div>'+
-					// 		// 			'<div class="filename">{{attributes.name}}</div>'+
-					// 		// 			'<a class="file-view">View</a>'+
-					// 		// 			'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-					// 		// 		'</div>'+
-					// 		// 	'</div>'+
-					// 		// '</li>'+
-					// 		'{{/each}}'+
+				'<div id="file-upload-view-wrap">'+	
 
-					// 		// '<li class="file">' +
-					// 		// 	'<img class="file-thumb" src="/application/assets/img/reckitt.jpg"/>'+
-					// 		// 	'<div class="file-icon jpg"></div>' +
-					// 		// 	'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 		// 	'<a href="">View</a>' +
-					// 		// 	'<a href="">Delete</a>' +
-					// 		// '</li>' +
-					// 	// 	'<li class="file">' +
-					// 	// 		'<div class="file-icon jpg"></div>' +
-					// 	// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 	// 		'<a href="">View</a>' +
-					// 	// 		'<a href="">Delete</a>' +
-					// 	// 	'</li>' +
-					// 	// 	'<li class="file">' +
-					// 	// 		'<div class="file-icon jpg"></div>' +
-					// 	// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 	// 		'<a href="">View</a>' +
-					// 	// 		'<a href="">Delete</a>' +
-					// 	// 	'</li>' +
-					// 	// 	'<li class="file">' +
-					// 	// 		'<div class="file-icon jpg"></div>' +
-					// 	// 		'<div class="filename">Screenshot_329724_72837.Jpg</div>' +
-					// 	// 		'<a href="">View</a>' +
-					// 	// 		'<a href="">Delete</a>' +
-					// 	// 	'</li>' +							
-					// 	'</ul>' +	
-					// '</div>' +
 				'</div>'+
 				'<button class="save" type="button">Create Ticket</button>' +
 				'<div class="beige or">or</div>' +
@@ -77,35 +20,28 @@ var FormView = Backbone.View.extend({
 	),
 
 	initialize: function() {
-		this.listenTo(this.model, "reset add remove change sort", this.render);	
-		// this.listenTo(this.model.files, "reset add remove change sort", this.render);	
-		
-		//stackoverflow.com/questions/7472055/backbone-js-how-to-get-the-index-of-a-model-in-a-backbone-collection
-		// use when creating collection forEach helper
+
+		//instantiate files upload collection and view
+		var filesUploadCollection = new FilesUpload();
+		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
+		this.fileUploadView.parent = this;
+
 	},
 
 	render: function(){
-		jQuery.event.props.push("dataTransfer");
+		//reset fileUpload collection
+		this.fileUploadView.collection.reset();
 		this.$el.html(this.template(this.model));	
-
-		var filesCollection = new Files();
-		this.fileView = new FileView({ collection: filesCollection});
-		// fileModel.fetch();
-		this.$('#file-view-wrap').html(this.fileView.$el);
-		this.fileView.render();
+		this.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
+		this.fileUploadView.render();
 
 		this.delegateEvents({
 			'click .save': 'save',
 			'input .new-sub': 'subjectCharCount',
-			'click .cancel-btn': 'cancelTicket'
+			'click .cancel-btn': 'cancelTicket',
+			'click .char-count': 'testAdd'
 		});
 
-		// Check for the various File API support.
-		if (window.File && window.FileReader && window.FileList && window.Blob) {
-		  // Great success! All the File APIs are supported.
-		} else {
-		  alert('The File APIs are not fully supported in this browser.');
-		}
 		return this;
 	},
 	
@@ -114,21 +50,17 @@ var FormView = Backbone.View.extend({
 	},
 	
 	save: function(){
-		if(this.$el.find('input[name="new-sub"]').val() !== null){
-
-			this.setModelData();
-			
-			console.log(this.model);
-			
+		if(this.$el.find('input[name="new-sub"]').val()){
+			//is it possible to do this without changing the url root? as backbone should be clever enough to know whether to do a put or a post 
+			this.model.urlRoot = '/tickets/add',
+			this.setModelData();			
 			this.model.save(this.model.attributes,
 				{
 					success: function(model, response, options){					
-						//add model to collection, no longer required.
-						// app.tickets.add(model);
 						//ensure formView always uses a fresh model
 						app.formView.model = new TicketModel();
-						//app.navigate('contacts/' + model.get('url'), {trigger: true});
 						app.navigate('', {trigger: true});
+						console.log(model);
 					}
 				}
 			);
@@ -137,6 +69,26 @@ var FormView = Backbone.View.extend({
 		}
 	
 	},
+
+	testAdd: function(){
+		console.log(this.fileUploadView.collection);
+		this.fileUploadView.collection.add({test: 'testing'});
+		console.log(this.fileUploadView.collection);
+
+	},
+
+	// addFile: function(fileData){
+
+	// 	// cant work this out!
+	// 	// var newFile = new FileModel({ref: fileID});
+	// 	// this.model.files.add(newFile);
+
+	// 	//or something like
+	// 	// newFile.url = '/tickets/file/add/' + this.model.id;
+	// 	// newFile.save();
+	// 	console.log(fileData);
+		
+	// },
 
 	setModelData: function(){
 		this.model.set({
@@ -148,18 +100,20 @@ var FormView = Backbone.View.extend({
 			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 			company: app.user.attributes.company,
 			date: new Date(),
-			updated: this.model.get('updated').concat(app.user.attributes.id)
+			updated: this.model.get('updated').concat(app.user.attributes.id),
+			url: '/tickets/add'
 		});		
 	},
 
 	cancelTicket: function(){
-		this.model.clear();
 		app.navigate('', {trigger: true});
+		this.model.clear();
+		this.fileUploadView.collection.reset();		
 	}
 
 });
 
-var FileView = Backbone.View.extend({
+var FileUploadView = Backbone.View.extend({
 
 	template: Handlebars.compile(
 		'<div class="attach-files">' +
@@ -178,14 +132,14 @@ var FileView = Backbone.View.extend({
 			'<ul id="files" class="files">'+
 			'{{#each models}}'+
 				'<li class="file">'+
+					// '{{generateFileUploadPreview type}}'+
 					'<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
 					'<div class="file-text">'+
 		  				'<div class="file-icon jpg"></div>'+
-		  				// '<div class="file-icon {{filetype}}"></div>'+
+		  				// '<div class="file-icon {{attributes.type}}"></div>'+
 		  				'<div class="file-info">'+
-		  					// '<div class="filename">{{name}}</div>'+
 							'<div class="filename">{{attributes.name}}</div>'+
-							'<a data-img="{{attributes.target}}" class="file-preview">Preview</a>'+
+							// '<a data-img="{{attributes.target}}" data-type="{{attributes.type}}" data-img="{{attributes.target}}" class="file-preview">Preview</a>'+
 							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
 						'</div>'+
 					'</div>'+
@@ -198,8 +152,19 @@ var FileView = Backbone.View.extend({
 	),
 
 	initialize : function(){
-		// this.listenTo(this.collection, 'add change remove sync', this.render);
-		this.listenTo(this.collection, 'sync', this.render);
+		this.listenTo(this.collection, 'reset add change remove', this.render);
+
+		Handlebars.registerHelper("generateFileUploadPreview", function(attribute){
+			console.log(attribute);
+			console.log(attribute.indexOf('image'));
+
+			// if(attribute.toString().indexOf('image')){
+			// 	return new Handlebars.SafeString('<span>IMAGE</span>');
+			// 	// '<a data-img="{{attributes.target}}" data-type="{{attributes.type}}" data-img="{{attributes.target}}" class="file-preview">Preview</a>'
+			// } else {
+			// 	return new Handlebars.SafeString('<span>File</span>');
+			// }
+		});
 
 		this.delegateEvents({
 			'click .attach-link': 'fileDialogTrigger',
@@ -222,40 +187,19 @@ var FileView = Backbone.View.extend({
 	},
 
 	previewFile: function(e){
+		console.log(this.collection);
 		var button = $(e.currentTarget);
 		var img = button.data("img");
 		var prevWindow = this.$el.find('.preview-window');
 		prevWindow.html("<i class='preview-close icon-cancel-circled'></i>"+
 			"<img src='" + img + "' />"
 		);	
+		prevWindow.show();
 	},
 
 	previewClose: function(){
-		this.$el.find('.preview-window').remove();
+		this.$el.find('.preview-window').hide();
 	},
-
-
-	// var fr = new FileReader();
- //        fr.onloadend = function () {
- //            var result = this.result;
- //            var hex = "";
- //            for (var i = 0; i < this.result.length; i++) {
- //                var byteStr = result.charCodeAt(i).toString(16);
- //                if (byteStr.length < 2) {
- //                    byteStr = "0" + byteStr;
- //                }
- //                hex += " " + byteStr;
- //            }
-            
- //            // Add file to application object
- //            application['data'][name] = {
- //                id: fileList[0]['name'],
- //                type: 'FILEUPLOAD',
- //                value: hex
- //            }
- //        };
- //        fr.readAsBinaryString(this.files[0]);
-
 
 
 	addFiles: function(files){
@@ -275,27 +219,28 @@ var FileView = Backbone.View.extend({
 		        return function(e) {
 		        	
 			        theFile["target"] = e.target.result;		        
-					// this.collection.add(theFile);
-
-					// var result = e.target.result;
-					// var hex = "";
-		   //          for (var i = 0; i < result.length; i++) {
-		   //              var byteStr = result.charCodeAt(i).toString(16);
-		   //              if (byteStr.length < 2) {
-		   //                  byteStr = "0" + byteStr;
-		   //              }
-		   //              hex += " " + byteStr;
-		   //          }
-		   //          theFile["target"] = hex;
-
 					delete theFile["webkitRelativePath"];
-					var fileMdl = new FileModel();
+					var fileMdl = new FileUploadModel();
 					fileMdl.url = '/tickets/file/add';
+					//need to add the file to the collection for it to appear in the view
+					this.collection.add(fileMdl);
 					fileMdl.save(theFile,{
-						success: function(model, response){
-							console.log(model);
-							console.log(response);
-						},
+						success: _.bind(function(model, response){
+							// console.log(model.attributes);
+							// var fileData = {
+							// 	ref: model.attributes.id,
+							// 	name: model.attributes.name,
+							// 	type: model.attributes.type
+							// }
+							// // this.parent.addFile(fileData);
+							// //maybe use a method of the parent view and set the view to not listen to sync?
+							// this.parent.model.files.addFile(fileData);
+
+							this.parent.model.set({			
+								files: this.parent.model.get('files').concat(response.id)
+							});
+							
+						}, this),
 						error: function(){
 							console.log('error');
 						}
@@ -345,10 +290,7 @@ var FileView = Backbone.View.extend({
 	handleDragFileSelect: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
-
-	    //remove drag highlight state
-	    $(evt.currentTarget).removeClass('dropping');
-
+	    $(evt.currentTarget).removeClass('drop-highlight');
 	    this.addFiles(evt.dataTransfer.files);
 
 	},
@@ -361,9 +303,7 @@ var FileView = Backbone.View.extend({
 	handleDragOver: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
-	    // this.$el wouldnt work for some reason
-	    //add drag highlight state
-	    $(evt.currentTarget).addClass('dropping');
+	    $(evt.currentTarget).addClass('drop-highlight');
 	    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 
 	    //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
@@ -374,13 +314,12 @@ var FileView = Backbone.View.extend({
 	handleDragLeave: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
-	    // remove drag highlight state
-	    $(evt.currentTarget).removeClass('dropping');
+	    $(evt.currentTarget).removeClass('drop-highlight');
 	}
 
 });
 
-
+// /stackoverflow.com/questions/7472055/backbone-js-how-to-get-the-index-of-a-model-in-a-backbone-collection
 
 
 
@@ -463,7 +402,7 @@ var FileView = Backbone.View.extend({
 	//     evt.preventDefault();
 
 	//     //remove drag highlight state
-	//     $(evt.currentTarget).removeClass('dropping');
+	//     $(evt.currentTarget).removeClass('drop-highlight');
 
 	//     this.addFiles(evt.dataTransfer.files);
 
@@ -479,7 +418,7 @@ var FileView = Backbone.View.extend({
 	//     evt.preventDefault();
 	//     // this.$el wouldnt work for some reason
 	//     //add drag highlight state
-	//     $(evt.currentTarget).addClass('dropping');
+	//     $(evt.currentTarget).addClass('drop-highlight');
 	//     evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 
 	//     //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
@@ -491,7 +430,7 @@ var FileView = Backbone.View.extend({
 	// 	evt.stopPropagation();
 	//     evt.preventDefault();
 	//     // remove drag highlight state
-	//     $(evt.currentTarget).removeClass('dropping');
+	//     $(evt.currentTarget).removeClass('drop-highlight');
 	// }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

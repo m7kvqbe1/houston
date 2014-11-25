@@ -8,7 +8,17 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	initialize: function() {
-	
+		
+		//add dataTransfer to jquery events
+		jQuery.event.props.push("dataTransfer");
+
+		// Check for the various File API support.
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+		  // Great success! All the File APIs are supported.
+		} else {
+		  alert('The File APIs are not fully supported in this browser.');
+		}
+
 		//USER OBJECT
 		//instantiate the user model
 		this.user = new UserModel();
@@ -74,17 +84,66 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	ticketDetails: function(ticket) {
-		// this.ticketDetailView.model = this.tickets.get(ticket);
+		// Previous way where event listeners weren't firing
+		// this.ticketDetailView.model = this.tickets.get(ticket); 
 
-		// this.ticketDetailView.model.set(this.tickets.get(ticket).attributes);
-		this.ticketDetailView.model.set(this.tickets.get(ticket).attributes);
-		this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
-		this.ticketDetailView.model.messages.fetch({
-			success: _.bind(function(){
-				console.log('fetched');
-				$('#app').html(this.ticketDetailView.render().el);
+		// Previous way that got ticket from tickets collection
+		// var attributes = this.tickets.get(ticket).attributes
+		// this.ticketDetailView.model.set(attributes);
+		
+		this.ticketDetailView.model.urlRoot = '/tickets',
+		this.ticketDetailView.model.set('id', ticket);
+		// this.ticketDetailView.files.reset();
+		this.ticketDetailView.model.fetch({
+			success: _.bind(function(model){
+				var files = model.attributes.files;
+				 for (i = 0; i < files.length; ++i) {
+					var fileMdl = new FileModel();
+					fileMdl.urlRoot = '/tickets/file/meta';
+					fileMdl.set('id', files[i]);
+					fileMdl.fetch();
+					this.ticketDetailView.model.files.add(fileMdl);
+
+					this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
+					this.ticketDetailView.model.messages.fetch({
+						success: _.bind(function(){
+							// console.log('fetched');
+							$('#app').html(this.ticketDetailView.render().el);
+						}, this)
+					});
+				}
 			}, this)
 		});
+
+		// var files = attributes.files;
+
+		// for (i = 0; i < files.length; ++i) {
+		// 	var fileMdl = new FileModel({id:files[i]});
+		// 	this.ticketDetailView.model.files.add(fileMdl);
+		// }
+		// this.ticketDetailView.model.files.fetch({
+		// 	success: function(){
+		// 		console.log('modelFetchSuccess')
+		// 	}
+		// });
+		
+		// this.ticketDetailView.model.files.fetch({
+		// 	data: {
+		// 		file_ids: attributes.files
+		// 	}
+		// });
+
+		// var files = this.ticketDetailView.model.attributes.files;
+		// console.log(files);
+		//  for (i = 0; i < files.length; ++i) {
+		//  	console.log(files[i]);
+		// 	// var fileMdl = new FileModel();
+		// 	// fileMdl.set('id', files[i]);
+		// 	// fileMdl.fetch();
+		// 	// this.ticketDetailView.model.files.add(fileMdl);
+		// }
+
+
 		
 	},
 

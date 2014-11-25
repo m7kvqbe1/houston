@@ -1,6 +1,6 @@
 var Files = Backbone.Collection.extend({
 	model: FileModel,	
-	url: '',	
+	url: '/tickets/file/meta',	
 	initialize: function(){
 	}
 });

@@ -32,7 +32,8 @@ var TicketDetail = Backbone.View.extend({
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{attributes.name}}</h3>'+
 						'<h4 class="msg-company">{{attributes.company}}</h4>'+
-						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
+						'<div class="msg-date">{{attributes.date}}</div>'+
+						// '<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
 					'<div class="msg-tri"></div>'+
 				'</div>'+
@@ -46,14 +47,14 @@ var TicketDetail = Backbone.View.extend({
 						'{{attributes.message}}'+							
 					'</div>'+						
 					'<ul class="files">'+
-					'{{#each attributes.files}}'+
+					'{{#forEach files.models}}'+
 						'<li class="file">'+
 							'<div class="file-icon {{filetype}}"></div>'+
-							'<div class="filename">{{filename}}</div>'+
+							'<div class="filename">{{attributes.fileName}}</div>'+
 							'<a href="">View</a>'+
 							'<a href="">Delete</a>'+
 						'</li>'+	
-					'{{/each}}'+
+					'{{/forEach}}'+
 					'</ul>'+
 				'{{#if messages.models}}'+
 					'</div>'+											
@@ -155,7 +156,8 @@ var TicketDetail = Backbone.View.extend({
 		});
 		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
-			return houston.convertToDateTime(attribute);
+			// console.log(attribute);
+			// return houston.convertToDateTime(attribute);
 		});
 		
 		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
@@ -165,8 +167,8 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	render: function (){	
+		this.model.urlRoot = '/tickets/add';
 		this.$el.html(this.template(this.model));
-
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
 			this.updateSeen();
@@ -179,6 +181,8 @@ var TicketDetail = Backbone.View.extend({
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage'
 		});
+
+		console.log(this.model);
 		return this;
 	},
 	

@@ -1714,7 +1714,7 @@ input.inp-lst {
 		color: #c3bdb2;
 	}
 
-	#drop_zone.dropping {
+	#drop_zone.drop-highlight {
 		background: #f3f0ea;
 	}
 

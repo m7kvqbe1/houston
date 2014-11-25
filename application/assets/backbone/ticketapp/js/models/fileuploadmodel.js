@@ -1,4 +1,5 @@
-var FileModel = Backbone.Model.extend({
+var FileUploadModel = Backbone.Model.extend({
+	// set a urlroot so the files can be saved to a different place on the server to the ticket?
 	initialise: function(){},
 	parse: function(response){
 	if(response._id){
@@ -8,6 +9,5 @@ var FileModel = Backbone.Model.extend({
 		return response;
 	},
 	defaults: {
-		url: '/tickets/file/meta'
 	}
 });
