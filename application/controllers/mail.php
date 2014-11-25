@@ -7,4 +7,4 @@ $app->get('/mailbox/test', function(Request $request, Application $app) {
 	$mailbox->getMail();
 	
 	return print_r($mailbox->emails, true);
-});
+})->before($secure);
