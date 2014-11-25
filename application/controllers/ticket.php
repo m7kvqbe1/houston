@@ -10,6 +10,12 @@ $app->get('/tickets/all', function(Request $request, Application $app) {
 	return $ticket->getAll();
 })->before($secure);
 
+// Get ticket
+$app->get('/tickets/{ticketID}', function(Request $request, Application $app, $ticketID) {
+	$ticket = new \Houston\Ticket\Model\TicketModel($app);
+	return json_encode($ticket->loadTicketByID($ticketID));
+})->before($secure);
+
 // Add new ticket
 $app->post('/tickets/add', function(Request $request, Application $app) {	
 	$json = json_decode(file_get_contents('php://input'));

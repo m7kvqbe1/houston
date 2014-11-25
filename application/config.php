@@ -1,7 +1,7 @@
 <?php
 class Config {	
-	const DOMAIN = 'http://tom.houston.com';
-	const DOMAIN_SSL = 'https://tom.houston.com';
+	const DOMAIN = 'http://tom.houstonsupport.co';
+	const DOMAIN_SSL = 'https://tom.houstonsupport.co';
 	
 	const DEFAULT_SALT = 'Adfkjasf93482394!!';
 	

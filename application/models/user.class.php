@@ -22,7 +22,7 @@ class UserModel {
 		if(!empty($this->user)) { 
 			return $this->user;
 		} else {
-			throw new Exception('User not found');
+			throw new \Exception('User not found');
 		}
 	}
 	
@@ -36,7 +36,7 @@ class UserModel {
 		if(!empty($this->user)) { 
 			return $this->user;
 		} else {
-			throw new Exception('User not found');
+			throw new \Exception('User not found');
 		}
 	}
 	

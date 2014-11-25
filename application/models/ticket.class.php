@@ -16,13 +16,12 @@ class TicketModel {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-		
-		$criteria = array('_id' => $id);
-		$this->user = $db->tickets->findOne($criteria);
+				
+		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoId($id)));
 		if(!empty($this->ticket)) { 
 			return $this->ticket;
 		} else {
-			throw new Exception('Ticket not found');
+			throw new \Exception('Ticket not found');
 		}
 	}
 	
