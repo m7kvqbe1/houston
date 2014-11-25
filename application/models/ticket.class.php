@@ -157,7 +157,7 @@ class TicketModel {
 	public function getFileMeta($fileIDs = array()) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->houston;		
+		$db = $db->houston;
 		
 		$fileArr = array();
 		foreach($fileIDs as $fileID) {
