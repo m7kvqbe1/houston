@@ -32,8 +32,7 @@ var TicketDetail = Backbone.View.extend({
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{attributes.name}}</h3>'+
 						'<h4 class="msg-company">{{attributes.company}}</h4>'+
-						'<div class="msg-date">{{attributes.date}}</div>'+
-						// '<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
+						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
 					'<div class="msg-tri"></div>'+
 				'</div>'+
@@ -47,14 +46,28 @@ var TicketDetail = Backbone.View.extend({
 						'{{attributes.message}}'+							
 					'</div>'+						
 					'<ul class="files">'+
-					'{{#forEach files.models}}'+
+					// '{{#each files.models}}'+
+					'{{#each attributes.files}}'+
+						// '<li class="file">'+
+						// 	// '<div class="file-icon {{filetype}}"></div>'+
+						// 	'<div class="file-icon jpg"></div>'+
+						// 	'<div class="filename">{{fileName}}</div>'+
+						// 	'<a href="">Preview</a>'+
+						// 	'<a href="">Download</a>'+
+						// '</li>'+
 						'<li class="file">'+
-							'<div class="file-icon {{filetype}}"></div>'+
-							'<div class="filename">{{attributes.fileName}}</div>'+
-							'<a href="">View</a>'+
-							'<a href="">Delete</a>'+
+							// '{{generateFileUploadPreview type}}'+
+							// '<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
+							'<div class="file-text">'+
+				  				'<div class="file-icon jpg"></div>'+
+				  				'<div class="file-info">'+
+									'<div class="filename">{{fileName}}</div>'+
+									'<a href="">Preview</a>'+
+									'<a href="">Download</a>'+
+								'</div>'+
+							'</div>'+
 						'</li>'+	
-					'{{/forEach}}'+
+					'{{/each}}'+
 					'</ul>'+
 				'{{#if messages.models}}'+
 					'</div>'+											
@@ -64,16 +77,9 @@ var TicketDetail = Backbone.View.extend({
 				'<div class="reply">'+
 					'<form id="form-reply">' +
 						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-						'<div class="attach-files">' +
-							'<a class="attach-link" href="">Attach files to this ticket</a>' + 
-							'<div class="supported">Supported -</div>' + 
-							'<ul class="filetypes">' +
-							'<li>Jpg</li>' +
-							'<li>Png</li>' +
-							'<li>Gif</li>' +
-							'<li>Pdf</li>' +
-							'</ul>' +
-						'</div>' +
+						'<div id="file-upload-view-wrap">'+	
+
+						'</div>'+
 						'<label>'+
 							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
 							'Mark ticket as completed'+
@@ -116,16 +122,9 @@ var TicketDetail = Backbone.View.extend({
 				'<div class="reply">'+
 					'<form id="form-reply">' +
 						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-						'<div class="attach-files">' +
-							'<a class="attach-link" href="">Attach files to this ticket</a>' + 
-							'<div class="supported">Supported -</div>' + 
-							'<ul class="filetypes">' +
-							'<li>Jpg</li>' +
-							'<li>Png</li>' +
-							'<li>Gif</li>' +
-							'<li>Pdf</li>' +
-							'</ul>' +
-						'</div>' +
+						'<div id="file-upload-view-wrap">'+	
+
+						'</div>'+
 						'<label>'+
 							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
 							'Mark ticket as completed'+
@@ -145,6 +144,10 @@ var TicketDetail = Backbone.View.extend({
 	
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
+
+		// var filesUploadCollection = new FilesUpload();
+		// this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
+		// this.fileUploadView.parent = this;
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -156,8 +159,7 @@ var TicketDetail = Backbone.View.extend({
 		});
 		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
-			// console.log(attribute);
-			// return houston.convertToDateTime(attribute);
+			return houston.convertToDateTime(attribute);
 		});
 		
 		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
@@ -167,8 +169,13 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	render: function (){	
-		this.model.urlRoot = '/tickets/add';
+		// this.model.urlRoot = '/tickets/add';
 		this.$el.html(this.template(this.model));
+
+		// this.fileUploadView.collection.reset();		
+		// this.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
+		// this.fileUploadView.render();
+
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
 			this.updateSeen();
@@ -181,8 +188,6 @@ var TicketDetail = Backbone.View.extend({
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage'
 		});
-
-		console.log(this.model);
 		return this;
 	},
 	
@@ -215,7 +220,6 @@ var TicketDetail = Backbone.View.extend({
 	
 	replyToggle: function(){
 		houston.replyToggle(this.$el);
-		console.log(this.model);
 	},
 	
 	updateSeen: function() {
@@ -234,7 +238,7 @@ var TicketDetail = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model, response, options){
-					
+					console.log('saveModel');
 				}, this)
 			}
 		);
@@ -261,9 +265,9 @@ var TicketDetail = Backbone.View.extend({
 
 		var msgMdl = new MessageModel(msg);
 
-		msgMdl.url = '/tickets/reply/add/' + this.model.id;
+		msgMdl.url = '/tickets/reply/' + this.model.id;
 		msgMdl.save();
-
+		console.log('mes');
 		//set updated array
 		this.saveModel();
 

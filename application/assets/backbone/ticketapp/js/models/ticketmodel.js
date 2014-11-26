@@ -17,16 +17,16 @@ var TicketModel = Backbone.Model.extend({
 	}
 		return response;
 	},
-	// urlRoot: '/tickets/add',
 	urlRoot: '/tickets',
+	// urlRoot: '/tickets',
 	defaults: {
 		status: 'New',
 		agent: false,
 		files: [],
 		// messages: [],
 		updated: [],
-		// url: '/tickets/add'
 		url: '/tickets'
+		// url: '/tickets'
 		
 	}
 });

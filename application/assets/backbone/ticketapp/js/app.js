@@ -43,7 +43,7 @@ var AppRouter = Backbone.Router.extend({
 			{
 				model: this.ticketModel
 			}
-		);		
+		);	
 		//instantiate the tickets view and set it the tickets collection
 		this.ticketsView = new TicketView(
 			{
@@ -84,66 +84,58 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	ticketDetails: function(ticket) {
+		// var attributes = this.tickets.get(ticket).attributes;
+		// this.ticketDetailView.model.set(attributes);
+		// $('#app').html(this.ticketDetailView.render().el);
+
+
+		this.ticketDetailView.model.urlRoot = '/tickets',
+		this.ticketDetailView.model.set('id', ticket);
+		this.ticketDetailView.model.fetch({
+			success: _.bind(function(){
+				this.ticketDetailView.model.messages.url = '/tickets/reply/' + ticket;
+				this.ticketDetailView.model.messages.fetch({
+					success: _.bind(function(model){
+						$('#app').html(this.ticketDetailView.render().el);
+						console.log(model);
+					}, this)
+				});
+			}, this)
+		});
+
+
+
 		// Previous way where event listeners weren't firing
 		// this.ticketDetailView.model = this.tickets.get(ticket); 
 
 		// Previous way that got ticket from tickets collection
 		// var attributes = this.tickets.get(ticket).attributes
 		// this.ticketDetailView.model.set(attributes);
-		
-		this.ticketDetailView.model.urlRoot = '/tickets',
-		this.ticketDetailView.model.set('id', ticket);
-		// this.ticketDetailView.files.reset();
-		this.ticketDetailView.model.fetch({
-			success: _.bind(function(model){
-				var files = model.attributes.files;
-				 for (i = 0; i < files.length; ++i) {
-					var fileMdl = new FileModel();
-					fileMdl.urlRoot = '/tickets/file/meta';
-					fileMdl.set('id', files[i]);
-					fileMdl.fetch();
-					this.ticketDetailView.model.files.add(fileMdl);
 
-					this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
-					this.ticketDetailView.model.messages.fetch({
-						success: _.bind(function(){
-							// console.log('fetched');
-							$('#app').html(this.ticketDetailView.render().el);
-						}, this)
-					});
-				}
-			}, this)
-		});
+		// Previous way that built file collections
+		// this.ticketDetailView.model.urlRoot = '/tickets',
+		// this.ticketDetailView.model.set('id', ticket);
+		// // this.ticketDetailView.files.reset();
+		// this.ticketDetailView.model.fetch({
+		// 	success: _.bind(function(model){
+		// 		var files = model.attributes.files;
+		// 		 for (i = 0; i < files.length; ++i) {
+		// 			var fileMdl = new FileModel();
+		// 			fileMdl.urlRoot = '/tickets/file/meta';
+		// 			fileMdl.set('id', files[i]);
+		// 			fileMdl.fetch();
+		// 			this.ticketDetailView.model.files.add(fileMdl);
 
-		// var files = attributes.files;
-
-		// for (i = 0; i < files.length; ++i) {
-		// 	var fileMdl = new FileModel({id:files[i]});
-		// 	this.ticketDetailView.model.files.add(fileMdl);
-		// }
-		// this.ticketDetailView.model.files.fetch({
-		// 	success: function(){
-		// 		console.log('modelFetchSuccess')
-		// 	}
+		// 			this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
+		// 			this.ticketDetailView.model.messages.fetch({
+		// 				success: _.bind(function(){
+		// 					// console.log('fetched');
+		// 					$('#app').html(this.ticketDetailView.render().el);
+		// 				}, this)
+		// 			});
+		// 		}
+		// 	}, this)
 		// });
-		
-		// this.ticketDetailView.model.files.fetch({
-		// 	data: {
-		// 		file_ids: attributes.files
-		// 	}
-		// });
-
-		// var files = this.ticketDetailView.model.attributes.files;
-		// console.log(files);
-		//  for (i = 0; i < files.length; ++i) {
-		//  	console.log(files[i]);
-		// 	// var fileMdl = new FileModel();
-		// 	// fileMdl.set('id', files[i]);
-		// 	// fileMdl.fetch();
-		// 	// this.ticketDetailView.model.files.add(fileMdl);
-		// }
-
-
 		
 	},
 
