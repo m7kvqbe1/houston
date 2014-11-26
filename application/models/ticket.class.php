@@ -21,8 +21,8 @@ class TicketModel {
 		
 		if(!empty($this->ticket)) {
 			// Bundle attachment meta
-			$fileIDs = (array) $this->ticket['files'];
-			$this->ticket['files'] = $this->getFileMeta($fileIDs);
+			//$fileIDs = (array) $this->ticket['files'];
+			//$this->ticket['files'] = $this->getFileMeta($fileIDs);
 			
 			return $this->ticket;
 		} else {
@@ -78,7 +78,7 @@ class TicketModel {
 		unset($json->_id);
 		
 		try {	
-			$id = new MongoID($json->id);
+			$id = new \MongoID($json->id);
 			
 			$tickets = $db->tickets;
 			$tickets->update(array('_id' => $id), $json);
