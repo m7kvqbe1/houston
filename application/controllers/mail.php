@@ -6,7 +6,5 @@ $app->get('/mailbox/test', function(Request $request, Application $app) {
 	$mailbox = new Houston\Extra\Mailbox();
 	$mailbox->getMail();
 	
-	print_r($mailbox->emails);
-	
-	return 1;
-});
+	return print_r($mailbox->emails, true);
+})->before($secure);

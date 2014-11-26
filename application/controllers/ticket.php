@@ -17,7 +17,7 @@ $app->get('/tickets/{ticketID}', function(Request $request, Application $app, $t
 })->before($secure);
 
 // Add new ticket
-$app->post('/tickets/add', function(Request $request, Application $app) {	
+$app->post('/tickets', function(Request $request, Application $app) {	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
@@ -30,7 +30,7 @@ $app->post('/tickets/add', function(Request $request, Application $app) {
 })->before($secure);
 
 // Edit ticket
-$app->put('/tickets/add/{ticketID}', function(Request $request, Application $app) {	
+$app->put('/tickets/{ticketID}', function(Request $request, Application $app) {	
 	$json = file_get_contents('php://input');
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
@@ -40,7 +40,7 @@ $app->put('/tickets/add/{ticketID}', function(Request $request, Application $app
 })->before($secure);
 
 // Add new reply
-$app->post('/tickets/reply/add/{ticketID}', function(Request $request, Application $app, $ticketID) {	
+$app->post('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$json->ticketID = $ticketID;
@@ -55,7 +55,7 @@ $app->post('/tickets/reply/add/{ticketID}', function(Request $request, Applicati
 })->before($secure);
 
 // Get replies
-$app->get('/tickets/reply/get/{ticketID}', function(Request $request, Application $app, $ticketID) {	
+$app->get('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
@@ -93,7 +93,7 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 })->before($secure);
 
 // Delete attachment
-$app->delete('/tickets/file/{$fileID}', function(Request $request, Application $app, $fileID) {
+$app->delete('/tickets/file/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
 	return $ticket->deleteAttachment($fileID);
 })->before($secure);
