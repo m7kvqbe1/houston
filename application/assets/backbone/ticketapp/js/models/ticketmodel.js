@@ -3,12 +3,12 @@ var TicketModel = Backbone.Model.extend({
 	//https://www.google.co.uk/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=backbone%20using%20mongodb%20id
 	//idAttribute: "_id",
 	initialize: function(){
-		this.files = new Files();
-		this.messages = new Messages();
-		this.messages.on("sync",  function(){
-			// console.log('messagesSync');
-			app.ticketDetailView.render();
-		});
+		// this.files = new Files();
+		// this.messages = new Messages();
+		// this.messages.on("sync",  function(){
+		// 	// console.log('messagesSync');
+		// 	app.ticketDetailView.render();
+		// });
 	},
 	parse: function(response){
 	if(response._id){
@@ -24,6 +24,7 @@ var TicketModel = Backbone.Model.extend({
 		agent: false,
 		files: [],
 		// messages: [],
+		hasMessages: false,
 		updated: [],
 		url: '/tickets'
 		// url: '/tickets'

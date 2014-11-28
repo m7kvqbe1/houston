@@ -41,17 +41,13 @@ var FileUploadView = Backbone.View.extend({
 		this.listenTo(this.collection, 'reset add change remove', this.render);
 
 		Handlebars.registerHelper("generateFileUploadPreview", function(obj){ 
-			console.log(obj);
 			var typeEsc = Handlebars.Utils.escapeExpression(obj.attributes.type);
 			var nameEsc = Handlebars.Utils.escapeExpression(obj.attributes.name);
 			var targetEsc = Handlebars.Utils.escapeExpression(obj.attributes.target);
       		var cidEsc = Handlebars.Utils.escapeExpression(obj.cid);
-      		console.log(typeEsc);
-      		console.log(cidEsc);
 		
 			if(typeEsc){
 				if(typeEsc.indexOf('image')!== -1){
-					console.log('image');
 					return new Handlebars.SafeString(
 						'<img class="file-thumb" src="'+ targetEsc +'" title="'+ nameEsc +'"/>'+
 						'<div class="file-text">'+
@@ -64,7 +60,6 @@ var FileUploadView = Backbone.View.extend({
 						'</div>'
 					);
 				} else {
-					console.log('file');
 					return new Handlebars.SafeString(
 						'<div class="file-text">'+
 			  				'<div class="file-icon jpg"></div>'+
@@ -78,6 +73,11 @@ var FileUploadView = Backbone.View.extend({
 			}
 		});
 
+	},
+
+	render : function(){
+		this.$el.html(this.template(this.collection));
+
 		this.delegateEvents({
 			'click .attach-link': 'fileDialogTrigger',
 			'dragover #drop_zone': 'handleDragOver',
@@ -90,13 +90,7 @@ var FileUploadView = Backbone.View.extend({
 		});
 	},
 
-	render : function(){
-		this.$el.html(this.template(this.collection));
-		console.log(this.parent);
-	},
-
 	fileDialogTrigger: function(){
-		console.log('trig');
 		this.$el.find('#filesInput').trigger('click');
 	},
 
@@ -117,7 +111,7 @@ var FileUploadView = Backbone.View.extend({
 
 
 	addFiles: function(files){
-
+		console.log('addFiles');
 		for (var i = 0, f; f = files[i]; i++) {
 
 	        var reader = new FileReader();
@@ -140,19 +134,26 @@ var FileUploadView = Backbone.View.extend({
 					this.collection.add(fileMdl);
 					fileMdl.save(theFile,{
 						success: _.bind(function(model, response){
-							// console.log(model.attributes);
-							// var fileData = {
-							// 	ref: model.attributes.id,
-							// 	name: model.attributes.name,
-							// 	type: model.attributes.type
-							// }
-							// // this.parent.addFile(fileData);
-							// //maybe use a method of the parent view and set the view to not listen to sync?
-							// this.parent.model.files.addFile(fileData);
+							
+							var fileData = {
+								ref: model.attributes.id,
+								name: model.attributes.name,
+								type: model.attributes.type,
+								date: model.attributes.lastModifiedDate
+							}
+							// console.log(this.parent.collection.models[this.parent.collection.models.length]);							
+							// this.parent.parent.messageFiles.push(fileData);
+							// console.log(this.parent.parent.messageFiles);
 
-							this.parent.model.set({			
-								files: this.parent.model.get('files').concat(response.id)
-							});
+
+							//maybe build just one array and then decide where to push that array too?
+							if(this.parent.model){
+								this.parent.model.set({			
+									files: this.parent.model.get('files').concat(fileData)
+								});
+							} else {
+								this.parent.parent.messageFiles.push(fileData);
+							}
 							
 						}, this),
 						error: function(){

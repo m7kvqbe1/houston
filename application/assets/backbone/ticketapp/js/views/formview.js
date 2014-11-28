@@ -28,6 +28,8 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
+console.log(this.model);
+		
 		//reset fileUpload collection
 		this.fileUploadView.collection.reset();
 		this.$el.html(this.template(this.model));	
@@ -51,7 +53,7 @@ var FormView = Backbone.View.extend({
 	save: function(){
 		if(this.$el.find('input[name="new-sub"]').val()){
 			//is it possible to do this without changing the url root? as backbone should be clever enough to know whether to do a put or a post 
-			this.model.urlRoot = '/tickets/add',
+			// this.model.urlRoot = '/tickets/add',
 			this.setModelData();			
 			this.model.save(this.model.attributes,
 				{

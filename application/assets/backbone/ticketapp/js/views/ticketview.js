@@ -1,4 +1,4 @@
-var TicketDetail = Backbone.View.extend({
+var TicketDetailView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-top msg-top">'+
 			'{{#if attributes.agent}}'+
@@ -46,22 +46,12 @@ var TicketDetail = Backbone.View.extend({
 						'{{attributes.message}}'+							
 					'</div>'+						
 					'<ul class="files">'+
-					// '{{#each files.models}}'+
 					'{{#each attributes.files}}'+
-						// '<li class="file">'+
-						// 	// '<div class="file-icon {{filetype}}"></div>'+
-						// 	'<div class="file-icon jpg"></div>'+
-						// 	'<div class="filename">{{fileName}}</div>'+
-						// 	'<a href="">Preview</a>'+
-						// 	'<a href="">Download</a>'+
-						// '</li>'+
 						'<li class="file">'+
-							// '{{generateFileUploadPreview type}}'+
-							// '<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
 							'<div class="file-text">'+
 				  				'<div class="file-icon jpg"></div>'+
 				  				'<div class="file-info">'+
-									'<div class="filename">{{fileName}}</div>'+
+									'<div class="filename">{{name}}</div>'+
 									'<a href="">Preview</a>'+
 									'<a href="">Download</a>'+
 								'</div>'+
@@ -69,7 +59,7 @@ var TicketDetail = Backbone.View.extend({
 						'</li>'+	
 					'{{/each}}'+
 					'</ul>'+
-				'{{#if messages.models}}'+
+				'{{#if attributes.hasMessages}}'+
 					'</div>'+											
 				'{{else}}'+
 				'<a class="btn reply-btn">Reply</a>'+
@@ -91,59 +81,68 @@ var TicketDetail = Backbone.View.extend({
 				'</div>'+					
 				'{{/if}}'+						
 			'</li>'+
-		'{{#forEach messages.models}}'+
-			'<li class="msg from-{{attributes.role}}">'+
-				'<div class="msg-dtl">'+
-					'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
-					'<div class="msg-dtl-inr">'+
-						'<h3 class="msg-agent">{{attributes.author}}</h3>'+
-						'<h4 class="msg-company">{{attributes.company}}</h4>'+
-						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
-					'</div>'+
-					'<div class="msg-tri"></div>'+
-				'</div>'+
-				'<div class="msg-body">'+
-					'<div class="msg-text">'+
-						'{{attributes.message}}'+							
-					'</div>'+						
-					'<ul class="files">'+
-					'{{#each attributes.files}}'+
-						'<li class="file">'+
-							'<div class="file-icon {{filetype}}"></div>'+
-							'<div class="filename">{{filename}}</div>'+
-							'<a href="">View</a>'+
-							'<a href="">Delete</a>'+
-						'</li>'+	
-					'{{/each}}'+
-					'</ul>'+
-				'{{#if $last}}'+						
-					'<a class="btn reply-btn">Reply</a>'+
-				'</div>'+
-				'<div class="reply">'+
-					'<form id="form-reply">' +
-						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-						'<div id="file-upload-view-wrap">'+	
+			'<div id="messages-wrap">'+
+		// '{{#forEach messages.models}}'+
+		// 	'<li class="msg from-{{attributes.role}}">'+
+		// 		'<div class="msg-dtl">'+
+		// 			'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
+		// 			'<div class="msg-dtl-inr">'+
+		// 				'<h3 class="msg-agent">{{attributes.author}}</h3>'+
+		// 				'<h4 class="msg-company">{{attributes.company}}</h4>'+
+		// 				'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
+		// 			'</div>'+
+		// 			'<div class="msg-tri"></div>'+
+		// 		'</div>'+
+		// 		'<div class="msg-body">'+
+		// 			'<div class="msg-text">'+
+		// 				'{{attributes.message}}'+							
+		// 			'</div>'+						
+		// 			'<ul class="files">'+
+		// 			'{{#each attributes.files}}'+
+		// 				'<li class="file">'+
+		// 					'<div class="file-icon {{filetype}}"></div>'+
+		// 					'<div class="filename">{{filename}}</div>'+
+		// 					'<a href="">View</a>'+
+		// 					'<a href="">Delete</a>'+
+		// 				'</li>'+	
+		// 			'{{/each}}'+
+		// 			'</ul>'+
+		// 		'{{#if $last}}'+						
+		// 			'<a class="btn reply-btn">Reply</a>'+
+		// 		'</div>'+
+		// 		'<div class="reply">'+
+		// 			'<form id="form-reply">' +
+		// 				'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+		// 				'<div id="file-upload-view-wrap">'+	
 
-						'</div>'+
-						'<label>'+
-							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
-							'Mark ticket as completed'+
-						'</label>'+
-						'<button class="add-message" type="button">Submit</button>' +
-						'<div class="beige or">or</div>' +
-						'<a class="cancel-btn ib">Cancel</a>' +
-					'</form>' +
-				'</div>'+
-				'{{else}}'+
-				'</div>'+
-				'{{/if}}'+					
-			'</li>'+
-		'{{/forEach}}'+	
+		// 				'</div>'+
+		// 				'<label>'+
+		// 					'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
+		// 					'Mark ticket as completed'+
+		// 				'</label>'+
+		// 				'<button class="add-message" type="button">Submit</button>' +
+		// 				'<div class="beige or">or</div>' +
+		// 				'<a class="cancel-btn ib">Cancel</a>' +
+		// 			'</form>' +
+		// 		'</div>'+
+		// 		'{{else}}'+
+		// 		'</div>'+
+		// 		'{{/if}}'+					
+		// 	'</li>'+
+		// '{{/forEach}}'+
+			'</div>'+	
 		'</ul>'	
 	),
 	
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
+
+		//give model reference to this view
+		this.model.view = this;
+
+		var messagesCollection = new Messages();
+		this.messagesView = new MessagesView({ collection: messagesCollection});
+		this.messagesView.parent = this;
 
 		// var filesUploadCollection = new FilesUpload();
 		// this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
@@ -169,12 +168,16 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	render: function (){	
-		// this.model.urlRoot = '/tickets/add';
 		this.$el.html(this.template(this.model));
+
+		this.$('#messages-wrap').append(this.messagesView.$el);
+		this.messagesView.render();
 
 		// this.fileUploadView.collection.reset();		
 		// this.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
 		// this.fileUploadView.render();
+
+		
 
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
@@ -231,6 +234,7 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	saveModel: function(){
+		console.log('trying');
 		//Set updated attribute to empty array
 		this.model.set({			
 			updated: []
@@ -246,6 +250,7 @@ var TicketDetail = Backbone.View.extend({
 	},
 	
 	addMessage: function(){	
+		console.log(this.messageFiles);
 		//if ticket marked as complete
 		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
 			console.log('completion');
@@ -260,18 +265,33 @@ var TicketDetail = Backbone.View.extend({
 			"avatar": app.user.attributes.avatar, 
 			"company": app.user.attributes.company,
 			"date": new Date(),
-			"message": this.$el.find('textarea[name="new-textarea"]').val()
+			"message": this.$el.find('textarea[name="new-textarea"]').val(),
+			"files": this.messageFiles
+
 		};
 
 		var msgMdl = new MessageModel(msg);
 
+		//add response to collection to stop view shuddering on render
+		this.messagesView.collection.add(msgMdl); 
+
 		msgMdl.url = '/tickets/reply/' + this.model.id;
 		msgMdl.save();
-		console.log('mes');
-		//set updated array
+
+		this.model.set({			
+			hasMessages: true
+		});
+
+		//save sets updated array
 		this.saveModel();
 
-	}
+		//empty messageFiles
+		this.messageFiles = [];
+		console.log(this.messageFiles);
+
+	},
+
+	messageFiles: []
 
 	// saveMessage: function(){
 	// 	this.model.messages.url = '/tickets/reply/add/' + this.model.id;

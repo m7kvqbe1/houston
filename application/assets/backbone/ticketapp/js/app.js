@@ -36,12 +36,13 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the ticket collection
 		this.tickets = new Tickets();		
 				
-		//instantiate the ticket model
-		this.ticketModel = new TicketModel();		
+		//instantiate the ticketDetail model
+		this.ticketDetailModel = new TicketDetailModel();
+
 		//instantiate the ticket view and set it the ticket model
-		this.ticketDetailView = new TicketDetail(
+		this.ticketDetailView = new TicketDetailView(
 			{
-				model: this.ticketModel
+				model: new TicketDetailModel()
 			}
 		);	
 		//instantiate the tickets view and set it the tickets collection
@@ -84,56 +85,15 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	ticketDetails: function(ticket) {
-		// var attributes = this.tickets.get(ticket).attributes;
-		// this.ticketDetailView.model.set(attributes);
-		// $('#app').html(this.ticketDetailView.render().el);
+		var attributes = this.tickets.get(ticket).attributes
+		this.ticketDetailView.model.set(attributes);
+		this.ticketDetailView.model.fetchMessages(ticket);
+		$('#app').html(this.ticketDetailView.render().el);
 
-
-		this.ticketDetailView.model.urlRoot = '/tickets',
-		this.ticketDetailView.model.set('id', ticket);
-		this.ticketDetailView.model.fetch({
-			success: _.bind(function(){
-				this.ticketDetailView.model.messages.url = '/tickets/reply/' + ticket;
-				this.ticketDetailView.model.messages.fetch({
-					success: _.bind(function(model){
-						$('#app').html(this.ticketDetailView.render().el);
-						console.log(model);
-					}, this)
-				});
-			}, this)
-		});
-
-
-
-		// Previous way where event listeners weren't firing
-		// this.ticketDetailView.model = this.tickets.get(ticket); 
-
-		// Previous way that got ticket from tickets collection
-		// var attributes = this.tickets.get(ticket).attributes
-		// this.ticketDetailView.model.set(attributes);
-
-		// Previous way that built file collections
-		// this.ticketDetailView.model.urlRoot = '/tickets',
 		// this.ticketDetailView.model.set('id', ticket);
-		// // this.ticketDetailView.files.reset();
 		// this.ticketDetailView.model.fetch({
-		// 	success: _.bind(function(model){
-		// 		var files = model.attributes.files;
-		// 		 for (i = 0; i < files.length; ++i) {
-		// 			var fileMdl = new FileModel();
-		// 			fileMdl.urlRoot = '/tickets/file/meta';
-		// 			fileMdl.set('id', files[i]);
-		// 			fileMdl.fetch();
-		// 			this.ticketDetailView.model.files.add(fileMdl);
-
-		// 			this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
-		// 			this.ticketDetailView.model.messages.fetch({
-		// 				success: _.bind(function(){
-		// 					// console.log('fetched');
-		// 					$('#app').html(this.ticketDetailView.render().el);
-		// 				}, this)
-		// 			});
-		// 		}
+		// 	success: _.bind(function(){
+		// 		$('#app').html(this.ticketDetailView.render().el);
 		// 	}, this)
 		// });
 		
@@ -155,80 +115,50 @@ $(function() {
 	Backbone.history.start();
 });
 
-/*
-Houston To Do List:
-# Add avatar to user object
-# Get Mark to make default user icon
-# Sort by date/company reverse order
 
-People Page Users
-# A user has a people collection of persons
-# They see a list of agents and a list of their fellow users within their company
+//TicketDetail
+// Previous way where event listeners weren't firing
+// this.ticketDetailView.model = this.tickets.get(ticket); 
 
-People Page Agents
-# An admin has a people collection of persons
-# They see a list of agents and have the ability to add new agents
-# They see a list of companies and have the ability to add new users to those companies
+// Previous way that got ticket from tickets collection
+// var attributes = this.tickets.get(ticket).attributes
+// this.ticketDetailView.model.set(attributes);
 
-People Page Admins
-# An admin has a people collection of persons
-# They see a list of agents and have the ability to add new agents
-# They see a list of companies and have the ability to add new companies
-# Within those companies they have the ability to add new users
+//Previous Way that fetched messages as a property of the model
+// this.ticketDetailView.model.set('id', ticket);
+// this.ticketDetailView.model.fetch({
+// 	success: _.bind(function(){
+// 		this.ticketDetailView.model.messages.url = '/tickets/reply/' + ticket;
+// 		this.ticketDetailView.model.messages.fetch({
+// 			success: _.bind(function(model){
+// 				$('#app').html(this.ticketDetailView.render().el);
+// 				console.log(model);
+// 			}, this)
+// 		});
+// 	}, this)
+// });
 
-a company model in a companies collection 
-company models contains arrays of agents and arrays of users
+// Previous way that built file collections
+// this.ticketDetailView.model.urlRoot = '/tickets',
+// this.ticketDetailView.model.set('id', ticket);
+// // this.ticketDetailView.files.reset();
+// this.ticketDetailView.model.fetch({
+// 	success: _.bind(function(model){
+// 		var files = model.attributes.files;
+// 		 for (i = 0; i < files.length; ++i) {
+// 			var fileMdl = new FileModel();
+// 			fileMdl.urlRoot = '/tickets/file/meta';
+// 			fileMdl.set('id', files[i]);
+// 			fileMdl.fetch();
+// 			this.ticketDetailView.model.files.add(fileMdl);
 
-An admin or an agent people view loads a companies collection 
-
-A user loads a single company model
-
-After user is authenticated and user object is instantiated Company name is used to fetch company object
-*/
-
-
-/*[
-					{
-						"id": null,
-						'companyName': 'Paramount Recruitment',
-						
-						'users': [
-							{
-								'name': 'Eugene McDaid',
-								'position': 'Director',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'Dan Berryman',
-								'position': 'Director',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'Joe Bloggs',
-								'position': 'Minion',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'James Brown',
-								'position': 'Sex Machine',
-								'avatar': 'application/assets/img/avatar.png'
-							}						
-						]						
-					},
-					{
-						"id": null,
-						'companyName': 'Anatech Resource',
-						'users': [
-							{
-								'name': 'Colin Pearson',
-								'position': 'Director',
-								'avatar': 'application/assets/img/avatar.png'
-							},
-							{
-								'name': 'Nick Wilkins',
-								'position': 'Associate Director',
-								'avatar': 'application/assets/img/avatar.png'
-							}						
-						]
-					}
-				]*/
+// 			this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
+// 			this.ticketDetailView.model.messages.fetch({
+// 				success: _.bind(function(){
+// 					// console.log('fetched');
+// 					$('#app').html(this.ticketDetailView.render().el);
+// 				}, this)
+// 			});
+// 		}
+// 	}, this)
+// });
