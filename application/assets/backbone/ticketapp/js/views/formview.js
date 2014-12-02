@@ -28,10 +28,10 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
-console.log(this.model);
 		
 		//reset fileUpload collection
 		this.fileUploadView.collection.reset();
+
 		this.$el.html(this.template(this.model));	
 		this.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
 		this.fileUploadView.render();
@@ -39,8 +39,7 @@ console.log(this.model);
 		this.delegateEvents({
 			'click .save': 'save',
 			'input .new-sub': 'subjectCharCount',
-			'click .cancel-btn': 'cancelTicket',
-			'click .char-count': 'testAdd'
+			'click .cancel-btn': 'cancelTicket'
 		});
 
 		return this;
@@ -52,8 +51,6 @@ console.log(this.model);
 	
 	save: function(){
 		if(this.$el.find('input[name="new-sub"]').val()){
-			//is it possible to do this without changing the url root? as backbone should be clever enough to know whether to do a put or a post 
-			// this.model.urlRoot = '/tickets/add',
 			this.setModelData();			
 			this.model.save(this.model.attributes,
 				{
@@ -61,7 +58,6 @@ console.log(this.model);
 						//ensure formView always uses a fresh model
 						app.formView.model = new TicketModel();
 						app.navigate('', {trigger: true});
-						console.log(model);
 					}
 				}
 			);
@@ -70,26 +66,6 @@ console.log(this.model);
 		}
 	
 	},
-
-	testAdd: function(){
-		console.log(this.fileUploadView.collection);
-		this.fileUploadView.collection.add({test: 'testing'});
-		console.log(this.fileUploadView.collection);
-
-	},
-
-	// addFile: function(fileData){
-
-	// 	// cant work this out!
-	// 	// var newFile = new FileModel({ref: fileID});
-	// 	// this.model.files.add(newFile);
-
-	// 	//or something like
-	// 	// newFile.url = '/tickets/file/add/' + this.model.id;
-	// 	// newFile.save();
-	// 	console.log(fileData);
-		
-	// },
 
 	setModelData: function(){
 		this.model.set({
@@ -102,7 +78,8 @@ console.log(this.model);
 			company: app.user.attributes.company,
 			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id),
-			url: '/tickets/add'
+			url: '/tickets/add',
+			files: this.fileUploadView.createFilesArray()
 		});		
 	},
 

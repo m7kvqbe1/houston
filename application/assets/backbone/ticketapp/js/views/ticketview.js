@@ -82,54 +82,7 @@ var TicketDetailView = Backbone.View.extend({
 				'{{/if}}'+						
 			'</li>'+
 			'<div id="messages-wrap">'+
-		// '{{#forEach messages.models}}'+
-		// 	'<li class="msg from-{{attributes.role}}">'+
-		// 		'<div class="msg-dtl">'+
-		// 			'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
-		// 			'<div class="msg-dtl-inr">'+
-		// 				'<h3 class="msg-agent">{{attributes.author}}</h3>'+
-		// 				'<h4 class="msg-company">{{attributes.company}}</h4>'+
-		// 				'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
-		// 			'</div>'+
-		// 			'<div class="msg-tri"></div>'+
-		// 		'</div>'+
-		// 		'<div class="msg-body">'+
-		// 			'<div class="msg-text">'+
-		// 				'{{attributes.message}}'+							
-		// 			'</div>'+						
-		// 			'<ul class="files">'+
-		// 			'{{#each attributes.files}}'+
-		// 				'<li class="file">'+
-		// 					'<div class="file-icon {{filetype}}"></div>'+
-		// 					'<div class="filename">{{filename}}</div>'+
-		// 					'<a href="">View</a>'+
-		// 					'<a href="">Delete</a>'+
-		// 				'</li>'+	
-		// 			'{{/each}}'+
-		// 			'</ul>'+
-		// 		'{{#if $last}}'+						
-		// 			'<a class="btn reply-btn">Reply</a>'+
-		// 		'</div>'+
-		// 		'<div class="reply">'+
-		// 			'<form id="form-reply">' +
-		// 				'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-		// 				'<div id="file-upload-view-wrap">'+	
 
-		// 				'</div>'+
-		// 				'<label>'+
-		// 					'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
-		// 					'Mark ticket as completed'+
-		// 				'</label>'+
-		// 				'<button class="add-message" type="button">Submit</button>' +
-		// 				'<div class="beige or">or</div>' +
-		// 				'<a class="cancel-btn ib">Cancel</a>' +
-		// 			'</form>' +
-		// 		'</div>'+
-		// 		'{{else}}'+
-		// 		'</div>'+
-		// 		'{{/if}}'+					
-		// 	'</li>'+
-		// '{{/forEach}}'+
 			'</div>'+	
 		'</ul>'	
 	),
@@ -143,10 +96,6 @@ var TicketDetailView = Backbone.View.extend({
 		var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
-
-		// var filesUploadCollection = new FilesUpload();
-		// this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
-		// this.fileUploadView.parent = this;
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -170,14 +119,11 @@ var TicketDetailView = Backbone.View.extend({
 	render: function (){	
 		this.$el.html(this.template(this.model));
 
+		//reset fileUpload collection
+		this.messagesView.fileUploadView.collection.reset();
+
 		this.$('#messages-wrap').append(this.messagesView.$el);
-		this.messagesView.render();
-
-		// this.fileUploadView.collection.reset();		
-		// this.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
-		// this.fileUploadView.render();
-
-		
+		this.messagesView.render();		
 
 		//Add user to updated array if not already there
 		if(!houston.updateCheck(this.model.get('updated'))){
@@ -266,7 +212,7 @@ var TicketDetailView = Backbone.View.extend({
 			"company": app.user.attributes.company,
 			"date": new Date(),
 			"message": this.$el.find('textarea[name="new-textarea"]').val(),
-			"files": this.messageFiles
+			"files": this.messagesView.fileUploadView.createFilesArray()
 
 		};
 
@@ -285,21 +231,6 @@ var TicketDetailView = Backbone.View.extend({
 		//save sets updated array
 		this.saveModel();
 
-		//empty messageFiles
-		this.messageFiles = [];
-		console.log(this.messageFiles);
-
-	},
-
-	messageFiles: []
-
-	// saveMessage: function(){
-	// 	this.model.messages.url = '/tickets/reply/add/' + this.model.id;
-	// 	console.log(this.model.messages.url);
-	// 	//stackoverflow.com/questions/14492226/backbone-js-sync-cant-find-the-url-property
-	// 	this.model.messages.invoke('save');
-	// 	//think this unnecessarily saves all of the models rather than just the new one.
-	
-	// }
+	}
 	
 });

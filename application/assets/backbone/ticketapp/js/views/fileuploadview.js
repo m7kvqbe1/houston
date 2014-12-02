@@ -18,17 +18,6 @@ var FileUploadView = Backbone.View.extend({
 			'{{#each models}}'+
 				'<li class="file">'+
 					'{{generateFileUploadPreview this}}'+
-					// '{{generateFileUploadPreview attributes.type attributes.name attributes.target cid}}'+
-					// '<img class="file-thumb" src="{{attributes.target}}" title="{{name}}"/>'+
-					// '<div class="file-text">'+
-		  	// 			'<div class="file-icon jpg"></div>'+
-		  	// 			// '<div class="file-icon {{attributes.type}}"></div>'+
-		  	// 			'<div class="file-info">'+
-					// 		'<div class="filename">{{attributes.name}}</div>'+
-					// 		// '<a data-img="{{attributes.target}}" data-type="{{attributes.type}}" data-img="{{attributes.target}}" class="file-preview">Preview</a>'+
-					// 		'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-					// 	'</div>'+
-					// '</div>'+
 				'</li>'+
 			'{{/each}}'+
 			'</ul>' +	
@@ -96,6 +85,7 @@ var FileUploadView = Backbone.View.extend({
 
 	previewFile: function(e){
 		console.log(this.collection);
+		//should be done with a collectoin.get on the cid
 		var button = $(e.currentTarget);
 		var img = button.data("img");
 		var prevWindow = this.$el.find('.preview-window');
@@ -109,9 +99,22 @@ var FileUploadView = Backbone.View.extend({
 		this.$el.find('.preview-window').hide();
 	},
 
+	createFilesArray: function(){
+		var filesArray = [];
+		this.collection.each(function(model){
+			var fileData = {
+				ref: model.attributes.id,
+				name: model.attributes.name,
+				type: model.attributes.type,
+				date: model.attributes.lastModifiedDate
+			}
+			filesArray.push(fileData);
+		});
+		return filesArray;
+	},
+
 
 	addFiles: function(files){
-		console.log('addFiles');
 		for (var i = 0, f; f = files[i]; i++) {
 
 	        var reader = new FileReader();
@@ -126,40 +129,14 @@ var FileUploadView = Backbone.View.extend({
 	        reader.onloadend = _.bind((function(theFile) {
 		        return function(e) {
 		        	
-			        theFile["target"] = e.target.result;		        
+			        theFile["target"] = e.target.result;
+
 					delete theFile["webkitRelativePath"];
 					var fileMdl = new FileUploadModel();
 					fileMdl.url = '/tickets/file/add';
 					//need to add the file to the collection for it to appear in the view
 					this.collection.add(fileMdl);
-					fileMdl.save(theFile,{
-						success: _.bind(function(model, response){
-							
-							var fileData = {
-								ref: model.attributes.id,
-								name: model.attributes.name,
-								type: model.attributes.type,
-								date: model.attributes.lastModifiedDate
-							}
-							// console.log(this.parent.collection.models[this.parent.collection.models.length]);							
-							// this.parent.parent.messageFiles.push(fileData);
-							// console.log(this.parent.parent.messageFiles);
-
-
-							//maybe build just one array and then decide where to push that array too?
-							if(this.parent.model){
-								this.parent.model.set({			
-									files: this.parent.model.get('files').concat(fileData)
-								});
-							} else {
-								this.parent.parent.messageFiles.push(fileData);
-							}
-							
-						}, this),
-						error: function(){
-							console.log('error');
-						}
-					});
+					fileMdl.save(theFile);
 
 		        };
 	        })(f), this);
@@ -172,11 +149,12 @@ var FileUploadView = Backbone.View.extend({
 	deleteFile: function(e){
 
 		var button = $(e.currentTarget);
-		var cid = button.data("cid");
+		var cid = button.data("cid");	
 		var fileToDelete = this.collection.get(cid);
 		//stackoverflow.com/questions/6280553/destroying-a-backbone-model-in-a-collection-in-one-step
 		this.collection.remove(fileToDelete);
-		// fileToDelete.destroy();
+		// // fileToDelete.destroy(); DO I NEED TO DO THIS? check with tom if it works
+
 	},
 
 
