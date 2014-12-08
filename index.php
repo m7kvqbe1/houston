@@ -32,7 +32,9 @@ $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
 
 // Register Monolog service
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.'/application/log/development.log',
+    'monolog.logfile' => __DIR__.Config::LOG_PATH,
+	'monolog.name' => 'Houston',
+	'monolog.level' => Config::LOG_LEVEL
 ));
 
 use Silex\Application;
