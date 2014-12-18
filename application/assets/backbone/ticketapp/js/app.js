@@ -1,10 +1,11 @@
 var AppRouter = Backbone.Router.extend({
 	routes: {
-	//set up routes
+		//set up routes
 		"": "list",
 		"tickets/new": "ticketForm",
 		"tickets/:ticket": "ticketDetails",
-		"people": "peopleOverview"
+		"people": "peopleOverview",
+		"account": "accountMain"
 	},
 	
 	initialize: function() {
@@ -66,7 +67,12 @@ var AppRouter = Backbone.Router.extend({
 			}
 		); 
 
-		
+		//ACCOUNT
+		this.accountView = new AccountView(
+			{ 
+				model: this.user 
+			}
+		);
 	},
 
 	list: function() {
@@ -101,8 +107,11 @@ var AppRouter = Backbone.Router.extend({
 	
 	peopleOverview: function() {
 		$('#app').html(this.peopleView.render().el);
-	}
+	},
 	
+	accountMain: function() {
+		$('#app').html(this.accountView.render().el);
+	}
 });
 
 var app = new AppRouter();
