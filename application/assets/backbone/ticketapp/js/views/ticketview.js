@@ -1,31 +1,35 @@
 var TicketDetailView = Backbone.View.extend({
 	template: Handlebars.compile(
-		'<div class="box-app-top msg-top">'+
-			'{{#if attributes.agent}}'+
-				'<h2><a href="#">< All Tickets</a></h2>'+
-				'{{generateDropSwitch attributes.status}}'+					
-				'<div class="dropdown droplist">'+
-					'<div class="drop-top rounded">'+
-						'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
-					'</div>'+						
-					'<ul class="drop">'+
-						'{{populateAgentDropdown}}'+
-					'</ul>'+
+		'<div class="box-app-fixed">'+
+			'<div class="box-app-fixed-inner">'+
+				'<div class="box-app-top msg-top">'+
+					'{{#if attributes.agent}}'+
+						'<h2><a href="#">< All Tickets</a></h2>'+
+						'{{generateDropSwitch attributes.status}}'+					
+						'<div class="dropdown droplist">'+
+							'<div class="drop-top rounded">'+
+								'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
+							'</div>'+						
+							'<ul class="drop">'+
+								'{{populateAgentDropdown}}'+
+							'</ul>'+
+						'</div>'+
+					'{{else}}'+
+						'<h2><a href="#">< All Tickets</a></h2>'+
+						'<div class="btn new">New</div>'+
+						'<div class="dropdown droplist">'+
+							'<div class="drop-top rounded">'+
+								'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
+							'</div>'+						
+							'<ul class="drop">'+
+								'{{populateAgentDropdown}}'+
+							'</ul>'+
+						'</div>'+
+					'{{/if}}'+
 				'</div>'+
-			'{{else}}'+
-				'<h2><a href="#">< All Tickets</a></h2>'+
-				'<div class="btn new">New</div>'+
-				'<div class="dropdown droplist">'+
-					'<div class="drop-top rounded">'+
-						'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
-					'</div>'+						
-					'<ul class="drop">'+
-						'{{populateAgentDropdown}}'+
-					'</ul>'+
-				'</div>'+
-			'{{/if}}'+
+			'</div>'+
 		'</div>'+			
-		'<ul id="msg-stream" class="box-app">'+
+		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+
 			'<li class="msg from-client">'+
 				'<div class="msg-dtl">'+
 					'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{author}}"/>'+
@@ -113,6 +117,10 @@ var TicketDetailView = Backbone.View.extend({
 		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
 			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
 
+		});
+
+		Handlebars.registerHelper("fullHeightPage", function() {
+			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
 		});
 	},
 	

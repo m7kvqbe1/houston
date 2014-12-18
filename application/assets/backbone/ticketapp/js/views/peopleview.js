@@ -2,9 +2,13 @@ var PeopleView = Backbone.View.extend({
 	template: Handlebars.compile(
 		
 		'<section>'+
-			'<div class="box-app-top">'+
-				'<h2>Support Agents</h2>'+
-				'<a class="btn">New Agent</a>'+
+			'<div class="box-app-fixed">'+
+				'<div class="box-app-fixed-inner">'+
+					'<div class="box-app-top">'+
+						'<h2>Support Agents</h2>'+
+						'<a class="btn">New Agent</a>'+
+					'</div>'+
+				'</div>'+
 			'</div>'+
 			'<ul id="agent-stream" class="box-app box-people">'+
 				'<div class="add-person">'+

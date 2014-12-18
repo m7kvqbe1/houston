@@ -1,22 +1,30 @@
 var TicketView = Backbone.View.extend({
 	template: Handlebars.compile(
-		
-		'<div class="box-app-top">' +
-			'<h2>Open Tickets</h2>' +
-			'<a href="#/tickets/new" class="btn">New Ticket</a>' +
-		'</div>' +
-		'<div class="box-app">' +
-			'<div class="box-app-nav">' +
-				'<div class="sort">' +
-					'<a class="sortByDate">Sort By Date {{dateArrow}}</a>' +
-					'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>' +
+		'<div class="box-app-fixed">'+
+			'<div class="box-app-fixed-inner">'+
+				'<div class="box-app-top">' +
+					'<h2>Open Tickets</h2>' +
+					'<a href="#/tickets/new" class="btn">New Ticket</a>' +
 				'</div>' +
-				'<div class="filter">' +
-					'<a class="allTickets">All Tickets</a>' +
-					'<a class="myTickets mid-link">My Tickets</a>' +
-					'<a class="completedTickets">Completed Tickets</a>' +
-				'</div>' +
-			'</div>' +
+				
+				'<div class="box-app-nav">' +
+					'<div class="helper">'+
+						'<div class="box-app-nav-inner">'+
+							'<div class="sort">' +
+								'<a class="sortByDate">Sort By Date {{dateArrow}}</a>' +
+								'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>' +
+							'</div>' +
+							'<div class="filter">' +
+								'<a class="allTickets">All Tickets</a>' +
+								'<a class="myTickets mid-link">My Tickets</a>' +
+								'<a class="completedTickets">Completed Tickets</a>' +
+							'</div>' +
+						'</div>'+
+					'</div>' +
+				'</div>'+
+			'</div>'+
+		'</div>'+
+		'<div class="box-app tickets-box-app" style="{{fullHeightPage}}">' +
 			'<ul id="ticket-stream">' +
 			'{{#each models}}'+
 				'<li class="ticket">' +
@@ -63,9 +71,21 @@ var TicketView = Backbone.View.extend({
 		Handlebars.registerHelper("dateArrow", function() {
 			return new Handlebars.SafeString(houston.dateArrow());
 		});
+		// Handlebars.registerHelper("companyArrow", function() {
+		// 	return new Handlebars.SafeString(houston.companyArrow());	
+		// });
+
 		Handlebars.registerHelper("companyArrow", function() {
+			// console.log('companyArrow');
 			return new Handlebars.SafeString(houston.companyArrow());	
 		});
+
+		Handlebars.registerHelper("fullHeightPage", function() {
+			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
+		});
+
+		//make sure to unbind event
+		$(window).on("resize", this.pageResize);
 		
 	},
 		
@@ -79,6 +99,10 @@ var TicketView = Backbone.View.extend({
 			'click .allTickets': 'all'
 		});
 		return this;		
+	},
+
+	pageResize: function(){
+		this.$('.box-app').css('min-height', houston.calculateBoxHeight());
 	},
 	
 	all: function(){
@@ -102,3 +126,46 @@ var TicketView = Backbone.View.extend({
 	}
 			
 });
+
+		// '<div class="box-app-top">' +
+		// 	'<h2>Open Tickets</h2>' +
+		// 	'<a href="#/tickets/new" class="btn">New Ticket</a>' +
+		// '</div>' +
+		// '<div class="box-app">' +
+		// 	'<div class="box-app-nav">' +
+		// 		'<div class="sort">' +
+		// 			'<a class="sortByDate">Sort By Date {{dateArrow}}</a>' +
+		// 			'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>' +
+		// 		'</div>' +
+		// 		'<div class="filter">' +
+		// 			'<a class="allTickets">All Tickets</a>' +
+		// 			'<a class="myTickets mid-link">My Tickets</a>' +
+		// 			'<a class="completedTickets">Completed Tickets</a>' +
+		// 		'</div>' +
+		// 	'</div>' +
+		// 	'<ul id="ticket-stream">' +
+		// 	'{{#each models}}'+
+		// 		'<li class="ticket">' +
+		// 			'<a href="/#/tickets/{{attributes.id}}">'+
+		// 				'<div class="update-alert {{updateCheck attributes.updated}}"></div>' +
+		// 				'<div class="ticket-info">' +					
+		// 					'<div class="date">{{convertToDate attributes.date}}</div>' +
+		// 					'<div class="ticket-info-inner">' +
+		// 						'<div class="name">{{attributes.name}}</div>' +
+		// 						'<div class="company-name">{{attributes.company}}</div>' +
+		// 						'<div class="summary">{{attributes.subject}}</div>' +
+		// 					'</div>' +
+		// 				'</div>' +
+		// 				'<div class="ticket-status">' +
+		// 					'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
+		// 					'{{#if attributes.agent}}'+
+		// 						'<div class="ticket-agent">{{attributes.agent}}</div>' +
+		// 					'{{else}}'+
+		// 						'<div class="ticket-agent">Awaiting Agent</div>'+
+		// 					'{{/if}}'+								
+		// 				'</div>' +
+		// 			'</a>'+
+		// 		'</li>'+
+		// 	'{{/each}}'+					
+		// 	'</ul>' +
+		// '</div>' 
