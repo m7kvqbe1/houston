@@ -1,10 +1,14 @@
 var FormView = Backbone.View.extend({
 	template: Handlebars.compile(
-		'<div class="box-app-top">' +
-			'<h2>Create Ticket</h2>' +
-			'<a class="btn">New Ticket</a>' +
-		'</div>' +
-		'<div class="box-app">' +
+		'<div class="box-app-fixed">'+
+			'<div class="box-app-fixed-inner">'+
+				'<div class="box-app-top">' +
+					'<h2>Create Ticket</h2>' +
+					'<a class="btn">New Ticket</a>' +
+				'</div>' +
+			'</div>'+
+		'</div>'+
+		'<div class="box-app" style="{{fullHeightPage}}">' +
 			'<form id="form-new">' +
 				'<input type="text" class="new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
 				'<div class="char-count"><span>75</span> Characters Remaining</div>' +
@@ -16,7 +20,8 @@ var FormView = Backbone.View.extend({
 				'<div class="beige or">or</div>' +
 				'<a class="cancel-btn ib">Cancel</a>' +
 			'</form>' +
-		'</div>' 
+		'</div>'
+
 	),
 
 	initialize: function() {
@@ -25,6 +30,10 @@ var FormView = Backbone.View.extend({
 		var filesUploadCollection = new FilesUpload();
 		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
 		this.fileUploadView.parent = this;
+
+		Handlebars.registerHelper("fullHeightPage", function() {
+			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
+		});
 	},
 
 	render: function(){

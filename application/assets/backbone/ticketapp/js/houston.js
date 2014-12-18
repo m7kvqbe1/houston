@@ -215,6 +215,14 @@ var houston = {
 		} else {
 			view.find('.char-count').removeClass('count');
 		}
+	},
+
+	calculateBoxHeight: function(){
+		var windowHeight = $(window).height();
+		var footerHeight = 60;
+		var headerHeight = $('header').height() + $('.box-app-fixed').height();
+		var idealHeight = windowHeight - footerHeight - headerHeight - 37;
+		return idealHeight;
 	}
 
 }

@@ -124,11 +124,12 @@ a, font, img, ul, li {
 }
 
 html {
-
+	height: 100%;
+	overflow-y:scroll;
 }
 
 body {
-	position: absolute;
+	/*position: absolute;*/
 	width: 100%;
 	height: 100%;
 	font-family: 'Lato', sans-serif;
@@ -139,9 +140,17 @@ body {
 
 .outer-wrap {
 	position: relative;
-	height: 100%;
 	right: 0px;
-	background: #f6f0e6;
+	height: 100%;
+	min-height: 100%;
+
+	background: #f6f0e6;		
+
+
+		/*	height: auto;
+			margin: -230px 0 -60px 0;
+			margin: 230px 0 -60px 0;
+			margin: 0 0 -60px 0;*/
 }
 
 .mob-menu {
@@ -209,6 +218,7 @@ footer {
 	width: 100%;
 	height: 50px;
 	padding-top:  10px;
+			position: relative;
 }
 
 .copy {
@@ -672,14 +682,26 @@ input.inp-lst {
 
 /* Ticket View */
 
+.box-app-wrap {
+	/*margin-top: 193px;*/
+	/*padding-top: 125px;*/
+}
+
 .app-wrap {
 	overflow: hidden;
 	min-width: 320px;
+			/*padding-bottom: 60px;*/
 }
 
 .app-wrap header {
+	position: fixed;
+	top: 0;
+	width: 100%;
 	height: 75px;
-	margin: 0 15px;
+	background: #f6f0e6;
+	/*margin: 0 15px;*/
+	z-index: 10;
+
 }
 
 .app-wrap .logo {
@@ -688,12 +710,12 @@ input.inp-lst {
 	width: 95px;
 	height: 26px;
 	margin: 0;
-	padding-top: 25px;
+	padding: 25px 0 0 15px;
 }
 
 .grip {
 	float: right;
-	margin-top: 25px;
+	padding: 25px 15px 15px 15px;
 	font-size: 21px;
 	
 }
@@ -701,23 +723,44 @@ input.inp-lst {
 .app-wrap header nav {
 	display: none;
 	float: right;
-	margin: 40px 0 0;
+	margin: 40px 30px 0 0;
 }
 
 .app-wrap header nav a {
 	margin: 0 3px;
 }
 
+.box-app-fixed {
+	position: fixed;
+	top: 75px;
+	width: 100%;
+	background: #f6f0e6;
+	z-index: 10;
+}
+
+/*.box-app-fixed-inner {
+	margin: 0 15px;
+	border-radius: 3px 3px 0 0;
+	-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+	box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+}*/
+
 .box-app {
-	padding: 0 15px;
+	margin-top: 68px;
+	padding: 1px 15px 15px;
 	background: #fff;
+	padding: 75px 15px 30px;
+	
+}
+
+.box-app.tickets-box-app {
+	padding: 126px 15px 15px;
 }
 
 .box-app-top {
-	/*height: 52px;
-	padding: 0 15px;*/
 	height: 36px;
-	padding: 16px 15px;
+	/*padding: 16px 15px;*/
+	padding: 16px 0;
 	-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
 	box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
 	background: #f3f0ea;
@@ -727,7 +770,7 @@ input.inp-lst {
 	float: right;
 	width: 92px;
 	height: 36px;
-	/*margin: 8px 0;*/
+	margin-right: 15px;
 	line-height: 38px;
 }
 
@@ -825,7 +868,7 @@ input.inp-lst {
 .box-app-top h2,
 .box-companies-header h2 {
 	float: left;	
-	margin: 7px 0 8px;
+	margin: 7px 0 8px 15px;
 	text-shadow: 1px 1px 2px #ffffff;
 	color: #635748;
 }
@@ -838,6 +881,14 @@ input.inp-lst {
 
 .box-app-nav {
 	height: 50px;
+	padding: 0 15px;
+	background: #fff;
+}
+
+.box-app-nav-inner {
+	overflow: hidden;
+	padding-bottom: 14px;
+	border-bottom: 1px solid #cfc3af;
 }
 
 .box-app-nav .sort {
@@ -870,7 +921,7 @@ input.inp-lst {
 .ticket {
 	overflow: hidden;
 	padding: 12px 0 10px;
-	border-top: 1px solid #cfc3af;
+	border-bottom: 1px solid #cfc3af;
 }
 
 .ticket a {
@@ -1056,7 +1107,7 @@ input.inp-lst {
 }
 
 #form-new {
-	padding: 25px 0;
+	padding: 25px 0 0;
 	text-align: center;
 }
 
@@ -1333,12 +1384,20 @@ input.inp-lst {
 	
 @media only screen and (min-width: 768px) { 
 
+	.offset {
+		height: 230px;
+	}
+
 	.box-wel,
 	.box-try,
 	.vrf-wrap,
 	.vld-box,
 	.get-houston{
 		display: block;
+	}
+
+	.mob-menu {
+		display: none;
 	}
 	
 	.box-log,
@@ -1421,7 +1480,7 @@ input.inp-lst {
 	.app-wrap {
 		overflow: visible;
 		width: inherit;
-		margin: 0 15px;
+		/*margin: 0 15px;*/
 	}
 	
 	.app-wrap header {
@@ -1436,13 +1495,45 @@ input.inp-lst {
 	.app-wrap .logo {
 		width: 182px;
 		height: 49px;
-		padding-top: 26px;
+		padding: 26px 0 0 30px;
+	}
+
+	.box-app-fixed {
+		top: 100px;
+	}
+
+	.box-app-fixed-inner {
+		margin: 0 15px;
+		border-radius: 3px 3px 0 0;
+		-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+		box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
 	}
 	
+	.box-app-nav {
+		/*margin: 0 15px;*/
+		/*padding: 0 30px;*/
+
+		margin: 0;
+		padding: 0;
+	}
+
+	.box-app-nav a {
+
+	}
+
+	.helper {
+		position: relative;
+		top: 5px;
+		padding: 0 30px;
+		background: #fff;
+	}
+
 	.box-app-top {
 		/*height: 75px;
 		padding: 0 30px;*/
 		height: 35px;
+		/*padding: 20px 30px;*/
+			/*margin: 0 15px;*/
 		padding: 20px 30px;
 		-webkit-box-shadow: none;
 		box-shadow: none;
@@ -1464,17 +1555,32 @@ input.inp-lst {
 	}
 	
 	.box-app-wrap {
+		/*margin-top: 226px;
+		margin-top: 225px;
+		margin-top: 230px;*/
 		-webkit-border-radius: 3px;
 		border-radius: 3px;
-		-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
-		box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+		/*-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+		box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);*/
+
+		/*padding-top: 230px;*/
 
 	}
 	
 	.box-app {
-		padding: 0 30px;
+		margin: 0 15px;
+		padding: 0 30px 30px;
+		padding: 2px 30px 30px;
 		-webkit-border-radius: 0 0 3px 3px;
 		border-radius: 0 0 3px 3px;
+		-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+		box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+
+		padding: 180px 30px 30px;
+	}
+
+	.box-app.tickets-box-app {
+		padding: 232px 30px 30px;
 	}
 	
 	.box-app-nav a.mid-link {
@@ -1784,7 +1890,9 @@ input.inp-lst {
 }
 	
 @media only screen and (min-width: 1000px) { 
-	.app-wrap {
+	.app-wrap,
+	.app-wrap header,
+	.box-app-fixed {
 		width: 970px;
 		margin: 0 auto;
 	}
