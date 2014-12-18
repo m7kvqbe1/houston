@@ -20,7 +20,7 @@ class TicketModel {
 		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoId($id)));
 		
 		if(!empty($this->ticket)) {
-			// Bundle attachment meta
+			// Bundle attachment meta - DEPRECATED
 			//$fileIDs = (array) $this->ticket['files'];
 			//$this->ticket['files'] = $this->getFileMeta($fileIDs);
 			

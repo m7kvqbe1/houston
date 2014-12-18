@@ -1,6 +1,6 @@
 <?php
 // Application config
-define('DOCUMENT_ROOT', dirname(__FILE__));
+define('DOCUMENT_ROOT', __DIR__);
 require_once(__DIR__.'/application/config.php');
 
 // Error reporting
@@ -28,6 +28,13 @@ $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
             'options' => array("connect" => true)
         )
     ),
+));
+
+// Register Monolog service
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile' => __DIR__.Config::LOG_PATH,
+	'monolog.name' => 'Houston',
+	'monolog.level' => Config::LOG_LEVEL
 ));
 
 use Silex\Application;

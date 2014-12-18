@@ -11,6 +11,9 @@ class Config {
 	
 	const ERROR_REPORTING = true;
 	
+	const LOG_PATH = '/application/log/development.log';
+	const LOG_LEVEL = 'ERROR';
+	
 	// This will be account dependent
 	const MAILBOX_HOST = '{imap.gmail.com:993/ssl/novalidate-cert}[Gmail]/All Mail';
 	const MAILBOX_USER = 'support@muska.co.uk';
