@@ -70,7 +70,7 @@ var AppRouter = Backbone.Router.extend({
 		//ACCOUNT
 		this.accountView = new AccountView(
 			{ 
-				model: this.user 
+				model: this.user
 			}
 		);
 	},
