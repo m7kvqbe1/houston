@@ -37,3 +37,4 @@
 [2014-12-08 09:38:09] Houston.INFO: > GET /companies/all [] []
 [2014-12-08 09:38:09] Houston.INFO: < 200 [] []
 [2014-12-08 09:38:09] Houston.INFO: < 200 [] []
+[2014-12-18 17:04:58] Houston.ERROR: Symfony\Component\HttpKernel\Exception\NotFoundHttpException: No route found for "GET /favicon.ico" (uncaught exception) at /var/www/tom.houston.com/public_html/houston/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/RouterListener.php line 145 {"exception":"[object] (Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException: No route found for \"GET /favicon.ico\" at /var/www/tom.houston.com/public_html/houston/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/RouterListener.php:145, Symfony\\Component\\Routing\\Exception\\ResourceNotFoundException:  at /var/www/tom.houston.com/public_html/houston/vendor/symfony/routing/Symfony/Component/Routing/Matcher/UrlMatcher.php:96)"} []

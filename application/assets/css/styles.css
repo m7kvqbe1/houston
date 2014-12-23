@@ -1926,8 +1926,33 @@ input.inp-lst {
 	position: fixed;
 	top: 0;
 	left: 0;		
-	color: #666;
-	background-color: transparent;
-	margin: 10px;
+	margin: 15px;
+	padding: 10px;
+	border: 1px solid #635748;
+	border-radius: 4px;
+	
+	-moz-user-select: none; 
+    -khtml-user-select: none; 
+	-webkit-user-select: none; 
+	-o-user-select: none; 
+	
+	color: #635748;
+	background-color: #fff;
+	box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
+	
+	z-index: 9999;
 	display: none;
+}
+
+#notice .close {
+	font-weight: 600;
+	display: inline-block;
+	margin-left: 10px;
+	opacity: 0.5;
+	font-style: normal;
+}
+
+#notice .close:hover {
+	opacity: 1;
+	cursor: pointer;
 }
