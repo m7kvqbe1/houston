@@ -55,14 +55,14 @@ var AppRouter = Backbone.Router.extend({
 		);
 		
 		//PEOPLE/COMPANIES
-		//instantiate the company model
-		this.companyModel = new CompanyModel();
-		//fetch company data
-		this.companyModel.fetch();
+		//instantiate the agents collection
+		this.agents = new Agents();
+		//fetch agent data
+		this.agents.fetch();
 		//instantiate the people view and set it the company model
 		this.peopleView = new PeopleView(
 			{
-				model: this.companyModel
+				collection: this.agents
 			}
 		); 
 
@@ -100,6 +100,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverview: function() {
+		this.peopleView.companiesView.collection.fetch();
 		$('#app').html(this.peopleView.render().el);
 	}
 	
@@ -110,6 +111,18 @@ var app = new AppRouter();
 $(function() {
 	Backbone.history.start();
 });
+
+// //PEOPLE/COMPANIES
+// //instantiate the company model
+// this.companyModel = new CompanyModel();
+// //fetch company data
+// this.companyModel.fetch();
+// //instantiate the people view and set it the company model
+// this.peopleView = new PeopleView(
+// 	{
+// 		model: this.companyModel
+// 	}
+// ); 
 
 
 //TicketDetail

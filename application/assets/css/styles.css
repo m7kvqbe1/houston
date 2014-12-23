@@ -216,9 +216,9 @@ header {
 footer {
 	clear: both;
 	width: 100%;
-	height: 50px;
-	padding-top:  10px;
-			position: relative;
+	height: 40px;
+	padding-top:  20px;
+			/*position: relative;*/
 }
 
 .copy {
@@ -757,6 +757,8 @@ input.inp-lst {
 	padding: 126px 15px 15px;
 }
 
+
+
 .box-app-top {
 	height: 36px;
 	/*padding: 16px 15px;*/
@@ -1030,9 +1032,11 @@ input.inp-lst {
 
 /* People View */
 
+
 .box-people {
 	overflow: hidden;
 	padding: 30px 15px 0;
+	padding: 105px 15px 0;
 }
 
 .person {
@@ -1079,7 +1083,7 @@ input.inp-lst {
 }
 
 .add-person {
-	display: none;
+	/*display: none;*/
 	overflow: hidden;
 	margin-bottom: 30px;
 	text-align: center;
@@ -1435,7 +1439,7 @@ input.inp-lst {
 	.logo {
 		width: 182px;
 		height: 49px;
-		margin: 0 0 0 24px;
+		margin: 0 0 0 30px;
 		padding-top: 26px;
 	}
 
@@ -1443,17 +1447,22 @@ input.inp-lst {
 		width: 768px;
 		margin: 0 auto;
 	}
+
+	footer {
+		height: 45px;
+		padding-top: 15px;
+	}
 	
 	.copy {
 		float: left;
 		margin: 0 15px;
-		padding-left: 25px;
+		padding-left: 15px;
 		text-align: left;
 	}
 	
-	.app-wrap .copy {
+	/*.app-wrap .copy {
 		padding-left: 0;
-	}
+	}*/
 	
 	.reg-form-wrap {
 		width: 414px;
@@ -1662,6 +1671,7 @@ input.inp-lst {
 	/* People */
 	.box-people {
 		padding: 40px 0 0;
+		padding: 215px 0 0;
 		border-radius: 0;
 	}
 	
