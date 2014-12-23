@@ -17,3 +17,26 @@ $app->get('/companies/all', function(Request $request, Application $app) {
 	    	    	    
 	return json_encode($company);
 })->before($secure);
+
+// Add new company
+$app->post('/companies', function(Request $request, Application $app) {
+	return 'test';
+})->before($secure);
+
+// Get agents
+$app->get('/agents', function(Request $request, Application $app) {	
+	
+})->before($secure);
+
+// Add new agent
+$app->post('/agents', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->addAgent($json);
+	
+	// Send verification email
+	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);
+	
+	return 1;
+})->before($secure);
