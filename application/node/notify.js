@@ -1,4 +1,11 @@
+// Setup express
 var app = require('express')();
+
+// Setup bodyParser middleware
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+// Setup server
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -14,25 +21,32 @@ io.on('connection', function(socket){
 });
 
 // Broadcast new ticket event
-app.post('/new/ticket', function(req, res) {
-	console.log('newticket');
-	io.emit('notify', 'New Ticket');
+app.post('/new/ticket', function(req, res) {	
+	var msg = req.body.subject.substr(0, 30);
+	var msg = msg+'...';
+	
+	io.emit('notify', '<strong>New Ticket:</strong>&nbsp;'+msg);
 	
 	res.end();
 });
 
-// Broadcast reply event
+// Broadcast new reply event
 app.post('/new/reply', function(req, res) {
-	console.log('reply');
-	io.emit('notify', 'New Reply');
+	console.log(req.body);
+	
+	var msg = req.body.message.substr(0, 30);
+	var msg = msg+'...';
+	
+	io.emit('notify', '<strong>New Reply:</strong>&nbsp;'+msg);
 	
 	res.end();
 });
 
-// Broadcast status event
+// Broadcast status update event
 app.post('/new/status', function(req, res) {
-	console.log('status');
-	io.emit('notify', 'Status Update');
+	var msg = 'test';
+	
+	io.emit('notify', '<strong>Status Update:</strong>&nbsp;'+msg);
 	
 	res.end();
 });
