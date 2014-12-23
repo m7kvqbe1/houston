@@ -125,7 +125,7 @@ var PeopleView = Backbone.View.extend({
 		console.log("addingagent");
 		var agt = 
 			{
-				"name": this.$el.find('#form-add-agent input[type="text"]').val(),
+				"emailAddress": this.$el.find('#form-add-agent input[type="text"]').val(),
 				"position": 'Awaiting Verification',
 				"avatar": 'application/assets/img/avatar.png'
 			}
