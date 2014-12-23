@@ -184,6 +184,25 @@ class UserModel {
 		}
 	}
 	
+	public function addAgent($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		// Generate email verification token
+		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		
+		// Save user to database
+		try {
+			$collection = $db->users;
+		    $collection->save($json);
+		} catch(MongoConnectionException $e) {
+		    die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+		    die('Error: '.$e->getMessage());
+		}
+	}
+	
 	// DEPRECATED
 	public function getCompanyName($userID) {
 		$connections = $this->app['mongo'];
