@@ -18,14 +18,24 @@ $app->get('/companies/all', function(Request $request, Application $app) {
 	return json_encode($company);
 })->before($secure);
 
-// Add new company
-$app->post('/companies', function(Request $request, Application $app) {
-	return 'test';
+// Get clients
+$app->get('/clients', function(Request $request, Application $app) {	
+	return 'foo';
+})->before($secure);
+
+// Add new client
+$app->post('/clients', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	
+	$clientModel = new Houston\Client\Model\ClientModel($app);
+	$clientModel->addClient($json);
+	
+	return 'bar';
 })->before($secure);
 
 // Get agents
-$app->get('/agents', function(Request $request, Application $app) {	
-	
+$app->get('/agents', function(Request $request, Application $app) {		
+	return 'foo';
 })->before($secure);
 
 // Add new agent

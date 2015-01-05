@@ -162,11 +162,7 @@ class UserModel {
 		}
 	}
 	
-	public function registerUser($json) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
+	public function registerUser($json) {		
 		// Hash password
 		$json->password = $this->hashPassword($json->password);
 		
@@ -174,25 +170,22 @@ class UserModel {
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
 		// Save user to database
-		try {
-			$collection = $db->users;
-		    $collection->save($json);
-		} catch(MongoConnectionException $e) {
-		    die('Error connecting to MongoDB server');
-		} catch(MongoException $e) {
-		    die('Error: '.$e->getMessage());
-		}
+		$this->addUser($json);
 	}
 	
 	public function addAgent($json) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
 		// Generate email verification token
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
 		// Save user to database
+		$this->addUser($json);
+	}
+	
+	public function addUser($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+
 		try {
 			$collection = $db->users;
 		    $collection->save($json);
