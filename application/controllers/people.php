@@ -29,7 +29,9 @@ $app->post('/clients', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$clientModel = new Houston\Client\Model\ClientModel($app);
-	return $clientModel->addClient($json);
+	$clientModel->addClient($json);
+	
+	return json_encode($json);
 })->before($secure);
 
 // Get agents

@@ -18,7 +18,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel();
+		$userModel = new \Houston\User\Model\UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		// Generate unique MongoId for new client
@@ -43,7 +43,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel();
+		$userModel = new \Houston\User\Model\UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		$collection = $db->companies;
