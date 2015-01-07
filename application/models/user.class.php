@@ -162,6 +162,21 @@ class UserModel {
 		}
 	}
 	
+	public function addUser($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+
+		try {
+			$collection = $db->users;
+		    $collection->save($json);
+		} catch(MongoConnectionException $e) {
+		    die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+		    die('Error: '.$e->getMessage());
+		}
+	}
+	
 	public function registerUser($json) {		
 		// Hash password
 		$json->password = $this->hashPassword($json->password);
@@ -177,24 +192,31 @@ class UserModel {
 		// Generate email verification token
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
+		// Lookup current authenticated session company ID
+		$userModel = $this->loadUserByID($this->app['session']->get('u'));		
+		$json->companyID = $this->user['companyID'];
+				
 		// Save user to database
 		$this->addUser($json);
 	}
 	
-	public function addUser($json) {
+	public function getAgents($json) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-
-		try {
-			$collection = $db->users;
-		    $collection->save($json);
-		} catch(MongoConnectionException $e) {
-		    die('Error connecting to MongoDB server');
-		} catch(MongoException $e) {
-		    die('Error: '.$e->getMessage());
+		
+		$users = $db->users;
+		$result = $users->find();
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
 		}
-	}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
+	}	
 	
 	// DEPRECATED
 	public function getCompanyName($userID) {

@@ -34,8 +34,9 @@ $app->post('/clients', function(Request $request, Application $app) {
 })->before($secure);
 
 // Get agents
-$app->get('/agents', function(Request $request, Application $app) {		
-	return 'foo';
+$app->get('/agents', function(Request $request, Application $app) {
+	$userModel = new Houston\User\Model\UserModel($app);
+	return $userModel->getAgents();
 })->before($secure);
 
 // Add new agent
