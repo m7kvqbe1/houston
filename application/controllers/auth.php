@@ -101,8 +101,12 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	// Does verified user or company already exist?
 	if($userModel->isVerified($json->emailAddress) || $companyModel->companyExists($json->company)) return -1;
 	
+	// Create company
+	$company = $companyModel->generateCompany($json);
+	$json->companyID = $company->_id;
+	
+	// Create user account
 	$userModel->registerUser($json);
-	$companyModel->generateCompany($json);
 
 	// Send verification email
 	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);

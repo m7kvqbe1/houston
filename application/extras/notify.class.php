@@ -17,7 +17,7 @@ class Notify {
 		// Send HTTP request via cURL to Node.js server
 		$ch = curl_init($url);
     	
-    	// Use HTTP Header authentication for Node.js server
+    	// Use HTTP Header authentication for Node.js server also restrict to localhost only
     	//curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
     	//curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
 		

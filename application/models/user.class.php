@@ -162,18 +162,11 @@ class UserModel {
 		}
 	}
 	
-	public function registerUser($json) {
+	public function addUser($json) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-		
-		// Hash password
-		$json->password = $this->hashPassword($json->password);
-		
-		// Generate email verification token
-		$json->verify = $this->generateVerificationToken($json->emailAddress);
-		
-		// Save user to database
+
 		try {
 			$collection = $db->users;
 		    $collection->save($json);
@@ -184,24 +177,46 @@ class UserModel {
 		}
 	}
 	
-	public function addAgent($json) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
+	public function registerUser($json) {		
+		// Hash password
+		$json->password = $this->hashPassword($json->password);
 		
 		// Generate email verification token
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
 		// Save user to database
-		try {
-			$collection = $db->users;
-		    $collection->save($json);
-		} catch(MongoConnectionException $e) {
-		    die('Error connecting to MongoDB server');
-		} catch(MongoException $e) {
-		    die('Error: '.$e->getMessage());
-		}
+		$this->addUser($json);
 	}
+	
+	public function addAgent($json) {
+		// Generate email verification token
+		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		
+		// Lookup current authenticated session company ID
+		$userModel = $this->loadUserByID($this->app['session']->get('u'));		
+		$json->companyID = $this->user['companyID'];
+				
+		// Save user to database
+		$this->addUser($json);
+	}
+	
+	public function getAgents($json) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$users = $db->users;
+		$result = $users->find();
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		$docs = json_encode($docs);
+		
+		return $docs;
+	}	
 	
 	// DEPRECATED
 	public function getCompanyName($userID) {
