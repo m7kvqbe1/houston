@@ -51,5 +51,21 @@ var ClientsView = Backbone.View.extend({
 
 	render: function() {
 		this.$el.html(this.template(this.collection));
+
+		this.delegateEvents({
+			'click #form-add-client button': 'addClient'
+		});
+		return this;
+	},
+
+		addClient: function() {
+		console.log("addingclient");
+		var clt = 
+			{
+				"name": this.$el.find('#form-add-client input[type="text"]').val()
+			}
+
+		var client = new ClientModel(clt);
+		client.save();
 	}
 });
