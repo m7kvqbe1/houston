@@ -738,12 +738,9 @@ input.inp-lst {
 	z-index: 10;
 }
 
-/*.box-app-fixed-inner {
-	margin: 0 15px;
-	border-radius: 3px 3px 0 0;
-	-webkit-box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
-	box-shadow: 0 0 6px 0px rgba(112,94,65,0.2);
-}*/
+.box-app-fixed-inner {
+	min-width: 320px;
+}
 
 .box-app {
 	margin-top: 68px;
@@ -1352,6 +1349,7 @@ input.inp-lst {
 	left: 0;
 	width: 100%;
 	height: 100%;
+	z-index: 100;
     background:rgb(0,0,0);
     background: transparent\9;
     background:rgba(0,0,0,0.8);
