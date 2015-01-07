@@ -107,9 +107,7 @@
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
 	var socket = io('http://80.82.116.223:3000');
-	socket.on('notify', function(data) {
-		console.log(data);
-		
+	socket.on('notify', function(data) {		
 		$('#notice span').html(data);
 		$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
 		socket.emit('response', 'success');
