@@ -20,7 +20,8 @@ $app->get('/companies', function(Request $request, Application $app) {
 
 // Get clients
 $app->get('/clients', function(Request $request, Application $app) {	
-	return 'foo';
+	$clientModel = new Houston\Client\Model\ClientModel($app);
+	return $clientModel->getClients();
 })->before($secure);
 
 // Add new client
@@ -28,9 +29,7 @@ $app->post('/clients', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$clientModel = new Houston\Client\Model\ClientModel($app);
-	$clientModel->addClient($json);
-	
-	return 'bar';
+	return $clientModel->addClient($json);
 })->before($secure);
 
 // Get agents
