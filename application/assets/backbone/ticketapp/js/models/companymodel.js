@@ -1,4 +1,9 @@
 var CompanyModel = Backbone.Model.extend({
+	// initialize: function(){
+	// 	this.users = new Users();
+	// 	this.users.url = '/users/' + this.id;
+	// 	this.on('sync', this.users.fetch());
+	// },
 	urlRoot: '/companies',
 	url: '/companies',
 	parse: function(response){

@@ -149,7 +149,8 @@ var houston = {
 	},
 
 	populateAgentDropdown: function(){
-		var arr = app.companyModel.attributes.users;
+		// var arr = app.companyModel.attributes.users;
+		var arr = app.agents;
 		var i;
 		var str = '';
 		for (i = 0; i < arr.length; ++i) {
