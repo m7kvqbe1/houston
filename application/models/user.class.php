@@ -193,20 +193,23 @@ class UserModel {
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
 		// Lookup current authenticated session company ID
-		$userModel = $this->loadUserByID($this->app['session']->get('u'));		
+		$this->loadUserByID($this->app['session']->get('u'));
 		$json->companyID = $this->user['companyID'];
 				
 		// Save user to database
 		$this->addUser($json);
 	}
 	
-	public function getAgents($json) {
+	public function getAgents() {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
+		// Lookup current authenticated session company ID
+		$this->loadUserByID($this->app['session']->get('u'));
+		
 		$users = $db->users;
-		$result = $users->find();
+		$result = $users->find(array('companyID' => $this->user['companyID']));
 		
 		$docs = array();
 		foreach($result as $doc) {
