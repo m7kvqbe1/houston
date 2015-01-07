@@ -22,15 +22,15 @@ var PeopleView = Backbone.View.extend({
 				'</div>'+	
 				'{{#each models}}'+
 					'<li class="person">'+
-						// '<img class="avatar" src="{{avatar}}" />'+
-						'<img class="avatar" src="application/assets/img/avatar.png" />'+
-						'<h3>{{name}}</h3>'+
+						// '<img class="avatar" src="{{avatar}}" />'+					
+						'<img class="avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
+						'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
 						'<h4>Support Agent</h4>'+
 						// '<h4>{{position}}</h4>'+
 					'</li>'+
 				'{{/each}}'+
 			'</ul>'+
-			'<div id="companies-wrap">'+	
+			'<div id="clients-wrap">'+	
 
 			'</div>'+
 		'</div>'	
@@ -90,9 +90,9 @@ var PeopleView = Backbone.View.extend({
 		//give model reference to this view
 		this.collection.view = this;
 
-		var companiesCollection = new Companies();
-		this.companiesView = new CompaniesView({ collection: companiesCollection});
-		this.companiesView.parent = this;
+		var clientsCollection = new Clients();
+		this.clientsView = new ClientsView({ collection: clientsCollection});
+		this.clientsView.parent = this;
 
 		Handlebars.registerHelper("fullHeightPage", function() {
 			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
@@ -100,11 +100,11 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		// console.log(this.collection);
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 
-		this.$('#companies-wrap').append(this.companiesView.$el);
-		this.companiesView.render();
+		this.$('#clients-wrap').append(this.clientsView.$el);
+		this.clientsView.render();
 		
 		this.delegateEvents({
 			'click .box-app-top .btn':'addToggle',
@@ -126,8 +126,7 @@ var PeopleView = Backbone.View.extend({
 		var agt = 
 			{
 				"emailAddress": this.$el.find('#form-add-agent input[type="text"]').val(),
-				"verify": false,
-				"avatar": 'application/assets/img/avatar.png'
+				"verify": false
 			}
 
 		var agent = new AgentModel(agt);

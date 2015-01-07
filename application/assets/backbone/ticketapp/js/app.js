@@ -106,7 +106,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverview: function() {
-		this.peopleView.companiesView.collection.fetch();
+		this.peopleView.clientsView.collection.fetch();
 		$('#app').html(this.peopleView.render().el);
 	},
 	
