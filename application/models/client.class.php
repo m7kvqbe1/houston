@@ -54,10 +54,10 @@ class ClientModel {
 		
 		$docs = array();
 		foreach($result as $doc) {
-		    array_push($docs, $doc);
+			array_push($docs, $doc);
 		}
 		
-		$docs = json_encode($docs);
+		$docs = json_encode($docs[0]['clients']);
 		
 		return $docs;
 	}
