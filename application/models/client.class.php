@@ -49,7 +49,7 @@ class ClientModel {
 		$collection = $db->companies;
 		$result = $collection->find(
 			array('_id' => $userModel->user['companyID']),
-			array('clients' => 1, '_id' => -1)
+			array('clients' => 1, '_id' => 0)
 		);
 		
 		$docs = array();
