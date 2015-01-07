@@ -22,11 +22,15 @@ var PeopleView = Backbone.View.extend({
 				'</div>'+	
 				'{{#each models}}'+
 					'<li class="person">'+
-						// '<img class="avatar" src="{{avatar}}" />'+					
-						'<img class="avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
-						'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
-						'<h4>Support Agent</h4>'+
-						// '<h4>{{position}}</h4>'+
+						'{{#if attributes.password}}'+					
+							'<img class="avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
+							'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
+							'<h4>Support Agent</h4>'+
+						'{{else}}'+
+							'<img class="avatar" src="application/assets/img/avatar.png" />'+
+							'<h3>{{attributes.emailAddress}}</h3>'+
+							'<h4>Awaiting Verification</h4>'+
+						'{{/if}}'+
 					'</li>'+
 				'{{/each}}'+
 			'</ul>'+
@@ -100,6 +104,7 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 
 		this.$('#clients-wrap').append(this.clientsView.$el);
