@@ -17,7 +17,7 @@ var ClientsView = Backbone.View.extend({
 			'{{#each models}}'+			
 			'<li class="company">'+
 				'<div class="company-info">'+
-					'<h3>{{clientName}}</h3>'+
+					'<h3>{{attributes.name}}</h3>'+
 					'<a>Edit</a>'+
 					'<a class="new-client-user">New User</a>'+
 				'</div>'+
@@ -50,6 +50,7 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));
 
 		this.delegateEvents({
