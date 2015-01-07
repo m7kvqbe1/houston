@@ -418,11 +418,11 @@ textarea {
 	font-size: 18px;
 	color: #c3bdb2;
 	
-	-webkit-transition: all 500ms ease-out;
-	-moz-transition: all 500ms ease-out;
-	-ms-transition: all 500ms ease-out;
-	-o-transition: all 500ms ease-out;
-	transition: all 500ms ease-out;
+	-webkit-transition: border-color 500ms ease-out;
+	-moz-transition: border-color 500ms ease-out;
+	-ms-transition: border-color 500ms ease-out;
+	-o-transition: border-color 500ms ease-out;
+	transition: border-color 500ms ease-out;
 	
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -1112,6 +1112,15 @@ input.inp-lst {
 	text-align: center;
 }
 
+#form-new textarea {
+	height: 200px;
+	-webkit-transition: none;
+	-moz-transition: none;
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
 #form-new input[type="text"] {
 	width: 268px;
 	margin-bottom: 8px;
@@ -1767,7 +1776,6 @@ input.inp-lst {
 	textarea {
 		width: 100%;
 		max-width: 100%;
-		transition: none;	
 	}
 	
 	.attach-link {
