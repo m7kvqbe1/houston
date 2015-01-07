@@ -87,7 +87,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	ticketDetails: function(ticket) {
-		var attributes = this.tickets.get(ticket).attributes
+		var attributes = this.tickets.get(ticket).attributes;
 		this.ticketDetailView.model.set(attributes);
 		this.ticketDetailView.model.fetchMessages(ticket);
 		$('#app').html(this.ticketDetailView.render().el);
