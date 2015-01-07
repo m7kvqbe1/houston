@@ -82,17 +82,24 @@ var LoginView = Backbone.View.extend({
 				password: this.$el.find('input[name="log-p"]').val(),
 				remember: this.$el.find('input[name="log-r"]').is(':checked')
 			});
-			console.log(this.model);
 			this.model.save(this.model.attributes,
 				{
 				//http://stackoverflow.com/questions/11167698/backbone-js-binding-this-to-success-error-callbacks
 					success: _.bind(function(model,response,options){
+						console.log(response);
 						if(response === 1){
 							location.reload();
 						} else {
 							this.$el.find('.box-log h2').text('Oops!');
 							this.$el.find('.box-log h3.log-tag').text('Please try again');
 						}
+					}, this),
+
+					error: _.bind(function(model,response,options){
+						// console.log('error');
+						this.$el.find('.box-log h2').text('Oops!');
+						this.$el.find('.box-log h3.log-tag').text('Please try again');
+						
 					}, this)
 				}
 			);
