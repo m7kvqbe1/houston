@@ -216,20 +216,6 @@ class UserModel {
 		    array_push($docs, $doc);
 		}
 		
-		$docs = json_encode($docs);
-		
-		return $docs;
-	}	
-	
-	// DEPRECATED
-	public function getCompanyName($userID) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		$criteria = array('_id' => $userID);
-		$user = $db->users->findOne($criteria);
-
-		return $user['company'];
+		return json_encode($docs);
 	}
 }
