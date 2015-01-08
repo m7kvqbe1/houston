@@ -184,6 +184,8 @@ class UserModel {
 		// Generate email verification token
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
+		$json->role = 'ADMIN';
+		
 		// Save user to database
 		$this->saveUser($json);
 	}
@@ -195,6 +197,8 @@ class UserModel {
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('u'));
 		$json->companyID = $this->user['companyID'];
+		
+		$json->role = 'AGENT';
 				
 		// Save user to database
 		$this->saveUser($json);
@@ -207,6 +211,10 @@ class UserModel {
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('u'));
 		$json->companyID = $this->user['companyID'];
+		
+		$json->clientID = new \MongoId($json->clientID);
+		
+		$json->role = 'USER';
 				
 		// Save user to database
 		$this->saveUser($json);		
