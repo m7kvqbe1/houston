@@ -67,6 +67,7 @@ var ClientsView = Backbone.View.extend({
 			}
 
 		var client = new ClientModel(clt);
+		client.url = 'user';
 		client.save();
 	}
 });

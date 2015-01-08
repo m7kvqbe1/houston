@@ -1,9 +1,9 @@
 var ClientModel = Backbone.Model.extend({
-	// initialize: function(){
-	// 	this.users = new Users();
-	// 	this.users.url = '/users/' + this.id;
-	// 	this.on('sync', this.users.fetch());
-	// },
+	initialize: function(){
+		this.users = new Users();
+		this.users.url = '/users/' + this.id;
+		this.on('sync', this.users.fetch());
+	},
 	// urlRoot: '/clients',
 	url: '/clients',
 	parse: function(response){
