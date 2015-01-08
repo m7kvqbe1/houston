@@ -59,6 +59,26 @@ class ClientModel {
 		
 		$this->client = $docs[0]['clients'];
 		
-		return json_encode($this->client);
+		return $this->client;
+	}
+	
+	public function getUsersByClientID($id) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+
+		$id = new \MongoId($id);
+		
+		$collection = $db->users;
+		$result = $collection->find(
+			array('clientID' => $id)
+		);
+		
+		$docs = array();
+		foreach($result as $doc) {
+			array_push($docs, $doc);
+		}
+		
+		return $docs;
 	}
 }

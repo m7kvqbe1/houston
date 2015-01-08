@@ -20,7 +20,7 @@ $app->get('/companies', function(Request $request, Application $app) {
 // Get clients
 $app->get('/clients', function(Request $request, Application $app) {	
 	$clientModel = new Houston\Client\Model\ClientModel($app);
-	return $clientModel->getClients();
+	return json_encode($clientModel->getClients());
 })->before($secure);
 
 // Add new client
@@ -36,13 +36,17 @@ $app->post('/clients', function(Request $request, Application $app) {
 // Get users for client
 $app->get('/client/users/{clientID}', function(Request $request, Application $app, $clientID) {
 	$clientModel = new Houston\Client\Model\ClientModel($app);
-	return json_encode($clientModel->getUsers($clientID));
+	return json_encode($clientModel->getUsersByClientID($clientID));
 })->before($secure);
 
 // Add new user to client
 $app->post('/user', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
-	return 'foo';
+	
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->addUser($json);
+	
+	return json_encode($json);
 })->before($secure);
 
 // Get agents
