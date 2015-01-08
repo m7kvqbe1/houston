@@ -57,8 +57,8 @@ class ClientModel {
 			array_push($docs, $doc);
 		}
 		
-		$docs = json_encode($docs[0]['clients']);
+		$this->client = $docs[0]['clients'];
 		
-		return $docs;
+		return json_encode($this->client);
 	}
 }
