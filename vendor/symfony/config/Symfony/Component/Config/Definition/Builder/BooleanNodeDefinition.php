@@ -31,7 +31,7 @@ class BooleanNodeDefinition extends ScalarNodeDefinition
     }
 
     /**
-     * Instantiate a Node
+     * Instantiate a Node.
      *
      * @return BooleanNode The node
      */
@@ -39,5 +39,4 @@ class BooleanNodeDefinition extends ScalarNodeDefinition
     {
         return new BooleanNode($this->name, $this->parent);
     }
-
 }

@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author Manuel Reinhard <manu@sprain.ch>
  * @author Michael Schummel
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
  * @link http://www.michael-schummel.de/2007/10/05/iban-prufung-mit-php/
  */
 class IbanValidator extends ConstraintValidator
@@ -45,21 +46,42 @@ class IbanValidator extends ConstraintValidator
         // Remove spaces
         $canonicalized = str_replace(' ', '', $value);
 
+        // The IBAN must have at least 4 characters...
         if (strlen($canonicalized) < 4) {
-            $this->context->addViolation($constraint->message, array(
-                '{{ value }}' => $this->formatValue($value),
-            ));
+            $this->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Iban::TOO_SHORT_ERROR)
+                ->addViolation();
 
             return;
         }
 
-        // The IBAN must have at least 4 characters, start with a country
-        // code and contain only digits and (uppercase) characters
-        if (strlen($canonicalized) < 4 || !ctype_upper($canonicalized{0})
-            || !ctype_upper($canonicalized{1}) || !ctype_alnum($canonicalized)) {
-            $this->context->addViolation($constraint->message, array(
-                '{{ value }}' => $this->formatValue($value),
-            ));
+        // ...start with a country code...
+        if (!ctype_alpha($canonicalized{0}) || !ctype_alpha($canonicalized{1})) {
+            $this->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Iban::INVALID_COUNTRY_CODE_ERROR)
+                ->addViolation();
+
+            return;
+        }
+
+        // ...contain only digits and characters...
+        if (!ctype_alnum($canonicalized)) {
+            $this->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Iban::INVALID_CHARACTERS_ERROR)
+                ->addViolation();
+
+            return;
+        }
+
+        // ...and contain uppercase characters only
+        if ($canonicalized !== strtoupper($canonicalized)) {
+            $this->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Iban::INVALID_CASE_ERROR)
+                ->addViolation();
 
             return;
         }
@@ -76,23 +98,14 @@ class IbanValidator extends ConstraintValidator
         //   -> 0076 2011 6238 5295 7 121893
         $checkSum = $this->toBigInt($canonicalized);
 
-        if (false === $checkSum) {
-            $this->context->addViolation($constraint->message, array(
-                '{{ value }}' => $this->formatValue($value),
-            ));
-
-            return;
-        }
-
         // Do a modulo-97 operation on the large integer
         // We cannot use PHP's modulo operator, so we calculate the
         // modulo step-wisely instead
         if (1 !== $this->bigModulo97($checkSum)) {
-            $this->context->addViolation($constraint->message, array(
-                '{{ value }}' => $this->formatValue($value),
-            ));
-
-            return;
+            $this->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Iban::CHECKSUM_FAILED_ERROR)
+                ->addViolation();
         }
     }
 
@@ -107,11 +120,6 @@ class IbanValidator extends ConstraintValidator
                 $bigInt .= (ord($char) - 55);
 
                 continue;
-            }
-
-            // Disallow lowercase characters
-            if (ctype_lower($char)) {
-                return false;
             }
 
             // Simply append digits

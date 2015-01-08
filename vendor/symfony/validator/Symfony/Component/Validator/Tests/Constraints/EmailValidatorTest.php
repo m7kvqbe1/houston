@@ -74,14 +74,15 @@ class EmailValidatorTest extends AbstractConstraintValidatorTest
     public function testInvalidEmails($email)
     {
         $constraint = new Email(array(
-            'message' => 'myMessage'
+            'message' => 'myMessage',
         ));
 
         $this->validator->validate($email, $constraint);
 
-        $this->assertViolation('myMessage', array(
-            '{{ value }}' => '"'.$email.'"',
-        ));
+        $this->buildViolation('myMessage')
+            ->setParameter('{{ value }}', '"'.$email.'"')
+            ->setCode(Email::INVALID_FORMAT_ERROR)
+            ->assertRaised();
     }
 
     public function getInvalidEmails()

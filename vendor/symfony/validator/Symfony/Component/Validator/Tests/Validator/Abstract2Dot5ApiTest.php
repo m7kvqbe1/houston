@@ -13,6 +13,7 @@ namespace Symfony\Component\Validator\Tests\Validator;
 
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GroupSequence;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Traverse;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Tests\Fixtures\Entity;
+use Symfony\Component\Validator\Tests\Fixtures\FailingConstraint;
 use Symfony\Component\Validator\Tests\Fixtures\FakeClassMetadata;
 use Symfony\Component\Validator\Tests\Fixtures\Reference;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -64,6 +66,13 @@ abstract class Abstract2Dot5ApiTest extends AbstractValidatorTest
     protected function validatePropertyValue($object, $propertyName, $value, $groups = null)
     {
         return $this->validator->validatePropertyValue($object, $propertyName, $value, $groups);
+    }
+
+    public function testValidateConstraintWithoutGroup()
+    {
+        $violations = $this->validator->validate(null, new NotNull());
+
+        $this->assertCount(1, $violations);
     }
 
     public function testGroupSequenceAbortsAfterFailedGroup()
@@ -565,7 +574,7 @@ abstract class Abstract2Dot5ApiTest extends AbstractValidatorTest
                 ->setParameter('%param%', 'value')
                 ->setInvalidValue('Invalid value')
                 ->setPlural(2)
-                ->setCode('Code')
+                ->setCode(42)
                 ->addViolation();
         };
 
@@ -582,7 +591,7 @@ abstract class Abstract2Dot5ApiTest extends AbstractValidatorTest
         $this->assertSame($entity, $violations[0]->getRoot());
         $this->assertSame('Invalid value', $violations[0]->getInvalidValue());
         $this->assertSame(2, $violations[0]->getMessagePluralization());
-        $this->assertSame('Code', $violations[0]->getCode());
+        $this->assertSame(42, $violations[0]->getCode());
     }
 
     /**
@@ -625,14 +634,16 @@ abstract class Abstract2Dot5ApiTest extends AbstractValidatorTest
     /**
      * @expectedException \Symfony\Component\Validator\Exception\UnsupportedMetadataException
      */
-    public function testPropertyMetadataMustImplementPropertyMetadataInterface()
+    public function testLegacyPropertyMetadataMustImplementPropertyMetadataInterface()
     {
+        $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
+
         $entity = new Entity();
 
         // Legacy interface
         $propertyMetadata = $this->getMock('Symfony\Component\Validator\MetadataInterface');
         $metadata = new FakeClassMetadata(get_class($entity));
-        $metadata->addPropertyMetadata('firstName', $propertyMetadata);
+        $metadata->addCustomPropertyMetadata('firstName', $propertyMetadata);
 
         $this->metadataFactory->addMetadata($metadata);
 
@@ -728,7 +739,7 @@ abstract class Abstract2Dot5ApiTest extends AbstractValidatorTest
 
         $this->validator = $this->createValidator($this->metadataFactory, array(
             $initializer1,
-            $initializer2
+            $initializer2,
         ));
 
         // prepare constraint which
@@ -751,5 +762,14 @@ abstract class Abstract2Dot5ApiTest extends AbstractValidatorTest
         $this->validate($entity);
 
         $this->assertTrue($entity->initialized);
+    }
+
+    public function testPassConstraintToViolation()
+    {
+        $constraint = new FailingConstraint();
+        $violations = $this->validate('Foobar', $constraint);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame($constraint, $violations[0]->getConstraint());
     }
 }

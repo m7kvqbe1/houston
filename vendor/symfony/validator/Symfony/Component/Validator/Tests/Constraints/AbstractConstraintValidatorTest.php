@@ -11,11 +11,14 @@
 
 namespace Symfony\Component\Validator\Tests\Constraints;
 
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Context\LegacyExecutionContext;
+use Symfony\Component\Validator\ExecutionContextInterface as LegacyExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\PropertyMetadata;
 use Symfony\Component\Validator\Tests\Fixtures\StubGlobalExecutionContext;
@@ -23,6 +26,7 @@ use Symfony\Component\Validator\Validation;
 
 /**
  * @since  2.5.3
+ *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCase
@@ -49,19 +53,61 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
 
     protected $propertyPath;
 
+    protected $constraint;
+
+    protected $defaultTimezone;
+
     protected function setUp()
     {
+        if (Validation::API_VERSION_2_5 !== $this->getApiVersion()) {
+            $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
+        }
+
         $this->group = 'MyGroup';
         $this->metadata = null;
         $this->object = null;
         $this->value = 'InvalidValue';
         $this->root = 'root';
         $this->propertyPath = 'property.path';
+
+        // Initialize the context with some constraint so that we can
+        // successfully build a violation.
+        // The 2.4 API does not keep a reference to the current
+        // constraint yet. There the violation stores null.
+        $this->constraint = Validation::API_VERSION_2_4 === $this->getApiVersion()
+            ? null
+            : new NotNull();
+
         $this->context = $this->createContext();
         $this->validator = $this->createValidator();
         $this->validator->initialize($this->context);
 
         \Locale::setDefault('en');
+
+        $this->setDefaultTimezone('UTC');
+    }
+
+    protected function tearDown()
+    {
+        $this->restoreDefaultTimezone();
+    }
+
+    protected function setDefaultTimezone($defaultTimezone)
+    {
+        // Make sure this method can not be called twice before calling
+        // also restoreDefaultTimezone()
+        if (null === $this->defaultTimezone) {
+            $this->defaultTimezone = date_default_timezone_get();
+            date_default_timezone_set($defaultTimezone);
+        }
+    }
+
+    protected function restoreDefaultTimezone()
+    {
+        if (null !== $this->defaultTimezone) {
+            date_default_timezone_set($this->defaultTimezone);
+            $this->defaultTimezone = null;
+        }
     }
 
     protected function createContext()
@@ -77,7 +123,7 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
                     $this->metadata,
                     $this->value,
                     $this->group,
-                    $this->propertyPath
+                    $this->propertyPath,
                 ))
                 ->setMethods(array('validate', 'validateValue'))
                 ->getMock();
@@ -108,6 +154,7 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
 
         $context->setGroup($this->group);
         $context->setNode($this->value, $this->object, $this->metadata, $this->propertyPath);
+        $context->setConstraint($this->constraint);
 
         $validator->expects($this->any())
             ->method('inContext')
@@ -117,6 +164,19 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
         return $context;
     }
 
+    /**
+     * @param mixed  $message
+     * @param array  $parameters
+     * @param string $propertyPath
+     * @param string $invalidValue
+     * @param null   $plural
+     * @param null   $code
+     *
+     * @return ConstraintViolation
+     *
+     * @deprecated To be removed in Symfony 3.0. Use
+     *             {@link buildViolation()} instead.
+     */
     protected function createViolation($message, array $parameters = array(), $propertyPath = 'property.path', $invalidValue = 'InvalidValue', $plural = null, $code = null)
     {
         return new ConstraintViolation(
@@ -127,7 +187,8 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
             $propertyPath,
             $invalidValue,
             $plural,
-            $code
+            $code,
+            $this->constraint
         );
     }
 
@@ -266,7 +327,7 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
         }
     }
 
-    protected function expectValidateValueAt($i, $propertyPath, $value, $constraints, $group)
+    protected function expectValidateValueAt($i, $propertyPath, $value, $constraints, $group = null)
     {
         switch ($this->getApiVersion()) {
             case Validation::API_VERSION_2_4:
@@ -293,14 +354,34 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
         $this->assertCount(0, $this->context->getViolations());
     }
 
+    /**
+     * @param mixed  $message
+     * @param array  $parameters
+     * @param string $propertyPath
+     * @param string $invalidValue
+     * @param null   $plural
+     * @param null   $code
+     *
+     * @deprecated To be removed in Symfony 3.0. Use
+     *             {@link buildViolation()} instead.
+     */
     protected function assertViolation($message, array $parameters = array(), $propertyPath = 'property.path', $invalidValue = 'InvalidValue', $plural = null, $code = null)
     {
-        $violations = $this->context->getViolations();
-
-        $this->assertCount(1, $violations);
-        $this->assertEquals($this->createViolation($message, $parameters, $propertyPath, $invalidValue, $plural, $code), $violations[0]);
+        $this->buildViolation($message)
+            ->setParameters($parameters)
+            ->atPath($propertyPath)
+            ->setInvalidValue($invalidValue)
+            ->setCode($code)
+            ->setPlural($plural)
+            ->assertRaised();
     }
 
+    /**
+     * @param array $expected
+     *
+     * @deprecated To be removed in Symfony 3.0. Use
+     *             {@link buildViolation()} instead.
+     */
     protected function assertViolations(array $expected)
     {
         $violations = $this->context->getViolations();
@@ -314,7 +395,151 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
         }
     }
 
+    /**
+     * @param $message
+     *
+     * @return ConstraintViolationAssertion
+     */
+    protected function buildViolation($message)
+    {
+        return new ConstraintViolationAssertion($this->context, $message, $this->constraint);
+    }
+
     abstract protected function getApiVersion();
 
     abstract protected function createValidator();
+}
+
+/**
+ * @internal
+ */
+class ConstraintViolationAssertion
+{
+    /**
+     * @var LegacyExecutionContextInterface
+     */
+    private $context;
+
+    /**
+     * @var ConstraintViolationAssertion[]
+     */
+    private $assertions;
+
+    private $message;
+    private $parameters = array();
+    private $invalidValue = 'InvalidValue';
+    private $propertyPath = 'property.path';
+    private $translationDomain;
+    private $plural;
+    private $code;
+    private $constraint;
+    private $cause;
+
+    public function __construct(LegacyExecutionContextInterface $context, $message, Constraint $constraint = null, array $assertions = array())
+    {
+        $this->context = $context;
+        $this->message = $message;
+        $this->constraint = $constraint;
+        $this->assertions = $assertions;
+    }
+
+    public function atPath($path)
+    {
+        $this->propertyPath = $path;
+
+        return $this;
+    }
+
+    public function setParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+
+        return $this;
+    }
+
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
+
+        return $this;
+    }
+
+    public function setInvalidValue($invalidValue)
+    {
+        $this->invalidValue = $invalidValue;
+
+        return $this;
+    }
+
+    public function setPlural($number)
+    {
+        $this->plural = $number;
+
+        return $this;
+    }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    public function setCause($cause)
+    {
+        $this->cause = $cause;
+
+        return $this;
+    }
+
+    public function buildNextViolation($message)
+    {
+        $assertions = $this->assertions;
+        $assertions[] = $this;
+
+        return new self($this->context, $message, $this->constraint, $assertions);
+    }
+
+    public function assertRaised()
+    {
+        $expected = array();
+        foreach ($this->assertions as $assertion) {
+            $expected[] = $assertion->getViolation();
+        }
+        $expected[] = $this->getViolation();
+
+        $violations = iterator_to_array($this->context->getViolations());
+
+        \PHPUnit_Framework_Assert::assertCount(count($expected), $violations);
+
+        reset($violations);
+
+        foreach ($expected as $violation) {
+            \PHPUnit_Framework_Assert::assertEquals($violation, current($violations));
+            next($violations);
+        }
+    }
+
+    private function getViolation()
+    {
+        return new ConstraintViolation(
+            null,
+            $this->message,
+            $this->parameters,
+            $this->context->getRoot(),
+            $this->propertyPath,
+            $this->invalidValue,
+            $this->plural,
+            $this->code,
+            $this->constraint,
+            $this->cause
+        );
+    }
 }

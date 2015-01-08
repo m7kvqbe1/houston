@@ -70,10 +70,10 @@ class ConsoleHandlerTest extends \PHPUnit_Framework_TestCase
             array(OutputInterface::VERBOSITY_DEBUG, Logger::DEBUG, true),
             array(OutputInterface::VERBOSITY_DEBUG, Logger::EMERGENCY, true),
             array(OutputInterface::VERBOSITY_NORMAL, Logger::NOTICE, true, array(
-                OutputInterface::VERBOSITY_NORMAL => Logger::NOTICE
+                OutputInterface::VERBOSITY_NORMAL => Logger::NOTICE,
             )),
             array(OutputInterface::VERBOSITY_DEBUG, Logger::NOTICE, true, array(
-                OutputInterface::VERBOSITY_NORMAL => Logger::NOTICE
+                OutputInterface::VERBOSITY_NORMAL => Logger::NOTICE,
             )),
         );
     }
@@ -119,14 +119,14 @@ class ConsoleHandlerTest extends \PHPUnit_Framework_TestCase
         $output
             ->expects($this->once())
             ->method('write')
-            ->with('<info>[2013-05-29 16:21:54] app.INFO:</info> My info message [] []'."\n")
+            ->with('<info>[2013-05-29 16:21:54] app.INFO:</info> My info message  '."\n")
         ;
 
         $errorOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
         $errorOutput
             ->expects($this->once())
             ->method('write')
-            ->with('<error>[2013-05-29 16:21:54] app.ERROR:</error> My error message [] []'."\n")
+            ->with('<error>[2013-05-29 16:21:54] app.ERROR:</error> My error message  '."\n")
         ;
 
         $output

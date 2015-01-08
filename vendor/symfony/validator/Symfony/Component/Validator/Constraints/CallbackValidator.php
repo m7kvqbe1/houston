@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Validator for Callback constraint
+ * Validator for Callback constraint.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
@@ -36,7 +36,7 @@ class CallbackValidator extends ConstraintValidator
 
         if (null !== $constraint->callback && null !== $constraint->methods) {
             throw new ConstraintDefinitionException(
-                'The Callback constraint supports either the option "callback" ' .
+                'The Callback constraint supports either the option "callback" '.
                 'or "methods", but not both at the same time.'
             );
         }
@@ -50,30 +50,26 @@ class CallbackValidator extends ConstraintValidator
         $methods = $constraint->methods ?: array($constraint->callback);
 
         foreach ($methods as $method) {
-            if (is_array($method) || $method instanceof \Closure) {
+            if ($method instanceof \Closure) {
+                $method($object, $this->context);
+            } elseif (is_array($method)) {
                 if (!is_callable($method)) {
                     throw new ConstraintDefinitionException(sprintf('"%s::%s" targeted by Callback constraint is not a valid callable', $method[0], $method[1]));
                 }
 
                 call_user_func($method, $object, $this->context);
+            } elseif (null !== $object) {
+                if (!method_exists($object, $method)) {
+                    throw new ConstraintDefinitionException(sprintf('Method "%s" targeted by Callback constraint does not exist', $method));
+                }
 
-                continue;
-            }
+                $reflMethod = new \ReflectionMethod($object, $method);
 
-            if (null === $object) {
-                continue;
-            }
-
-            if (!method_exists($object, $method)) {
-                throw new ConstraintDefinitionException(sprintf('Method "%s" targeted by Callback constraint does not exist', $method));
-            }
-
-            $reflMethod = new \ReflectionMethod($object, $method);
-
-            if ($reflMethod->isStatic()) {
-                $reflMethod->invoke(null, $object, $this->context);
-            } else {
-                $reflMethod->invoke($object, $this->context);
+                if ($reflMethod->isStatic()) {
+                    $reflMethod->invoke(null, $object, $this->context);
+                } else {
+                    $reflMethod->invoke($object, $this->context);
+                }
             }
         }
     }

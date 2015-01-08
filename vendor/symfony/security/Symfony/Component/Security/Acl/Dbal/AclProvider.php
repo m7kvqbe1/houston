@@ -104,7 +104,7 @@ class AclProvider implements AclProviderInterface
         $currentBatch = array();
         $oidLookup = array();
 
-        for ($i=0,$c=count($oids); $i<$c; $i++) {
+        for ($i = 0, $c = count($oids); $i<$c; $i++) {
             $oid = $oids[$i];
             $oidLookupKey = $oid->getIdentifier().$oid->getType();
             $oidLookup[$oidLookupKey] = $oid;
@@ -224,6 +224,7 @@ class AclProvider implements AclProviderInterface
      * ACEs, and security identities.
      *
      * @param array $ancestorIds
+     *
      * @return string
      */
     protected function getLookupSql(array $ancestorIds)
@@ -330,6 +331,7 @@ SELECTCLAUSE;
      *
      * @param ObjectIdentityInterface $oid
      * @param bool                    $directChildrenOnly
+     *
      * @return string
      */
     protected function getFindChildrenSql(ObjectIdentityInterface $oid, $directChildrenOnly)
@@ -361,6 +363,7 @@ FINDCHILDREN;
      * identity.
      *
      * @param ObjectIdentityInterface $oid
+     *
      * @return string
      */
     protected function getSelectObjectIdentityIdSql(ObjectIdentityInterface $oid)
@@ -385,6 +388,7 @@ QUERY;
      * Returns the primary key of the passed object identity.
      *
      * @param ObjectIdentityInterface $oid
+     *
      * @return int
      */
     final protected function retrieveObjectIdentityPrimaryKey(ObjectIdentityInterface $oid)
@@ -493,8 +497,10 @@ QUERY;
      * @param Statement $stmt
      * @param array     $oidLookup
      * @param array     $sids
-     * @throws \RuntimeException
+     *
      * @return \SplObjectStorage
+     *
+     * @throws \RuntimeException
      */
     private function hydrateObjectIdentities(Statement $stmt, array $oidLookup, array $sids)
     {
@@ -502,8 +508,8 @@ QUERY;
         $acls = $aces = $emptyArray = array();
         $oidCache = $oidLookup;
         $result = new \SplObjectStorage();
-        $loadedAces =& $this->loadedAces;
-        $loadedAcls =& $this->loadedAcls;
+        $loadedAces = & $this->loadedAces;
+        $loadedAcls = & $this->loadedAcls;
         $permissionGrantingStrategy = $this->permissionGrantingStrategy;
 
         // we need these to set protected properties on hydrated objects
@@ -595,7 +601,7 @@ QUERY;
                 // It is important to only ever have one ACE instance per actual row since
                 // some ACEs are shared between ACL instances
                 if (!isset($loadedAces[$aceId])) {
-                    if (!isset($sids[$key = ($username?'1':'0').$securityIdentifier])) {
+                    if (!isset($sids[$key = ($username ? '1' : '0').$securityIdentifier])) {
                         if ($username) {
                             $sids[$key] = new UserSecurityIdentity(
                                 substr($securityIdentifier, 1 + $pos = strpos($securityIdentifier, '-')),

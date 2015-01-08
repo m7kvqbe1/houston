@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Validator\Context;
 
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ExecutionContextInterface as LegacyExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\MetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -66,7 +67,7 @@ interface ExecutionContextInterface extends LegacyExecutionContextInterface
      * Call {@link ConstraintViolationBuilderInterface::addViolation()} to
      * add the violation when you're done with the configuration:
      *
-     *     $context->buildViolation('Please enter a number between %min% and %max.')
+     *     $context->buildViolation('Please enter a number between %min% and %max%.')
      *         ->setParameter('%min%', 3)
      *         ->setParameter('%max%', 10)
      *         ->setTranslationDomain('number_validation')
@@ -137,11 +138,21 @@ interface ExecutionContextInterface extends LegacyExecutionContextInterface
     public function setGroup($group);
 
     /**
+     * Sets the currently validated constraint.
+     *
+     * @param Constraint $constraint The validated constraint
+     *
+     * @internal Used by the validator engine. Should not be called by user
+     *           code.
+     */
+    public function setConstraint(Constraint $constraint);
+
+    /**
      * Marks an object as validated in a specific validation group.
      *
-     * @param string $cacheKey The hash of the object
-     * @param string $groupHash  The group's name or hash, if it is group
-     *                           sequence
+     * @param string $cacheKey  The hash of the object
+     * @param string $groupHash The group's name or hash, if it is group
+     *                          sequence
      *
      * @internal Used by the validator engine. Should not be called by user
      *           code.
@@ -151,12 +162,12 @@ interface ExecutionContextInterface extends LegacyExecutionContextInterface
     /**
      * Returns whether an object was validated in a specific validation group.
      *
-     * @param string $cacheKey The hash of the object
-     * @param string $groupHash  The group's name or hash, if it is group
-     *                           sequence
+     * @param string $cacheKey  The hash of the object
+     * @param string $groupHash The group's name or hash, if it is group
+     *                          sequence
      *
-     * @return bool    Whether the object was already validated for that
-     *                 group
+     * @return bool Whether the object was already validated for that
+     *              group
      *
      * @internal Used by the validator engine. Should not be called by user
      *           code.
@@ -166,7 +177,7 @@ interface ExecutionContextInterface extends LegacyExecutionContextInterface
     /**
      * Marks a constraint as validated for an object.
      *
-     * @param string $cacheKey     The hash of the object
+     * @param string $cacheKey       The hash of the object
      * @param string $constraintHash The hash of the constraint
      *
      * @internal Used by the validator engine. Should not be called by user
@@ -177,10 +188,10 @@ interface ExecutionContextInterface extends LegacyExecutionContextInterface
     /**
      * Returns whether a constraint was validated for an object.
      *
-     * @param string $cacheKey     The hash of the object
+     * @param string $cacheKey       The hash of the object
      * @param string $constraintHash The hash of the constraint
      *
-     * @return bool    Whether the constraint was already validated
+     * @return bool Whether the constraint was already validated
      *
      * @internal Used by the validator engine. Should not be called by user
      *           code.

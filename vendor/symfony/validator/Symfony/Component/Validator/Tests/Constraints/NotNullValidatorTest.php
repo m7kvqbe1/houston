@@ -50,11 +50,11 @@ class NotNullValidatorTest extends AbstractConstraintValidatorTest
     public function testNullIsInvalid()
     {
         $constraint = new NotNull(array(
-            'message' => 'myMessage'
+            'message' => 'myMessage',
         ));
 
         $this->validator->validate(null, $constraint);
 
-        $this->assertViolation('myMessage');
+        $this->buildViolation('myMessage')->assertRaised();
     }
 }

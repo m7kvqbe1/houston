@@ -42,6 +42,8 @@ abstract class AbstractLegacyApiTest extends AbstractValidatorTest
 
     protected function setUp()
     {
+        $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
+
         parent::setUp();
 
         $this->validator = $this->createValidator($this->metadataFactory);
@@ -283,7 +285,7 @@ abstract class AbstractLegacyApiTest extends AbstractValidatorTest
 
         $this->validator = $this->createValidator($this->metadataFactory, array(
             $initializer1,
-            $initializer2
+            $initializer2,
         ));
 
         // prepare constraint which

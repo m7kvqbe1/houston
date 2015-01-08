@@ -35,6 +35,19 @@ class IdenticalToValidatorTest extends AbstractComparisonValidatorTestCase
         return new IdenticalTo($options);
     }
 
+    public function provideAllValidComparisons()
+    {
+        $this->setDefaultTimezone('UTC');
+
+        // Don't call addPhp5Dot5Comparisons() automatically, as it does
+        // not take care of identical objects
+        $comparisons = $this->provideValidComparisons();
+
+        $this->restoreDefaultTimezone();
+
+        return $comparisons;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -43,13 +56,20 @@ class IdenticalToValidatorTest extends AbstractComparisonValidatorTestCase
         $date = new \DateTime('2000-01-01');
         $object = new ComparisonTest_Class(2);
 
-        return array(
+        $comparisons = array(
             array(3, 3),
             array('a', 'a'),
             array($date, $date),
             array($object, $object),
             array(null, 1),
         );
+
+        if (version_compare(PHP_VERSION, '>=', '5.5')) {
+            $immutableDate = new \DateTimeImmutable('2000-01-01');
+            $comparisons[] = array($immutableDate, $immutableDate);
+        }
+
+        return $comparisons;
     }
 
     /**
@@ -63,7 +83,7 @@ class IdenticalToValidatorTest extends AbstractComparisonValidatorTestCase
             array('22', '"22"', '333', '"333"', 'string'),
             array(new \DateTime('2001-01-01'), 'Jan 1, 2001, 12:00 AM', new \DateTime('2001-01-01'), 'Jan 1, 2001, 12:00 AM', 'DateTime'),
             array(new \DateTime('2001-01-01'), 'Jan 1, 2001, 12:00 AM', new \DateTime('1999-01-01'), 'Jan 1, 1999, 12:00 AM', 'DateTime'),
-            array(new ComparisonTest_Class(4), 'object', new ComparisonTest_Class(5), 'object', __NAMESPACE__.'\ComparisonTest_Class'),
+            array(new ComparisonTest_Class(4), '4', new ComparisonTest_Class(5), '5', __NAMESPACE__.'\ComparisonTest_Class'),
         );
     }
 }

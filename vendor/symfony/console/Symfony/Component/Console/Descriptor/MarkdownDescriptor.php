@@ -21,6 +21,8 @@ use Symfony\Component\Console\Input\InputOption;
  * Markdown descriptor.
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
+ *
+ * @internal
  */
 class MarkdownDescriptor extends Descriptor
 {
@@ -128,7 +130,7 @@ class MarkdownDescriptor extends Descriptor
             $this->write("\n\n");
             $this->write(implode("\n", array_map(function ($commandName) {
                 return '* '.$commandName;
-            } , $namespace['commands'])));
+            }, $namespace['commands'])));
         }
 
         foreach ($description->getCommands() as $command) {

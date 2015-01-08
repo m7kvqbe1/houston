@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\Validator\Tests\Validator;
 
+use Symfony\Component\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\Context\LegacyExecutionContextFactory;
 use Symfony\Component\Validator\DefaultTranslator;
-use Symfony\Component\Validator\LegacyConstraintValidatorFactory;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Validator\LegacyValidator;
 
@@ -21,7 +21,7 @@ class LegacyValidatorLegacyApiTest extends AbstractLegacyApiTest
 {
     protected function setUp()
     {
-        if (version_compare(PHP_VERSION, '5.3.9', '<')) {
+        if (PHP_VERSION_ID < 50309) {
             $this->markTestSkipped('Not supported prior to PHP 5.3.9');
         }
 
@@ -31,7 +31,7 @@ class LegacyValidatorLegacyApiTest extends AbstractLegacyApiTest
     protected function createValidator(MetadataFactoryInterface $metadataFactory, array $objectInitializers = array())
     {
         $contextFactory = new LegacyExecutionContextFactory($metadataFactory, new DefaultTranslator());
-        $validatorFactory = new LegacyConstraintValidatorFactory();
+        $validatorFactory = new ConstraintValidatorFactory();
 
         return new LegacyValidator($contextFactory, $metadataFactory, $validatorFactory, $objectInitializers);
     }

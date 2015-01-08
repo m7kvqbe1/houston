@@ -17,7 +17,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Validates whether a value is a valid country code
+ * Validates whether a value is a valid country code.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
@@ -46,9 +46,9 @@ class CountryValidator extends ConstraintValidator
         $countries = Intl::getRegionBundle()->getCountryNames();
 
         if (!isset($countries[$value])) {
-            $this->context->addViolation($constraint->message, array(
-                '{{ value }}' => $this->formatValue($value),
-            ));
+            $this->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->addViolation();
         }
     }
 }

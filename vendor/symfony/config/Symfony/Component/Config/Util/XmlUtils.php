@@ -22,7 +22,7 @@ namespace Symfony\Component\Config\Util;
 class XmlUtils
 {
     /**
-     * This class should not be instantiated
+     * This class should not be instantiated.
      */
     private function __construct()
     {
@@ -95,9 +95,10 @@ class XmlUtils
                 }
                 throw new \InvalidArgumentException(implode("\n", $messages), 0, $e);
             }
-
-            libxml_use_internal_errors($internalErrors);
         }
+
+        libxml_clear_errors();
+        libxml_use_internal_errors($internalErrors);
 
         return $dom;
     }

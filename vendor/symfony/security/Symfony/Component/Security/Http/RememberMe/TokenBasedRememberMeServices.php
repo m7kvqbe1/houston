@@ -90,10 +90,10 @@ class TokenBasedRememberMeServices extends AbstractRememberMeServices
     /**
      * Generates the cookie value.
      *
-     * @param string  $class
-     * @param string  $username The username
-     * @param int     $expires  The Unix timestamp when the cookie expires
-     * @param string  $password The encoded password
+     * @param string $class
+     * @param string $username The username
+     * @param int    $expires  The Unix timestamp when the cookie expires
+     * @param string $password The encoded password
      *
      * @throws \RuntimeException if username contains invalid chars
      *
@@ -105,17 +105,17 @@ class TokenBasedRememberMeServices extends AbstractRememberMeServices
             $class,
             base64_encode($username),
             $expires,
-            $this->generateCookieHash($class, $username, $expires, $password)
+            $this->generateCookieHash($class, $username, $expires, $password),
         ));
     }
 
     /**
-     * Generates a hash for the cookie to ensure it is not being tempered with
+     * Generates a hash for the cookie to ensure it is not being tempered with.
      *
-     * @param string  $class
-     * @param string  $username The username
-     * @param int     $expires  The Unix timestamp when the cookie expires
-     * @param string  $password The encoded password
+     * @param string $class
+     * @param string $username The username
+     * @param int    $expires  The Unix timestamp when the cookie expires
+     * @param string $password The encoded password
      *
      * @throws \RuntimeException when the private key is empty
      *

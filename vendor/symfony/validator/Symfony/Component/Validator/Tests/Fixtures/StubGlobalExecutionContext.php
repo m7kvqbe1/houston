@@ -16,7 +16,8 @@ use Symfony\Component\Validator\GlobalExecutionContextInterface;
 use Symfony\Component\Validator\ValidationVisitorInterface;
 
 /**
- * @since  2.5.3
+ * @since 2.5.3
+ *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @deprecated
@@ -29,7 +30,7 @@ class StubGlobalExecutionContext implements GlobalExecutionContextInterface
 
     private $visitor;
 
-    function __construct($root = null, ValidationVisitorInterface $visitor = null)
+    public function __construct($root = null, ValidationVisitorInterface $visitor = null)
     {
         $this->violations = new ConstraintViolationList();
         $this->root = $root;

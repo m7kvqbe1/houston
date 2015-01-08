@@ -77,14 +77,14 @@ class RegexValidatorTest extends AbstractConstraintValidatorTest
     {
         $constraint = new Regex(array(
             'pattern' => '/^[0-9]+$/',
-            'message' => 'myMessage'
+            'message' => 'myMessage',
         ));
 
         $this->validator->validate($value, $constraint);
 
-        $this->assertViolation('myMessage', array(
-            '{{ value }}' => '"'.$value.'"',
-        ));
+        $this->buildViolation('myMessage')
+            ->setParameter('{{ value }}', '"'.$value.'"')
+            ->assertRaised();
     }
 
     public function getInvalidValues()
@@ -93,71 +93,5 @@ class RegexValidatorTest extends AbstractConstraintValidatorTest
             array('abcd'),
             array('090foo'),
         );
-    }
-
-    public function testConstraintGetDefaultOption()
-    {
-        $constraint = new Regex(array(
-            'pattern' => '/^[0-9]+$/',
-        ));
-
-        $this->assertEquals('pattern', $constraint->getDefaultOption());
-    }
-
-    public function testHtmlPatternEscaping()
-    {
-        $constraint = new Regex(array(
-            'pattern' => '/^[0-9]+\/$/',
-        ));
-
-        $this->assertEquals('[0-9]+/', $constraint->getHtmlPattern());
-
-        $constraint = new Regex(array(
-            'pattern' => '#^[0-9]+\#$#',
-        ));
-
-        $this->assertEquals('[0-9]+#', $constraint->getHtmlPattern());
-    }
-
-    public function testHtmlPattern()
-    {
-        // Specified htmlPattern
-        $constraint = new Regex(array(
-            'pattern' => '/^[a-z]+$/i',
-            'htmlPattern' => '[a-zA-Z]+',
-        ));
-        $this->assertEquals('[a-zA-Z]+', $constraint->getHtmlPattern());
-
-        // Disabled htmlPattern
-        $constraint = new Regex(array(
-            'pattern' => '/^[a-z]+$/i',
-            'htmlPattern' => false,
-        ));
-        $this->assertNull($constraint->getHtmlPattern());
-
-        // Cannot be converted
-        $constraint = new Regex(array(
-            'pattern' => '/^[a-z]+$/i',
-        ));
-        $this->assertNull($constraint->getHtmlPattern());
-
-        // Automatically converted
-        $constraint = new Regex(array(
-            'pattern' => '/^[a-z]+$/',
-        ));
-        $this->assertEquals('[a-z]+', $constraint->getHtmlPattern());
-
-        // Automatically converted, adds .*
-        $constraint = new Regex(array(
-            'pattern' => '/[a-z]+/',
-        ));
-        $this->assertEquals('.*[a-z]+.*', $constraint->getHtmlPattern());
-
-        // Dropped because of match=false
-        $constraint = new Regex(array(
-            'pattern' => '/[a-z]+/',
-            'match' => false
-        ));
-        $this->assertNull($constraint->getHtmlPattern());
     }
 }

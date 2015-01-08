@@ -12,7 +12,6 @@
 namespace Symfony\Component\Security\Acl\Tests\Domain;
 
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -128,7 +127,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
         $acl = $this->getAcl();
 
         $listener = $this->getListener(array(
-            $property, 'aceOrder', $property, 'aceOrder', $property
+            $property, 'aceOrder', $property, 'aceOrder', $property,
         ));
         $acl->addPropertyChangedListener($listener);
 
@@ -358,7 +357,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
         $acl->{'insert'.$type}('foo', new UserSecurityIdentity('foo', 'Foo'), 1);
 
         $listener = $this->getListener(array(
-            'mask', 'mask', 'strategy'
+            'mask', 'mask', 'strategy',
         ));
         $acl->addPropertyChangedListener($listener);
 

@@ -13,6 +13,7 @@ namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -49,8 +50,6 @@ class CollectionValidator extends ConstraintValidator
         // remove the initialize() method and pass the context as last argument
         // to validate() instead.
         $context = $this->context;
-        $group = $context->getGroup();
-        $validator = $context->getValidator()->inContext($context);
 
         foreach ($constraint->fields as $field => $fieldConstraint) {
             // bug fix issue #2779
@@ -59,14 +58,22 @@ class CollectionValidator extends ConstraintValidator
 
             if ($existsInArray || $existsInArrayAccess) {
                 if (count($fieldConstraint->constraints) > 0) {
-                    $validator->atPath('['.$field.']')
-                        ->validate($value[$field], $fieldConstraint->constraints, $group);
+                    if ($context instanceof ExecutionContextInterface) {
+                        $context->getValidator()
+                            ->inContext($context)
+                            ->atPath('['.$field.']')
+                            ->validate($value[$field], $fieldConstraint->constraints);
+                    } else {
+                        // 2.4 API
+                        $context->validateValue($value[$field], $fieldConstraint->constraints, '['.$field.']');
+                    }
                 }
             } elseif (!$fieldConstraint instanceof Optional && !$constraint->allowMissingFields) {
-                $context->buildViolation($constraint->missingFieldsMessage)
+                $this->buildViolationInContext($context, $constraint->missingFieldsMessage)
                     ->atPath('['.$field.']')
                     ->setParameter('{{ field }}', $this->formatValue($field))
                     ->setInvalidValue(null)
+                    ->setCode(Collection::MISSING_FIELD_ERROR)
                     ->addViolation();
             }
         }
@@ -74,10 +81,11 @@ class CollectionValidator extends ConstraintValidator
         if (!$constraint->allowExtraFields) {
             foreach ($value as $field => $fieldValue) {
                 if (!isset($constraint->fields[$field])) {
-                    $context->buildViolation($constraint->extraFieldsMessage)
+                    $this->buildViolationInContext($context, $constraint->extraFieldsMessage)
                         ->atPath('['.$field.']')
                         ->setParameter('{{ field }}', $this->formatValue($field))
                         ->setInvalidValue($fieldValue)
+                        ->setCode(Collection::NO_SUCH_FIELD_ERROR)
                         ->addViolation();
                 }
             }
