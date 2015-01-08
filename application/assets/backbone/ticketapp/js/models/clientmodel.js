@@ -2,7 +2,7 @@ var ClientModel = Backbone.Model.extend({
 	initialize: function(){
 		this.users = new Users();
 		// this.users.clientID = this.id;
-		this.users.url = 'clients/users/' + this.id;
+		this.users.url = 'client/users/' + this.id;
 		this.on('sync', this.users.fetch());
 	},
 	// urlRoot: '/clients',
