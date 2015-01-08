@@ -1048,6 +1048,7 @@ input.inp-lst {
 
 .box-companies-header {
 	overflow: hidden;
+	clear: both;
 	padding: 16px 15px;
 	background: #f3f0ea;
 	

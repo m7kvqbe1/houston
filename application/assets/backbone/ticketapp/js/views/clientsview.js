@@ -31,13 +31,13 @@ var ClientsView = Backbone.View.extend({
 						'<a class="cancel-btn ib">Cancel</a>' +
 					'</form>'+
 				'</div>'+
-				'{{#each users.models}}'+
+				'{{#users.models}}'+
 					'<li class="person">'+
-						'<img class="avatar" src="{{avatar}}" />'+
-						'<h3>{{name}}Name</h3>'+
+						'<img class="avatar" src="{{attributes.avatar}}" />'+
+						'<h3>{{attributes.emailAddress}}</h3>'+
 						'<h4>{{position}}</h4>'+
 					'</li>'+
-				'{{/each}}'+
+				'{{/users.models}}'+
 				'</ul>'+					
 			'</li>'+		
 			'{{/each}}'+	
@@ -47,6 +47,8 @@ var ClientsView = Backbone.View.extend({
 	initialize: function() {	
 
 		this.listenTo(this.collection, "sync", this.render);	
+
+		// this.listenTo(this.collection.attributes.users, "sync", this.render);
 	},
 
 	render: function() {
