@@ -229,7 +229,7 @@ class UserModel {
 		$this->loadUserByID($this->app['session']->get('u'));
 		
 		$users = $db->users;
-		$result = $users->find(array('companyID' => $this->user['companyID']));
+		$result = $users->find(array('companyID' => $this->user['companyID'], 'role' => array('$in' => array('AGENT', 'ADMIN'))));
 		
 		$docs = array();
 		foreach($result as $doc) {
