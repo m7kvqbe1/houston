@@ -238,4 +238,24 @@ class UserModel {
 		
 		return json_encode($docs);
 	}
+	
+	public function removeUser($id) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$id = new \MongoId($id);
+		
+		try {
+			$collection = $db->users;			
+			$collection->remove(
+				array('_id' => $id),
+				array('justOne' => true)
+			);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
 }

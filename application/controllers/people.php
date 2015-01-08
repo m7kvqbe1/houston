@@ -49,6 +49,7 @@ $app->post('/user', function(Request $request, Application $app) {
 	return json_encode($json);
 })->before($secure);
 
+// Remove client and all associated users
 $app->delete('/client/{clientID}', function(Request $request, Application $app, $clientID) {
 	$clientModel = new Houston\Client\Model\ClientModel($app);
 	$clientModel->removeClient($clientID);

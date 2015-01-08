@@ -13,3 +13,11 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	
 	return json_encode($userModel->user);
 })->before($secure);
+
+// Remove user
+$app->delete('/user/{userID}', function(Request $request, Application $app, $userID) {
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->removeUser($userID);
+	
+	return 1;
+})->before($secure);
