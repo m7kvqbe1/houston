@@ -14,13 +14,13 @@ require_once(__DIR__.'/vendor/autoload.php');
 $app = new Silex\Application();
 $app['debug'] = true;
 
-// Register URL generator service
+// Register URL generator service provider
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-// Register session handling service
+// Register session handling service provider
 $app->register(new Silex\Provider\SessionServiceProvider());
 
-// Register MongoDB service
+// Register MongoDB service provider
 $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
@@ -30,7 +30,7 @@ $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
     ),
 ));
 
-// Register Monolog service
+// Register Monolog service provider
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.Config::LOG_PATH,
 	'monolog.name' => 'Houston',
