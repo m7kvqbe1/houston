@@ -16,5 +16,5 @@ $app->get('/', function(Request $request, Application $app){
 	    $app['session']->set('isAuthenticated', true);
 	}
 	
-	return Houston\Common\Common::generateAssets($request, $app);
+	return Houston\Common\System::generateAssets($request, $app);
 });

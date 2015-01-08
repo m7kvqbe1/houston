@@ -43,8 +43,6 @@ class TicketModel {
 		    array_push($docs, $doc);
 		}
 		
-		$docs = json_encode($docs);
-		
 		return $docs;
 	}
 		
@@ -97,8 +95,6 @@ class TicketModel {
 		foreach($result as $doc) {
 		    array_push($docs, $doc);
 		}
-		
-		$docs = json_encode($docs);
 		
 		return $docs;
 	}

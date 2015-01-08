@@ -162,7 +162,7 @@ class UserModel {
 		}
 	}
 	
-	public function addUser($json) {
+	public function saveUser($json) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -185,7 +185,7 @@ class UserModel {
 		$json->verify = $this->generateVerificationToken($json->emailAddress);
 		
 		// Save user to database
-		$this->addUser($json);
+		$this->saveUser($json);
 	}
 	
 	public function addAgent($json) {
@@ -197,7 +197,19 @@ class UserModel {
 		$json->companyID = $this->user['companyID'];
 				
 		// Save user to database
-		$this->addUser($json);
+		$this->saveUser($json);
+	}
+	
+	public function addUser($json) {
+		// Generate email verification token
+		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		
+		// Lookup current authenticated session company ID
+		$this->loadUserByID($this->app['session']->get('u'));
+		$json->companyID = $this->user['companyID'];
+				
+		// Save user to database
+		$this->saveUser($json);		
 	}
 	
 	public function getAgents() {
@@ -216,20 +228,6 @@ class UserModel {
 		    array_push($docs, $doc);
 		}
 		
-		$docs = json_encode($docs);
-		
-		return $docs;
-	}	
-	
-	// DEPRECATED
-	public function getCompanyName($userID) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		$criteria = array('_id' => $userID);
-		$user = $db->users->findOne($criteria);
-
-		return $user['company'];
+		return json_encode($docs);
 	}
 }

@@ -30,13 +30,15 @@ class CompanyModel {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-				
-		$this->companies = $db->companies->findOne(array('_id' => new \MongoId($id)));
+			
+		$id = new \MongoId($id);
+		
+		$this->company = $db->companies->findOne(array('_id' => $id));
 		
 		if(!empty($this->company)) {			
 			return $this->company;
 		} else {
-			throw new \Exception('Ticket not found');
+			throw new \Exception('Company not found');
 		}
 	}
 	

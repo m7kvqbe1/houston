@@ -4,7 +4,7 @@ namespace Houston\Common;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class Common {
+class System {
 	public static function generateAssets(Request $request, Application $app) {
 		// If not authenticated serve login screen initial assets
 		if(!$app['session']->get('isAuthenticated')) {

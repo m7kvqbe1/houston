@@ -8,20 +8,19 @@ $app->get('/companies', function(Request $request, Application $app) {
 	$db = $connections['default'];
 	$db = $db->houston;
 	
-	// Only get companies for your user
 	$userModel = new Houston\User\Model\UserModel($app);
-	$companyName = $userModel->getCompanyName($app['session']->get('u'));
+	$userModel->loadUserByID($app['session']->get('u'));
 	
-	$criteria = array('companyName' => $companyName);
-	$company = $db->companies->findOne($criteria);
-	    	    	    
-	return json_encode($company);
+	$companyModel = new Houston\Company\Model\CompanyModel($app);
+	$companyModel->loadCompanyByID($userModel->user['companyID']);
+	
+	return json_encode($companyModel->company);
 })->before($secure);
 
 // Get clients
 $app->get('/clients', function(Request $request, Application $app) {	
 	$clientModel = new Houston\Client\Model\ClientModel($app);
-	return $clientModel->getClients();
+	return json_encode($clientModel->getClients());
 })->before($secure);
 
 // Add new client
@@ -30,6 +29,22 @@ $app->post('/clients', function(Request $request, Application $app) {
 	
 	$clientModel = new Houston\Client\Model\ClientModel($app);
 	$clientModel->addClient($json);
+	
+	return json_encode($json);
+})->before($secure);
+
+// Get users for client
+$app->get('/client/users/{clientID}', function(Request $request, Application $app, $clientID) {
+	$clientModel = new Houston\Client\Model\ClientModel($app);
+	return json_encode($clientModel->getUsersByClientID($clientID));
+})->before($secure);
+
+// Add new user to client
+$app->post('/user', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	
+	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel->addUser($json);
 	
 	return json_encode($json);
 })->before($secure);
@@ -48,7 +63,7 @@ $app->post('/agents', function(Request $request, Application $app) {
 	$userModel->addAgent($json);
 	
 	// Send verification email
-	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);
+	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".Config::DOMAIN."/verify/".$json->verify);
 	
 	return 1;
 })->before($secure);
