@@ -106,7 +106,7 @@ class ClientModel {
 			die('Error: '.$e->getMessage());
 		}
 		
-		// Remove all users associated with client		
+		// Remove all users linked to client
 		try {
 			$collection = $db->users;			
 			$collection->remove(
