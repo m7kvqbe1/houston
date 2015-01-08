@@ -65,13 +65,13 @@ var ClientsView = Backbone.View.extend({
 		var form = clicked.closest('form');
 		var clientID = form.data(clientID);
 		var clientID = clientID.clientid;
-		var name = form.find('input[type="text"]').val()
-		console.log(name);
+		var emailAddress = form.find('input[type="text"]').val()
+		console.log(emailAddress);
 		console.log(clientID);
 
 		var clt = 
 			{
-				"name": name,
+				"emailAddress": emailAddress,
 				"clientID": clientID
 
 			}
