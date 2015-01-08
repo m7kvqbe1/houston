@@ -57,7 +57,7 @@ class ClientModel {
 			array_push($docs, $doc);
 		}
 		
-		$this->client = $docs[0]['clients'];
+		if(isset($docs[0]['clients'])) $this->client = $docs[0]['clients'];
 		
 		return $this->client;
 	}
