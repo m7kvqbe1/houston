@@ -49,6 +49,13 @@ $app->post('/user', function(Request $request, Application $app) {
 	return json_encode($json);
 })->before($secure);
 
+$app->delete('/client/{clientID}', function(Request $request, Application $app, $clientID) {
+	$clientModel = new Houston\Client\Model\ClientModel($app);
+	$clientModel->removeClient($clientID);
+	
+	return 1;
+})->before($secure);
+
 // Get agents
 $app->get('/agents', function(Request $request, Application $app) {
 	$userModel = new Houston\User\Model\UserModel($app);

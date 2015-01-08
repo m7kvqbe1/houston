@@ -81,4 +81,41 @@ class ClientModel {
 		
 		return $docs;
 	}
+	
+	public function removeClient($id) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		// Load user to get authenticated users company ID
+		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel->loadUserByID($this->app['session']->get('u'));
+		
+		$id = new \MongoId($id);
+		
+		// Remove client
+		try {
+			$collection = $db->companies;			
+			$collection->update(
+				array('_id' => $userModel->user['companyID']), 
+				array('$pull' => array('clients' => array('_id' => $id)))
+			);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+		
+		// Remove all users associated with client		
+		try {
+			$collection = $db->users;			
+			$collection->remove(
+				array('clientID' => $id)
+			);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
 }
