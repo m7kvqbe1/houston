@@ -23,7 +23,7 @@ var ClientsView = Backbone.View.extend({
 				'</div>'+
 				'<ul class="client-stream">'+
 				'<div class="add-person">'+
-					'<form id="form-add-client-user">'+
+					'<form class="form-add-client-user" data-clientID="{{id}}">'+
 						'<h4>To add a new user, simply input their email address and Houston will do the rest. Simple!</h4>'+
 						'<input type="text" placeholder="Clients Name" />'+
 						'<button type="button">Submit</button>' +
@@ -31,10 +31,10 @@ var ClientsView = Backbone.View.extend({
 						'<a class="cancel-btn ib">Cancel</a>' +
 					'</form>'+
 				'</div>'+
-				'{{#each clientUsers}}'+
+				'{{#each users.models}}'+
 					'<li class="person">'+
 						'<img class="avatar" src="{{avatar}}" />'+
-						'<h3>{{name}}</h3>'+
+						'<h3>{{name}}Name</h3>'+
 						'<h4>{{position}}</h4>'+
 					'</li>'+
 				'{{/each}}'+
@@ -50,24 +50,35 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
-		// console.log(this.collection);
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));
 
 		this.delegateEvents({
-			'click #form-add-client button': 'addClient'
+			'click .form-add-client-user button': 'addClient'
 		});
 		return this;
 	},
 
-		addClient: function() {
-		console.log("addingclient");
+		addClient: function(e) {
+
+		var clicked = $(e.currentTarget);
+		var form = clicked.closest('form');
+		var clientID = form.data(clientID);
+		var clientID = clientID.clientid;
+		var name = form.find('input[type="text"]').val()
+		console.log(name);
+		console.log(clientID);
+
 		var clt = 
 			{
-				"name": this.$el.find('#form-add-client input[type="text"]').val()
+				"name": name,
+				"clientID": clientID
+
 			}
 
 		var client = new ClientModel(clt);
 		client.url = 'user';
+		//maybe use different model? 
 		client.save();
 	}
 });
