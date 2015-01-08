@@ -7,7 +7,7 @@ use Silex\Application;
 // Get all tickets
 $app->get('/tickets/all', function(Request $request, Application $app) {
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	return $ticket->getAll();
+	return json_encode($ticket->getAll());
 })->before($secure);
 
 // Get ticket
@@ -59,7 +59,7 @@ $app->get('/tickets/reply/{ticketID}', function(Request $request, Application $a
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$ticket = new \Houston\Ticket\Model\TicketModel($app);
-	return $ticket->getReplies($ticketID);
+	return json_encode($ticket->getReplies($ticketID));
 })->before($secure);
 
 // Upload attachment
