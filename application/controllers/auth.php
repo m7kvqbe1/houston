@@ -105,6 +105,8 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	$company = $companyModel->generateCompany($json);
 	$json->companyID = $company->_id;
 	
+	unset($json->company);
+	
 	// Create user account
 	$userModel->registerUser($json);
 
