@@ -12,7 +12,7 @@ class ClientModel {
 		$this->app = $app;
 	}
 	
-	public function addClient($json) {
+	public function addClient($client) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -22,13 +22,13 @@ class ClientModel {
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		// Generate unique MongoId for new client
-		$json->_id = new \MongoId();
+		$client->_id = new \MongoId();
 		
 		try {
 			$collection = $db->companies;			
 			$collection->update(
 				array('_id' => $userModel->user['companyID']), 
-				array('$push' => array('clients' => $json))
+				array('$push' => array('clients' => $client))
 			);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
