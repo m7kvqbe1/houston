@@ -162,14 +162,14 @@ class UserModel {
 		}
 	}
 	
-	public function saveUser($json) {
+	public function saveUser($user) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 
 		try {
 			$collection = $db->users;
-		    $collection->save($json);
+		    $collection->save($user);
 		} catch(MongoConnectionException $e) {
 		    die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
@@ -177,47 +177,47 @@ class UserModel {
 		}
 	}
 	
-	public function registerUser($json) {		
+	public function registerUser($user) {		
 		// Hash password
-		$json->password = $this->hashPassword($json->password);
+		$user->password = $this->hashPassword($user->password);
 		
 		// Generate email verification token
-		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
-		$json->role = 'ADMIN';
+		$user->role = 'ADMIN';
 		
 		// Save user to database
-		$this->saveUser($json);
+		$this->saveUser($user);
 	}
 	
-	public function addAgent($json) {
+	public function addAgent($user) {
 		// Generate email verification token
-		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('u'));
-		$json->companyID = $this->user['companyID'];
+		$user->companyID = $this->user['companyID'];
 		
-		$json->role = 'AGENT';
+		$user->role = 'AGENT';
 				
 		// Save user to database
-		$this->saveUser($json);
+		$this->saveUser($user);
 	}
 	
-	public function addUser($json) {
+	public function addUser($user) {
 		// Generate email verification token
-		$json->verify = $this->generateVerificationToken($json->emailAddress);
+		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('u'));
-		$json->companyID = $this->user['companyID'];
+		$user->companyID = $this->user['companyID'];
 		
-		if(isset($json->clientID)) $json->clientID = new \MongoId($json->clientID);
+		if(isset($user->clientID)) $user->clientID = new \MongoId($user->clientID);
 		
-		$json->role = 'USER';
+		$user->role = 'USER';
 				
 		// Save user to database
-		$this->saveUser($json);		
+		$this->saveUser($user);		
 	}
 	
 	public function getAgents() {
