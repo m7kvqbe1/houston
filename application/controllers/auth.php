@@ -105,6 +105,7 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	$company = $companyModel->generateCompany($json);
 	$json->companyID = $company->_id;
 	
+	// Remove company name from user JSON before invoking registerUser method
 	unset($json->company);
 	
 	// Create user account
