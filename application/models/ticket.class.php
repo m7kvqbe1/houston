@@ -46,14 +46,14 @@ class TicketModel {
 		return $docs;
 	}
 		
-	public function add($json) {
+	public function add($ticket) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		try {
 			$tickets = $db->tickets;
-			$tickets->save($json);
+			$tickets->save($ticket);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {

@@ -212,7 +212,7 @@ class UserModel {
 		$this->loadUserByID($this->app['session']->get('u'));
 		$json->companyID = $this->user['companyID'];
 		
-		$json->clientID = new \MongoId($json->clientID);
+		if(isset($json->clientID)) $json->clientID = new \MongoId($json->clientID);
 		
 		$json->role = 'USER';
 				
