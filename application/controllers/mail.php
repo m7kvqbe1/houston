@@ -2,9 +2,12 @@
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+use Houston\Model\TicketModel;
+use Houston\Extra\Mailbox;
+
 // Test IMAP mailbox connect
 $app->get('/mailbox/test', function(Request $request, Application $app) {
-	$mailbox = new Houston\Extra\Mailbox();
+	$mailbox = new Mailbox();
 	$mailbox->getMail();
 	
 	return print_r($mailbox->emails, true);
@@ -13,11 +16,11 @@ $app->get('/mailbox/test', function(Request $request, Application $app) {
 
 // Scan mailbox
 $app->get('/mailbox/scan', function(Request $request, Application $app) {
-	$mailbox = new Houston\Extra\Mailbox();
+	$mailbox = new Mailbox();
 	$mailbox->getMail();
 	
 	foreach($mailbox->emails as $email) {
-		$ticketModel = new Houston\Ticket\Model\TicketModel();
+		$ticketModel = new TicketModel();
 		
 		// Does a ticket already exists for this email (check custom headers)
 		if(!$mailbox->getTicketID($email)) {
@@ -32,7 +35,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			$ticket->username = $email['fromAddress'];
 			
 			// Check to see if user account with email address already exists
-			$userModel = new Houston\User\Model\UserModel();
+			$userModel = new UserModel();
 			
 			try {
 				$userModel->loadUser($email);

@@ -2,9 +2,12 @@
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+use Houston\Common\System;
+use Houston\Model\UserModel;
+
 // Serve initial assets
 $app->get('/', function(Request $request, Application $app){
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	
 	$cookies = $request->cookies;		
 	$token = $cookies->get('r');
@@ -16,5 +19,5 @@ $app->get('/', function(Request $request, Application $app){
 	    $app['session']->set('isAuthenticated', true);
 	}
 	
-	return Houston\Common\System::generateAssets($request, $app);
+	return System::generateAssets($request, $app);
 });

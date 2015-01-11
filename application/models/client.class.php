@@ -1,8 +1,10 @@
 <?php
-namespace Houston\Client\Model;
+namespace Houston\Model;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+
+use Houston\Model\UserModel;
 
 class ClientModel {
 	protected $app;
@@ -18,7 +20,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		// Generate unique MongoId for new client
@@ -43,7 +45,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		$collection = $db->companies;
@@ -88,7 +90,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		$id = new \MongoId($id);
