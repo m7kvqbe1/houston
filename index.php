@@ -9,7 +9,7 @@ if(Config::ERROR_REPORTING === true) {
 	ini_set("display_errors", 1);	
 }
 
-// Require Silex autoloader
+// Require Composer autoloader
 require_once(__DIR__.'/vendor/autoload.php');
 
 // Class importing / aliasing
@@ -54,17 +54,21 @@ $secure = function(Request $request, Application $app) {
 	}
 };
 
-// Autoload application controllers and models - MAKE THIS WORK!
-/*spl_autoload_register(null, false);
-spl_autoload_extensions('.php, .class.php');
+// Autoload only required classes (PSR-4) - MAKE THIS WORK!
+/*spl_autoload_register( function ($className) {
+    $className = ltrim($className, '\\');
+    $fileName  = '';
+    $namespace = '';
+    if ($lastNsPos = strrpos($className, '\\')) {
+        $namespace = substr($className, 0, $lastNsPos);
+        $className = substr($className, $lastNsPos + 1);
+        $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+    }
+    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
-function controllerLoader($class) {
-    $filename = strtolower($class) . '.class.php';
-    $file = __DIR__.'/application/controllers/' . $filename;
-    if (!file_exists($file)) return false;
-    include $file;
-}
-spl_autoload_register('controllerLoader');*/
+    require $fileName;
+});*/
+
 
 // Autoload extras
 foreach (glob(__DIR__."/application/extras/*.php") as $filename) {
