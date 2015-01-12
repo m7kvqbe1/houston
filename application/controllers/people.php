@@ -2,16 +2,20 @@
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
+use Houston\Model\UserModel;
+use Houston\Model\ClientModel;
+use Houston\Model\CompanyModel;
+
 // Get authenticated users companies
 $app->get('/companies', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
 	$db = $db->houston;
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	$userModel->loadUserByID($app['session']->get('u'));
 	
-	$companyModel = new Houston\Company\Model\CompanyModel($app);
+	$companyModel = new CompanyModel($app);
 	$companyModel->loadCompanyByID($userModel->user['companyID']);
 	
 	return json_encode($companyModel->company);
@@ -19,7 +23,7 @@ $app->get('/companies', function(Request $request, Application $app) {
 
 // Get clients
 $app->get('/clients', function(Request $request, Application $app) {	
-	$clientModel = new Houston\Client\Model\ClientModel($app);
+	$clientModel = new ClientModel($app);
 	return json_encode($clientModel->getClients());
 })->before($secure);
 
@@ -27,7 +31,7 @@ $app->get('/clients', function(Request $request, Application $app) {
 $app->post('/clients', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$clientModel = new Houston\Client\Model\ClientModel($app);
+	$clientModel = new ClientModel($app);
 	$clientModel->addClient($json);
 	
 	return json_encode($json);
@@ -35,7 +39,7 @@ $app->post('/clients', function(Request $request, Application $app) {
 
 // Get users for client
 $app->get('/client/users/{clientID}', function(Request $request, Application $app, $clientID) {
-	$clientModel = new Houston\Client\Model\ClientModel($app);
+	$clientModel = new ClientModel($app);
 	return json_encode($clientModel->getUsersByClientID($clientID));
 })->before($secure);
 
@@ -43,7 +47,7 @@ $app->get('/client/users/{clientID}', function(Request $request, Application $ap
 $app->post('/user', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	$userModel->addUser($json);
 	
 	return json_encode($json);
@@ -51,7 +55,7 @@ $app->post('/user', function(Request $request, Application $app) {
 
 // Remove client and all associated users
 $app->delete('/client/{clientID}', function(Request $request, Application $app, $clientID) {
-	$clientModel = new Houston\Client\Model\ClientModel($app);
+	$clientModel = new ClientModel($app);
 	$clientModel->removeClient($clientID);
 	
 	return 1;
@@ -59,7 +63,7 @@ $app->delete('/client/{clientID}', function(Request $request, Application $app, 
 
 // Get agents
 $app->get('/agents', function(Request $request, Application $app) {
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	return $userModel->getAgents();
 })->before($secure);
 
@@ -67,7 +71,7 @@ $app->get('/agents', function(Request $request, Application $app) {
 $app->post('/agents', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	$userModel->addAgent($json);
 	
 	// Send verification email

@@ -1,8 +1,10 @@
 <?php
-namespace Houston\Client\Model;
+namespace Houston\Model;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+
+use Houston\Model\UserModel;
 
 class ClientModel {
 	protected $app;
@@ -12,23 +14,23 @@ class ClientModel {
 		$this->app = $app;
 	}
 	
-	public function addClient($json) {
+	public function addClient($client) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		// Generate unique MongoId for new client
-		$json->_id = new \MongoId();
+		$client->_id = new \MongoId();
 		
 		try {
 			$collection = $db->companies;			
 			$collection->update(
 				array('_id' => $userModel->user['companyID']), 
-				array('$push' => array('clients' => $json))
+				array('$push' => array('clients' => $client))
 			);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
@@ -43,7 +45,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		$collection = $db->companies;
@@ -88,7 +90,7 @@ class ClientModel {
 		$db = $db->houston;
 		
 		// Load user to get authenticated users company ID
-		$userModel = new \Houston\User\Model\UserModel($this->app);
+		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('u'));
 		
 		$id = new \MongoId($id);

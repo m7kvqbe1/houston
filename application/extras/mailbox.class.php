@@ -5,12 +5,12 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class Mailbox {
-	protected $inbox;
+	private $inbox;
 	public $emails = array();
 	
 	public function __construct() {
 		try {
-			$this->connect();	
+			$this->connect();
 		} catch(Exception $e) {
 			echo $e->getMessage();
 		}
@@ -27,6 +27,7 @@ class Mailbox {
 	public function getMail() {
 		$emails = imap_search($this->inbox, 'ALL');
 		foreach($emails as $num) {
+			$header = imap_headerinfo($this->inbox, $num);
 			$overview = imap_fetch_overview($this->inbox, $num, 0);
 			$structure = imap_fetchstructure($this->inbox, $num);
 			
@@ -34,8 +35,12 @@ class Mailbox {
 			$email['subject'] = $overview[0]->subject;
 			$email['from'] = $overview[0]->from;
 			$email['date'] = $overview[0]->date;	
-			$email['message'] = ($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['message'] = imap_body($this->inbox, $num));			
+			$email['message'] = ($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['message'] = imap_body($this->inbox, $num));
+			$email['fromAddress'] = $header->from[0]->mailbox . "@" . $header->from[0]->host;
+			$email['ticketID'] = $this->getTicketID($header);
 			
+			$this->markRead($num);
+						
 			array_push($this->emails, $email);
 		}
 		
@@ -47,11 +52,28 @@ class Mailbox {
 		return false;
 	}
 	
-	public function markRead() {
-		
+	public function markRead($num) {
+		return imap_setflag_full($this->inbox, $num, '\\Seen \\Flagged');
 	}
 	
-	public function markUnread() {
-		
+	public function markUnread($num) {
+		return imap_clearflag_full($this->inbox, $num, '\\Seen');
+	}
+	
+	public function getTicketID($header) {
+		$ticketID = (isset($header->ticketID) ? $header->ticketID : null);
+		return $ticketID;
+	}
+	
+	public function setTicketID() {
+		// Set custom email header for ticket ID
+	}
+	
+	public function generateEmail() {
+		// Generate email from HTML template
+	}
+	
+	public function sendEmail() {
+		// Send new email using Swiftmailer library
 	}
 }

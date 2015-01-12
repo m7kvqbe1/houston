@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Ticket\Model;
+namespace Houston\Model;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,14 +46,14 @@ class TicketModel {
 		return $docs;
 	}
 		
-	public function add($json) {
+	public function add($ticket) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		try {
 			$tickets = $db->tickets;
-			$tickets->save($json);
+			$tickets->save($ticket);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
@@ -67,15 +67,15 @@ class TicketModel {
 		$db = $db->houston;
 		
 		$json = str_replace('$', '', $json);
-		$json = json_decode($json);	
+		$ticket = json_decode($json);	
 		
-		unset($json->_id);
+		unset($ticket->_id);
 		
 		try {	
-			$id = new \MongoID($json->id);
+			$id = new \MongoID($ticket->id);
 			
 			$tickets = $db->tickets;
-			$tickets->update(array('_id' => $id), $json);
+			$tickets->update(array('_id' => $id), $ticket);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
@@ -99,14 +99,14 @@ class TicketModel {
 		return $docs;
 	}
 	
-	public function reply($json) {
+	public function reply($reply) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		try {	
 			$collection = $db->replies;
-			$collection->save($json);
+			$collection->save($reply);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
@@ -114,18 +114,18 @@ class TicketModel {
 		}
 	}
 	
-	public function uploadAttachment($json) {
+	public function uploadAttachment($attachment) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		// Remove MimeType from start of Base64 encoded binary string
-		$data = explode(',', $json->target);
+		$data = explode(',', $attachment->target);
 		$data = $data[1];
 		
 		try {	
 			$gridfs = $db->getGridFS();
-			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $json->type, 'fileName' => $json->name, 'lastModifiedDate' => $json->lastModifiedDate));
+			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate));
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {

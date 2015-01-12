@@ -4,6 +4,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
+use Houston\Model\UserModel;
+use Houston\Model\CompanyModel;
+
 // Logout of system
 $app->get('/auth/logout', function(Request $request, Application $app){	
 	$response = Response::create('', 302, array("Location" => "/"));
@@ -21,7 +24,7 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	$userModel->loadUser($json->user);
 		
 	// Does verified user exist?
@@ -60,7 +63,7 @@ $app->post('/auth/reset', function(Request $request, Application $app) {
 		
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	$userModel->loadUser($json->emailAddress);
 	
 	// Flag password reset request on user account and generate token
@@ -78,7 +81,7 @@ $app->post('/auth/reset/complete', function(Request $request, Application $app) 
 	
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	
 	$userModel->resetPassword($json->token, $json->password);
 	
@@ -95,8 +98,8 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 		
 	$json = json_decode(file_get_contents('php://input'));
 	
-	$userModel = new Houston\User\Model\UserModel($app);
-	$companyModel = new Houston\Company\Model\CompanyModel($app);
+	$userModel = new UserModel($app);
+	$companyModel = new CompanyModel($app);
 	
 	// Does verified user or company already exist?
 	if($userModel->isVerified($json->emailAddress) || $companyModel->companyExists($json->company)) return -1;
@@ -105,6 +108,7 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 	$company = $companyModel->generateCompany($json);
 	$json->companyID = $company->_id;
 	
+	// Remove company name from user JSON before invoking registerUser method
 	unset($json->company);
 	
 	// Create user account
@@ -120,7 +124,7 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 $app->get('/verify/{token}', function(Request $request, Application $app, $token) {
 	session_start();
 	
-	$userModel = new Houston\User\Model\UserModel($app);
+	$userModel = new UserModel($app);
 	$userModel->isVerified(null, $token);
 	
 	if(!isset($userModel->user)) return 'The verification code supplied was invalid.';	// Update to redirect to invalid token error page

@@ -1,27 +1,37 @@
 <?php
-// Application config
+// Require application config
 define('DOCUMENT_ROOT', __DIR__);
 require_once(__DIR__.'/application/config.php');
 
-// Error reporting
+// PHP error reporting
 if(Config::ERROR_REPORTING === true) {
 	error_reporting(E_ALL);
 	ini_set("display_errors", 1);	
 }
 
-// Instantiate Silex
+// Require Silex autoloader
 require_once(__DIR__.'/vendor/autoload.php');
-$app = new Silex\Application();
+
+// Class importing / aliasing
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\MonologServiceProvider;
+use Mongo\Silex\Provider\MongoServiceProvider;
+
+// Instantiate Silex framework
+$app = new Application();
 $app['debug'] = true;
 
 // Register URL generator service provider
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new UrlGeneratorServiceProvider());
 
 // Register session handling service provider
-$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new SessionServiceProvider());
 
 // Register MongoDB service provider
-$app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
+$app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
             'server' => 'mongodb://'.Config::MONGO_USER.':'.Config::MONGO_PASSWORD.'@'.Config::MONGO_HOST,
@@ -31,16 +41,13 @@ $app->register(new Mongo\Silex\Provider\MongoServiceProvider, array(
 ));
 
 // Register Monolog service provider
-$app->register(new Silex\Provider\MonologServiceProvider(), array(
+$app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.Config::LOG_PATH,
 	'monolog.name' => 'Houston',
 	'monolog.level' => Config::LOG_LEVEL
 ));
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-
-// REST security handler
+// Define REST API security handler
 $secure = function(Request $request, Application $app) {
 	if(!$app['session']->get('isAuthenticated')) {
 		return $app->redirect('/');
