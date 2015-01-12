@@ -184,8 +184,7 @@ var TicketDetailView = Backbone.View.extend({
 		this.model.set({			
 			updated: this.model.get('updated').concat(app.user.attributes.id)
 		});
-		this.model.save(this.model.attributes);
-	
+		this.model.save(this.model.attributes);	
 	},
 	
 	saveModel: function(){
@@ -200,8 +199,7 @@ var TicketDetailView = Backbone.View.extend({
 					console.log('saveModel');
 				}, this)
 			}
-		);
-	
+		);	
 	},
 	
 	addMessage: function(){	
@@ -214,7 +212,7 @@ var TicketDetailView = Backbone.View.extend({
 			});		
 		}
 		
-		var msg = {
+		var attributes = {
 			"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 			"role": "agent",
 			"avatar": app.user.attributes.avatar, 
@@ -225,7 +223,7 @@ var TicketDetailView = Backbone.View.extend({
 
 		};
 
-		var msgMdl = new MessageModel(msg);
+		var msgMdl = new MessageModel(attributes);
 
 		//add response to collection to stop view shuddering on render
 		this.messagesView.collection.add(msgMdl); 

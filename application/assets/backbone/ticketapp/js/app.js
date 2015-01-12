@@ -66,6 +66,7 @@ var AppRouter = Backbone.Router.extend({
 				collection: this.agents
 			}
 		); 
+		console.log(this.peopleView);
 
 		//ACCOUNT
 		this.accountView = new AccountView(
@@ -81,24 +82,14 @@ var AppRouter = Backbone.Router.extend({
 			success: _.bind(function(){
 				$('#app').html(this.ticketsView.render().el);
 			}, this)
-
 		});
-
 	},
 
 	ticketDetails: function(ticket) {
 		var attributes = this.tickets.get(ticket).attributes;
 		this.ticketDetailView.model.set(attributes);
 		this.ticketDetailView.model.fetchMessages(ticket);
-		$('#app').html(this.ticketDetailView.render().el);
-
-		// this.ticketDetailView.model.set('id', ticket);
-		// this.ticketDetailView.model.fetch({
-		// 	success: _.bind(function(){
-		// 		$('#app').html(this.ticketDetailView.render().el);
-		// 	}, this)
-		// });
-		
+		$('#app').html(this.ticketDetailView.render().el);		
 	},
 
 	ticketForm: function() {
@@ -106,13 +97,15 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverview: function() {
-		this.peopleView.clientsView.collection.fetch();
+		// this.peopleView.clientsView.collection.fetch();
 		$('#app').html(this.peopleView.render().el);
+		console.log(this.peopleView);
 	},
 	
 	accountMain: function() {
 		$('#app').html(this.accountView.render().el);
 	}
+
 });
 
 var app = new AppRouter();
@@ -135,6 +128,15 @@ $(function() {
 
 
 //TicketDetail
+// Most recent previous way
+		// this.ticketDetailView.model.set('id', ticket);
+		// this.ticketDetailView.model.fetch({
+		// 	success: _.bind(function(){
+		// 		$('#app').html(this.ticketDetailView.render().el);
+		// 	}, this)
+		// });
+
+
 // Previous way where event listeners weren't firing
 // this.ticketDetailView.model = this.tickets.get(ticket); 
 

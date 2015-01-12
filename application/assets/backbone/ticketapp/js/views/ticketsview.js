@@ -90,7 +90,6 @@ var TicketView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',

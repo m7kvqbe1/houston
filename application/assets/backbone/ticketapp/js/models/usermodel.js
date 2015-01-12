@@ -7,6 +7,7 @@ var UserModel = Backbone.Model.extend({
 		return response;
 	},
 	urlRoot: '/user/self',
+	//could this be just url?
 	defaults: {
 		firstName: '',
 		lastName: '',
