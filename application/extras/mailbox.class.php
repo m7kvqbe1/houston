@@ -4,20 +4,20 @@ namespace Houston\Extra;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class Mailbox {
-	private $inbox;
+abstract class Mailbox {
+	protected $inbox;
 	public $emails = array();
 	
-	public function __construct() {
+	public function __construct($host = null, $username = null, $password = null) {
 		try {
-			$this->connect();
+			$this->connect($host, $username, $password);
 		} catch(Exception $e) {
 			echo $e->getMessage();
 		}
 	}
 	
-	public function connect() {
-		return $this->inbox = imap_open(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
+	public function connect($host, $username, $password) {
+		return $this->inbox = imap_open($host, $username, $password);
 	}
 	
 	public function disconnect() {
@@ -60,6 +60,12 @@ class Mailbox {
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
 	
+	public function sendEmail() {
+		// Send new email using Swiftmailer library
+	}
+}
+
+class MailboxExtended extends Mailbox {
 	public function getTicketID($header) {
 		$ticketID = (isset($header->ticketID) ? $header->ticketID : null);
 		return $ticketID;
@@ -71,9 +77,5 @@ class Mailbox {
 	
 	public function generateEmail() {
 		// Generate email from HTML template
-	}
-	
-	public function sendEmail() {
-		// Send new email using Swiftmailer library
-	}
+	}	
 }
