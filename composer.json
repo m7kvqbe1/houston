@@ -1,4 +1,20 @@
 {
+	"name": "houston",
+	"description": "Houston Support Desk",
+	
+	"homepage": "http://houstonsupportdesk.com",
+	
+	"authors": [
+		{
+			"name": "Tom Humphris",
+			"email": "tom@muska.co.uk"
+		},
+		{
+			"name": "Edd Neal",
+			"email": "eddneal@hotmail.com"	
+		}		
+	],
+	
     "require": {
         "silex/silex": "~1.1",
         "symfony/console": "~2.3",
