@@ -64,10 +64,6 @@ class CompanyModel {
 		}
 	}*/
 	
-	public function unsetCompany() {
-		unset($this->company);
-	}
-	
 	public function companyExists($companyName) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
