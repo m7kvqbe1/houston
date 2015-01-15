@@ -67,8 +67,7 @@ abstract class Mailbox {
 
 class MailboxExtended extends Mailbox {
 	public function getTicketID($header) {
-		$ticketID = (isset($header->ticketID) ? $header->ticketID : null);
-		return $ticketID;
+		return (isset($header->ticketID) ? $header->ticketID : null);
 	}
 	
 	public function setTicketID() {

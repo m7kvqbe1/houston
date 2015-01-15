@@ -45,26 +45,24 @@ $app->put('/tickets/{ticketID}', function(Request $request, Application $app) {
 
 // Add new reply
 $app->post('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {	
-	$ticket = json_decode(file_get_contents('php://input'));
+	$reply = json_decode(file_get_contents('php://input'));
 	
-	$ticket->ticketID = $ticketID;
+	$reply->ticketID = $ticketID;
 	
-	$ticketModel = new TicketModel($app);
-	$replyModel = new ReplyModel($app, $ticketModel);
-	$replyModel->reply($ticket);
+	$replyModel = new ReplyModel($app);
+	$replyModel->reply($reply);
 	
 	$notify = new Notify($app); 
-	$notify->newReply($ticket);	
+	$notify->newReply($reply);	
 
-	return json_encode($ticket);
+	return json_encode($reply);
 })->before($secure);
 
 // Get replies
 $app->get('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {	
 	$ticket = json_decode(file_get_contents('php://input'));
 	
-	$ticketModel = new TicketModel($app);
-	$replyModel = new ReplyModel($app, $ticketModel);
+	$replyModel = new ReplyModel($app);
 	
 	return json_encode($replyModel->getReplies($ticketID));
 })->before($secure);
