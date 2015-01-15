@@ -45,6 +45,22 @@ class TicketModel {
 		
 		return $docs;
 	}
+	
+	public function getReplies($ticketID) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$collection = $db->replies;
+		$result = $collection->find(array('ticketID' => $ticketID));
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		return $docs;
+	}
 		
 	public function add($ticket) {
 		$connections = $this->app['mongo'];
@@ -83,22 +99,6 @@ class TicketModel {
 		}
 	}
 	
-	public function getReplies($ticketID) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		$collection = $db->replies;
-		$result = $collection->find(array('ticketID' => $ticketID));
-		
-		$docs = array();
-		foreach($result as $doc) {
-		    array_push($docs, $doc);
-		}
-		
-		return $docs;
-	}
-	
 	public function reply($reply) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -107,6 +107,23 @@ class TicketModel {
 		try {	
 			$collection = $db->replies;
 			$collection->save($reply);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		}
+	}
+	
+	public function delete($ticketID) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$ticketID = new \MongoID($ticketID);
+		
+		try {	
+			$collection = $db->tickets;
+			$collection->remove(array('_id' => $ticketID));
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {

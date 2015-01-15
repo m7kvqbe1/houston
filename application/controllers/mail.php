@@ -50,8 +50,6 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			$ticketModel->add($ticket);
 			
 			continue;
-		} else {
-			// Add reply to ticket
 		}
 		
 		unset($ticketModel);
