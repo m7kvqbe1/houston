@@ -47,7 +47,7 @@ $app->register(new MonologServiceProvider(), array(
 	'monolog.level' => Config::LOG_LEVEL
 ));
 
-// Define REST API security handler
+// Define REST API security middleware
 $secure = function(Request $request, Application $app) {
 	if(!$app['session']->get('isAuthenticated')) {
 		return $app->redirect('/');
@@ -68,7 +68,6 @@ $secure = function(Request $request, Application $app) {
 
     require $fileName;
 });*/
-
 
 // Autoload extras
 foreach (glob(__DIR__."/application/extras/*.php") as $filename) {
