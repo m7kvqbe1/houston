@@ -39,10 +39,6 @@ class UserModel {
 			throw new \Exception('User not found');
 		}
 	}
-	
-	public function unsetUser() {
-		unset($this->user);
-	}
 
 	public static function hashPassword($password) {
 		$password = crypt($password, \Config::DEFAULT_SALT);
