@@ -6,12 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ReplyModel {
 	protected $app;
-	public $ticket;
 	public $reply;
 	
-	public function __construct(Application $app, TicketModel $ticket) {
+	public function __construct(Application $app) {
 		$this->app = $app;
-		$this->ticket = $ticket;
 	}
 	
 	public function loadReplyByID($replyID) {
