@@ -26,10 +26,6 @@ class TicketModel {
 		}
 	}
 	
-	public function unsetTicket() {
-		unset($this->ticket);
-	}
-	
 	public function generateTicket($subject, $message, $date, $email) {
 		$this->ticket = new stdClass();
 		
