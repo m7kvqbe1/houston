@@ -26,9 +26,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 		if(!$mailbox->getTicketID($email)) {
 			// Generate new ticket
 			$ticketModel->generateTicket($email['subject'], $email['message'], $email['date'], $email['fromAddress']);
-			
-			// Save new ticket to database
-			$ticketModel->add($ticket);
+			$ticketModel->add($ticketModel->ticket);
 			
 			continue;
 		} else {

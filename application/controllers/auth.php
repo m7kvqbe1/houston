@@ -20,8 +20,6 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 
 // Login to system
 $app->post('/auth/login', function(Request $request, Application $app) {	
-	session_start();
-	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);
@@ -58,9 +56,7 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 });
 
 // Reset password request
-$app->post('/auth/reset', function(Request $request, Application $app) {
-	session_start();
-		
+$app->post('/auth/reset', function(Request $request, Application $app) {		
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);
@@ -77,8 +73,6 @@ $app->post('/auth/reset', function(Request $request, Application $app) {
 
 // Reset password
 $app->post('/auth/reset/complete', function(Request $request, Application $app) {
-	session_start();
-	
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);
@@ -94,8 +88,6 @@ $app->post('/auth/reset/complete', function(Request $request, Application $app) 
 
 // Register new user
 $app->post('/auth/register', function(Request $request, Application $app) {
-	session_start();
-		
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);
@@ -122,8 +114,6 @@ $app->post('/auth/register', function(Request $request, Application $app) {
 
 // Verify user registration
 $app->get('/verify/{token}', function(Request $request, Application $app, $token) {
-	session_start();
-	
 	$userModel = new UserModel($app);
 	$userModel->isVerified(null, $token);
 	

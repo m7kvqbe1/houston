@@ -4,7 +4,7 @@ namespace Houston\Model;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class TicketModel {		
+class TicketModel {
 	protected $app;
 	public $ticket;
 
@@ -73,22 +73,6 @@ class TicketModel {
 		
 		return $docs;
 	}
-	
-	public function getReplies($ticketID) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		$collection = $db->replies;
-		$result = $collection->find(array('ticketID' => $ticketID));
-		
-		$docs = array();
-		foreach($result as $doc) {
-		    array_push($docs, $doc);
-		}
-		
-		return $docs;
-	}
 		
 	public function add($ticket) {
 		$connections = $this->app['mongo'];
@@ -120,21 +104,6 @@ class TicketModel {
 			
 			$tickets = $db->tickets;
 			$tickets->update(array('_id' => $id), $ticket);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
-		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
-		}
-	}
-	
-	public function reply($reply) {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		try {	
-			$collection = $db->replies;
-			$collection->save($reply);
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {

@@ -5,80 +5,84 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Silex\Application;
 
 use Houston\Model\TicketModel;
+use Houston\Model\ReplyModel;
 use Houston\Extra\Notify;
 
 // Get all tickets
 $app->get('/tickets/all', function(Request $request, Application $app) {
-	$ticket = new TicketModel($app);
-	return json_encode($ticket->getAll());
+	$ticketModel = new TicketModel($app);
+	return json_encode($ticketModel->getAll());
 })->before($secure);
 
 // Get ticket
 $app->get('/tickets/{ticketID}', function(Request $request, Application $app, $ticketID) {
-	$ticket = new TicketModel($app);
-	return json_encode($ticket->loadTicketByID($ticketID));
+	$ticketModel = new TicketModel($app);
+	return json_encode($ticketModel->loadTicketByID($ticketID));
 })->before($secure);
 
 // Add new ticket
 $app->post('/tickets', function(Request $request, Application $app) {	
-	$json = json_decode(file_get_contents('php://input'));
+	$ticket = json_decode(file_get_contents('php://input'));
 	
-	$ticket = new TicketModel($app);
-	$ticket->add($json);
+	$ticketModel = new TicketModel($app);
+	$ticketModel->add($ticket);
 		
 	$notify = new Notify($app); 
-	$notify->newTicket($json);
+	$notify->newTicket($ticket);
 	
-	return json_encode($json);
+	return json_encode($ticket);
 })->before($secure);
 
 // Edit ticket
 $app->put('/tickets/{ticketID}', function(Request $request, Application $app) {	
-	$json = file_get_contents('php://input');
+	$ticket = file_get_contents('php://input');
 	
-	$ticket = new TicketModel($app);
-	$ticket->edit($json);
+	$ticketModel = new TicketModel($app);
+	$ticket->edit($ticket);
 	
-	return json_encode($json);
+	return json_encode($ticket);
 })->before($secure);
 
 // Add new reply
 $app->post('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {	
-	$json = json_decode(file_get_contents('php://input'));
+	$ticket = json_decode(file_get_contents('php://input'));
 	
-	$json->ticketID = $ticketID;
+	$ticket->ticketID = $ticketID;
 	
-	$ticket = new TicketModel($app);
-	$ticket->reply($json);
+	$ticketModel = new TicketModel($app);
+	$replyModel = new ReplyModel($app, $ticketModel);
+	$replyModel->reply($ticket);
 	
 	$notify = new Notify($app); 
-	$notify->newReply($json);	
+	$notify->newReply($ticket);	
 
-	return json_encode($json);
+	return json_encode($ticket);
 })->before($secure);
 
 // Get replies
 $app->get('/tickets/reply/{ticketID}', function(Request $request, Application $app, $ticketID) {	
-	$json = json_decode(file_get_contents('php://input'));
+	$ticket = json_decode(file_get_contents('php://input'));
 	
-	$ticket = new TicketModel($app);
-	return json_encode($ticket->getReplies($ticketID));
+	$ticketModel = new TicketModel($app);
+	$replyModel = new ReplyModel($app, $ticketModel);
+	
+	return json_encode($replyModel->getReplies($ticketID));
 })->before($secure);
 
 // Upload attachment
 $app->post('/tickets/file/add', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
+	$ticket = json_decode(file_get_contents('php://input'));
 	
-	$ticket = new TicketModel($app);
-	$id = $ticket->uploadAttachment($json);
+	$ticketModel = new TicketModel($app);
+	$id = $ticketModel->uploadAttachment($ticket);
 	
 	return json_encode(array('_id' => $id));
 })->before($secure);
 
 // Download attachment
 $app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $fileID) {
-	$ticket = new TicketModel($app);
-	$file = $ticket->downloadAttachment($fileID);
+	$ticketModel = new TicketModel($app);
+	$file = $ticketModel->downloadAttachment($fileID);
 	
 	$response = new Response();
 	$response->setContent($file['data']);
@@ -97,14 +101,14 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 
 // Delete attachment
 $app->delete('/tickets/file/{fileID}', function(Request $request, Application $app, $fileID) {
-	$ticket = new TicketModel($app);
-	return $ticket->deleteAttachment($fileID);
+	$ticketModel = new TicketModel($app);
+	return $ticketModel->deleteAttachment($fileID);
 })->before($secure);
 
 // Get attachment meta
 $app->get('/tickets/file/meta/{fileID}', function(Request $request, Application $app, $fileID) {	
-	$ticket = new TicketModel($app);
-	$meta = $ticket->getFileMeta($fileID);
+	$ticketModel = new TicketModel($app);
+	$meta = $ticketModel->getFileMeta($fileID);
 	
 	return json_encode($meta);
 })->before($secure);
