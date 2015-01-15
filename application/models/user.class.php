@@ -220,25 +220,6 @@ class UserModel {
 		$this->saveUser($user);		
 	}
 	
-	public function getAgents() {
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		// Lookup current authenticated session company ID
-		$this->loadUserByID($this->app['session']->get('u'));
-		
-		$users = $db->users;
-		$result = $users->find(array('companyID' => $this->user['companyID'], 'role' => array('$in' => array('AGENT', 'ADMIN'))));
-		
-		$docs = array();
-		foreach($result as $doc) {
-		    array_push($docs, $doc);
-		}
-		
-		return json_encode($docs);
-	}
-	
 	public function removeUser($id) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -258,4 +239,23 @@ class UserModel {
 			die('Error: '.$e->getMessage());
 		}
 	}
+
+	public function getAgents() {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		// Lookup current authenticated session company ID
+		$this->loadUserByID($this->app['session']->get('u'));
+		
+		$users = $db->users;
+		$result = $users->find(array('companyID' => $this->user['companyID'], 'role' => array('$in' => array('AGENT', 'ADMIN'))));
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		return json_encode($docs);
+	}	
 }
