@@ -27,7 +27,7 @@ class TicketModel {
 	}
 	
 	public function generateTicket($subject, $message, $date, $email) {
-		$this->ticket = new stdClass();
+		$this->ticket = new \stdClass();
 		
 		$this->ticket->subject = $subject;
 		$this->ticket->message = $message;

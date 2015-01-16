@@ -25,4 +25,9 @@ class Helper {
    		
    		return array_map('\Houston\Extra\Helper::objectToArray', (array) $object);
 	}
+	
+	public static function convertDateTime($timestamp) {
+		$dateTime = new \DateTime($datetime);
+		return $dateTime->format(\DateTime::ISO8601);
+	}
 }

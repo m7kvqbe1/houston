@@ -3,6 +3,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Model\TicketModel;
+use Houston\Model\ReplyModel;
 use Houston\Extra\MailboxExtended as Mailbox;
 
 // Test IMAP mailbox connect
@@ -20,24 +21,21 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 	$mailbox->getMail();
 	
 	foreach($mailbox->emails as $email) {
-		$ticketModel = new TicketModel($app);
-		
-		// Does a ticket already exists for this email (check custom headers)
-		if(!$mailbox->getTicketID($email)) {
-			// Generate new ticket
+		if(empty($email['customHeaders']['ticketID'])) {
+			// Generate new ticket and save it
+			$ticketModel = new TicketModel($app);
 			$ticketModel->generateTicket($email['subject'], $email['message'], $email['date'], $email['fromAddress']);
-			$ticketModel->add($ticketModel->ticket);
-			
+			$ticketModel->add($ticketModel->ticket);			
 			continue;
 		} else {
 			// Add reply to relevant ticket
-			$ticketModel->generateReply();
-			
+			$replyModel = new ReplyModel($app);
+			$replyModel->generateReply();
 			continue;
 		}
 		
 		unset($ticketModel);
 	}
 	
-	return print_r($mailbox->emails, true);
+	return 'foo';
 })->before($secure);
