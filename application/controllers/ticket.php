@@ -38,7 +38,7 @@ $app->put('/tickets/{ticketID}', function(Request $request, Application $app) {
 	$ticket = file_get_contents('php://input');
 	
 	$ticketModel = new TicketModel($app);
-	$ticket->edit($ticket);
+	$ticketModel->edit($ticket);
 	
 	return json_encode($ticket);
 })->before($secure);
