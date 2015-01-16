@@ -42,6 +42,10 @@ class ReplyModel {
 		return $docs;
 	}
 	
+	public function generateReply() {
+		
+	}
+	
 	public function reply($reply) {
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];

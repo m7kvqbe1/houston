@@ -34,10 +34,10 @@ abstract class Mailbox {
 			$email['read'] = ($overview[0]->seen ? 'read' : 'unread');
 			$email['subject'] = $overview[0]->subject;
 			$email['from'] = $overview[0]->from;
-			$email['date'] = $overview[0]->date;	
+			$email['date'] = \Houston\Extra\Helper::convertDateTime($overview[0]->date);
 			$email['message'] = ($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['message'] = imap_body($this->inbox, $num));
 			$email['fromAddress'] = $header->from[0]->mailbox . "@" . $header->from[0]->host;
-			$email['ticketID'] = $this->getTicketID($header);
+			$email['customHeaders']['ticketID'] = $this->getHeader($header, 'ticketID');
 			
 			$this->markRead($num);
 						
@@ -50,6 +50,10 @@ abstract class Mailbox {
 	public function checkType($structure) {
 		if($structure->type == 1) return true;
 		return false;
+	}
+	
+	public function getHeader($header, $name) {
+		return (isset($header->{$name}) ? $header->{$name} : null);
 	}
 	
 	public function markRead($num) {
@@ -66,10 +70,6 @@ abstract class Mailbox {
 }
 
 class MailboxExtended extends Mailbox {
-	public function getTicketID($header) {
-		return (isset($header->ticketID) ? $header->ticketID : null);
-	}
-	
 	public function setTicketID() {
 		// Set custom email header for ticket ID
 	}
