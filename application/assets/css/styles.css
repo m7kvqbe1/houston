@@ -1092,6 +1092,10 @@ input.inp-lst {
 	margin-bottom: 15px;
 }
 
+#clients-stream > li {
+	clear: both;
+}
+
 /* Single Ticket */
 
 #form-reply {

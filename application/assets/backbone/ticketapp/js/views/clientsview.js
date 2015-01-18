@@ -4,7 +4,7 @@ var ClientsView = Backbone.View.extend({
 			'<h2>Clients</h2>'+
 			'<a class="btn">New Client</a>'+
 		'</div>'+
-		'<ul id="company-stream">'+
+		'<div id="company-stream">'+
 			'<div class="add-person add-client">'+
 				'<form id="form-add-client">'+
 					'<h4>To add a new client, simply add the client\'s name below.</h4>'+
@@ -14,36 +14,10 @@ var ClientsView = Backbone.View.extend({
 					'<a class="cancel-btn ib">Cancel</a>' +
 				'</form>'+
 			'</div>'+
-			'<li id="clients-stream">'+
-			// '{{#each models}}'+			
-			// '<li class="company">'+
-			// 	'<div class="company-info">'+
-			// 		'<h3>{{attributes.name}}</h3>'+
-			// 		'<a>Edit</a>'+
-			// 		'<a class="new-client-user">New User</a>'+
-			// 	'</div>'+
-			// 	'<ul class="client-stream">'+
-			// 	'<div class="add-person">'+
-			// 		'<form class="form-add-client-user" data-clientID="{{id}}">'+
-			// 			'<h4>To add a new user, simply input their email address and Houston will do the rest. Simple!</h4>'+
-			// 			'<input type="text" placeholder="Clients Name" />'+
-			// 			'<button type="button">Submit</button>' +
-			// 			'<div class="beige or">or</div>' +
-			// 			'<a class="cancel-btn ib">Cancel</a>' +
-			// 		'</form>'+
-			// 	'</div>'+
-			// 	'{{#users.models}}'+
-			// 		'<li class="person">'+
-			// 			'<img class="avatar" src="{{attributes.avatar}}" />'+
-			// 			'<h3>{{attributes.emailAddress}}</h3>'+
-			// 			'<h4>{{position}}</h4>'+
-			// 		'</li>'+
-			// 	'{{/users.models}}'+
-			// 	'</ul>'+					
-			// '</li>'+		
-			// '{{/each}}'+	
-			'</li>'+
-		'</ul>'
+			'<ul id="clients-stream">'+
+	
+			'</ul>'+
+		'</div>'
 	),
 
 	initialize: function() {	
@@ -51,7 +25,6 @@ var ClientsView = Backbone.View.extend({
 		this.listenTo(this.collection, 'sync', this.render);	
 		
 		_.bindAll(this, "renderClient");
-		// this.listenTo(this.collection.attributes.users, "sync", this.render);
 
 		this.addClientModel = new ClientModel();
 		this.addClientModel.view = this;
@@ -100,6 +73,7 @@ var ClientsView = Backbone.View.extend({
 
 
 var ClientView = Backbone.View.extend({
+	tagName: "li",
 	template: Handlebars.compile(
 		'<div class="company-info">'+
 			'<h3>{{attributes.name}}</h3>'+
@@ -116,13 +90,14 @@ var ClientView = Backbone.View.extend({
 					'<a class="cancel-btn ib">Cancel</a>' +
 				'</form>'+
 			'</div>'+
-			'<div id="{{id}}">'+
+			'<div class="client-user-stream">'+
 
 			'</div>'+
 		'</ul>'
 	),	
 
 	initialize: function(){
+
 		this.listenTo(this.model, "sync", this.render);
 
 		//new model
@@ -131,11 +106,11 @@ var ClientView = Backbone.View.extend({
 		this.addClientModel.view = this;
 
 		var usersCollection = new Users();
-		usersCollection.url = '/clients/users/' + this.model.id //!!!!! Also need to set the usersCollection.url 
+		usersCollection.url = '/client/users/' + this.model.id 
 		this.usersView = new UsersView({ collection: usersCollection});
 		this.usersView.parent = this;
 
-		//Do something to fetch users?
+		//Bind event to fetch users
 		this.listenTo(this.model, "sync", this.usersView.collection.fetch());
 	},
 
@@ -182,17 +157,19 @@ var UsersView = Backbone.View.extend({
 		_.bindAll(this, "renderUser");
 	},
 
+	renderClient: function(model) {
+		var clientView = new ClientView({model: model});
+		this.$el.find('#clients-stream').append(clientView.$el);
+		clientView.render();
+	},
+
 	renderUser: function(model) {
 		var userView = new UserView({model: model}); 
-		//get ID of parent client model to append view to correct element in the DOM
-		//could be done with a class because of the specificity of this.$el
-		var ID = '#' + this.parent.model.id;
-		this.$el.find(ID).append(View.$el);
+		this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
 		userView.render();
 	},
 
 	render: function(){
-		this.$el.html(this.template());	
 		this.collection.each(this.renderUser);
 		return this;
 	}
@@ -202,9 +179,15 @@ var UsersView = Backbone.View.extend({
 var UserView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<li class="person">'+
-			'<img class="avatar" src="{{attributes.avatar}}" />'+
-			'<h3>{{attributes.emailAddress}}test</h3>'+
-			'<h4>{{position}}</h4>'+
+			'{{#if attributes.password}}'+					
+				'<img class="avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
+				'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
+				'<h4>Support Agent</h4>'+
+			'{{else}}'+
+				'<img class="avatar" src="application/assets/img/avatar.png" />'+
+				'<h3>{{attributes.emailAddress}}</h3>'+
+				'<h4>Awaiting Verification</h4>'+
+			'{{/if}}'+
 		'</li>'
 	),
 
@@ -213,7 +196,6 @@ var UserView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log('userViewRender')
 		this.$el.html(this.template(this.model));
 	}
 

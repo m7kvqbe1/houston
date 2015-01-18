@@ -5,6 +5,6 @@ var ClientUserModel = Backbone.Model.extend({
 			console.log('clientUserModel')
 		});
 	},
-	urlRoot: '/clients/user',
-	url: '/clients/user'
+	urlRoot: '/user',
+	url: '/user'
 });
