@@ -63,11 +63,12 @@ var FormView = Backbone.View.extend({
 			this.setModelData();			
 			this.model.save(this.model.attributes,
 				{
-					success: function(model, response, options){					
+					success: _.bind(function(model, response, options){					
 						//ensure formView always uses a fresh model
-						app.formView.model = new TicketModel();
+						// this.model.clear(); need to do some form of garbage disposal
+						this.model = new TicketModel();
 						app.navigate('', {trigger: true});
-					}
+					}, this)
 				}
 			);
 		} else {

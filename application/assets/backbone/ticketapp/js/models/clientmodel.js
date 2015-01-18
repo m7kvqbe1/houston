@@ -8,6 +8,9 @@ var ClientModel = Backbone.Model.extend({
 		// 		// $('#clients-stream').html(app.peopleView.clientsView.render().el);
 		// 	}, this)
 		// }));
+		this.on("sync", function(){
+			this.view.collection.fetch();
+		});
 	},
 	urlRoot: '/clients',
 	url: '/clients',

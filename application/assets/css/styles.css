@@ -1049,6 +1049,7 @@ input.inp-lst {
 .box-companies-header {
 	overflow: hidden;
 	clear: both;
+	margin-bottom: 30px;
 	padding: 16px 15px;
 	background: #f3f0ea;
 	
@@ -1067,7 +1068,7 @@ input.inp-lst {
 	border-top: 1px solid #cfc3af;
 }
 
-.company:first-child .company-info {
+#clients-stream div:first-child .company-info {
 	border-top: none;
 }
 
@@ -1081,7 +1082,7 @@ input.inp-lst {
 }
 
 .add-person {
-	/*display: none;*/
+	display: none;
 	overflow: hidden;
 	margin-bottom: 30px;
 	text-align: center;

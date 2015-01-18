@@ -97,9 +97,15 @@ var TicketDetailView = Backbone.View.extend({
 		//give model reference to this view
 		this.model.view = this;
 
+		//create message model for adding messages
+		this.messageModel = new MessageModel();
+
+		//create messages collection
 		var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
+
+		// this.listenTo(this.messagesView.collection, "sync", this.logSomething);
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -124,8 +130,13 @@ var TicketDetailView = Backbone.View.extend({
 			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
 		});
 	},
+
+	// logSomething: function(){
+	// 	console.log(this);
+	// },
 	
 	render: function (){	
+		console.log(this.model);
 		this.$el.html(this.template(this.model));
 
 		//reset fileUpload collection
@@ -188,25 +199,23 @@ var TicketDetailView = Backbone.View.extend({
 	},
 	
 	saveModel: function(){
-		console.log('trying');
 		//Set updated attribute to empty array
+		console.log(this.model.attributes);
 		this.model.set({			
 			updated: []
 		});
 		this.model.save(this.model.attributes,
 			{
 				success: _.bind(function(model, response, options){
-					console.log('saveModel');
+					console.log('saveModelSuccess');
 				}, this)
 			}
 		);	
 	},
 	
 	addMessage: function(){	
-		console.log(this.messageFiles);
 		//if ticket marked as complete
 		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
-			console.log('completion');
 			this.model.set({
 				status: 'Completed'
 			});		
@@ -223,17 +232,21 @@ var TicketDetailView = Backbone.View.extend({
 
 		};
 
-		var msgMdl = new MessageModel(attributes);
+		this.messageModel.url = '/tickets/reply/' + this.model.id;
+		this.messageModel.save(attributes,{
+			success: _.bind(function(model){
+				this.messageModel.clear();
+			}, this)
+		});
 
-		//add response to collection to stop view shuddering on render
-		this.messagesView.collection.add(msgMdl); 
-
-		msgMdl.url = '/tickets/reply/' + this.model.id;
-		msgMdl.save();
+		// add response to collection to stop view shuddering on render
+		// this.messagesView.collection.add(this.messageModel); 
 
 		this.model.set({			
 			hasMessages: true
 		});
+
+		console.log(this.model.attributes);
 
 		//save sets updated array
 		this.saveModel();

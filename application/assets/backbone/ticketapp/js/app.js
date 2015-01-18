@@ -66,7 +66,6 @@ var AppRouter = Backbone.Router.extend({
 				collection: this.agents
 			}
 		); 
-		console.log(this.peopleView);
 
 		//ACCOUNT
 		this.accountView = new AccountView(
@@ -97,9 +96,8 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverview: function() {
-		// this.peopleView.clientsView.collection.fetch();
+		this.peopleView.clientsView.collection.fetch();
 		$('#app').html(this.peopleView.render().el);
-		console.log(this.peopleView);
 	},
 	
 	accountMain: function() {
