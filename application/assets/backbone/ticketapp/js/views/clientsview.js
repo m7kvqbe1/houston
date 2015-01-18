@@ -101,9 +101,9 @@ var ClientView = Backbone.View.extend({
 		this.listenTo(this.model, "sync", this.render);
 
 		//new model
-		this.addClientModel = new ClientUserModel();
+		this.addUserModel = new ClientUserModel();
 		//give model reference to this view
-		this.addClientModel.view = this;
+		this.addUserModel.view = this;
 
 		var usersCollection = new Users();
 		usersCollection.url = '/client/users/' + this.model.id 
@@ -129,7 +129,6 @@ var ClientView = Backbone.View.extend({
 	},
 
 	addUser: function() {
-		console.log('addingUser')
 		var emailAddress = this.$el.find('.form-add-client-user input[type="text"]').val();
 		var clientID = this.model.id;
 		var attributes = 
@@ -139,9 +138,9 @@ var ClientView = Backbone.View.extend({
 
 			}
 
-		this.addClientModel.save(attributes,{
+		this.addUserModel.save(attributes,{
 			success: _.bind(function(model){
-				this.addClientModel.clear();
+				this.addUserModel.clear();
 			}, this)
 		});
 

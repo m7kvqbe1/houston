@@ -112,18 +112,6 @@ $(function() {
 	Backbone.history.start();
 });
 
-// //PEOPLE/COMPANIES
-// //instantiate the company model
-// this.companyModel = new CompanyModel();
-// //fetch company data
-// this.companyModel.fetch();
-// //instantiate the people view and set it the company model
-// this.peopleView = new PeopleView(
-// 	{
-// 		model: this.companyModel
-// 	}
-// ); 
-
 
 //TicketDetail
 // Most recent previous way
@@ -133,50 +121,3 @@ $(function() {
 		// 		$('#app').html(this.ticketDetailView.render().el);
 		// 	}, this)
 		// });
-
-
-// Previous way where event listeners weren't firing
-// this.ticketDetailView.model = this.tickets.get(ticket); 
-
-// Previous way that got ticket from tickets collection
-// var attributes = this.tickets.get(ticket).attributes
-// this.ticketDetailView.model.set(attributes);
-
-//Previous Way that fetched messages as a property of the model
-// this.ticketDetailView.model.set('id', ticket);
-// this.ticketDetailView.model.fetch({
-// 	success: _.bind(function(){
-// 		this.ticketDetailView.model.messages.url = '/tickets/reply/' + ticket;
-// 		this.ticketDetailView.model.messages.fetch({
-// 			success: _.bind(function(model){
-// 				$('#app').html(this.ticketDetailView.render().el);
-// 				console.log(model);
-// 			}, this)
-// 		});
-// 	}, this)
-// });
-
-// Previous way that built file collections
-// this.ticketDetailView.model.urlRoot = '/tickets',
-// this.ticketDetailView.model.set('id', ticket);
-// // this.ticketDetailView.files.reset();
-// this.ticketDetailView.model.fetch({
-// 	success: _.bind(function(model){
-// 		var files = model.attributes.files;
-// 		 for (i = 0; i < files.length; ++i) {
-// 			var fileMdl = new FileModel();
-// 			fileMdl.urlRoot = '/tickets/file/meta';
-// 			fileMdl.set('id', files[i]);
-// 			fileMdl.fetch();
-// 			this.ticketDetailView.model.files.add(fileMdl);
-
-// 			this.ticketDetailView.model.messages.url = '/tickets/reply/get/' + ticket;
-// 			this.ticketDetailView.model.messages.fetch({
-// 				success: _.bind(function(){
-// 					// console.log('fetched');
-// 					$('#app').html(this.ticketDetailView.render().el);
-// 				}, this)
-// 			});
-// 		}
-// 	}, this)
-// });

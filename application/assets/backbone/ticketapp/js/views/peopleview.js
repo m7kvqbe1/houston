@@ -10,7 +10,7 @@ var PeopleView = Backbone.View.extend({
 			'</div>'+
 		'</div>'+
 		'<div class="box-app box-people" style="{{fullHeightPage}}">'+
-			'<ul id="agent-stream">'+
+			'<div id="agent-stream">'+
 				'<div class="add-person add-agent">'+
 					'<form id="form-add-agent">'+
 						'<h4>To add a new agent, simply input their email address and Houston will do the rest. Simple!</h4>'+
@@ -19,7 +19,8 @@ var PeopleView = Backbone.View.extend({
 						'<div class="beige or">or</div>' +
 						'<a class="cancel-btn ib">Cancel</a>' +
 					'</form>'+
-				'</div>'+	
+				'</div>'+
+				'<ul>'+
 				'{{#each models}}'+
 					'<li class="person">'+
 						'{{#if attributes.password}}'+					
@@ -33,7 +34,8 @@ var PeopleView = Backbone.View.extend({
 						'{{/if}}'+
 					'</li>'+
 				'{{/each}}'+
-			'</ul>'+
+				'</ul>'+
+			'</div>'+
 			'<div id="clients-wrap">'+	
 
 			'</div>'+
@@ -65,8 +67,7 @@ var PeopleView = Backbone.View.extend({
 		
 	render: function() {
 		this.$el.html(this.template(this.collection));	
-
-		this.$('#clients-wrap').append(this.clientsView.$el); //changed from #clients-stream
+		this.$('#clients-wrap').append(this.clientsView.$el); 
 		this.clientsView.render();
 		
 		this.delegateEvents({
