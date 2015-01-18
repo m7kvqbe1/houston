@@ -80,7 +80,7 @@ var ClientView = Backbone.View.extend({
 			'<a>Edit</a>'+
 			'<a class="new-client-user">New User</a>'+
 		'</div>'+
-		'<ul class="client-stream">'+
+		'<div class="client-stream">'+
 			'<div class="add-person add-client-user">'+
 				'<form class="form-add-client-user">'+
 					'<h4>To add a new user, simply input their email address and Houston will do the rest. Simple!</h4>'+
@@ -90,10 +90,10 @@ var ClientView = Backbone.View.extend({
 					'<a class="cancel-btn ib">Cancel</a>' +
 				'</form>'+
 			'</div>'+
-			'<div class="client-user-stream">'+
+			'<ul class="client-user-stream">'+
 
-			'</div>'+
-		'</ul>'
+			'</ul>'+
+		'</div>'
 	),	
 
 	initialize: function(){
@@ -177,8 +177,9 @@ var UsersView = Backbone.View.extend({
 });
 
 var UserView = Backbone.View.extend({
+	tagName: "li",
+	className: "person",
 	template: Handlebars.compile(
-		'<li class="person">'+
 			'{{#if attributes.password}}'+					
 				'<img class="avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
 				'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
@@ -187,8 +188,7 @@ var UserView = Backbone.View.extend({
 				'<img class="avatar" src="application/assets/img/avatar.png" />'+
 				'<h3>{{attributes.emailAddress}}</h3>'+
 				'<h4>Awaiting Verification</h4>'+
-			'{{/if}}'+
-		'</li>'
+			'{{/if}}'
 	),
 
 	initialize: function(){
