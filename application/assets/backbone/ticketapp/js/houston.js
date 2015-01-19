@@ -7,6 +7,18 @@ var houston = {
 		date = day+' '+monthNames[month];	
 		return date;	
 	},
+	
+	ordinalSuffix: function($num){
+		if($num < 11 || $num > 13){
+			switch($num % 10){
+				case 1: return 'st';
+				case 2: return 'nd';
+				case 3: return 'rd';
+			}
+		}
+		
+		return 'th';
+	},
 
 	convertToDateTime: function(dateObject){
 		var monthNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'); 
@@ -14,19 +26,8 @@ var houston = {
 		var day = date.substring(8,10);
 		var month = date.substring(5,7) -1;
 		var year = date.substring(0,4);
-			
-		function ordinal_suffix($num){
-			if($num < 11 || $num > 13){
-				switch($num % 10){
-					case 1: return 'st';
-					case 2: return 'nd';
-					case 3: return 'rd';
-				}
-			}
-			return 'th';
-		}
 					
-		var suffix = ordinal_suffix(day);
+		var suffix = this.ordinalSuffix(day);
 			
 		var period = 'am';
 		var hour = date.substring(11,13);
