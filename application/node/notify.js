@@ -20,12 +20,22 @@ io.on('connection', function(socket){
 	});
 });
 
+function trimMessage(str) {
+	if(str.length > 30) {
+		msg = str.substr(0, 30);
+		return msg+'...';		
+	}
+	return str;
+}
+
 // Broadcast new ticket event
 app.post('/new/ticket', function(req, res) {	
-	var msg = req.body.subject.substr(0, 30);
-	var msg = msg+'...';
+	console.log(req.body);
 	
-	io.emit('notify', '<strong>New Ticket:</strong>&nbsp;'+msg);
+	var msg = req.body.message;
+	msg = trimMessage(msg);
+	
+	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });
@@ -33,20 +43,23 @@ app.post('/new/ticket', function(req, res) {
 // Broadcast new reply event
 app.post('/new/reply', function(req, res) {
 	console.log(req.body);
+
+	var msg = req.body.message;
+	msg = trimMessage(msg);
 	
-	var msg = req.body.message.substr(0, 30);
-	var msg = msg+'...';
-	
-	io.emit('notify', '<strong>New Reply:</strong>&nbsp;'+msg);
+	console.log(req.body.id);
+
+	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });
 
 // Broadcast status update event
 app.post('/new/status', function(req, res) {
+	console.log(req.body);
 	var msg = 'test';
 	
-	io.emit('notify', '<strong>Status Update:</strong>&nbsp;'+msg);
+	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>Status Update:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });
