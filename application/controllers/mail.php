@@ -8,7 +8,7 @@ use Houston\Extra\MailboxExtended as Mailbox;
 
 // Test IMAP mailbox connect
 $app->get('/mailbox/test', function(Request $request, Application $app) {
-	$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
+	$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD, null);
 	$mailbox->getMail();
 	
 	return print_r($mailbox->emails, true);
@@ -17,7 +17,7 @@ $app->get('/mailbox/test', function(Request $request, Application $app) {
 
 // Scan mailbox
 $app->get('/mailbox/scan', function(Request $request, Application $app) {
-	$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
+	$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD, 'reply');
 	$mailbox->getMail();
 	
 	// Tally import result

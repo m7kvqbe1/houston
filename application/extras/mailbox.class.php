@@ -64,17 +64,46 @@ abstract class Mailbox {
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
 	
-	public function sendEmail() {
+	public function sendEmail($to, $from, $content, $attachments = array(), $headers = array()) {
 		// Send new email using Swiftmailer library
 	}
 }
 
 class MailboxExtended extends Mailbox {
-	public function setTicketID() {
-		// Set custom email header for ticket ID
+	private $template;
+	
+	public function __construct($host, $username, $password, $templateName = null) {
+		parent::__construct($host, $username, $password);
+		
+		if(isset($templateName)) $this->template = $this->getTemplate($templateName);
 	}
 	
-	public function generateEmail() {
-		// Generate email from HTML template
-	}	
+	public function generateTemplate() {
+		// Generate email from HTML email template
+		$template = str_replace('{reply_chain}', $this->generateReplyHtml(), $this->template);
+		$template = str_replace('{ticket_info_hidden}', $this->generateInfoHtml(), $this->template);
+		
+		return $template;
+	}
+	
+	private function getTemplate($templateName) {
+		switch($templateName) {
+			case 'reply':
+				$filename = 'reply.html';
+				break;
+				
+			default:
+				throw new \Exception('Template unavailable');
+		}
+		$this->template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/'.$filename);
+	}
+	
+	private function generateReplyHtml() {
+		// Generate reply markup to inject into HTML email template
+	}
+	
+	private function generateInfoHtml($ticketId, $messageId) {
+		// Generate hidden ticket info to inject into HTML email template
+		$html = '<span class="ticket-id" style="color: #fff;">'.$ticketId.'</span><span class="message-id" style="color: #fff;">'.$messageId.'</span>';
+	}
 }
