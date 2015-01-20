@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\Validator\\' => array($vendorDir . '/symfony/validator'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'Symfony\\Component\\Serializer\\' => array($vendorDir . '/symfony/serializer'),
@@ -25,4 +26,5 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'Mongo\\Silex' => array($vendorDir . '/moriony/silex-mongo-provider/src'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
 );

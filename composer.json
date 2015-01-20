@@ -28,5 +28,9 @@
         "symfony/monolog-bridge": "~2.3",
         "swiftmailer/swiftmailer": "5.*",
         "moriony/silex-mongo-provider": "*"
+    },
+    
+    "require-dev": {
+		"phpunit/phpunit":	"4.4.*"	    
     }
 }

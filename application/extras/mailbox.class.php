@@ -95,6 +95,7 @@ class MailboxExtended extends Mailbox {
 			default:
 				throw new \Exception('Template unavailable');
 		}
+			
 		$this->template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/'.$filename);
 	}
 	
