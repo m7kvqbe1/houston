@@ -32,6 +32,7 @@ var ClientsView = Backbone.View.extend({
 
 	renderClient: function(model) {
 		var clientView = new ClientView({model: model});
+		clientView.parent = this;
 		this.$el.find('#clients-stream').append(clientView.$el);
 		clientView.render();
 	},
@@ -53,7 +54,7 @@ var ClientsView = Backbone.View.extend({
 
 
 	addClient: function(e) {
-		console.log(this.collection);
+		console.log('addClient Method');
 		var name = this.$el.find('#form-add-client input[type="text"]').val();
 		var attributes = 
 			{
@@ -156,12 +157,6 @@ var UsersView = Backbone.View.extend({
 		_.bindAll(this, "renderUser");
 	},
 
-	renderClient: function(model) {
-		var clientView = new ClientView({model: model});
-		this.$el.find('#clients-stream').append(clientView.$el);
-		clientView.render();
-	},
-
 	renderUser: function(model) {
 		var userView = new UserView({model: model}); 
 		this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
@@ -169,6 +164,7 @@ var UsersView = Backbone.View.extend({
 	},
 
 	render: function(){
+		this.parent.$el.find('.client-user-stream').html(''); //clear out existing userViews
 		this.collection.each(this.renderUser);
 		return this;
 	}
