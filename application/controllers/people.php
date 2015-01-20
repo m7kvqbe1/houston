@@ -29,12 +29,12 @@ $app->get('/clients', function(Request $request, Application $app) {
 
 // Add new client
 $app->post('/clients', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
+	$client = json_decode(file_get_contents('php://input'));
 	
 	$clientModel = new ClientModel($app);
-	$clientModel->addClient($json);
+	$clientModel->addClient($client);
 	
-	return json_encode($json);
+	return json_encode($client);
 })->before($secure);
 
 // Get users for client
@@ -45,12 +45,12 @@ $app->get('/client/users/{clientID}', function(Request $request, Application $ap
 
 // Add new user to client
 $app->post('/user', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
+	$user = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);
-	$userModel->addUser($json);
+	$userModel->addUser($user);
 	
-	return json_encode($json);
+	return json_encode($user);
 })->before($secure);
 
 // Remove client and all associated users
@@ -69,10 +69,10 @@ $app->get('/agents', function(Request $request, Application $app) {
 
 // Add new agent
 $app->post('/agents', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
+	$agent = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);
-	$userModel->addAgent($json);
+	$userModel->addAgent($agent);
 	
 	// Send verification email
 	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".Config::DOMAIN."/verify/".$json->verify);

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserModel {
 	protected $app;
+	protected $validProperties = array();
 	public $user;
 	
 	public function __construct(Application $app) {		
@@ -38,6 +39,49 @@ class UserModel {
 		} else {
 			throw new \Exception('User not found');
 		}
+	}
+	
+	public function setProperty($userID, $property, $value) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		if(!$this->propertyExists($property)) throw new \Exception('Invalid property');
+		
+		$userID = new \MongoID($userID);
+		
+		try {
+			$collection = $db->users;
+			$collection->findAndModify(array('_id' => $userID), array('$set' => array($property => $value)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		} 
+	}
+	
+	public function deleteProperty($userID, $property) {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+				
+		if(!$this->propertyExists($property)) throw new \Exception('Invalid property');
+		
+		$userID = new \MongoID($userID);
+		
+		try {
+			$collection = $db->users;
+			$collection->findAndModify(array('_id' => $userID), array('$unset' => array($property => 1)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		} 
+	}
+	
+	private function propertyExists($property) {
+		if(!in_array($property, $this->validProperties)) return false;		
+		return true;
 	}
 
 	public static function hashPassword($password) {
