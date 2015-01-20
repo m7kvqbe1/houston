@@ -207,8 +207,8 @@ header {
 
 .logo {
 	display: block;
-	width: 130px;
-	height: 35px;
+	width: 208px;
+	height: 49px;
 	margin: 0 auto;
 	padding-top: 14px;
 }
@@ -1450,7 +1450,7 @@ input.inp-lst {
 	}
 	
 	.logo {
-		width: 182px;
+		width: 208px;
 		height: 49px;
 		margin: 0 0 0 30px;
 		padding-top: 26px;
@@ -1515,7 +1515,7 @@ input.inp-lst {
 	}
 	
 	.app-wrap .logo {
-		width: 182px;
+		width: 208px;
 		height: 49px;
 		padding: 26px 0 0 30px;
 	}
