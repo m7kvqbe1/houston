@@ -20,22 +20,33 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 	$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
 	$mailbox->getMail();
 	
+	// Tally import result
+	$status = new \stdClass();
+	$status->newTickets = 0; 
+	$status->replies = 0;
+	
 	foreach($mailbox->emails as $email) {
 		if(empty($email['customHeaders']['ticketID'])) {
 			// Generate new ticket and save it
 			$ticketModel = new TicketModel($app);
-			$ticketModel->generateTicket($email['subject'], $email['message'], $email['date'], $email['fromAddress']);
-			$ticketModel->add($ticketModel->ticket);			
+			$ticketModel->generateTicket($email['from'][0], $email['from'][1], $email['subject'], $email['message'], $email['date'], $email['fromAddress']);
+			$ticketModel->add($ticketModel->ticket);
+			
+			$status->newTickets++;
+			
 			continue;
 		} else {
 			// Add reply to relevant ticket
 			$replyModel = new ReplyModel($app);
 			$replyModel->generateReply();
+			
+			$status->newReplies++;
+			
 			continue;
 		}
 		
 		unset($ticketModel);
 	}
 	
-	return 'foo';
+	return json_encode($status);
 })->before($secure);

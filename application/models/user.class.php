@@ -257,7 +257,7 @@ class UserModel {
 		$user->role = 'USER';
 				
 		// Save user to database
-		$this->saveUser($user);		
+		$this->saveUser($user);
 	}
 	
 	public function removeUser($id) {

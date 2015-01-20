@@ -26,22 +26,25 @@ class TicketModel {
 		}
 	}
 	
-	public function generateTicket($subject, $message, $date, $email) {
+	public function generateTicket($firstName, $lastName, $subject, $message, $date, $email) {
 		$this->ticket = new \stdClass();
 		
 		$this->ticket->subject = $subject;
 		$this->ticket->message = $message;
-		$this->ticket->date = $date; // Needs formatting
+		$this->ticket->date = $date;
 		
 		// Check to see if user account with email address already exists
 		$userModel = new UserModel($this->app);
 		
 		try {
 			$userModel->loadUser($email);			
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			// User not found so save new user
-			$user = new stdClass();
-			$user->emailAddress = $email['fromAddress'];
+			$user = new \stdClass();
+			$user->emailAddress = $email;
+			$user->firstName = $firstName;
+			$user->lastName = $lastName;
+			
 			$userModel->addUser($user);
 			
 			// Load the new user we created		
@@ -50,6 +53,11 @@ class TicketModel {
 		
 		$this->ticket->name = $userModel->user['firstName'].' '.$userModel->user['lastName'];
 		$this->ticket->username = $userModel->user['emailAddress'];
+		
+		// Set company name for ticket - Update backbone and remove! Storing this twice!
+		$companyModel = new CompanyModel($this->app);
+		$companyModel->loadCompanyByID($userModel->user['companyID']);
+		$this->ticket->company = $companyModel->company['companyName'];
 		
 		return $this->ticket;
 	}
