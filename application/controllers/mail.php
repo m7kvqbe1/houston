@@ -33,18 +33,14 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			$ticketModel->add($ticketModel->ticket);
 			
 			$status->newTickets++;
-			
-			continue;
 		} else {
 			// Add reply to relevant ticket
 			$replyModel = new ReplyModel($app);
 			$replyModel->generateReply();
 			
 			$status->newReplies++;
-			
-			continue;
 		}
-		
+			
 		unset($ticketModel);
 	}
 	
