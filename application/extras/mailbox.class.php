@@ -34,9 +34,9 @@ abstract class Mailbox {
 			$email['read'] = ($overview[0]->seen ? 'read' : 'unread');
 			$email['subject'] = $overview[0]->subject;
 			$email['from'] = $overview[0]->from;
-			$email['date'] = \Houston\Extra\Helper::convertDateTime($overview[0]->date);
+			$email['date'] = \Houston\Extra\Helper::convertTimestamp($overview[0]->date);
 			$email['message'] = ($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['message'] = imap_body($this->inbox, $num));
-			$email['fromAddress'] = $header->from[0]->mailbox . "@" . $header->from[0]->host;
+			$email['fromAddress'] = $header->from[0]->mailbox . '@' . $header->from[0]->host;
 			$email['customHeaders']['ticketID'] = $this->getHeader($header, 'ticketID');
 			
 			$this->markRead($num);
