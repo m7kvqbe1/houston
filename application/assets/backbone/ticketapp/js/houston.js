@@ -154,6 +154,18 @@ var houston = {
 	// 	var arr = app.agents;
 	// 	var i;
 	// 	var str = '';
+	// 	for (i = 0; i < arr.length; ++i) {
+	// 		str += '<li>'+arr[i].name+'</li>';
+	// 	}
+	// 	return str;
+
+	// },
+
+	// populateAgentDropdown: function(){
+	// 	// var arr = app.companyModel.attributes.users;
+	// 	var arr = app.agents;
+	// 	var i;
+	// 	var str = '';
 	// 	// for (i = 0; i < arr.length; ++i) {
 	// 	// 	str += '<li>'+arr[i].name+'</li>';
 	// 	// }
@@ -225,6 +237,14 @@ var houston = {
 		var headerHeight = $('header').height() + $('.box-app-fixed').height();
 		var idealHeight = windowHeight - footerHeight - headerHeight - 37;
 		return idealHeight;
+	},
+
+	getCompanyName: function(userID){
+		var companyID = app.agents.get(userID).attributes.companyID.$id;
+		var companyID = "54bf87b6d21a58b067f47d2e";
+		var companyName = app.peopleView.clientsView.collection.get(companyID).attributes.name;
+		console.log(companyName);
+		return companyName;
 	}
 
 }

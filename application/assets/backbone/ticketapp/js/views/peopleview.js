@@ -58,7 +58,7 @@ var PeopleView = Backbone.View.extend({
 		//give model reference to this view
 		this.addAgentModel.view = this;
 
-		this.listenTo(this.addAgentModel, "sync", this.render);	
+		// this.listenTo(this.addAgentModel, "sync", this.render);	//Necessary?
 
 		Handlebars.registerHelper("fullHeightPage", function() {
 			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');

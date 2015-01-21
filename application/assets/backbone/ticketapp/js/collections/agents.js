@@ -4,7 +4,7 @@ var Agents = Backbone.Collection.extend({
 	url: '/agents',
 	initialize: function(){
 		this.on("sync", function(){
-			this.view.clientsView.collection.fetch();
+			// this.view.clientsView.collection.fetch();
 		});
 	}
 });

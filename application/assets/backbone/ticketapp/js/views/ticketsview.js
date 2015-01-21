@@ -34,7 +34,7 @@ var TicketView = Backbone.View.extend({
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
 								'<div class="name">{{attributes.name}}</div>' +
-								'<div class="company-name">{{attributes.company}}</div>' +
+								'<div class="company-name">{{getCompanyName attributes.authorID}}</div>' +
 								'<div class="summary">{{attributes.subject}}</div>' +
 							'</div>' +
 						'</div>' +
@@ -56,10 +56,15 @@ var TicketView = Backbone.View.extend({
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort", this.render);
 
+		Handlebars.registerHelper("getCompanyName", function(attribute) {
+			return houston.getCompanyName(attribute);
+		});
+
 		//http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers
 		Handlebars.registerHelper("convertToClass", function(attribute) {
 			return houston.convertToClass(attribute);
 		});
+
 		Handlebars.registerHelper("convertToDate", function(attribute) {
 			return houston.convertToDate(attribute);
 		});
