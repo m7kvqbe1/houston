@@ -4,6 +4,8 @@ namespace Houston\Model;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+use Houston\Extra\Helper;
+
 class ReplyModel {
 	protected $app;
 	public $reply;
@@ -17,13 +19,23 @@ class ReplyModel {
 		$db = $connections['default'];
 		$db = $db->houston;
 				
-		$this->reply = $db->replies->findOne(array('_id' => new \MongoId($id)));
+		$this->reply = $db->replies->findOne(array('_id' => new \MongoID($id)));
 		
 		if(!empty($this->reply)) {			
 			return $this->reply;
 		} else {
 			throw new \Exception('Reply not found');
 		}
+	}
+	
+	public function generateReply($ticketID, $message) {
+		$this->reply = new \stdClass();
+		
+		$this->reply->ticketID = $ticketID;
+		$this->reply->message = $message;
+		$this->reply->date = Helper::convertTimestamp(time());
+		
+		return $this->reply;
 	}
 	
 	public function getReplies($ticketID) {
@@ -40,10 +52,6 @@ class ReplyModel {
 		}
 		
 		return $docs;
-	}
-	
-	public function generateReply() {
-		
 	}
 	
 	public function reply($reply) {

@@ -6,11 +6,21 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class Mailbox {
 	protected $inbox;
+	protected $host;
+	protected $username;
+	protected $password;
+	protected $serverEncoding;
+	
 	public $emails = array();
 	
-	public function __construct($host = null, $username = null, $password = null) {
+	public function __construct($host = null, $username = null, $password = null, $serverEncoding = 'utf-8') {
+		$this->host = $host;
+		$this->username = $username;
+		$this->password = $password;
+		$this->serverEncoding = $serverEncoding;
+		
 		try {
-			$this->connect($host, $username, $password);
+			$this->connect($this->host, $this->username, $this->password);
 		} catch(Exception $e) {
 			echo $e->getMessage();
 		}
@@ -25,7 +35,7 @@ abstract class Mailbox {
 	}
 	
 	public function getMail() {
-		$emails = imap_search($this->inbox, 'ALL');
+		$emails = imap_search($this->inbox, 'ALL', null, $this->serverEncoding);
 		foreach($emails as $num) {
 			$header = imap_headerinfo($this->inbox, $num);
 			$overview = imap_fetch_overview($this->inbox, $num, 0);
@@ -35,9 +45,8 @@ abstract class Mailbox {
 			$email['subject'] = $overview[0]->subject;
 			$email['from'] = explode(' ', $overview[0]->from, 2);
 			$email['date'] = Helper::convertTimestamp($overview[0]->date);
-			$email['message'] = ($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['message'] = imap_body($this->inbox, $num));
+			$email['messageBody'] = imap_fetchbody($this->inbox, $num, 1); //($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
 			$email['fromAddress'] = $header->from[0]->mailbox . '@' . $header->from[0]->host;
-			$email['customHeaders']['ticketID'] = $this->getHeader($header, 'ticketID');
 			
 			$this->markRead($num);
 						
@@ -75,21 +84,24 @@ class MailboxExtended extends Mailbox {
 	public function __construct($host, $username, $password, $templateName = null) {
 		parent::__construct($host, $username, $password);
 		
-		if(isset($templateName)) $this->template = $this->getTemplate($templateName);
+		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 	}
 	
 	public function generateTemplate() {
-		// Generate email from HTML email template
 		$template = str_replace('{reply_chain}', $this->generateReplyHtml(), $this->template);
 		$template = str_replace('{ticket_info_hidden}', $this->generateInfoHtml(), $this->template);
 		
 		return $template;
 	}
 	
-	private function getTemplate($templateName) {
+	public function loadTemplate($templateName) {
 		switch($templateName) {
 			case 'reply':
 				$filename = 'reply.html';
+				break;
+			
+			case 'new':
+				$filename = 'new_ticket.html';
 				break;
 				
 			default:
@@ -103,8 +115,26 @@ class MailboxExtended extends Mailbox {
 		// Generate reply markup to inject into HTML email template
 	}
 	
-	private function generateInfoHtml($ticketId, $messageId) {
+	private function generateInfoHtml($ticketID, $messageID) {
 		// Generate hidden ticket info to inject into HTML email template
-		return '<span class="ticket-id" style="color: #fff;">'.$ticketId.'</span><span class="message-id" style="color: #fff;">'.$messageId.'</span>';
+		return '<span class="ticket-id" style="color: #fff;">'.$ticketID.'</span><span class="message-id" style="color: #fff;">'.$messageID.'</span>';
+	}
+	
+	public function getMessageMeta($message, $className) {		
+		var_dump($message);
+		
+		$dom = new \DOMDocument();
+		$dom->loadHTML($message);
+		$xpath = new \DOMXPath($dom);
+		$results = $xpath->query("//*[@class='" . $className . "']");
+		
+		if($results->length > 0) {
+		    return $results->item(0)->nodeValue;
+		}
+	}
+	
+	public function extractMessage($emailBody) {
+		$emailBody = trim(strip_tags($emailBody));
+		return current(explode("--- Please type your reply above this line ---", $emailBody));
 	}
 }
