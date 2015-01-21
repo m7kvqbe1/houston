@@ -75,7 +75,7 @@ $app->post('/agents', function(Request $request, Application $app) {
 	$userModel->addAgent($agent);
 	
 	// Send verification email
-	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".Config::DOMAIN."/verify/".$json->verify);
+	mail($agent->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".Config::DOMAIN."/verify/".$agent->verify);
 	
 	return 1;
 })->before($secure);
