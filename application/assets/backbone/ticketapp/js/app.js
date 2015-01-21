@@ -96,7 +96,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverview: function() {
-		// this.peopleView.clientsView.collection.fetch();
+		this.peopleView.clientsView.collection.fetch(); //was removed by adding the fetch call into the Agents collection on sync
 		$('#app').html(this.peopleView.render().el);
 	},
 	

@@ -11,7 +11,7 @@ var TicketDetailView = Backbone.View.extend({
 								'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
 							'</div>'+						
 							'<ul class="drop">'+
-								// '{{populateAgentDropdown}}'+
+								'{{populateAgentDropdown}}'+
 							'</ul>'+
 						'</div>'+
 					'{{else}}'+
@@ -22,7 +22,7 @@ var TicketDetailView = Backbone.View.extend({
 								'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
 							'</div>'+						
 							'<ul class="drop">'+
-								// '{{populateAgentDropdown}}'+
+								'{{populateAgentDropdown}}'+
 							'</ul>'+
 						'</div>'+
 					'{{/if}}'+
@@ -112,10 +112,11 @@ var TicketDetailView = Backbone.View.extend({
 			return houston.forEach(arr, options);
 		});
 		
-		// Handlebars.registerHelper("populateAgentDropdown", function(){			
-		// 	// return new Handlebars.SafeString(houston.populateAgentDropdown());
-		// 	return new Handlebars.SafeString('test');
-		// });
+		Handlebars.registerHelper("populateAgentDropdown", function(){
+			console.log('helper');
+			// return new Handlebars.SafeString(houston.populateAgentDropdown());
+			return new Handlebars.SafeString('test');
+		});
 		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
 			return houston.convertToDateTime(attribute);
@@ -136,7 +137,6 @@ var TicketDetailView = Backbone.View.extend({
 	// },
 	
 	render: function (){	
-		console.log(this.model);
 		this.$el.html(this.template(this.model));
 
 		//reset fileUpload collection
