@@ -54,7 +54,7 @@ var TicketView = Backbone.View.extend({
 	),
 	
 	initialize: function() {	
-		this.listenTo(this.collection, "reset add remove change sort", this.render);
+		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
 		Handlebars.registerHelper("getCompanyName", function(attribute) {
 			return houston.getCompanyName(attribute);

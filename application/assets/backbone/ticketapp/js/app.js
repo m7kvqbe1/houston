@@ -20,34 +20,31 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the user model
 		this.user = new UserModel();
 		//fetch user data
-		this.user.fetch({
-			reset: true,
-			success: _.bind(function(){
-				//fetch ticket collection data from server
-				//is it better to render the view here and call the ticketdata as soon as spossible?
-				// this.tickets.fetch();
-			}, this)
-		});
+		this.user.fetch();
 	
 		//TICKETS
 		//instantiate the ticket collection
-		this.tickets = new Tickets();		
-				
+		this.tickets = new Tickets();
+		//fetch ticket data	
+		this.tickets.fetch();
+		//instantiate the tickets view and set it the tickets collection
+		this.ticketsView = new TicketView(
+			{
+				collection: this.tickets.filtered
+			}
+		);	
+		
+		//SINGLE TICKET		
 		//instantiate the ticketDetail model
 		this.ticketDetailModel = new TicketDetailModel();
-
 		//instantiate the ticket view and set it the ticket model
 		this.ticketDetailView = new TicketDetailView(
 			{
 				model: new TicketDetailModel()
 			}
 		);	
-		//instantiate the tickets view and set it the tickets collection
-		this.ticketsView = new TicketView(
-			{
-				collection: this.tickets.filtered
-			}
-		);				
+
+		//NEW TICKET
 		//instantiate the new ticket view and set it the ticket model 
 		this.formView = new FormView(
 			{
@@ -55,7 +52,7 @@ var AppRouter = Backbone.Router.extend({
 			}
 		);
 		
-		//PEOPLE/COMPANIES
+		//PEOPLE
 		//instantiate the agents collection
 		this.agents = new Agents();
 		//fetch agent data
@@ -67,6 +64,8 @@ var AppRouter = Backbone.Router.extend({
 			}
 		); 
 
+		
+
 		//ACCOUNT
 		this.accountView = new AccountView(
 			{ 
@@ -76,12 +75,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	list: function() {
-		this.tickets.fetch({
-			reset: true,
-			success: _.bind(function(){
-				$('#app').html(this.ticketsView.render().el);
-			}, this)
-		});
+		$('#app').html(this.ticketsView.render().el);
 	},
 
 	ticketDetails: function(ticket) {

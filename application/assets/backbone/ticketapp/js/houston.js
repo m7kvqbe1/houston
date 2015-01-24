@@ -240,11 +240,13 @@ var houston = {
 	},
 
 	getCompanyName: function(userID){
-		var companyID = app.agents.get(userID).attributes.companyID.$id;
-		var companyID = "54bf87b6d21a58b067f47d2e";
-		var companyName = app.peopleView.clientsView.collection.get(companyID).attributes.name;
-		console.log(companyName);
-		return companyName;
+				// var companyID = app.agents.get(userID).attributes.companyID.$id;
+		// var companyID = app.agents.get(userID);
+		// console.log(companyID);
+				// var companyID = "54bf87b6d21a58b067f47d2e";
+				// var companyName = app.peopleView.clientsView.collection.get(companyID).attributes.name;
+				// console.log(companyName);
+		return 'companyName';
 	}
 
 }
