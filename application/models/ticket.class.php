@@ -17,7 +17,7 @@ class TicketModel {
 		$db = $connections['default'];
 		$db = $db->houston;
 				
-		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoId($id)));
+		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoID($id)));
 		
 		if(!empty($this->ticket)) {			
 			return $this->ticket;
@@ -157,7 +157,7 @@ class TicketModel {
 		$db = $db->houston;
 			
 		$gridfs = $db->getGridFS();	
-		$file = $gridfs->findOne(array('_id' => new \MongoId($id)));
+		$file = $gridfs->findOne(array('_id' => new \MongoID($id)));
 		
 		$fileArr = array(
 			'data' => $file->getBytes(),
@@ -176,7 +176,7 @@ class TicketModel {
 		
 		try {
 			$gridfs = $db->getGridFS();
-			return $gridfs->remove(array('_id' => new \MongoId($fileID)));
+			return $gridfs->remove(array('_id' => new \MongoID($fileID)));
 		} catch(MongoConnectionException $e) {
 			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
@@ -192,7 +192,7 @@ class TicketModel {
 		$fileArr = array();
 		foreach($fileIDs as $fileID) {
 			$gridfs = $db->getGridFS();
-			$file = $gridfs->findOne(array('_id' => new \MongoId($fileID)));			
+			$file = $gridfs->findOne(array('_id' => new \MongoID($fileID)));			
 			
 			$meta = array(
 				'_id' => $fileID,
