@@ -80,10 +80,10 @@ abstract class Mailbox {
 
 class MailboxExtended extends Mailbox {
 	private $template;
-	private $templateDir = \Config::DIR_TEMPLATES;
+	private $templateDir = \Config::TEMPLATE_DIR;
 	
-	public function __construct($host, $username, $password, $templateName = null, $templateDir = null) {
-		parent::__construct($host, $username, $password);
+	public function __construct($host, $username, $password, $serverEncoding = 'utf-8', $templateName = null, $templateDir = null) {
+		parent::__construct($host, $username, $password, $serverEncoding);
 		
 		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 		if(isset($templateDir)) $this->templateDir = $templateDir;
@@ -110,7 +110,7 @@ class MailboxExtended extends Mailbox {
 				throw new \Exception('Template unavailable');
 		}
 			
-		$this->template = file_get_contents(\Config::DOCUMENT_ROOT.$this->templateDir.$filename);
+		$this->template = file_get_contents(DOCUMENT_ROOT.$this->templateDir.$filename);
 	}
 	
 	private function generateReplyHtml() {

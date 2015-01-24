@@ -1,4 +1,5 @@
-<?php	
+<?php
+// Purge all Houston data from MongoDB	
 require_once('../../../../index.php');
 
 $connections = $app['mongo'];
