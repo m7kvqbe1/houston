@@ -59,8 +59,8 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the client view and set it the clients collection
 		this.clientsView = new ClientsView(
 			{ 
-				collection: this.clients,
-				addClientModel: this.addClientModel
+				collection: this.clients
+				// addClientModel: this.addClientModel
 			});
 
 		//instantiate the agents collection
@@ -73,12 +73,13 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the people view and pass it the agents collection and the addAgentModel
 		this.peopleView = new PeopleView(
 			{
-				collection: this.agents,
-				addAgentModel: this.addAgentModel
+				collection: this.agents
+				// addAgentModel: this.addAgentModel
 			}
 		); 
 
-		//need to create app.clientViews, an object that contains all of the individual client views, a collection of views?
+		//instantiate the addClientUser model
+		// this.addClientUserModel = new ClientUserModel();
 
 		//ACCOUNT
 		this.accountView = new AccountView(

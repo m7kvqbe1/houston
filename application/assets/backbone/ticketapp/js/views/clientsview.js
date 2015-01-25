@@ -55,9 +55,9 @@ var ClientsView = Backbone.View.extend({
 				"name": name
 			}
 
-		this.options.addClientModel.save(attributes,{
+		app.addClientModel.save(attributes,{
 			success: _.bind(function(model){
-				this.options.addClientModel.clear();
+				app.addClientModel.clear();
 			}, this)
 		});
 	}
@@ -103,6 +103,9 @@ var ClientView = Backbone.View.extend({
 		usersCollection.url = '/client/users/' + this.model.id 
 		this.usersView = new UsersView({ collection: usersCollection});
 		this.usersView.parent = this;
+		
+		// console.log(this.model.usersCollection);
+		// this.usersView = new UsersView({ collection: this.model.usersCollection});
 
 		//Bind event to fetch users
 		this.listenTo(this.model, "sync", this.usersView.collection.fetch());
@@ -110,7 +113,7 @@ var ClientView = Backbone.View.extend({
 
 	render: function(){
 		this.$el.html(this.template(this.model));
-
+		// console.log(this.model.usersCollection);
 		this.delegateEvents({
 			'click .new-client-user':'addToggle',
 			'click .add-client-user .cancel-btn':'addToggle',			

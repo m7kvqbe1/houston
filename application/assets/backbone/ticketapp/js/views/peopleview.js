@@ -78,9 +78,9 @@ var PeopleView = Backbone.View.extend({
 				"verify": false
 			}
 
-		this.options.addAgentModel.save(attributes,{
+		app.addAgentModel.save(attributes,{
 			success: _.bind(function(model){
-				this.options.addAgentModel.clear();
+				app.addAgentModel.clear();
 			}, this)
 		});
 
