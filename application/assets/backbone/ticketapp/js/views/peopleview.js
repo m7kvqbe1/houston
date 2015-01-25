@@ -49,17 +49,6 @@ var PeopleView = Backbone.View.extend({
 		//give collection reference to this view
 		this.collection.view = this;
 
-		var clientsCollection = new Clients();
-		this.clientsView = new ClientsView({ collection: clientsCollection});
-		this.clientsView.parent = this;
-
-		//new model
-		this.addAgentModel = new AgentModel();
-		//give model reference to this view
-		this.addAgentModel.view = this;
-
-		// this.listenTo(this.addAgentModel, "sync", this.render);	//Necessary?
-
 		Handlebars.registerHelper("fullHeightPage", function() {
 			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
 		});
@@ -67,8 +56,8 @@ var PeopleView = Backbone.View.extend({
 		
 	render: function() {
 		this.$el.html(this.template(this.collection));	
-		this.$('#clients-wrap').append(this.clientsView.$el); 
-		this.clientsView.render();
+		this.$('#clients-wrap').append(app.clientsView.$el); 
+		app.clientsView.render();
 		
 		this.delegateEvents({
 			'click .box-app-top .btn':'addToggle',
@@ -89,9 +78,9 @@ var PeopleView = Backbone.View.extend({
 				"verify": false
 			}
 
-		this.addAgentModel.save(attributes,{
+		this.options.addAgentModel.save(attributes,{
 			success: _.bind(function(model){
-				this.addAgentModel.clear();
+				this.options.addAgentModel.clear();
 			}, this)
 		});
 

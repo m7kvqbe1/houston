@@ -31,7 +31,8 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	renderClient: function(model) {
-		var clientView = new ClientView({model: model});
+		// var clientView = new ClientView({model: model});
+		var clientView = model.modelView;
 		clientView.parent = this;
 		this.$el.find('#clients-stream').append(clientView.$el);
 		clientView.render();
@@ -116,6 +117,7 @@ var ClientView = Backbone.View.extend({
 	},
 
 	render: function(){
+		console.log(this);
 		this.$el.html(this.template(this.model));
 
 		this.delegateEvents({

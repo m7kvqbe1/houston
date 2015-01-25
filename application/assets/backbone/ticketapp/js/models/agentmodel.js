@@ -2,7 +2,8 @@ var AgentModel = Backbone.Model.extend({
 	url: '/agents',
 	initialize: function(){
 		this.on("sync", function(){
-			this.view.collection.fetch();
+			//on save of app.addAgentModel fetch app.agents which triggers the peopleview to render
+			app.agents.fetch();
 		});
 	},
 	parse: function(response){

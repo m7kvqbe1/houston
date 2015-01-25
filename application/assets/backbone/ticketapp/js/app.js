@@ -46,25 +46,32 @@ var AppRouter = Backbone.Router.extend({
 
 		//NEW TICKET
 		//instantiate the new ticket view and set it the ticket model 
-		this.formView = new FormView(
-			{
-				model: new TicketModel()
-			}
-		);
+		this.formView = new FormView({ model: new TicketModel()});
 		
 		//PEOPLE
+		//instantiate the clients collection
+		this.clients = new Clients();
+		//fetch client data
+		this.clients.fetch();
+		//instantiate the client view and set it the clients collection
+		this.clientsView = new ClientsView({ collection: this.clients});
+
 		//instantiate the agents collection
 		this.agents = new Agents();
 		//fetch agent data
 		this.agents.fetch();
-		//instantiate the people view and set it the company model
+		//instantiate the addAgent model
+		this.addAgentModel = new AgentModel();
+
+		//instantiate the people view and pass it the agents collection and the addAgentModel
 		this.peopleView = new PeopleView(
 			{
-				collection: this.agents
+				collection: this.agents,
+				addAgentModel: this.addAgentModel
 			}
 		); 
 
-		
+		//need to create app.clientViews, an object that contains all of the individual client views, a collection of views?
 
 		//ACCOUNT
 		this.accountView = new AccountView(
@@ -90,7 +97,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverview: function() {
-		this.peopleView.clientsView.collection.fetch(); //was removed by adding the fetch call into the Agents collection on sync
+		// this.peopleView.clientsView.collection.fetch(); //was removed by adding fetch call in initialize above //was removed by adding the fetch call into the Agents collection on sync
 		$('#app').html(this.peopleView.render().el);
 	},
 	
