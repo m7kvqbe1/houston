@@ -21,17 +21,11 @@ var ClientsView = Backbone.View.extend({
 	),
 
 	initialize: function() {	
-
-		this.listenTo(this.collection, 'sync', this.render);	
-		
+		this.listenTo(this.collection, 'sync', this.render);		
 		_.bindAll(this, "renderClient");
-
-		this.addClientModel = new ClientModel();
-		this.addClientModel.view = this;
 	},
 
 	renderClient: function(model) {
-		// var clientView = new ClientView({model: model});
 		var clientView = model.modelView;
 		clientView.parent = this;
 		this.$el.find('#clients-stream').append(clientView.$el);
@@ -55,17 +49,15 @@ var ClientsView = Backbone.View.extend({
 
 
 	addClient: function(e) {
-		console.log('addClient Method');
 		var name = this.$el.find('#form-add-client input[type="text"]').val();
 		var attributes = 
 			{
 				"name": name
 			}
 
-
-		this.addClientModel.save(attributes,{
+		this.options.addClientModel.save(attributes,{
 			success: _.bind(function(model){
-				this.addClientModel.clear();
+				this.options.addClientModel.clear();
 			}, this)
 		});
 	}
@@ -117,7 +109,6 @@ var ClientView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log(this);
 		this.$el.html(this.template(this.model));
 
 		this.delegateEvents({

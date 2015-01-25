@@ -53,8 +53,15 @@ var AppRouter = Backbone.Router.extend({
 		this.clients = new Clients();
 		//fetch client data
 		this.clients.fetch();
+		//instantiate the addClientModel
+		this.addClientModel = new ClientModel();
+
 		//instantiate the client view and set it the clients collection
-		this.clientsView = new ClientsView({ collection: this.clients});
+		this.clientsView = new ClientsView(
+			{ 
+				collection: this.clients,
+				addClientModel: this.addClientModel
+			});
 
 		//instantiate the agents collection
 		this.agents = new Agents();

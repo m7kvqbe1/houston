@@ -1,11 +1,12 @@
 var ClientModel = Backbone.Model.extend({
 	initialize: function(){
+		//on save of app.addClientModel fetch app.clients which triggers the clientview to render
+		this.on("sync", function(){
+			app.clients.fetch();
+		});
 		//create model's view as an attribute of itself
 		this.modelView = new ClientView({model: this});
 		//lostechies.com/derickbailey/2011/10/11/backbone-js-getting-the-model-for-a-clicked-element/		
-		this.on("sync", function(){
-			this.view.collection.fetch();
-		});
 	},
 	urlRoot: '/clients',
 	url: '/clients',
