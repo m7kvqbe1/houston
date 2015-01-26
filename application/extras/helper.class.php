@@ -23,7 +23,7 @@ class Helper {
 	public static function objectToArray($object) {
    		if(!is_object($object) && !is_array($object)) return $object;
    		
-   		return array_map('\Houston\Extra\Helper::objectToArray', (array) $object);
+   		return array_map('self::objectToArray', (array) $object);
 	}
 	
 	public static function convertTimestamp($timestamp) {
