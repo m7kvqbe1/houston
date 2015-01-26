@@ -107,7 +107,7 @@ class MailboxExtended extends Mailbox {
 				break;
 				
 			default:
-				throw new \Exception('Template unavailable');
+				throw new \InvalidArgumentException('Invalid template');
 		}
 			
 		$this->template = file_get_contents(DOCUMENT_ROOT.$this->templateDir.$filename);
