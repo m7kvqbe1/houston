@@ -27,7 +27,11 @@ abstract class Mailbox {
 	}
 	
 	public function connect($host, $username, $password) {
-		return $this->inbox = imap_open($host, $username, $password);
+		if(!$this->inbox = imap_open($host, $username, $password)) {
+			throw new \Exception('Could not connect to IMAP server');
+		} else {
+			return $this->inbox;
+		}
 	}
 	
 	public function disconnect() {
