@@ -1,2 +1,3 @@
 /application/log/development.log
-/tmp
+/tmp/data
+/tmp/dummy_reply_email.html

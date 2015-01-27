@@ -13,7 +13,7 @@ abstract class Mailbox {
 	
 	public $emails = array();
 	
-	public function __construct($host = null, $username = null, $password = null, $serverEncoding = 'utf-8') {
+	public function __construct($host, $username, $password, $serverEncoding = 'utf-8') {
 		$this->host = $host;
 		$this->username = $username;
 		$this->password = $password;
@@ -28,7 +28,7 @@ abstract class Mailbox {
 	
 	public function connect($host, $username, $password) {
 		if(!$this->inbox = imap_open($host, $username, $password)) {
-			throw new \Exception('Could not connect to IMAP server');
+			throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
 		} else {
 			return $this->inbox;
 		}

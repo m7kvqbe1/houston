@@ -19,4 +19,6 @@ class Config {
 	const MAILBOX_USER = 'support@muska.co.uk';
 	const MAILBOX_PASSWORD = 'BBsdfjsa902k';
 	const TEMPLATE_DIR = '/application/assets/email/';
+	
+	const STRIPE_API_KEY = 'sk_0BVRYmClEHeZvUq5hEdwluffwn0dp';
 }

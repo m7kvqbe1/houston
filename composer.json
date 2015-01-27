@@ -27,7 +27,8 @@
         "symfony/validator": "~2.3",
         "symfony/monolog-bridge": "~2.3",
         "swiftmailer/swiftmailer": "5.*",
-        "moriony/silex-mongo-provider": "*"
+        "moriony/silex-mongo-provider": "*",
+        "stripe/stripe-php": "1.*"
     },
     
     "require-dev": {
