@@ -27,7 +27,7 @@ class Payment {
 	}
 	
 	public function setPlan($planID) {
-		$planId = (int) $planID;
+		$planID = (int) $planID;
 		if(!array_key_exists($planID, self::$availablePlans)) throw new \UnexpectedValueException('Invalid subscription plan');
 		$this->plan = self::$availablePlans[$planId];
 	}
