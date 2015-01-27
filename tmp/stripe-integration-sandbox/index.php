@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>Stripe Integration</title>
+		<title>Stripe Integration Sandbox</title>
 		
 		<meta charset="utf-8">
 		
@@ -14,9 +14,9 @@
 	<?php
 		// Display corresponding form for the stage of the process
 		if(isset($_GET['plan'])) {
-			echo file_get_contents(__DIR__.'/payment_form.php');
+			echo file_get_contents(__DIR__.'/payment_form.html');
 		} else {
-			echo file_get_contents(__DIR__.'/plan_selection_form.php');
+			echo file_get_contents(__DIR__.'/plan_selection_form.html');
 		}
 	?>
 	</body>
