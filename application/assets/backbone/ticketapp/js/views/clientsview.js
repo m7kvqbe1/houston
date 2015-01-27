@@ -99,21 +99,17 @@ var ClientView = Backbone.View.extend({
 		//give model reference to this view
 		this.addUserModel.view = this;
 
-		var usersCollection = new Users();
-		usersCollection.url = '/client/users/' + this.model.id 
-		this.usersView = new UsersView({ collection: usersCollection});
-		this.usersView.parent = this;
 		
-		// console.log(this.model.usersCollection);
-		// this.usersView = new UsersView({ collection: this.model.usersCollection});
+		// create usersView as a child of the client view, populate it with the model's usersCollection
+		this.usersView = new UsersView({ collection: this.model.usersCollection});
+		this.usersView.parent = this;
 
-		//Bind event to fetch users
-		this.listenTo(this.model, "sync", this.usersView.collection.fetch());
 	},
 
-	render: function(){
+	render: function(){		
 		this.$el.html(this.template(this.model));
-		// console.log(this.model.usersCollection);
+		//render the usersView child view
+		this.usersView.render();
 		this.delegateEvents({
 			'click .new-client-user':'addToggle',
 			'click .add-client-user .cancel-btn':'addToggle',			
@@ -191,3 +187,26 @@ var UserView = Backbone.View.extend({
 	}
 
 });
+
+//clients view initialize
+	// initialize: function(){
+
+	// 	this.listenTo(this.model, "sync", this.render);
+
+	// 	//new model
+	// 	this.addUserModel = new ClientUserModel();
+	// 	//give model reference to this view
+	// 	this.addUserModel.view = this;
+
+	// 	// var usersCollection = new Users();
+	// 	// usersCollection.url = '/client/users/' + this.model.id 
+	// 	// this.usersView = new UsersView({ collection: usersCollection});
+	// 	// this.usersView.parent = this;
+		
+	// 	// create usersView as a child of the client view, populate it with the model's usersCollection
+	// 	this.usersView = new UsersView({ collection: this.model.usersCollection});
+	// 	this.usersView.parent = this;
+
+	// 	//Bind event to fetch users
+	// 	// this.listenTo(this.model, "sync", this.usersView.collection.fetch());
+	// },
