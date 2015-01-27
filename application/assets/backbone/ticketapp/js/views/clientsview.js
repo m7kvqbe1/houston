@@ -93,11 +93,6 @@ var ClientView = Backbone.View.extend({
 	initialize: function(){
 
 		this.listenTo(this.model, "sync", this.render);
-
-		//new model
-		this.addUserModel = new ClientUserModel();
-		//give model reference to this view
-		this.addUserModel.view = this;
 		
 		// create usersView as a child of the client view, populate it with the model's usersCollection
 		this.usersView = new UsersView({ collection: this.model.usersCollection});
@@ -151,7 +146,6 @@ var UsersView = Backbone.View.extend({
 	},
 
 	renderUser: function(model) {
-		// var userView = new UserView({model: model}); 
 		var userView = model.modelView;
 		userView.parent = this;
 		this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
@@ -186,31 +180,8 @@ var UserView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log(this);
+		console.log(this.model);
 		this.$el.html(this.template(this.model));
 	}
 
 });
-
-//clients view initialize
-	// initialize: function(){
-
-	// 	this.listenTo(this.model, "sync", this.render);
-
-	// 	//new model
-	// 	this.addUserModel = new ClientUserModel();
-	// 	//give model reference to this view
-	// 	this.addUserModel.view = this;
-
-	// 	// var usersCollection = new Users();
-	// 	// usersCollection.url = '/client/users/' + this.model.id 
-	// 	// this.usersView = new UsersView({ collection: usersCollection});
-	// 	// this.usersView.parent = this;
-		
-	// 	// create usersView as a child of the client view, populate it with the model's usersCollection
-	// 	this.usersView = new UsersView({ collection: this.model.usersCollection});
-	// 	this.usersView.parent = this;
-
-	// 	//Bind event to fetch users
-	// 	// this.listenTo(this.model, "sync", this.usersView.collection.fetch());
-	// },
