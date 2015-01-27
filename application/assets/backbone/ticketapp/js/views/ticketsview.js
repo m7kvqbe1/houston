@@ -33,8 +33,8 @@ var TicketView = Backbone.View.extend({
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
-								'<div class="name">{{attributes.name}}</div>' +
-								'<div class="company-name">{{getCompanyName attributes.authorID}}</div>' +
+								'<div class="name">{{getUserName attributes.authorID}}</div>' +
+								'<div class="company-name">Company Name</div>' +
 								'<div class="summary">{{attributes.subject}}</div>' +
 							'</div>' +
 						'</div>' +
@@ -56,8 +56,8 @@ var TicketView = Backbone.View.extend({
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
-		Handlebars.registerHelper("getCompanyName", function(attribute) {
-			return houston.getCompanyName(attribute);
+		Handlebars.registerHelper("getUserName", function(attribute) {
+			return houston.getUserName(attribute);
 		});
 
 		//http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers
@@ -76,9 +76,6 @@ var TicketView = Backbone.View.extend({
 		Handlebars.registerHelper("dateArrow", function() {
 			return new Handlebars.SafeString(houston.dateArrow());
 		});
-		// Handlebars.registerHelper("companyArrow", function() {
-		// 	return new Handlebars.SafeString(houston.companyArrow());	
-		// });
 
 		Handlebars.registerHelper("companyArrow", function() {
 			// console.log('companyArrow');
@@ -95,6 +92,7 @@ var TicketView = Backbone.View.extend({
 	},
 		
 	render: function() {
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',

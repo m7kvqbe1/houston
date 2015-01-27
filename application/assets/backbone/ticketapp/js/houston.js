@@ -239,14 +239,21 @@ var houston = {
 		return idealHeight;
 	},
 
-	getCompanyName: function(userID){
-				// var companyID = app.agents.get(userID).attributes.companyID.$id;
-		// var companyID = app.agents.get(userID);
-		// console.log(companyID);
-				// var companyID = "54bf87b6d21a58b067f47d2e";
-				// var companyName = app.peopleView.clientsView.collection.get(companyID).attributes.name;
-				// console.log(companyName);
-		return 'companyName';
+	getUserName: function(userID){
+		var userName = app.clients.get('54c7a19fd21a5848693b8942').usersCollection.get('54c7a1b3d21a58a4693b8942').attributes.emailAddress;
+		console.log(userName);
+		return userName;
 	}
 
 }
+
+
+
+
+
+		// var companyID = app.agents.get(userID).attributes.companyID.$id;
+		// var companyID = app.agents.get(userID);
+		// console.log(companyID);
+		// var companyID = "54bf87b6d21a58b067f47d2e";
+		// var companyName = app.peopleView.clientsView.collection.get(companyID).attributes.name;
+		// console.log(companyName);

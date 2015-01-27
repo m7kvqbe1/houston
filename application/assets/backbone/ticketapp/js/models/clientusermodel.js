@@ -9,5 +9,12 @@ var ClientUserModel = Backbone.Model.extend({
 		this.modelView = new UserView({model: this});
 	},
 	urlRoot: '/user',
-	url: '/user'
+	url: '/user',
+	parse: function(response){
+	if(response._id){
+		response.id = response._id['$id'];
+		delete response._id;
+	}
+		return response;
+	}
 });

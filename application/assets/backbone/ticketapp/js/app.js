@@ -60,7 +60,6 @@ var AppRouter = Backbone.Router.extend({
 		this.clientsView = new ClientsView(
 			{ 
 				collection: this.clients
-				// addClientModel: this.addClientModel
 			});
 
 		//instantiate the agents collection
@@ -74,7 +73,6 @@ var AppRouter = Backbone.Router.extend({
 		this.peopleView = new PeopleView(
 			{
 				collection: this.agents
-				// addAgentModel: this.addAgentModel
 			}
 		); 
 

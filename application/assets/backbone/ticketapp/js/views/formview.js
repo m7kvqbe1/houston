@@ -37,7 +37,7 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
-		
+		console.log(app.user);
 		//reset fileUpload collection
 		this.fileUploadView.collection.reset();
 
@@ -83,13 +83,13 @@ var FormView = Backbone.View.extend({
 			message: this.$el.find('textarea[name="new-textarea"]').val(),
 			id: null,
 			authorID: app.user.attributes.id,
-			avatar: app.user.attributes.avatar,
-			username: app.user.attributes.emailAddress,
-			name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+
+			// avatar: app.user.attributes.avatar,
+			// username: app.user.attributes.emailAddress,
+			// name: app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
 			// company: app.user.attributes.company,
 			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id),
-			url: '/tickets/add',
 			files: this.fileUploadView.createFilesArray()
 		});		
 	},

@@ -100,7 +100,7 @@ var ClientView = Backbone.View.extend({
 
 	},
 
-	render: function(){		
+	render: function(){	
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
@@ -180,7 +180,6 @@ var UserView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log(this.model);
 		this.$el.html(this.template(this.model));
 	}
 
