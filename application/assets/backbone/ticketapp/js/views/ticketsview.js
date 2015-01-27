@@ -33,8 +33,9 @@ var TicketView = Backbone.View.extend({
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
-								'<div class="name">{{getUserName attributes.authorID}}</div>' +
-								'<div class="company-name">Company Name</div>' +
+								'{{getAuthorDetails attributes.authorRole attributes.authorID attributes.companyID}}'+
+								// '<div class="name">{{getUserName attributes.authorID}}</div>' +
+								// '<div class="company-name">Company Name</div>' +
 								'<div class="summary">{{attributes.subject}}</div>' +
 							'</div>' +
 						'</div>' +
@@ -55,6 +56,12 @@ var TicketView = Backbone.View.extend({
 	
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
+
+		Handlebars.registerHelper("getAuthorDetails", function(authorRole,authorID,companyID) {
+			console.log(authorRole);
+			console.log(authorID);
+			console.log(companyID);
+		});
 
 		Handlebars.registerHelper("getUserName", function(attribute) {
 			return houston.getUserName(attribute);

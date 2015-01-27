@@ -32,7 +32,7 @@ var TicketDetailView = Backbone.View.extend({
 		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+
 			'<li class="msg from-client">'+
 				'<div class="msg-dtl">'+
-					'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{author}}"/>'+
+					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{author}}"/>'+
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{attributes.name}}</h3>'+
 						'<h4 class="msg-company">{{attributes.company}}</h4>'+
@@ -104,8 +104,6 @@ var TicketDetailView = Backbone.View.extend({
 		var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
-
-		// this.listenTo(this.messagesView.collection, "sync", this.logSomething);
 		
 		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
@@ -113,7 +111,6 @@ var TicketDetailView = Backbone.View.extend({
 		});
 		
 		Handlebars.registerHelper("populateAgentDropdown", function(){
-			console.log('helper');
 			// return new Handlebars.SafeString(houston.populateAgentDropdown());
 			return new Handlebars.SafeString('test');
 		});
@@ -131,10 +128,6 @@ var TicketDetailView = Backbone.View.extend({
 			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
 		});
 	},
-
-	// logSomething: function(){
-	// 	console.log(this);
-	// },
 	
 	render: function (){	
 		this.$el.html(this.template(this.model));

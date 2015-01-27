@@ -4,7 +4,7 @@ var MessagesView = Backbone.View.extend({
 		'{{#forEach models}}'+
 			'<li class="msg from-{{attributes.role}}">'+
 				'<div class="msg-dtl">'+
-					'<img class="msg-avatar" src="{{attributes.avatar}}" alt="{{attributes.author}}"/>'+
+					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.author}}"/>'+
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{attributes.author}}</h3>'+
 						'<h4 class="msg-company">{{attributes.company}}</h4>'+
