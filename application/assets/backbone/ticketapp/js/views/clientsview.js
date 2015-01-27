@@ -98,7 +98,6 @@ var ClientView = Backbone.View.extend({
 		this.addUserModel = new ClientUserModel();
 		//give model reference to this view
 		this.addUserModel.view = this;
-
 		
 		// create usersView as a child of the client view, populate it with the model's usersCollection
 		this.usersView = new UsersView({ collection: this.model.usersCollection});
@@ -113,7 +112,7 @@ var ClientView = Backbone.View.extend({
 		this.delegateEvents({
 			'click .new-client-user':'addToggle',
 			'click .add-client-user .cancel-btn':'addToggle',			
-			'click .form-add-client-user button': 'addUser'
+			'click .form-add-client-user button': 'addClientUser'
 		});
 	},
 
@@ -121,7 +120,7 @@ var ClientView = Backbone.View.extend({
 		this.$el.find('.add-client-user').slideToggle().find('input[type="text"]').focus();
 	},
 
-	addUser: function() {
+	addClientUser: function() {
 		var emailAddress = this.$el.find('.form-add-client-user input[type="text"]').val();
 		var clientID = this.model.id;
 		var attributes = 
@@ -131,9 +130,11 @@ var ClientView = Backbone.View.extend({
 
 			}
 
-		this.addUserModel.save(attributes,{
+		//Give the addClientUser Model a reference to the view that used it so that when model is saved it knows which view to render
+		app.addClientUserModel.currentView = this;
+		app.addClientUserModel.save(attributes,{
 			success: _.bind(function(model){
-				this.addUserModel.clear();
+				app.addClientUserModel.clear();
 			}, this)
 		});
 
@@ -150,7 +151,9 @@ var UsersView = Backbone.View.extend({
 	},
 
 	renderUser: function(model) {
-		var userView = new UserView({model: model}); 
+		// var userView = new UserView({model: model}); 
+		var userView = model.modelView;
+		userView.parent = this;
 		this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
 		userView.render();
 	},
@@ -183,6 +186,7 @@ var UserView = Backbone.View.extend({
 	},
 
 	render: function(){
+		console.log(this);
 		this.$el.html(this.template(this.model));
 	}
 

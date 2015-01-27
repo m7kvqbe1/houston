@@ -79,7 +79,7 @@ var AppRouter = Backbone.Router.extend({
 		); 
 
 		//instantiate the addClientUser model
-		// this.addClientUserModel = new ClientUserModel();
+		this.addClientUserModel = new ClientUserModel();
 
 		//ACCOUNT
 		this.accountView = new AccountView(

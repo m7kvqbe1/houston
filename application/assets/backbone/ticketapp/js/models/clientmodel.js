@@ -3,11 +3,7 @@ var ClientModel = Backbone.Model.extend({
 		// create userCollection within model, give it model specific url and fetch data
 		this.usersCollection = new Users();
 		this.usersCollection.url = '/client/users/' + this.id;
-		this.usersCollection.fetch({
-			success: function(){
-				console.log('usersCollectionfetched');
-			}
-		});
+		this.usersCollection.fetch();
 
 		//on save of app.addClientModel fetch app.clients which triggers the clientview to render
 		this.on("sync", function(){
