@@ -58,6 +58,7 @@ var TicketView = Backbone.View.extend({
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
 		Handlebars.registerHelper("getAuthorDetails", function(authorRole,authorID,companyID) {
+			return new Handlebars.SafeString(houston.getAuthorDetails(authorRole,authorID,companyID));
 			console.log(authorRole);
 			console.log(authorID);
 			console.log(companyID);
@@ -99,7 +100,6 @@ var TicketView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',
