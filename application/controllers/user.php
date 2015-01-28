@@ -13,7 +13,7 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	// Add company name to user JSON returned to backbone
 	$companyModel = new CompanyModel($app);
 	$companyModel->loadCompanyByID($userModel->user['companyID']);
-	$userModel->user = $companyModel->company['companyName'];
+	$userModel->user['companyName'] = $companyModel->company['companyName'];
 	
 	if(!isset($userModel->user)) return -1;
 	
