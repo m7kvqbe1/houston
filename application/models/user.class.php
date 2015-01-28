@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserModel 
 {
-	protected $app;
-	protected $validProperties = array();
+	protected static $validProperties = array('stripeCustomerID', 'role', 'firstName', 'lastName', 'emailAddress', 'password', 'verify', 'companyID', '_id');
+	protected $app;	
 	public $user;
 	
 	public function __construct(Application $app) 
@@ -36,6 +36,8 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
+		$id = new \MongoID($id);
+		
 		$criteria = array('_id' => $id);
 		$this->user = $db->users->findOne($criteria);
 		if(!empty($this->user)) { 
@@ -51,7 +53,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		if(!$this->propertyExists($property)) throw new \Exception('Invalid property');
+		if(!$this->propertyExists($property)) throw new \InvalidArgumentException('Invalid property');
 		
 		$userID = new \MongoID($userID);
 		
@@ -87,7 +89,7 @@ class UserModel
 	
 	private function propertyExists($property) 
 	{
-		if(!in_array($property, $this->validProperties)) return false;		
+		if(!in_array($property, self::$validProperties)) return false;		
 		return true;
 	}
 

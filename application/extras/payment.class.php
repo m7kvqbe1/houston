@@ -4,6 +4,8 @@ namespace Houston\Extra;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+use Houston\Model\UserModel;
+
 class Payment 
 {
 	private static $availablePlans = array(
@@ -16,6 +18,7 @@ class Payment
 
 	public $plan;
 	public $charge;
+	public $customer;
 	
 	public function __construct(Application $app) 
 	{
@@ -33,10 +36,10 @@ class Payment
 	{
 		$planID = (int) $planID;
 		if(!array_key_exists($planID, self::$availablePlans)) throw new \UnexpectedValueException('Invalid subscription plan');
-		$this->plan = self::$availablePlans[$planId];
+		$this->plan = self::$availablePlans[$planID];
 	}
 	
-	private function getToken() 
+	public function getToken() 
 	{
 		return $this->token;
 	}
@@ -46,15 +49,35 @@ class Payment
 		$this->token = $token;
 	}
 	
-	public function generateStripeCharge() 
+	public function createStripeCharge() 
 	{
 		$this->charge = \Stripe_Charge::create(array(
-			'card'	=> 	$this->token,
+			'card'	=> 	null,
+			'customer' => $this->customer['id'],
 			'amount' => $this->plan['amount'],
 			'currency' => $this->plan['currency'],
 			'description' => $this->plan['name']
 		));
+		$this->charge = json_decode($this->charge);
 		
 		return $this->charge;
+	}
+	
+	public function createStripeCustomer() 
+	{
+		// Update user object with customer ID
+		$userModel = new UserModel($this->app);
+		$userModel->loadUserByID('54c7c89dd21a58416e3b8941');	//// Hard coded MongoID for the purposes of testing
+		
+		// Create stripe customer
+		$this->customer = \Stripe_Customer::create(array(
+			'description' => 'Houston Customer',
+			'card' => $this->token,
+			'email' => $userModel->user['emailAddress']
+		));
+
+		$userModel->setProperty('54c7c89dd21a58416e3b8941', 'stripeCustomerID', $this->customer['id']);		// Hard coded MongoID for the purposes of testing
+		
+		return $this->customer;
 	}
 }

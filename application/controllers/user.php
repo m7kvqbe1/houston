@@ -3,11 +3,17 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Model\UserModel;
+use Houston\Model\CompanyModel;
 
 // Get user object
 $app->get('/user/self', function(Request $request, Application $app) {	
 	$userModel = new UserModel($app);
 	$userModel->loadUserByID($app['session']->get('u'));
+	
+	// Add company name to user JSON returned to backbone
+	$companyModel = new CompanyModel();
+	$companyModel->loadCompanyByID($userModel->user['companyID']);
+	$userModel->user = $companyModel->company['companyName'];
 	
 	if(!isset($userModel->user)) return -1;
 	

@@ -28,7 +28,7 @@ abstract class Mailbox
 		}
 	}
 	
-	public function connect($host, $username, $password) 
+	final public function connect($host, $username, $password) 
 	{
 		if(!$this->inbox = imap_open($host, $username, $password)) {
 			throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
@@ -37,7 +37,7 @@ abstract class Mailbox
 		}
 	}
 	
-	public function disconnect() 
+	final public function disconnect() 
 	{
 		imap_close($this->inbox);		
 	}
@@ -65,23 +65,23 @@ abstract class Mailbox
 		return $this->emails;
 	}
 	
-	public function checkType($structure) 
+	final public function checkType($structure) 
 	{
 		if($structure->type == 1) return true;
 		return false;
 	}
 	
-	public function getHeader($header, $name) 
+	final public function getHeader($header, $name) 
 	{
 		return (isset($header->{$name}) ? $header->{$name} : null);
 	}
 	
-	public function markRead($num) 
+	final public function markRead($num) 
 	{
 		return imap_setflag_full($this->inbox, $num, '\\Seen \\Flagged');
 	}
 	
-	public function markUnread($num) 
+	final public function markUnread($num) 
 	{
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
