@@ -27,4 +27,4 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 
 // Charge Stripe customer - Charge pre-defined subscription not value!
 
-// On login check that stripe customer has valid subscription
+// On login check that stripe customer has valid subscription if not redirect to payment page

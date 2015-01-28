@@ -69,8 +69,9 @@
     				cache: false,
     				data: JSON.stringify(data)
 				}).done( function(ret) {
-					console.log(ret.id);
 					console.log(ret);
+					$('#payment-form').hide();
+					$('body').append('<span>Success</span>');
 				});
 			}
 		}

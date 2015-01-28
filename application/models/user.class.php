@@ -40,7 +40,7 @@ class UserModel
 		
 		$criteria = array('_id' => $id);
 		$this->user = $db->users->findOne($criteria);
-		if(!empty($this->user)) { 
+		if(!empty($this->user)) { 			
 			return $this->user;
 		} else {
 			throw new \Exception('User not found');

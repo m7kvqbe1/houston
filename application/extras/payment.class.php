@@ -2,8 +2,6 @@
 namespace Houston\Extra;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-
 use Houston\Model\UserModel;
 
 class Payment 
