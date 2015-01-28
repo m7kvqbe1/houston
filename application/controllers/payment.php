@@ -21,10 +21,10 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	return json_encode($charge);
 });
 
-// Create user account - complete
+// Create user account - Complete
 
-// Create Stripe customer - complete
+// Create Stripe customer - Complete
 
-// Charge Stripe customer
+// Charge Stripe customer - Charge pre-defined subscription not value!
 
 // On login check that stripe customer has valid subscription

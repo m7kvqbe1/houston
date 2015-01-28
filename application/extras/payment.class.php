@@ -5,7 +5,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Model\UserModel;
-use Houston\Extra\Helper;
 
 class Payment 
 {
