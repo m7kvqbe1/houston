@@ -243,9 +243,32 @@ var houston = {
 		var userName = app.clients.get('54c7a19fd21a5848693b8942').usersCollection.get('54c7a1b3d21a58a4693b8942').attributes.emailAddress;
 		console.log(userName);
 		return userName;
+	},
+
+	getAuthorDetails: function(authorRole,authorID,companyID){
+		if(authorRole == 'user'){
+			var company = app.clients.get('54c7a19fd21a5848693b8942');		
+			var companyName = company.attributes.name;
+			var user = company.usersCollection.get('54c7a1b3d21a58a4693b8942').attributes;
+			if(user.firstName){
+				return '<div class="name">'+user.firstName+' '+user.lastName+'</div>' +
+						'<div class="company-name">'+companyName+'</div>';			
+			} else {
+				return '<div class="name">'+user.emailAddress+'</div>' +
+						'<div class="company-name">'+companyName+'</div>';
+			}
+		} else {
+			var author = app.agents.get('54c79b88d21a58cb683b8941').attributes;
+			// console.log(app.user.attributes.id);
+			var companyName = app.user.attributes.companyName;
+			return '<div class="name">'+author.firstName+' '+author.lastName+'</div>' +
+					'<div class="company-name">'+companyName+'</div>';
+		}
 	}
 
 }
+
+//ONLY SEND DOWN COMPANY NAME IF AN AGENT OR ADMIN?
 
 
 

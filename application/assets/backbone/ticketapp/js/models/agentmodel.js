@@ -11,6 +11,9 @@ var AgentModel = Backbone.Model.extend({
 		response.id = response._id['$id'];
 		delete response._id;
 	}
+	if(response.companyID.$id){
+		response.companyID = response.companyID['$id'];
+	}
 		return response;
 	}
 });

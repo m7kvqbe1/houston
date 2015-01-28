@@ -37,7 +37,6 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log(app.user);
 		//reset fileUpload collection
 		this.fileUploadView.collection.reset();
 
