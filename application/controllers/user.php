@@ -11,7 +11,7 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	$userModel->loadUserByID($app['session']->get('u'));
 	
 	// Add company name to user JSON returned to backbone
-	$companyModel = new CompanyModel();
+	$companyModel = new CompanyModel($app);
 	$companyModel->loadCompanyByID($userModel->user['companyID']);
 	$userModel->user = $companyModel->company['companyName'];
 	

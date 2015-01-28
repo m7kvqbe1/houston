@@ -16,7 +16,7 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	
 	$payment->createStripeCustomer();
 	
-	var_dump($payment->customer);
+	print_r($payment->customer);
 	
 	//$charge = $payment->createStripeCharge();
 	//$return = str_replace('Stripe_Charge JSON: ', '', $return);

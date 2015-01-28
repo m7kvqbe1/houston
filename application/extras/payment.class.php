@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Model\UserModel;
+use Houston\Extra\Helper;
 
 class Payment 
 {
@@ -75,8 +76,9 @@ class Payment
 			'card' => $this->token,
 			'email' => $userModel->user['emailAddress']
 		));
+		$this->customer = Helper::objectToArray($this->customer);
 
-		$userModel->setProperty('54c7c89dd21a58416e3b8941', 'stripeCustomerID', $this->customer['id']);		// Hard coded MongoID for the purposes of testing
+		$userModel->setProperty('54c7c89dd21a58416e3b8941', 'stripeCustomerID', $this->customer['_values']['id']);		// Hard coded MongoID for the purposes of testing
 		
 		return $this->customer;
 	}
