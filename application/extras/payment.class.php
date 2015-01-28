@@ -50,25 +50,15 @@ class Payment
 		$this->token = $token;
 	}
 	
-	public function createStripeCharge() 
+	public function fetchStripeCustomer($userID) 
 	{
-		$this->charge = \Stripe_Charge::create(array(
-			'card'	=> 	null,
-			'customer' => $this->customer['id'],
-			'amount' => $this->plan['amount'],
-			'currency' => $this->plan['currency'],
-			'description' => $this->plan['name']
-		));
-		$this->charge = json_decode($this->charge);
 		
-		return $this->charge;
 	}
 	
 	public function createStripeCustomer() 
 	{
-		// Update user object with customer ID
 		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID('54c7c89dd21a58416e3b8941');	//// Hard coded MongoID for the purposes of testing
+		$userModel->loadUserByID('54c7c89dd21a58416e3b8941');	// Hard coded MongoID for the purposes of testing
 		
 		// Create stripe customer
 		$this->customer = \Stripe_Customer::create(array(
@@ -76,10 +66,27 @@ class Payment
 			'card' => $this->token,
 			'email' => $userModel->user['emailAddress']
 		));
-		$this->customer = Helper::objectToArray($this->customer);
-
-		$userModel->setProperty('54c7c89dd21a58416e3b8941', 'stripeCustomerID', $this->customer['_values']['id']);		// Hard coded MongoID for the purposes of testing
+		
+		// Update Houston user with stripeCustomerID
+		$userModel->setProperty('54c7c89dd21a58416e3b8941', 'stripeCustomerID', $this->customer->id);		// Hard coded MongoID for the purposes of testing
 		
 		return $this->customer;
+	}
+	
+	public function createStripeCharge() 
+	{	
+		if(!isset($this->customer->id)) throw new \Exception('Customer not found');
+		
+		if(!isset($this->plan)) throw new \Exception('Subscription plan not found');
+		
+		$this->charge = \Stripe_Charge::create(array(
+			'card'	=> 	null,
+			'customer' => $this->customer->id,
+			'amount' => $this->plan['amount'],
+			'currency' => $this->plan['currency'],
+			'description' => $this->plan['name']
+		));
+		
+		return $this->charge;
 	}
 }

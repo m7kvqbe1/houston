@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Extra\Payment;
 
-// Charge payment to customer - Move to become part of registration controller!
+// Charge payment to customer - Combine controller code with registration controller!
 $app->post('/payment/charge', function(Request $request, Application $app) {
 	$data = json_decode(file_get_contents('php://input'));
 	
@@ -16,18 +16,14 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	
 	$payment->createStripeCustomer();
 	
-	print_r($payment->customer);
-	
-	//$charge = $payment->createStripeCharge();
-	//$return = str_replace('Stripe_Charge JSON: ', '', $return);
-	//return json_encode($return);
-	
-	return 'hello world';
+	$charge = $payment->createStripeCharge();
+
+	return json_encode($charge);
 });
 
-// Create user account
+// Create user account - complete
 
-// Create Stripe customer
+// Create Stripe customer - complete
 
 // Charge Stripe customer
 
