@@ -84,6 +84,4 @@ foreach (glob(__DIR__."/application/controllers/*.php") as $filename) {
     include $filename;
 }
 
-
-// Set CLI flags
-if(!isset($_GET['cli'])) $app->run();
+$app->run();

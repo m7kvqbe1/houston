@@ -4,7 +4,8 @@ namespace Houston\Extra;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class Mailbox {
+abstract class Mailbox 
+{
 	protected $inbox;
 	protected $host;
 	protected $username;
@@ -13,7 +14,8 @@ abstract class Mailbox {
 	
 	public $emails = array();
 	
-	public function __construct($host, $username, $password, $serverEncoding = 'utf-8') {
+	public function __construct($host, $username, $password, $serverEncoding = 'utf-8') 
+	{
 		$this->host = $host;
 		$this->username = $username;
 		$this->password = $password;
@@ -26,7 +28,8 @@ abstract class Mailbox {
 		}
 	}
 	
-	public function connect($host, $username, $password) {
+	public function connect($host, $username, $password) 
+	{
 		if(!$this->inbox = imap_open($host, $username, $password)) {
 			throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
 		} else {
@@ -34,11 +37,13 @@ abstract class Mailbox {
 		}
 	}
 	
-	public function disconnect() {
+	public function disconnect() 
+	{
 		imap_close($this->inbox);		
 	}
 	
-	public function getMail() {
+	public function getMail() 
+	{
 		$emails = imap_search($this->inbox, 'ALL', null, $this->serverEncoding);
 		foreach($emails as $num) {
 			$header = imap_headerinfo($this->inbox, $num);
@@ -60,47 +65,56 @@ abstract class Mailbox {
 		return $this->emails;
 	}
 	
-	public function checkType($structure) {
+	public function checkType($structure) 
+	{
 		if($structure->type == 1) return true;
 		return false;
 	}
 	
-	public function getHeader($header, $name) {
+	public function getHeader($header, $name) 
+	{
 		return (isset($header->{$name}) ? $header->{$name} : null);
 	}
 	
-	public function markRead($num) {
+	public function markRead($num) 
+	{
 		return imap_setflag_full($this->inbox, $num, '\\Seen \\Flagged');
 	}
 	
-	public function markUnread($num) {
+	public function markUnread($num) 
+	{
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
 	
-	public function sendEmail($to, $from, $content, $attachments = array(), $headers = array()) {
+	public function sendEmail($to, $from, $content, $attachments = array(), $headers = array()) 
+	{
 		// Send new email using Swiftmailer library
 	}
 }
 
-class MailboxExtended extends Mailbox {
+class MailboxExtended extends Mailbox 
+{
 	private $template;
 	private $templateDir = \Config::TEMPLATE_DIR;
 	
-	public function __construct($host, $username, $password, $serverEncoding = 'utf-8', $templateName = null, $templateDir = null) {
+	public function __construct($host, $username, $password, $serverEncoding = 'utf-8', $templateName = null, $templateDir = null) 
+	{
 		parent::__construct($host, $username, $password, $serverEncoding);
 		
 		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 		if(isset($templateDir)) $this->templateDir = $templateDir;
 	}
 	
-	public function generateTemplate() {
+	public function generateTemplate() 
+	{
 		$template = str_replace('{reply_chain}', $this->generateReplyHtml(), $this->template);
 		$template = str_replace('{ticket_info_hidden}', $this->generateInfoHtml(), $this->template);
 		
 		return $template;
 	}
 	
-	public function loadTemplate($templateName) {
+	public function loadTemplate($templateName) 
+	{
 		switch($templateName) {
 			case 'reply':
 				$filename = 'reply.html';
@@ -117,16 +131,19 @@ class MailboxExtended extends Mailbox {
 		$this->template = file_get_contents(DOCUMENT_ROOT.$this->templateDir.$filename);
 	}
 	
-	private function generateReplyHtml() {
+	private function generateReplyHtml() 
+	{
 		// Generate reply markup to inject into HTML email template
 	}
 	
-	private function generateInfoHtml($ticketID, $messageID) {
+	private function generateInfoHtml($ticketID, $messageID) 
+	{
 		// Generate hidden ticket info to inject into HTML email template
 		return '<span class="ticket-id" style="color: #fff;">'.$ticketID.'</span><span class="message-id" style="color: #fff;">'.$messageID.'</span>';
 	}
 	
-	public function getMessageMeta($message, $className) {		
+	public function getMessageMeta($message, $className) 
+	{		
 		var_dump($message);
 		
 		$dom = new \DOMDocument();
@@ -139,7 +156,8 @@ class MailboxExtended extends Mailbox {
 		}
 	}
 	
-	public function extractMessage($emailBody) {
+	public function extractMessage($emailBody) 
+	{
 		$emailBody = trim(strip_tags($emailBody));
 		return current(explode("--- Please type your reply above this line ---", $emailBody));
 	}

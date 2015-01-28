@@ -6,15 +6,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Model\UserModel;
 
-class ClientModel {
+class ClientModel 
+{
 	protected $app;
 	public $client;
 
-	public function __construct(Application $app) {
+	public function __construct(Application $app) 
+	{
 		$this->app = $app;
 	}
 	
-	public function addClient($client) {
+	public function addClient($client) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -39,7 +42,8 @@ class ClientModel {
 		}
 	}
 	
-	public function getClients() {
+	public function getClients() 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -64,7 +68,8 @@ class ClientModel {
 		return $this->client;
 	}
 	
-	public function getUsersByClientID($id) {
+	public function getUsersByClientID($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -84,7 +89,8 @@ class ClientModel {
 		return $docs;
 	}
 	
-	public function removeClient($id) {
+	public function removeClient($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;

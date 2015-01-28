@@ -1,5 +1,6 @@
 <?php
-class Config {	
+class Config 
+{	
 	const DOMAIN = 'http://tom.houstonsupport.co';
 	const DOMAIN_SSL = 'https://tom.houstonsupport.co';
 	

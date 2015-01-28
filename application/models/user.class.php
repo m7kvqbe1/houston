@@ -4,16 +4,19 @@ namespace Houston\Model;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserModel {
+class UserModel 
+{
 	protected $app;
 	protected $validProperties = array();
 	public $user;
 	
-	public function __construct(Application $app) {		
+	public function __construct(Application $app) 
+	{		
 		$this->app = $app;
 	}
 	
-	public function loadUser($username) {
+	public function loadUser($username) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -27,7 +30,8 @@ class UserModel {
 		}
 	}
 	
-	public function loadUserByID($id) {
+	public function loadUserByID($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -41,7 +45,8 @@ class UserModel {
 		}
 	}
 	
-	public function setProperty($userID, $property, $value) {
+	public function setProperty($userID, $property, $value) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -60,7 +65,8 @@ class UserModel {
 		} 
 	}
 	
-	public function deleteProperty($userID, $property) {
+	public function deleteProperty($userID, $property) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -79,17 +85,20 @@ class UserModel {
 		} 
 	}
 	
-	private function propertyExists($property) {
+	private function propertyExists($property) 
+	{
 		if(!in_array($property, $this->validProperties)) return false;		
 		return true;
 	}
 
-	public static function hashPassword($password) {
+	public static function hashPassword($password) 
+	{
 		$password = crypt($password, \Config::DEFAULT_SALT);
 		return $password;
 	}
 	
-	public function rememberMeLookup($token) {
+	public function rememberMeLookup($token) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -101,7 +110,8 @@ class UserModel {
 		return $verified;
 	}
 	
-	public function rememberMeSet($username) {
+	public function rememberMeSet($username) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -123,7 +133,8 @@ class UserModel {
 		return $remember;
 	}
 	
-	public function resetPassword($token, $newPassword) {
+	public function resetPassword($token, $newPassword) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;		
@@ -142,7 +153,8 @@ class UserModel {
 		$this->loadUser($doc['emailAddress']);
 	}
 	
-	public function resetPasswordRequest($username) {		
+	public function resetPasswordRequest($username) 
+	{		
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -163,11 +175,13 @@ class UserModel {
 		return $token;
 	}
 	
-	public static function generateVerificationToken($username) {
+	public static function generateVerificationToken($username) 
+	{
 		return md5(\Config::DEFAULT_SALT.$username);
 	}
 	
-	public function isVerified($username = null, $token = null) {
+	public function isVerified($username = null, $token = null) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -187,7 +201,8 @@ class UserModel {
 		return $verified;
 	}
 	
-	public function verifyAccount($username) {
+	public function verifyAccount($username) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -202,7 +217,8 @@ class UserModel {
 		}
 	}
 	
-	public function saveUser($user) {
+	public function saveUser($user) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -217,7 +233,8 @@ class UserModel {
 		}
 	}
 	
-	public function registerUser($user) {		
+	public function registerUser($user) 
+	{		
 		// Hash password
 		$user->password = $this->hashPassword($user->password);
 		
@@ -230,7 +247,8 @@ class UserModel {
 		$this->saveUser($user);
 	}
 	
-	public function addAgent($user) {
+	public function addAgent($user) 
+	{
 		// Generate email verification token
 		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
@@ -244,7 +262,8 @@ class UserModel {
 		$this->saveUser($user);
 	}
 	
-	public function addUser($user) {
+	public function addUser($user) 
+	{
 		// Generate email verification token
 		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
@@ -260,7 +279,8 @@ class UserModel {
 		$this->saveUser($user);
 	}
 	
-	public function removeUser($id) {
+	public function removeUser($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -280,7 +300,8 @@ class UserModel {
 		}
 	}
 
-	public function getAgents() {
+	public function getAgents() 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;

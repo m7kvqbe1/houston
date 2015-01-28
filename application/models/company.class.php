@@ -4,15 +4,18 @@ namespace Houston\Model;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class CompanyModel {		
+class CompanyModel 
+{		
 	protected $app;
 	public $company;
 
-	public function __construct(Application $app) {
+	public function __construct(Application $app) 
+	{
 		$this->app = $app;
 	}
 	
-	public function loadCompany($companyName) {
+	public function loadCompany($companyName) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -26,7 +29,8 @@ class CompanyModel {
 		}
 	}
 	
-	public function loadCompanyByID($id) {
+	public function loadCompanyByID($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -42,7 +46,8 @@ class CompanyModel {
 		}
 	}
 	
-	/*DEPRECATEDpublic function loadCompanyByUserID($id) {
+	/*DEPRECATEDpublic function loadCompanyByUserID($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -64,7 +69,8 @@ class CompanyModel {
 		}
 	}*/
 	
-	public function companyExists($companyName) {
+	public function companyExists($companyName) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -76,7 +82,8 @@ class CompanyModel {
 		return true;
 	}
 	
-	public function generateCompany($json) {
+	public function generateCompany($json) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -100,7 +107,8 @@ class CompanyModel {
 		}
 	}
 	
-	/*DEPRECATEDpublic function linkUser($id) {
+	/*DEPRECATEDpublic function linkUser($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;

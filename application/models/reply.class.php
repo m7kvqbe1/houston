@@ -6,15 +6,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Extra\Helper;
 
-class ReplyModel {
+class ReplyModel 
+{
 	protected $app;
 	public $reply;
 	
-	public function __construct(Application $app) {
+	public function __construct(Application $app) 
+	{
 		$this->app = $app;
 	}
 	
-	public function loadReplyByID($replyID) {
+	public function loadReplyByID($replyID) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -28,7 +31,8 @@ class ReplyModel {
 		}
 	}
 	
-	public function generateReply($ticketID, $message) {
+	public function generateReply($ticketID, $message) 
+	{
 		$this->reply = new \stdClass();
 		
 		$this->reply->ticketID = $ticketID;
@@ -38,7 +42,8 @@ class ReplyModel {
 		return $this->reply;
 	}
 	
-	public function getReplies($ticketID) {
+	public function getReplies($ticketID) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -54,7 +59,8 @@ class ReplyModel {
 		return $docs;
 	}
 	
-	public function reply($reply) {
+	public function reply($reply) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;

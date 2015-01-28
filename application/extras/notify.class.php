@@ -4,14 +4,17 @@ namespace Houston\Extra;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 	
-class Notify {
+class Notify 
+{
 	protected $app;
 	
-	public function __construct(Application $app) {
+	public function __construct(Application $app) 
+	{
 		$this->app = $app;
 	}
 	
-	public function sendRequest($url, $ticket) {
+	public function sendRequest($url, $ticket) 
+	{
 		$ticket = json_encode($ticket);
 		
 		// Send HTTP request via cURL to Node.js server
@@ -36,15 +39,18 @@ class Notify {
 		return $output;
 	}
 	
-	public function newTicket($ticket) {
+	public function newTicket($ticket) 
+	{
 		$this->sendRequest('http://localhost:3000/new/ticket', $ticket);
 	}
 	
-	public function newReply($ticket) {
+	public function newReply($ticket) 
+	{
 		$this->sendRequest('http://localhost:3000/new/reply', $ticket);
 	}
 	
-	public function newStatus($ticket) {
+	public function newStatus($ticket) 
+	{
 		$this->sendRequest('http://localhost:3000/new/status', $ticket);
 	}
 }

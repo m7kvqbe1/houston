@@ -4,15 +4,18 @@ namespace Houston\Model;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class TicketModel {
+class TicketModel 
+{
 	protected $app;
 	public $ticket;
 
-	public function __construct(Application $app) {
+	public function __construct(Application $app) 
+	{
 		$this->app = $app;
 	}
 	
-	public function loadTicketByID($id) {
+	public function loadTicketByID($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -26,7 +29,8 @@ class TicketModel {
 		}
 	}
 	
-	public function generateTicket($firstName, $lastName, $subject, $message, $date, $email) {
+	public function generateTicket($firstName, $lastName, $subject, $message, $date, $email) 
+	{
 		$this->ticket = new \stdClass();
 		
 		$this->ticket->subject = $subject;
@@ -62,7 +66,8 @@ class TicketModel {
 		return $this->ticket;
 	}
 	
-	public function getAll() {
+	public function getAll() 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -78,7 +83,8 @@ class TicketModel {
 		return $docs;
 	}
 		
-	public function add($ticket) {
+	public function add($ticket) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -93,7 +99,8 @@ class TicketModel {
 		}
 	}
 	
-	public function edit($json) {
+	public function edit($json) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -115,7 +122,8 @@ class TicketModel {
 		}
 	}
 	
-	public function delete($ticketID) {
+	public function delete($ticketID) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -132,7 +140,8 @@ class TicketModel {
 		}
 	}
 	
-	public function uploadAttachment($attachment) {
+	public function uploadAttachment($attachment) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -151,7 +160,8 @@ class TicketModel {
 		}
 	}
 	
-	public function downloadAttachment($id = null, $filename = null) {
+	public function downloadAttachment($id = null, $filename = null) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -169,7 +179,8 @@ class TicketModel {
 		return $fileArr;
 	}
 	
-	public function deleteAttachment($id) {
+	public function deleteAttachment($id) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -184,7 +195,8 @@ class TicketModel {
 		}
 	}
 	
-	public function getFileMeta($fileIDs = array()) {
+	public function getFileMeta($fileIDs = array()) 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
