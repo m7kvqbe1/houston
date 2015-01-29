@@ -260,8 +260,7 @@ var houston = {
 			var companyName = app.user.attributes.companyName;
 			var authorName = author.firstName+' '+author.lastName;
 		}
-		// var authorName = "placeholder name";
-		// var authorName = "placeholder company";
+
 		return '<div class="name">'+authorName+'</div>' +
 			   '<div class="company-name">'+companyName+'</div>';
 	}
