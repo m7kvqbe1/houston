@@ -20,13 +20,22 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the user model
 		this.user = new UserModel();
 		//fetch user data
-		this.user.fetch();
+		this.user.fetch({
+			success: function(){
+				app.list();
+			}
+		});
 	
 		//TICKETS
 		//instantiate the ticket collection
 		this.tickets = new Tickets();
 		//fetch ticket data	
-		this.tickets.fetch();
+		this.tickets.fetch({
+			success: function(){				
+				app.list();
+				// app.navigate('', {trigger: true});
+			}
+		});
 		//instantiate the tickets view and set it the tickets collection
 		this.ticketsView = new TicketView(
 			{
@@ -52,7 +61,11 @@ var AppRouter = Backbone.Router.extend({
 		//instantiate the clients collection
 		this.clients = new Clients();
 		//fetch client data
-		this.clients.fetch();
+		this.clients.fetch({
+			success: function(){
+				app.list();
+			}
+		});
 		//instantiate the addClientModel
 		this.addClientModel = new AddClientModel();
 
@@ -87,8 +100,14 @@ var AppRouter = Backbone.Router.extend({
 		);
 	},
 
+	clientUserCount: 0,
+
 	list: function() {
-		$('#app').html(this.ticketsView.render().el);
+		if(this.user && this.tickets && this.clients && this.clients.models.length == this.clientUserCount){ 
+			$('#app').html(this.ticketsView.render().el);
+		} else {
+			$('#app').html('<h1>Loading</h1>');
+		}
 	},
 
 	ticketDetails: function(ticket) {

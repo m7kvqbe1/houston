@@ -247,23 +247,23 @@ var houston = {
 
 	getAuthorDetails: function(authorRole,authorID,companyID){
 		if(authorRole == 'user'){
-			var company = app.clients.get('54c7a19fd21a5848693b8942');		
+			var company = app.clients.get(companyID);		
+			var author = company.usersCollection.get(authorID).attributes;
 			var companyName = company.attributes.name;
-			var user = company.usersCollection.get('54c7a1b3d21a58a4693b8942').attributes;
-			if(user.firstName){
-				return '<div class="name">'+user.firstName+' '+user.lastName+'</div>' +
-						'<div class="company-name">'+companyName+'</div>';			
+			if(author.firstName){
+				var authorName = author.firstName+' '+author.lastName;		
 			} else {
-				return '<div class="name">'+user.emailAddress+'</div>' +
-						'<div class="company-name">'+companyName+'</div>';
+				var authorName = author.emailAddress;
 			}
 		} else {
-			var author = app.agents.get('54c79b88d21a58cb683b8941').attributes;
-			// console.log(app.user.attributes.id);
+			var author = app.agents.get(authorID).attributes;
 			var companyName = app.user.attributes.companyName;
-			return '<div class="name">'+author.firstName+' '+author.lastName+'</div>' +
-					'<div class="company-name">'+companyName+'</div>';
+			var authorName = author.firstName+' '+author.lastName;
 		}
+		// var authorName = "placeholder name";
+		// var authorName = "placeholder company";
+		return '<div class="name">'+authorName+'</div>' +
+			   '<div class="company-name">'+companyName+'</div>';
 	}
 
 }
