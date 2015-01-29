@@ -22,7 +22,7 @@
 	</body>
 	
 	<script type="text/javascript">
-		//4242424242424242
+		// Sandbox credit card number: 4242424242424242
 				
 		jQuery(function($) {
 			$('#payment-form').submit( function(event) {
@@ -69,8 +69,18 @@
     				cache: false,
     				data: JSON.stringify(data)
 				}).done( function(ret) {
-					console.log(ret.id);
 					console.log(ret);
+					
+					$('#payment-form').hide();
+					
+					// If error code returned by server
+					if(ret.error) {
+						$('#payment-form .payment-errors').text('There was a problem processing your transaction');
+						return;
+					}
+					
+					$('#payment-form').hide();
+					$('body').append('<span>Success</span>');
 				});
 			}
 		}

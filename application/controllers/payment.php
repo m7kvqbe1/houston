@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Extra\Payment;
 
-// Charge payment to customer - Move to become part of registration controller!
+// Charge payment to customer - Combine controller code with registration controller!
 $app->post('/payment/charge', function(Request $request, Application $app) {
 	$data = json_decode(file_get_contents('php://input'));
 	
@@ -14,21 +14,17 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	
 	$payment->setToken($data->token);
 	
-	$payment->createStripeCustomer();
-	
-	print_r($payment->customer);
-	
-	//$charge = $payment->createStripeCharge();
-	//$return = str_replace('Stripe_Charge JSON: ', '', $return);
-	//return json_encode($return);
-	
-	return 'hello world';
+	try {
+		$customer = $payment->createStripeCustomer($payment->token, '54c7c89dd21a58416e3b8941', $payment->plan['id']);	// Hard coded user object MongoID for the purpose of testing
+		return $customer->__toJSON();
+	} catch(\Stripe_Error $e) {
+		$body = $e->getJsonBody();
+		return json_encode($body['error']);
+	}
 });
 
-// Create user account
+// Create stripe customer with relevant subscription plan - Complete
 
-// Create Stripe customer
+// Update Houston user with stripeCustomerID - Complete
 
-// Charge Stripe customer
-
-// On login check that stripe customer has valid subscription
+// On login check that stripe customer has valid subscription if not redirect to payment page

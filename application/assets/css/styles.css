@@ -236,6 +236,12 @@ footer {
 	min-width: 320px;
 }
 
+.wrapper.login {
+	position: relative;
+	top: 50%;
+	transform: translateY(-52%);
+}
+
 .box {
 	background: #fff;
 	overflow: hidden;

@@ -2,7 +2,6 @@
 namespace Houston\Extra;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
 
 abstract class Mailbox 
 {
