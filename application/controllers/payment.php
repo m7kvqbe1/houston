@@ -14,17 +14,17 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	
 	$payment->setToken($data->token);
 	
-	$payment->createStripeCustomer();
-	
-	$charge = $payment->createStripeCharge();
-
-	return json_encode($charge);
+	try {
+		$customer = $payment->createStripeCustomer($payment->token, '54c7c89dd21a58416e3b8941', $payment->plan['id']);	// Hard coded user object MongoID for the purposes of testing
+		return $customer->__toJSON();
+	} catch(\Stripe_Error $e) {
+		$body = $e->getJsonBody();
+		return json_encode($body['error']);
+	}
 });
 
 // Create user account - Complete
 
-// Create Stripe customer - Complete
-
-// Charge Stripe customer - Charge pre-defined subscription not value!
+// Create Stripe customer with relevant subscription plan - Complete
 
 // On login check that stripe customer has valid subscription if not redirect to payment page

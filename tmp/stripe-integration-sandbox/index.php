@@ -70,6 +70,15 @@
     				data: JSON.stringify(data)
 				}).done( function(ret) {
 					console.log(ret);
+					
+					$('#payment-form').hide();
+					
+					// If error code returned by server
+					if(ret.error) {
+						$('#payment-form .payment-errors').text('There was a problem processing your transaction');
+						return;
+					}
+					
 					$('#payment-form').hide();
 					$('body').append('<span>Success</span>');
 				});

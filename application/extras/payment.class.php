@@ -6,17 +6,17 @@ use Houston\Model\UserModel;
 
 class Payment 
 {
-	private static $availablePlans = array(
-		1 => array('name' => 'Houston Unlimited Monthly', 'amount' => 1000, 'currency' => 'USD'),
-		2 => array('name' => 'Houston Unlimited Annual', 'amount' => 12000, 'currency' => 'USD')
+	private static $subscriptionPlans = array(
+		1 => array('id' => 'houston-monthly', 'name' => 'Monthly Houston Subscription (Unlimited)', 'amount' => 9999, 'currency' => 'GBP'),
+		2 => array('id' => 'houston-annual', 'name' => 'Annual Houston Subscription (Unlimited)', 'amount' => 12000, 'currency' => 'GBP')
 	);
 	
 	private $app;
-	private $token;
-
+	
+	public $token;
 	public $plan;
-	public $charge;
 	public $customer;
+	public $charge;
 	
 	public function __construct(Application $app) 
 	{
@@ -33,8 +33,8 @@ class Payment
 	public function setPlan($planID) 
 	{
 		$planID = (int) $planID;
-		if(!array_key_exists($planID, self::$availablePlans)) throw new \UnexpectedValueException('Invalid subscription plan');
-		$this->plan = self::$availablePlans[$planID];
+		self::checkValidPlan($planID);
+		$this->plan = self::$subscriptionPlans[$planID];
 	}
 	
 	public function getToken() 
@@ -47,43 +47,48 @@ class Payment
 		$this->token = $token;
 	}
 	
-	public function fetchStripeCustomer($userID) 
+	private static function checkValidPlan($planID) 
 	{
-		
+		if(!array_key_exists($planID, self::$subscriptionPlans)) throw new \InvalidArgumentException('Invalid subscription plan');
+		return true;
 	}
 	
-	public function createStripeCustomer() 
-	{
+	public function createStripeCustomer($token, $userID, $plan = null) 
+	{		
+		// Load Houston user object
 		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID('54c7c89dd21a58416e3b8941');	// Hard coded MongoID for the purposes of testing
+		$userModel->loadUserByID($userID);
 		
 		// Create stripe customer
 		$this->customer = \Stripe_Customer::create(array(
 			'description' => 'Houston Customer',
-			'card' => $this->token,
-			'email' => $userModel->user['emailAddress']
+			'card' => $token,
+			'email' => $userModel->user['emailAddress'],
+			'plan' => $plan
 		));
 		
 		// Update Houston user with stripeCustomerID
-		$userModel->setProperty('54c7c89dd21a58416e3b8941', 'stripeCustomerID', $this->customer->id);		// Hard coded MongoID for the purposes of testing
+		$userModel->setProperty($userID, 'stripeCustomerID', $this->customer->id);
 		
 		return $this->customer;
 	}
 	
-	public function createStripeCharge() 
+	public function createStripeCharge($plan = array(), $customerID = null, $token = null) 
 	{	
-		if(!isset($this->customer->id)) throw new \Exception('Customer not found');
-		
-		if(!isset($this->plan)) throw new \Exception('Subscription plan not found');
-		
 		$this->charge = \Stripe_Charge::create(array(
 			'card'	=> 	null,
-			'customer' => $this->customer->id,
-			'amount' => $this->plan['amount'],
-			'currency' => $this->plan['currency'],
-			'description' => $this->plan['name']
+			'customer' => $customerID,
+			'amount' => $plan['amount'],
+			'currency' => $plan['currency'],
+			'description' => $plan['name']
 		));
 		
 		return $this->charge;
+	}
+	
+	public function fetchStripeSubscriptionPlan($stripeCustomerID)
+	{
+		$this->plan = \Stripe_Customer::retrieve($stripeCustomerID)->subscriptions->all(array('limit' => 1));
+		return $this->plan;
 	}
 }
