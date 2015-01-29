@@ -53,6 +53,10 @@ class Payment
 		return true;
 	}
 	
+	public function fetchStripeCustomer($stripeCustomerID) {
+		$this->customer = \Stripe_Customer::retrieve($stripeCustomerID);
+	}
+	
 	public function createStripeCustomer($token, $userID, $plan = null) 
 	{		
 		// Load Houston user object
@@ -73,6 +77,17 @@ class Payment
 		return $this->customer;
 	}
 	
+	public function fetchStripeSubscriptionPlan($stripeCustomerID)
+	{
+		$this->plan = \Stripe_Customer::retrieve($stripeCustomerID)->subscriptions->all(array('limit' => 1));
+		return $this->plan;
+	}
+	
+	public function cancelStripeSubscriptionPlan($stripeSubscriptionPlan)
+	{
+		$stripeSubscriptionPlan->cancel();
+	}
+	
 	public function createStripeCharge($plan = array(), $customerID = null, $token = null) 
 	{	
 		$this->charge = \Stripe_Charge::create(array(
@@ -84,11 +99,5 @@ class Payment
 		));
 		
 		return $this->charge;
-	}
-	
-	public function fetchStripeSubscriptionPlan($stripeCustomerID)
-	{
-		$this->plan = \Stripe_Customer::retrieve($stripeCustomerID)->subscriptions->all(array('limit' => 1));
-		return $this->plan;
 	}
 }

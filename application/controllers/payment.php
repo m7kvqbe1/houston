@@ -15,7 +15,7 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	$payment->setToken($data->token);
 	
 	try {
-		$customer = $payment->createStripeCustomer($payment->token, '54c7c89dd21a58416e3b8941', $payment->plan['id']);	// Hard coded user object MongoID for the purposes of testing
+		$customer = $payment->createStripeCustomer($payment->token, '54c7c89dd21a58416e3b8941', $payment->plan['id']);	// Hard coded user object MongoID for the purpose of testing
 		return $customer->__toJSON();
 	} catch(\Stripe_Error $e) {
 		$body = $e->getJsonBody();
@@ -23,8 +23,8 @@ $app->post('/payment/charge', function(Request $request, Application $app) {
 	}
 });
 
-// Create user account - Complete
+// Create stripe customer with relevant subscription plan - Complete
 
-// Create Stripe customer with relevant subscription plan - Complete
+// Update Houston user with stripeCustomerID - Complete
 
 // On login check that stripe customer has valid subscription if not redirect to payment page

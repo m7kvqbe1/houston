@@ -22,7 +22,7 @@
 	</body>
 	
 	<script type="text/javascript">
-		//4242424242424242
+		// Sandbox credit card number: 4242424242424242
 				
 		jQuery(function($) {
 			$('#payment-form').submit( function(event) {
