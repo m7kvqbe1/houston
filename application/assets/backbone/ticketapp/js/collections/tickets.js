@@ -20,7 +20,7 @@ var Tickets = Backbone.Collection.extend({
 	},
 	
 	allTickets: function(){
-		//possible refactor
+		// Possible refactor 
 		filtered = this.filter(function(data){
 			return data.get('status') !== 'Completed';
 		});
@@ -44,7 +44,6 @@ var Tickets = Backbone.Collection.extend({
 	byFilter: function(key, value){
 		filtered = this.filter(function(data){
 			return data.get(key) === value;
-			//return data.get(key) === value && data.get('status') !== 'Completed';
 		});
 		return filtered;
 	},
@@ -95,5 +94,4 @@ var Tickets = Backbone.Collection.extend({
 		}
 		this.filtered.sort();
 	}
-	
 });

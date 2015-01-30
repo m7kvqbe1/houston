@@ -1,149 +1,151 @@
 var AppRouter = Backbone.Router.extend({
 	routes: {
-		//set up routes
-		"": "list",
-		"tickets/new": "ticketForm",
-		"tickets/:ticket": "ticketDetails",
-		"people": "peopleOverview",
-		"account": "accountMain"
+		"": "indexController",
+		"tickets/new": "ticketFormController",
+		"tickets/:ticket": "ticketDetailsController",
+		"people": "peopleOverviewController",
+		"account": "accountMainController"
 	},
 	
 	initialize: function() {
-		
-		//add dataTransfer to jquery events
+		// Add dataTransfer to jquery events
 		jQuery.event.props.push("dataTransfer");
 
-		// Check for the various File API support.
-		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.log('The File APIs are not fully supported in this browser.');
+		// Check for File API support
+		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File APIs are not fully supported in this browser');
 
-		//USER OBJECT
-		//instantiate the user model
+		// AUTHENTICATED SESSION USER MODEL
 		this.user = new UserModel();
-		//fetch user data
 		this.user.fetch({
 			success: function(){
-				app.list();
+				console.log('userFetch');
+				app.userFetched = true;
+				app.initViews();
 			}
 		});
+		
+		//----------------------------------------
 	
-		//TICKETS
-		//instantiate the ticket collection
+		// TICKETS COLLECTION
 		this.tickets = new Tickets();
-		//fetch ticket data	
 		this.tickets.fetch({
-			success: function(){				
-				app.list();
-				// app.navigate('', {trigger: true});
+			success: function(){
+				console.log('ticketFetch');	
+				app.ticketsFetched = true;	
+				app.initViews();
 			}
 		});
-		//instantiate the tickets view and set it the tickets collection
-		this.ticketsView = new TicketView(
-			{
-				collection: this.tickets.filtered
-			}
-		);	
 		
-		//SINGLE TICKET		
-		//instantiate the ticketDetail model
+		// TICKET MODEL
 		this.ticketDetailModel = new TicketDetailModel();
-		//instantiate the ticket view and set it the ticket model
-		this.ticketDetailView = new TicketDetailView(
-			{
-				model: new TicketDetailModel()
-			}
-		);	
-
-		//NEW TICKET
-		//instantiate the new ticket view and set it the ticket model 
-		this.formView = new FormView({ model: new TicketModel()});
 		
-		//PEOPLE
-		//instantiate the clients collection
+		
+		//----------------------------------------
+		
+		// CLIENTS COLLECTION
 		this.clients = new Clients();
-		//fetch client data
 		this.clients.fetch({
 			success: function(){
-				app.list();
+				console.log('clientsFetch');
+				app.clientsFetched = true;
+				app.initViews();
 			}
 		});
-		//instantiate the addClientModel
-		this.addClientModel = new AddClientModel();
+		
+		// BUFFER CLIENT MODEL
+		this.addClientModel = new BufferClientModel();
 
-		//instantiate the client view and set it the clients collection
-		this.clientsView = new ClientsView(
-			{ 
-				collection: this.clients
-			});
-
-		//instantiate the agents collection
+		// AGENTS COLLECTION
 		this.agents = new Agents();
-		//fetch agent data
-		this.agents.fetch();
-		//instantiate the addAgent model
-		this.addAgentModel = new AgentModel();
-
-		//instantiate the people view and pass it the agents collection and the addAgentModel
-		this.peopleView = new PeopleView(
-			{
-				collection: this.agents
+		this.agents.fetch({
+			success: function(){
+				console.log('agentsFetch');
+				app.agentsFetched = true;
+				app.initViews();
 			}
-		); 
+		});
+		
+		// BUFFER AGENT MODEL
+		this.addAgentModel = new BufferAgentModel();
 
-		//instantiate the addClientUser model
-		this.addClientUserModel = new ClientUserModel();
-
-		//ACCOUNT
-		this.accountView = new AccountView(
-			{ 
-				model: this.user
-			}
-		);
+		// BUFFER CLIENT USER MODEL
+		this.addClientUserModel = new BufferClientUserModel();
 	},
 
+	// Data fetched flags
+	userFetched: false,
+	ticketsFetched: false,
+	clientsFetched: false,
+	agentsFetched: false,
 	clientUserCount: 0,
+	
+	loaded: function() {
+		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.agentsFetched && this.clients.models.length == this.clientUserCount) return true;
+		return false;
+	},
 
-	list: function() {
-		if(this.user && this.tickets && this.clients && this.clients.models.length == this.clientUserCount){ 
-			$('#app').html(this.ticketsView.render().el);
-		} else {
-			$('#app').html('<h1>Loading</h1>');
+	viewInit: false,
+	initViews: function() {
+		if(app.loaded()) {			
+			// TICKETS VIEW
+			this.ticketsView = new TicketView({ collection: this.tickets.filtered });
+			
+			// TICKET VIEW
+			this.ticketDetailView = new TicketDetailView({ model: this.ticketDetailModel });
+
+			// NEW TICKET VIEW
+			this.formView = new FormView({ model: new TicketModel() });
+			
+			//----------------------------------------
+			
+			// CLIENTS VIEW
+			this.clientsView = new ClientsView({ collection: this.clients });
+			
+			// PEOPLE VIEW
+			this.peopleView = new PeopleView({ collection: this.agents }); 
+			
+			// ACCOUNT VIEW
+			this.accountView = new AccountView({ model: this.user });
+			
+			this.viewInit = true;
 		}
 	},
+	
+	onLoadRender: function(view) {
+		var check = setInterval(function() {			
+			if(app.viewInit) {
+				$('#app').html(app[view].render().el);
+				clearInterval(check);
+			}
+		}, 50);
+	},
 
-	ticketDetails: function(ticket) {
+	// Define controllers
+	indexController: function() {
+		this.onLoadRender('ticketsView');
+	},
+
+	ticketDetailsController: function(ticket) {
 		var attributes = this.tickets.get(ticket).attributes;
 		this.ticketDetailView.model.set(attributes);
 		this.ticketDetailView.model.fetchMessages(ticket);
-		$('#app').html(this.ticketDetailView.render().el);		
+		
+		this.onLoadRender('ticketDetailView');
 	},
 
-	ticketForm: function() {
-		$('#app').html(this.formView.render().el);
+	ticketFormController: function() {
+		this.onLoadRender('formView');
 	},
 	
-	peopleOverview: function() {
-		// this.peopleView.clientsView.collection.fetch(); //was removed by adding fetch call in initialize above //was removed by adding the fetch call into the Agents collection on sync
-		$('#app').html(this.peopleView.render().el);
+	peopleOverviewController: function() {
+		this.onLoadRender('peopleView');
 	},
 	
-	accountMain: function() {
-		$('#app').html(this.accountView.render().el);
+	accountMainController: function() {
+		this.onLoadRender('accountView');
 	}
-
 });
 
 var app = new AppRouter();
 
-$(function() {
-	Backbone.history.start();
-});
-
-
-//TicketDetail
-// Most recent previous way
-		// this.ticketDetailView.model.set('id', ticket);
-		// this.ticketDetailView.model.fetch({
-		// 	success: _.bind(function(){
-		// 		$('#app').html(this.ticketDetailView.render().el);
-		// 	}, this)
-		// });
+$(function() { Backbone.history.start(); });

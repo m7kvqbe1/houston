@@ -256,10 +256,17 @@ var houston = {
 				var authorName = author.emailAddress;
 			}
 		} else {
-			var author = app.agents.get(authorID).attributes;
+			if(app.agents.get(authorID)){ //check if it has been fetched
+				var author = app.agents.get(authorID).attributes;
+				var authorName = author.firstName+' '+author.lastName;
+			} else {
+				var authorName = '';
+			}
 			var companyName = app.user.attributes.companyName;
-			var authorName = author.firstName+' '+author.lastName;
+			
 		}
+		// var authorName = 'placeholderName';
+		// var companyName = 'placeholderComapny';
 
 		return '<div class="name">'+authorName+'</div>' +
 			   '<div class="company-name">'+companyName+'</div>';

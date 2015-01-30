@@ -1,5 +1,5 @@
 var Agents = Backbone.Collection.extend({
-	model: AgentModel,	
+	model: BufferAgentModel,	
 	urlRoot: '/agents',
 	url: '/agents',
 	initialize: function(){
