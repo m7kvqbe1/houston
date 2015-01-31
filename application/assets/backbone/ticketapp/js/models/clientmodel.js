@@ -1,4 +1,5 @@
 var ClientModel = Backbone.Model.extend({
+	url: '/clients',
 	initialize: function(){
 		// Create userCollection within model, give it model specific url and fetch data
 		this.usersCollection = new Users();
@@ -14,10 +15,6 @@ var ClientModel = Backbone.Model.extend({
 		this.modelView = new ClientView({model: this});
 	},
 	
-	urlRoot: '/clients',
-	
-	url: '/clients',
-	
 	parse: function(response){
 		if(response._id){
 			response.id = response._id['$id'];
@@ -28,6 +25,7 @@ var ClientModel = Backbone.Model.extend({
 });
 
 var BufferClientModel = Backbone.Model.extend({
+	url: '/clients',
 	initialize: function(){
 		// On save of app.addClientModel fetch app.clients which triggers the clientview to render
 		this.on("sync", function(){
@@ -35,11 +33,7 @@ var BufferClientModel = Backbone.Model.extend({
 		});
 
 	},
-	
-	urlRoot: '/clients',
-	
-	url: '/clients',
-	
+
 	parse: function(response){
 		if(response._id){
 			response.id = response._id['$id'];
@@ -48,4 +42,3 @@ var BufferClientModel = Backbone.Model.extend({
 		return response;
 	}
 });
-//lostechies.com/derickbailey/2011/10/11/backbone-js-getting-the-model-for-a-clicked-element/

@@ -66,7 +66,6 @@ var FileUploadView = Backbone.View.extend({
 
 	render : function(){
 		this.$el.html(this.template(this.collection));
-
 		this.delegateEvents({
 			'click .attach-link': 'fileDialogTrigger',
 			'dragover #drop_zone': 'handleDragOver',
@@ -84,8 +83,6 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	previewFile: function(e){
-		console.log(this.collection);
-		//should be done with a collectoin.get on the cid
 		var button = $(e.currentTarget);
 		var img = button.data("img");
 		var prevWindow = this.$el.find('.preview-window');
@@ -113,53 +110,34 @@ var FileUploadView = Backbone.View.extend({
 		return filesArray;
 	},
 
-
 	addFiles: function(files){
 		for (var i = 0, f; f = files[i]; i++) {
-
 	        var reader = new FileReader();
 			reader.onerror = this.fileErrorHandler;
-			//is there need for ability to abort whilst file is being uploaded?
-	        reader.onabort = function(e) {
-	        	console.log(e);
-		        alert('File read cancelled');
-		    };
 
-	        // Closure to capture the file information.
 	        reader.onloadend = _.bind((function(theFile) {
-		        return function(e) {
-		        	
+		        return function(e) {	        	
 			        theFile["target"] = e.target.result;
-
 					delete theFile["webkitRelativePath"];
 					var fileMdl = new FileUploadModel();
-					fileMdl.url = '/tickets/file/add';
-					//need to add the file to the collection for it to appear in the view
 					this.collection.add(fileMdl);
 					fileMdl.save(theFile);
 
 		        };
 	        })(f), this);
 
-	        // Read in the image file as a data URL.
 	        reader.readAsDataURL(f);
 	  	}
 	},
 
 	deleteFile: function(e){
-
 		var button = $(e.currentTarget);
 		var cid = button.data("cid");	
 		var fileToDelete = this.collection.get(cid);
-		//stackoverflow.com/questions/6280553/destroying-a-backbone-model-in-a-collection-in-one-step
 		this.collection.remove(fileToDelete);
-		// // fileToDelete.destroy(); DO I NEED TO DO THIS? check with tom if it works
-
 	},
 
-
 	fileErrorHandler: function(evt){
-		//Add in error to view
 		console.log(evt);
 		switch(evt.target.error.code) {
 			case evt.target.error.NOT_FOUND_ERR:
@@ -169,14 +147,13 @@ var FileUploadView = Backbone.View.extend({
 				alert('File is not readable');
 				break;
 			case evt.target.error.ABORT_ERR:
-				break; // noop
+				break; 
 			default:
 				alert('An error occurred reading this file.');
 		};
 	},
 
 	handleFileSelect: function(evt) {
-
 		this.addFiles(evt.target.files);
 	},
 
@@ -185,23 +162,17 @@ var FileUploadView = Backbone.View.extend({
 	    evt.preventDefault();
 	    $(evt.currentTarget).removeClass('drop-highlight');
 	    this.addFiles(evt.dataTransfer.files);
-
 	},
 
 	abortFileUpload: function(){
 		reader.abort();
 	},
 
-
 	handleDragOver: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
 	    $(evt.currentTarget).addClass('drop-highlight');
-	    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-
-	    //stackoverflow.com/questions/11989289/css-html5-hover-state-remains-after-drag-and-drop
-		//stackoverflow.com/questions/14788862/drag-drop-doenst-not-work-dropeffect-of-undefined
-	    
+	    evt.dataTransfer.dropEffect = 'copy';     
 	},
 
 	handleDragLeave: function(evt){

@@ -43,10 +43,8 @@ var PeopleView = Backbone.View.extend({
 	),
 	
 	initialize: function() {		
+		this.listenTo(this.collection, "sync", this.render);
 
-		this.listenTo(this.collection, "sync", this.render);	
-
-		//give collection reference to this view
 		this.collection.view = this;
 
 		Handlebars.registerHelper("fullHeightPage", function() {
@@ -76,7 +74,7 @@ var PeopleView = Backbone.View.extend({
 			{
 				"emailAddress": this.$el.find('#form-add-agent input[type="text"]').val(),
 				"verify": false
-			}
+			};
 
 		app.addAgentModel.save(attributes,{
 			success: _.bind(function(model){

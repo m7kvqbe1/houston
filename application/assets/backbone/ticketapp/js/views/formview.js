@@ -25,8 +25,7 @@ var FormView = Backbone.View.extend({
 	),
 
 	initialize: function() {
-
-		//instantiate files upload collection and view
+		//FILES COLLECTION AND VIEW
 		var filesUploadCollection = new FilesUpload();
 		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
 		this.fileUploadView.parent = this;
@@ -37,7 +36,6 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
-		//reset fileUpload collection
 		this.fileUploadView.collection.reset();
 
 		this.$el.html(this.template(this.model));	
@@ -45,11 +43,10 @@ var FormView = Backbone.View.extend({
 		this.fileUploadView.render();
 
 		this.delegateEvents({
-			'click .save': 'save',
+			'click .save': 'saveModel',
 			'input .new-sub': 'subjectCharCount',
 			'click .cancel-btn': 'cancelTicket'
 		});
-
 		return this;
 	},
 	
@@ -57,14 +54,12 @@ var FormView = Backbone.View.extend({
 		return houston.subjectCharCount(this.$el);
 	},
 	
-	save: function(){
+	saveModel: function(){
 		if(this.$el.find('input[name="new-sub"]').val()){
 			this.setModelData();			
 			this.model.save(this.model.attributes,
 				{
-					success: _.bind(function(model, response, options){					
-						//ensure formView always uses a fresh model
-						// this.model.clear(); need to do some form of garbage disposal
+					success: _.bind(function(){					
 						this.model = new TicketModel();
 						app.navigate('', {trigger: true});
 					}, this)
@@ -72,8 +67,7 @@ var FormView = Backbone.View.extend({
 			);
 		} else {
 			console.log('invalid');
-		}
-	
+		}	
 	},
 
 	setModelData: function(){

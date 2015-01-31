@@ -94,18 +94,14 @@ var TicketDetailView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
 
-		//give model reference to this view
-		this.model.view = this;
-
-		//create message model for adding messages
+		//MESSAGE BUFFERMODEL
 		this.messageModel = new MessageModel();
 
-		//create messages collection
+		//MESSAGES COLLECTION
 		var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
 		
-		//stackoverflow.com/questions/11479094/conditional-on-last-item-in-array-using-handlebars-js-template
 		Handlebars.registerHelper("forEach",function(arr,options) {
 			return houston.forEach(arr, options);
 		});
@@ -132,7 +128,6 @@ var TicketDetailView = Backbone.View.extend({
 	render: function (){	
 		this.$el.html(this.template(this.model));
 
-		//reset fileUpload collection
 		this.messagesView.fileUploadView.collection.reset();
 
 		this.$('#messages-wrap').append(this.messagesView.$el);
@@ -152,15 +147,13 @@ var TicketDetailView = Backbone.View.extend({
 		});
 		return this;
 	},
-	
-	
+		
 	dropSelect: function(e){
 		houston.dropSelect(e.currentTarget);		
 	},
 	
 	dropDown: function(e){
 		var changed = houston.dropDown(e.currentTarget);
-		//look for way to do without if
 		if(changed.param == 'status') {
 			this.model.set({
 				status: changed.value
@@ -169,7 +162,7 @@ var TicketDetailView = Backbone.View.extend({
 			this.model.set({
 				agent: changed.value
 			});
-			//if setting agent for the first time add status of in progress
+			//If setting agent for the first time add status of in progress
 			var currentStatus = this.model.get('status');
 			if(currentStatus == 'New'){
 				this.model.set({
@@ -207,7 +200,7 @@ var TicketDetailView = Backbone.View.extend({
 	},
 	
 	addMessage: function(){	
-		//if ticket marked as complete
+		//If ticket marked as complete
 		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
 			this.model.set({
 				status: 'Completed'
@@ -232,16 +225,10 @@ var TicketDetailView = Backbone.View.extend({
 			}, this)
 		});
 
-		// add response to collection to stop view shuddering on render
-		// this.messagesView.collection.add(this.messageModel); 
-
 		this.model.set({			
 			hasMessages: true
 		});
 
-		console.log(this.model.attributes);
-
-		//save sets updated array
 		this.saveModel();
 
 	}

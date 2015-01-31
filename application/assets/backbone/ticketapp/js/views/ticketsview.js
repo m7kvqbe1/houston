@@ -68,7 +68,6 @@ var TicketView = Backbone.View.extend({
 			return houston.getUserName(attribute);
 		});
 
-		//http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers
 		Handlebars.registerHelper("convertToClass", function(attribute) {
 			return houston.convertToClass(attribute);
 		});
@@ -86,7 +85,6 @@ var TicketView = Backbone.View.extend({
 		});
 
 		Handlebars.registerHelper("companyArrow", function() {
-			// console.log('companyArrow');
 			return new Handlebars.SafeString(houston.companyArrow());	
 		});
 
@@ -94,7 +92,7 @@ var TicketView = Backbone.View.extend({
 			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
 		});
 
-		//make sure to unbind event
+		//Resize event, unbind
 		$(window).on("resize", this.pageResize);
 		
 	},

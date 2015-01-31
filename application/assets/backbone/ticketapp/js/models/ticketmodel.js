@@ -1,4 +1,5 @@
 var TicketModel = Backbone.Model.extend({
+	url: 'tickets',
 	initialize: function(){
 		this.on("sync", function(){
 			//when a new ticket is saved fetch the tickets collection
@@ -12,13 +13,11 @@ var TicketModel = Backbone.Model.extend({
 	}
 		return response;
 	},
-	urlRoot: '/tickets',
 	defaults: {
 		status: 'New',
 		agent: false,
 		files: [],
 		hasMessages: false,
-		updated: [],
-		url: '/tickets'		
+		updated: []		
 	}
 });

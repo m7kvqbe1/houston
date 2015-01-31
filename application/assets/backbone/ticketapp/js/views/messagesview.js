@@ -58,6 +58,7 @@ var MessagesView = Backbone.View.extend({
 	initialize: function(){
 		this.listenTo(this.collection, 'add sync', this.render);
 
+		//FILES COLLECTION AND VIEW
 		var filesUploadCollection = new FilesUpload();
 		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
 		this.fileUploadView.parent = this;
@@ -73,40 +74,5 @@ var MessagesView = Backbone.View.extend({
 		this.fileUploadView.collection.reset();		
 		this.parent.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
 		this.fileUploadView.render();
-		
-		// this.delegateEvents({
-		// 	'click .add-message': 'addMessage'
-		// });
 	}
-
-	// ,
-	
-	// addMessage: function(){	
-	// 	console.log('o');
-	// 	//if ticket marked as complete
-	// 	if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
-	// 		console.log('completion');
-	// 		this.model.set({
-	// 			status: 'Completed'
-	// 		});		
-	// 	}
-		
-	// 	var msg = {
-	// 		"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
-	// 		"role": "agent",
-	// 		"avatar": app.user.attributes.avatar, 
-	// 		"company": app.user.attributes.company,
-	// 		"date": new Date(),
-	// 		"message": this.$el.find('textarea[name="new-textarea"]').val()
-	// 	};
-
-	// 	var msgMdl = new MessageModel(msg);
-
-	// 	msgMdl.url = '/tickets/reply/' + this.parent.model.id;
-	// 	msgMdl.save();
-	// 	console.log('mes');
-	// 	//set updated array
-	// 	this.parent.saveModel();
-
-	// }
 });

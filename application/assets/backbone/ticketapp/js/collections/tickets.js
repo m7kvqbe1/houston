@@ -20,7 +20,6 @@ var Tickets = Backbone.Collection.extend({
 	},
 	
 	allTickets: function(){
-		// Possible refactor 
 		filtered = this.filter(function(data){
 			return data.get('status') !== 'Completed';
 		});
@@ -28,6 +27,7 @@ var Tickets = Backbone.Collection.extend({
 	},
 	
 	byAgent: function(){
+		//Needs to change to use id
 		filtered = this.filter(function(data){
 			return data.get('agent') == app.user.attributes.firstName + ' ' + app.user.attributes.lastName && data.get('status') !== 'Completed';
 		});

@@ -47,13 +47,9 @@ var ClientsView = Backbone.View.extend({
 		this.$el.find('.add-client').slideToggle().find('input[type="text"]').focus();
 	},
 
-
 	addClient: function(e) {
 		var name = this.$el.find('#form-add-client input[type="text"]').val();
-		var attributes = 
-			{
-				"name": name
-			}
+		var attributes = { "name": name };
 
 		app.addClientModel.save(attributes,{
 			success: _.bind(function(model){
@@ -63,8 +59,6 @@ var ClientsView = Backbone.View.extend({
 	}
 
 });
-
-
 
 var ClientView = Backbone.View.extend({
 	tagName: "li",
@@ -91,13 +85,10 @@ var ClientView = Backbone.View.extend({
 	),	
 
 	initialize: function(){
-
-		this.listenTo(this.model, "sync", this.render);
-		
-		// create usersView as a child of the client view, populate it with the model's usersCollection
+		this.listenTo(this.model, "sync", this.render);		
+		// Create usersView as a child of the client view, populate it with the model's usersCollection
 		this.usersView = new UsersView({ collection: this.model.usersCollection});
 		this.usersView.parent = this;
-
 	},
 
 	render: function(){	
@@ -122,17 +113,15 @@ var ClientView = Backbone.View.extend({
 			{
 				"emailAddress": emailAddress,
 				"clientID": clientID
+			};
 
-			}
-
-		//Give the addClientUser Model a reference to the view that used it so that when model is saved it knows which view to render
+		//Give the addClientUser Model a reference to the view that used it, so that when model is saved it knows which view to render
 		app.addClientUserModel.currentView = this;
 		app.addClientUserModel.save(attributes,{
 			success: _.bind(function(model){
 				app.addClientUserModel.clear();
 			}, this)
 		});
-
 	}
 
 });
@@ -140,8 +129,7 @@ var ClientView = Backbone.View.extend({
 var UsersView = Backbone.View.extend({
 
 	initialize: function(){
-		this.listenTo(this.collection, 'sync', this.render);	
-		
+		this.listenTo(this.collection, 'sync', this.render);			
 		_.bindAll(this, "renderUser");
 	},
 

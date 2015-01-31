@@ -1,16 +1,19 @@
 var TicketDetailModel = Backbone.Model.extend({
+	urlRoot: '/tickets',
 	initialize: function(){
 		this.on("sync",  function(){
-			// app.ticketDetailView.messagesView.collection.url = '/tickets/reply/' + this.id;
-			// app.ticketDetailView.messagesView.collection.fetch();
-			this.view.messagesView.collection.url = '/tickets/reply/' + this.id;
-			this.view.messagesView.collection.fetch();
+			app.ticketDetailView.messagesView.collection.url = '/tickets/reply/' + this.id;
+			app.ticketDetailView.messagesView.collection.fetch();
 		});
 	},
 
-	fetchMessages: function(id){
-		this.view.messagesView.collection.url = '/tickets/reply/' + id;
-		this.view.messagesView.collection.fetch();
+	fetchMessages: function(){
+		app.ticketDetailView.messagesView.collection.url = '/tickets/reply/' + this.id;
+		app.ticketDetailView.messagesView.collection.fetch({
+			success: function(){
+				app.onLoadRender('ticketDetailView');
+			}
+		});
 	},
 
 	parse: function(response){
@@ -19,9 +22,5 @@ var TicketDetailModel = Backbone.Model.extend({
 		delete response._id;
 	}
 		return response;
-	},
-	urlRoot: '/tickets',
-	defaults: {
-		url: '/tickets'		
 	}
 });
