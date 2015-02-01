@@ -104,6 +104,8 @@ var AppRouter = Backbone.Router.extend({
 			// PEOPLE VIEW
 			this.peopleView = new PeopleView({ collection: this.agents }); 
 			
+			//----------------------------------------
+			
 			// ACCOUNT VIEW
 			this.accountView = new AccountView({ model: this.user });
 			

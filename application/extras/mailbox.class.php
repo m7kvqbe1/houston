@@ -29,11 +29,8 @@ abstract class Mailbox
 	
 	final public function connect($host, $username, $password) 
 	{
-		if(!$this->inbox = imap_open($host, $username, $password)) {
-			throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
-		} else {
-			return $this->inbox;
-		}
+		if(!$this->inbox = imap_open($host, $username, $password)) throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
+		return $this->inbox;
 	}
 	
 	final public function disconnect() 
@@ -85,7 +82,7 @@ abstract class Mailbox
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
 	
-	public function sendEmail($to, $from, $content, $attachments = array(), $headers = array()) 
+	public function sendEmail($to, $from, $body, $attachments = array(), $headers = array()) 
 	{
 		// Send new email using Swiftmailer library
 	}
@@ -100,8 +97,8 @@ class MailboxExtended extends Mailbox
 	{
 		parent::__construct($host, $username, $password, $serverEncoding);
 		
-		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 		if(isset($templateDir)) $this->templateDir = $templateDir;
+		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 	}
 	
 	public function generateTemplate() 
