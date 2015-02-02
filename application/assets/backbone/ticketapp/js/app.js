@@ -1,10 +1,10 @@
 var AppRouter = Backbone.Router.extend({
 	routes: {
-		"": "indexController",
-		"tickets/new": "ticketFormController",
-		"tickets/:ticket": "ticketDetailsController",
-		"people": "peopleOverviewController",
-		"account": "accountMainController"
+		"": "indexFrontController",
+		"tickets/new": "ticketFormFrontController",
+		"tickets/:ticket": "ticketDetailsFrontController",
+		"people": "peopleOverviewFrontController",
+		"account": "accountMainFrontController"
 	},
 	
 	initialize: function() {
@@ -123,25 +123,25 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	// Define controllers
-	indexController: function() {
+	indexFrontController: function() {
 		this.onLoadRender('ticketsView');
 	},
 
-	ticketDetailsController: function(ticket) {
+	ticketDetailsFrontController: function(ticket) {
 		var attributes = this.tickets.get(ticket).attributes;
 		this.ticketDetailView.model.set(attributes);
 		this.ticketDetailView.model.fetchMessages();
 	},
 
-	ticketFormController: function() {
+	ticketFormFrontController: function() {
 		this.onLoadRender('formView');
 	},
 	
-	peopleOverviewController: function() {
+	peopleOverviewFrontController: function() {
 		this.onLoadRender('peopleView');
 	},
 	
-	accountMainController: function() {
+	accountMainFrontController: function() {
 		this.onLoadRender('accountView');
 	}
 });
