@@ -139,9 +139,7 @@ class MailboxExtended extends Mailbox
 	}
 	
 	public function getMessageMeta($message, $className) 
-	{		
-		var_dump($message);
-		
+	{				
 		$dom = new \DOMDocument();
 		$dom->loadHTML($message);
 		$xpath = new \DOMXPath($dom);
