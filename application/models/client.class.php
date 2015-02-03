@@ -16,32 +16,6 @@ class ClientModel
 		$this->app = $app;
 	}
 	
-	public function addClient($client) 
-	{
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		// Load user to get authenticated users company ID
-		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('u'));
-		
-		// Generate unique MongoId for new client
-		$client->_id = new \MongoId();
-		
-		try {
-			$collection = $db->companies;			
-			$collection->update(
-				array('_id' => $userModel->user['companyID']), 
-				array('$push' => array('clients' => $client))
-			);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
-		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
-		}
-	}
-	
 	public function getClients() 
 	{
 		$connections = $this->app['mongo'];
@@ -68,25 +42,30 @@ class ClientModel
 		return $this->client;
 	}
 	
-	public function getUsersByClientID($id) 
+	public function addClient($client) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-
-		$id = new \MongoId($id);
 		
-		$collection = $db->users;
-		$result = $collection->find(
-			array('clientID' => $id)
-		);
+		// Load user to get authenticated users company ID
+		$userModel = new UserModel($this->app);
+		$userModel->loadUserByID($this->app['session']->get('u'));
 		
-		$docs = array();
-		foreach($result as $doc) {
-			array_push($docs, $doc);
+		// Generate unique MongoId for new client
+		$client->_id = new \MongoId();
+		
+		try {
+			$collection = $db->companies;			
+			$collection->update(
+				array('_id' => $userModel->user['companyID']), 
+				array('$push' => array('clients' => $client))
+			);
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
 		}
-		
-		return $docs;
 	}
 	
 	public function removeClient($id) 

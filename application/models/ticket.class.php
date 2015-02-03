@@ -29,6 +29,23 @@ class TicketModel
 		}
 	}
 	
+	public function getAll() 
+	{
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$tickets = $db->tickets;
+		$result = $tickets->find();
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		return $docs;
+	}
+	
 	public function generateTicket($firstName, $lastName, $subject, $message, $date, $email) 
 	{
 		$this->ticket = new \stdClass();
@@ -56,26 +73,8 @@ class TicketModel
 		}
 		
 		$this->ticket->authorID = new \MongoID($userModel->user['_id']);
-		$this->ticket->authorRole = $userModel->user['role'];
 		
 		return $this->ticket;
-	}
-	
-	public function getAll() 
-	{
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		$tickets = $db->tickets;
-		$result = $tickets->find();
-		
-		$docs = array();
-		foreach($result as $doc) {
-		    array_push($docs, $doc);
-		}
-		
-		return $docs;
 	}
 		
 	public function add($ticket) 
