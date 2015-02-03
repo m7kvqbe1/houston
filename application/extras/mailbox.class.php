@@ -48,9 +48,12 @@ abstract class Mailbox
 			
 			$email['read'] = ($overview[0]->seen ? 'read' : 'unread');
 			$email['subject'] = $overview[0]->subject;
-			$email['from'] = explode(' ', $overview[0]->from, 2);
+			
+			$email['from'] = preg_replace('/<[^>]*>/', '', $overview[0]->from);
+			$email['from'] = explode(' ', $email['from'], 2);	// Remove email address
+			
 			$email['date'] = Helper::convertTimestamp($overview[0]->date);
-			$email['messageBody'] = imap_fetchbody($this->inbox, $num, 1); //($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
+			$email['messageBody'] = imap_body($this->inbox, $num);	//($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
 			$email['fromAddress'] = $header->from[0]->mailbox . '@' . $header->from[0]->host;
 			
 			$this->markRead($num);
@@ -139,7 +142,7 @@ class MailboxExtended extends Mailbox
 	}
 	
 	public function getMessageMeta($message, $className) 
-	{				
+	{			
 		$dom = new \DOMDocument();
 		$dom->loadHTML($message);
 		$xpath = new \DOMXPath($dom);
