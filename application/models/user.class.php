@@ -5,8 +5,9 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserModel 
-{
-	protected static $validProperties = array('stripeCustomerID', 'role', 'firstName', 'lastName', 'emailAddress', 'password', 'verify', 'companyID', '_id');
+{	
+	protected static $validProperties = array('_id', 'emailAddress', 'stripeCustomerID', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName');
+	
 	protected $app;	
 	public $user;
 	
@@ -61,6 +62,7 @@ class UserModel
 		
 		$docs = array();
 		foreach($result as $doc) {
+			unset($doc['password']);
 		    array_push($docs, $doc);
 		}
 		
@@ -321,24 +323,4 @@ class UserModel
 			die('Error: '.$e->getMessage());
 		}
 	}
-
-	/*DEPRECATEDpublic function getAgents() 
-	{
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		// Lookup current authenticated session company ID
-		$this->loadUserByID($this->app['session']->get('u'));
-		
-		$users = $db->users;
-		$result = $users->find(array('companyID' => $this->user['companyID'], 'role' => array('$in' => array('AGENT', 'ADMIN'))));
-		
-		$docs = array();
-		foreach($result as $doc) {
-		    array_push($docs, $doc);
-		}
-		
-		return json_encode($docs);
-	}*/
 }
