@@ -130,7 +130,7 @@ class MailboxExtended extends Mailbox
 		$this->template = file_get_contents(DOCUMENT_ROOT.$this->templateDir.$filename);
 	}
 	
-	private function generateReplyHtml() 
+	private function generateReplyHtml($ticketID) 
 	{
 		// Generate reply markup to inject into HTML email template
 	}
