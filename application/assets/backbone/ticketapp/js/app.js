@@ -51,19 +51,19 @@ var AppRouter = Backbone.Router.extend({
 				app.initViews();
 			}
 		});
-		
-		// BUFFER CLIENT MODEL
-		this.addClientModel = new BufferClientModel();
 
-		// AGENTS COLLECTION
-		this.agents = new Agents();
-		this.agents.fetch({
+		// USERS COLLECTION
+		this.users = new Users();
+		this.users.fetch({
 			success: function(){
 				console.log('agentsFetch');
-				app.agentsFetched = true;
+				app.usersFetched = true;
 				app.initViews();
 			}
 		});
+		
+		// BUFFER CLIENT MODEL
+		this.addClientModel = new BufferClientModel();
 		
 		// BUFFER AGENT MODEL
 		this.addAgentModel = new BufferAgentModel();
@@ -76,11 +76,11 @@ var AppRouter = Backbone.Router.extend({
 	userFetched: false,
 	ticketsFetched: false,
 	clientsFetched: false,
-	agentsFetched: false,
+	usersFetched: false,
 	clientUserCount: 0,
 	
 	loaded: function() {
-		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.agentsFetched && this.clients.models.length == this.clientUserCount) return true;
+		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched && this.clients.models.length == this.clientUserCount) return true;
 		return false;
 	},
 
@@ -98,11 +98,12 @@ var AppRouter = Backbone.Router.extend({
 			
 			//----------------------------------------
 			
-			// CLIENTS VIEW
-			this.clientsView = new ClientsView({ collection: this.clients });
-			
 			// PEOPLE VIEW
-			this.peopleView = new PeopleView({ collection: this.agents }); 
+			var agents = app.users.agentUsers();
+			this.peopleView = new PeopleView({ collection: agents }); 
+
+			// CLIENTS VIEW
+			// this.clientsView = new ClientsView({ collection: this.clients });
 			
 			// ACCOUNT VIEW
 			this.accountView = new AccountView({ model: this.user });
