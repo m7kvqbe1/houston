@@ -33,9 +33,8 @@ var TicketView = Backbone.View.extend({
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
-								'{{getAuthorDetails attributes.authorRole attributes.authorID attributes.companyID}}'+
-								// '<div class="name">{{getUserName attributes.authorID}}</div>' +
-								// '<div class="company-name">Company Name</div>' +
+								'<div class="name">{{getAuthorName attributes.authorID}}</div>' +
+								'<div class="company-name">CompanyName</div>' +
 								'<div class="summary">{{attributes.subject}}</div>' +
 							'</div>' +
 						'</div>' +
@@ -57,18 +56,8 @@ var TicketView = Backbone.View.extend({
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
-		Handlebars.registerHelper("getAuthorDetails", function(authorRole,authorID,companyID) {
-			// var json = dataHelper.getAuthorDetails(authorRole,authorID,companyID)
-			return new Handlebars.SafeString(
-			'<div class="name">Name</div>' +
-			'<div class="company-name">CompanyName</div>'
-			// '<div class="name">'+json.authorName+'</div>' +
-			// '<div class="company-name">'+json.companyName+'</div>'
-			 );
-		});
-
-		Handlebars.registerHelper("getUserName", function(attribute) {
-			return houston.getUserName(attribute);
+		Handlebars.registerHelper("getAuthorName", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
 		});
 
 		Handlebars.registerHelper("convertToClass", function(attribute) {
@@ -101,6 +90,7 @@ var TicketView = Backbone.View.extend({
 	},
 		
 	render: function() {
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',

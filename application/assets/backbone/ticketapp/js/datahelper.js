@@ -1,10 +1,14 @@
 var dataHelper = {
 
-	// getUserName: function(userID){
-	// 	var userName = app.clients.get('54c7a19fd21a5848693b8942').usersCollection.get('54c7a1b3d21a58a4693b8942').attributes.emailAddress;
-	// 	console.log(userName);
-	// 	return userName;
-	// },
+	getUserName: function(userID){
+		var user = app.users.get(userID);
+		console.log(userID);
+		var userName = user.attributes.firstName+' '+user.attributes.lastName;
+		return userName;
+	}
+	
+
+	// getCompanyName: function()
 
 	// getAuthorDetails: function(authorRole,authorID,companyID){
 	// 	var output = {};

@@ -70,6 +70,9 @@ var AppRouter = Backbone.Router.extend({
 
 		// BUFFER CLIENT USER MODEL
 		this.addClientUserModel = new BufferClientUserModel();
+
+		/////////////////
+		this.agentsCollection =  new Backbone.Collection();
 	},
 
 	// Data fetched flags
@@ -99,7 +102,8 @@ var AppRouter = Backbone.Router.extend({
 			//----------------------------------------
 			
 			// PEOPLE VIEW
-			this.peopleView = new PeopleView({ collection: app.users.agentUsers() }); 
+			// var peopleCollection = new Backbone.Collection(app.users.agentUsers());
+			this.peopleView = new PeopleView({ collection: this.agentsCollection }); 
 
 			// CLIENTS VIEW
 			this.clientsView = new ClientsView({ collection: this.clients });

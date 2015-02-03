@@ -2,8 +2,7 @@ var ClientModel = Backbone.Model.extend({
 	url: '/clients',
 	initialize: function(){
 		// Create userCollection within model, give it model specific url and fetch data
-
-		this.usersCollection = app.users.usersByClient(this.id);
+		this.usersCollection = new Backbone.Collection(app.users.usersByClient(this.id));
 
 		// Create model's view as an attribute of itself
 		this.modelView = new ClientView({model: this});

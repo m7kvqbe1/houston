@@ -92,6 +92,7 @@ var ClientView = Backbone.View.extend({
 	},
 
 	render: function(){	
+		// console.log(this.model);
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
@@ -115,8 +116,6 @@ var ClientView = Backbone.View.extend({
 				"clientID": clientID
 			};
 
-		//Give the addClientUser Model a reference to the view that used it, so that when model is saved it knows which view to render
-		app.addClientUserModel.currentView = this;
 		app.addClientUserModel.save(attributes,{
 			success: _.bind(function(model){
 				app.addClientUserModel.clear();
@@ -129,7 +128,7 @@ var ClientView = Backbone.View.extend({
 var UsersView = Backbone.View.extend({
 
 	initialize: function(){
-		this.listenTo(this.collection, 'sync', this.render);			
+		this.listenTo(this.collection, 'add change remove', this.render);			
 		_.bindAll(this, "renderUser");
 	},
 

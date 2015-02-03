@@ -2,8 +2,8 @@ var BufferClientUserModel = Backbone.Model.extend({
 	url: '/user',
 	initialize: function(){
 		this.on("sync", function(){
-			// Fetch the usersCollection of the model that has had a user added to it, which triggers its render
-			this.currentView.model.usersCollection.fetch();
+			// Fetch the users Collection, which resets the client's userCollections
+			app.users.fetch();
 		});
 
 		// Create model's view as an attribute of itself

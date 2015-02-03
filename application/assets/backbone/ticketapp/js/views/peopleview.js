@@ -43,7 +43,7 @@ var PeopleView = Backbone.View.extend({
 	),
 	
 	initialize: function() {		
-		this.listenTo(this.collection, "sync", this.render);
+		this.listenTo(this.collection, "add change remove", this.render);
 
 		this.collection.view = this;
 
