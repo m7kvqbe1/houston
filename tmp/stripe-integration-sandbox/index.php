@@ -32,56 +32,58 @@
 				$form.find('button').prop('disabled', true);
 				
 				// Get a token from Stripe API
-				Stripe.card.createToken($form, stripeResponseHandler);
+				Stripe.card.createToken($form, Payment.responseHandler);
 				
 				// Prevent the form from submitting with the default action
 				return false;
 			});
 		});
 		
-		function qs(key) {
-			key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
-			var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
-			return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-		}
-		
-		function stripeResponseHandler(status, response) {
-			console.log(status);
-			console.log(response);
+		var Payment = {
+			qs: function(key) {
+				key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
+				var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
+				return match && decodeURIComponent(match[1].replace(/\+/g, " "));
+			},
 			
-			var $form = $('#payment-form');
-			if(response.error) {
-				// Show the errors on the form
-				$form.find('.payment-errors').text(response.error.message);
-				$form.find('button').prop('disabled', false);
-			} else {				
-				var data = {
-					token: response.id,
-					plan: qs('plan')
-				}
+			responseHandler: function(status, response) {
+				console.log(status);
+				console.log(response);
 				
-				// AJAX submit plan selection and token to Houston to perform charge
-				$.ajax({
-    				type: "POST",
-    				url: "/payment/charge",
-    				processData: false,
-    				contentType: 'application/json',
-    				cache: false,
-    				data: JSON.stringify(data)
-				}).done( function(ret) {
-					console.log(ret);
-					
-					$('#payment-form').hide();
-					
-					// If error code returned by server
-					if(ret.error) {
-						$('#payment-form .payment-errors').text('There was a problem processing your transaction');
-						return;
+				var $form = $('#payment-form');
+				if(response.error) {
+					// Show the errors on the form
+					$form.find('.payment-errors').text(response.error.message);
+					$form.find('button').prop('disabled', false);
+				} else {				
+					var data = {
+						token: response.id,
+						plan: qs('plan')
 					}
 					
-					$('#payment-form').hide();
-					$('body').append('<span>Success</span>');
-				});
+					// AJAX submit plan selection and token to Houston to perform charge
+					$.ajax({
+    					type: "POST",
+    					url: "/payment/charge",
+    					processData: false,
+    					contentType: 'application/json',
+    					cache: false,
+    					data: JSON.stringify(data)
+					}).done( function(ret) {
+						console.log(ret);
+						
+						$('#payment-form').hide();
+						
+						// If error code returned by server
+						if(ret.error) {
+							$('#payment-form .payment-errors').text('There was a problem processing your transaction');
+							return;
+						}
+						
+						$('#payment-form').hide();
+						$('body').append('<span>Success</span>');
+					});
+				}
 			}
 		}
 	</script>
