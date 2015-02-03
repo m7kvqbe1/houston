@@ -62,6 +62,7 @@ class UserModel
 		
 		$docs = array();
 		foreach($result as $doc) {
+			unset($doc['password']);
 		    array_push($docs, $doc);
 		}
 		
