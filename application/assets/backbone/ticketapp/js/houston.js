@@ -247,26 +247,19 @@ var houston = {
 
 	getAuthorDetails: function(authorRole,authorID,companyID){
 		if(authorRole == 'user'){
-			var company = app.clients.get(companyID);		
-			var author = company.usersCollection.get(authorID).attributes;
-			var companyName = company.attributes.name;
-			if(author.firstName){
-				var authorName = author.firstName+' '+author.lastName;		
-			} else {
-				var authorName = author.emailAddress;
-			}
-		} else {
-			if(app.agents.get(authorID)){ //check if it has been fetched
-				var author = app.agents.get(authorID).attributes;
-				var authorName = author.firstName+' '+author.lastName;
-			} else {
-				var authorName = '';
-			}
-			var companyName = app.user.attributes.companyName;
-			
+			// var company = app.clients.get(companyID);		
+			// var author = company.usersCollection.get(authorID).attributes;
+			// var companyName = company.attributes.name;
+			// if(author.firstName){
+			// 	var authorName = author.firstName+' '+author.lastName;		
+			// } else {
+			// 	var authorName = author.emailAddress;
+			// }
+		} else {	
+			var author = app.agents.get(authorID);
+			var authorName = author.attributes.firstName+' '+author.attributes.lastName;
+			var companyName = app.user.attributes.companyName;			
 		}
-		// var authorName = 'placeholderName';
-		// var companyName = 'placeholderComapny';
 
 		return '<div class="name">'+authorName+'</div>' +
 			   '<div class="company-name">'+companyName+'</div>';
@@ -274,15 +267,32 @@ var houston = {
 
 }
 
-//ONLY SEND DOWN COMPANY NAME IF AN AGENT OR ADMIN?
+// var dataHelper = {
 
+// 	getUserName: function(userID){
+// 		var userName = app.clients.get('54c7a19fd21a5848693b8942').usersCollection.get('54c7a1b3d21a58a4693b8942').attributes.emailAddress;
+// 		console.log(userName);
+// 		return userName;
+// 	},
 
+// 	getAuthorDetails: function(authorRole,authorID,companyID){
+// 		var output = {};
+// 		if(authorRole == 'user'){
+// 			// var company = app.clients.get(companyID);		
+// 			// var author = company.usersCollection.get(authorID).attributes;
+// 			// var companyName = company.attributes.name;
+// 			// if(author.firstName){
+// 			// 	var authorName = author.firstName+' '+author.lastName;		
+// 			// } else {
+// 			// 	var authorName = author.emailAddress;
+// 			// }
+// 		} else {	
+// 			var author = app.agents.get(authorID);
+// 			output.authorName = author.attributes.firstName+' '+author.attributes.lastName;
+// 			output.companyName = app.user.attributes.companyName;			
+// 		}
 
+// 		return output;
+// 	}
 
-
-		// var companyID = app.agents.get(userID).attributes.companyID.$id;
-		// var companyID = app.agents.get(userID);
-		// console.log(companyID);
-		// var companyID = "54bf87b6d21a58b067f47d2e";
-		// var companyName = app.peopleView.clientsView.collection.get(companyID).attributes.name;
-		// console.log(companyName);
+// }

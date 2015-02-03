@@ -58,10 +58,13 @@ var TicketView = Backbone.View.extend({
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
 		Handlebars.registerHelper("getAuthorDetails", function(authorRole,authorID,companyID) {
-			return new Handlebars.SafeString(houston.getAuthorDetails(authorRole,authorID,companyID));
-			console.log(authorRole);
-			console.log(authorID);
-			console.log(companyID);
+			// var json = dataHelper.getAuthorDetails(authorRole,authorID,companyID)
+			return new Handlebars.SafeString(
+			'<div class="name">Name</div>' +
+			'<div class="company-name">CompanyName</div>'
+			// '<div class="name">'+json.authorName+'</div>' +
+			// '<div class="company-name">'+json.companyName+'</div>'
+			 );
 		});
 
 		Handlebars.registerHelper("getUserName", function(attribute) {
