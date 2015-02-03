@@ -47,6 +47,26 @@ class UserModel
 		}
 	}
 	
+	public function getAllUsers() {
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$this->loadUserByID($this->app['session']->get('u'));
+		
+		$companyID = new \MongoID($this->user['companyID']);
+		
+		$collection = $db->users;
+		$result = $collection->find(array('companyID' => $companyID));
+		
+		$docs = array();
+		foreach($result as $doc) {
+		    array_push($docs, $doc);
+		}
+		
+		return $docs;
+	}
+	
 	public function setProperty($userID, $property, $value) 
 	{
 		$connections = $this->app['mongo'];
@@ -302,7 +322,7 @@ class UserModel
 		}
 	}
 
-	public function getAgents() 
+	/*DEPRECATEDpublic function getAgents() 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -320,5 +340,5 @@ class UserModel
 		}
 		
 		return json_encode($docs);
-	}	
+	}*/
 }

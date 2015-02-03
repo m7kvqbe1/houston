@@ -32,21 +32,18 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 	// Tally import result
 	$status = new \stdClass();
 	$status->newTickets = 0; 
-	$status->replies = 0;
+	$status->newReplies = 0;
 	
 	foreach($mailbox->emails as $email) {
 		$ticketID = $mailbox->getMessageMeta($email['messageBody'], 'ticket-id');
 		$messageID = $mailbox->getMessageMeta($email['messageBody'], 'message-id');
 		$message = $mailbox->extractMessage($email['messageBody']);
 		
-		var_dump($email['messageBody']);
-		var_dump($ticketID);
-		
 		if(isset($ticketID)) {
 			// Add reply to relevant ticket and save it
 			$replyModel = new ReplyModel($app);
-			$replyModel->generateReply($ticketID, $message);
-			var_dump($replyModel->reply);
+			$replyModel->generateReply($ticketID, $message, $email['from'][0].' '.$email['from'][1]);
+			$replyModel->reply($replyModel->reply);
 			
 			// Get all Agent email addresses
 			$userModel = new UserModel($app);

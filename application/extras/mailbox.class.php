@@ -27,16 +27,13 @@ abstract class Mailbox
 		}
 	}
 	
-	final public function connect($host, $username, $password) 
+	public function connect($host, $username, $password) 
 	{
-		if(!$this->inbox = imap_open($host, $username, $password)) {
-			throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
-		} else {
-			return $this->inbox;
-		}
+		if(!$this->inbox = imap_open($host, $username, $password)) throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
+		return $this->inbox;
 	}
 	
-	final public function disconnect() 
+	public function disconnect() 
 	{
 		imap_close($this->inbox);		
 	}
@@ -51,9 +48,12 @@ abstract class Mailbox
 			
 			$email['read'] = ($overview[0]->seen ? 'read' : 'unread');
 			$email['subject'] = $overview[0]->subject;
-			$email['from'] = explode(' ', $overview[0]->from, 2);
+			
+			$email['from'] = preg_replace('/<[^>]*>/', '', $overview[0]->from);
+			$email['from'] = explode(' ', $email['from'], 2);	// Remove email address
+			
 			$email['date'] = Helper::convertTimestamp($overview[0]->date);
-			$email['messageBody'] = imap_fetchbody($this->inbox, $num, 1); //($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
+			$email['messageBody'] = imap_body($this->inbox, $num);	//($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
 			$email['fromAddress'] = $header->from[0]->mailbox . '@' . $header->from[0]->host;
 			
 			$this->markRead($num);
@@ -64,28 +64,28 @@ abstract class Mailbox
 		return $this->emails;
 	}
 	
-	final public function checkType($structure) 
+	public function checkType($structure) 
 	{
 		if($structure->type == 1) return true;
 		return false;
 	}
 	
-	final public function getHeader($header, $name) 
+	public function getHeader($header, $name) 
 	{
 		return (isset($header->{$name}) ? $header->{$name} : null);
 	}
 	
-	final public function markRead($num) 
+	public function markRead($num) 
 	{
 		return imap_setflag_full($this->inbox, $num, '\\Seen \\Flagged');
 	}
 	
-	final public function markUnread($num) 
+	public function markUnread($num) 
 	{
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
 	
-	public function sendEmail($to, $from, $content, $attachments = array(), $headers = array()) 
+	public function sendEmail($to, $from, $body, $attachments = array(), $headers = array()) 
 	{
 		// Send new email using Swiftmailer library
 	}
@@ -100,8 +100,8 @@ class MailboxExtended extends Mailbox
 	{
 		parent::__construct($host, $username, $password, $serverEncoding);
 		
-		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 		if(isset($templateDir)) $this->templateDir = $templateDir;
+		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
 	}
 	
 	public function generateTemplate() 
@@ -142,9 +142,7 @@ class MailboxExtended extends Mailbox
 	}
 	
 	public function getMessageMeta($message, $className) 
-	{		
-		var_dump($message);
-		
+	{			
 		$dom = new \DOMDocument();
 		$dom->loadHTML($message);
 		$xpath = new \DOMXPath($dom);

@@ -55,13 +55,8 @@ class TicketModel
 			$userModel->loadUser($email);
 		}
 		
-		$this->ticket->name = $userModel->user['firstName'].' '.$userModel->user['lastName'];
-		$this->ticket->username = $userModel->user['emailAddress'];
-		
-		// Set company name for ticket - Update backbone and remove! Storing this twice!
-		$companyModel = new CompanyModel($this->app);
-		$companyModel->loadCompanyByID($userModel->user['companyID']);
-		$this->ticket->company = $companyModel->company['companyName'];
+		$this->ticket->authorID = new \MongoID($userModel->user['_id']);
+		$this->ticket->authorRole = $userModel->user['role'];
 		
 		return $this->ticket;
 	}

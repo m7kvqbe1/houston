@@ -31,13 +31,14 @@ class ReplyModel
 		}
 	}
 	
-	public function generateReply($ticketID, $message) 
+	public function generateReply($ticketID, $message, $author) 
 	{
 		$this->reply = new \stdClass();
 		
 		$this->reply->ticketID = $ticketID;
 		$this->reply->message = $message;
-		$this->reply->date = Helper::convertTimestamp(time());
+		$this->reply->author = $author;
+		$this->reply->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
 		
 		return $this->reply;
 	}
