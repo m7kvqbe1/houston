@@ -1,10 +1,10 @@
 var AppRouter = Backbone.Router.extend({
 	routes: {
-		"": "indexFrontController",
-		"tickets/new": "ticketFormFrontController",
-		"tickets/:ticket": "ticketDetailsFrontController",
-		"people": "peopleOverviewFrontController",
-		"account": "accountMainFrontController"
+		"": "indexController",
+		"tickets/new": "ticketFormController",
+		"tickets/:ticket": "ticketDetailsController",
+		"people": "peopleOverviewController",
+		"account": "accountMainController"
 	},
 	
 	initialize: function() {
@@ -56,7 +56,7 @@ var AppRouter = Backbone.Router.extend({
 		this.users = new Users();
 		this.users.fetch({
 			success: function(){
-				console.log('agentsFetch');
+				console.log('usersFetch');
 				app.usersFetched = true;
 				app.initViews();
 			}
@@ -77,10 +77,10 @@ var AppRouter = Backbone.Router.extend({
 	ticketsFetched: false,
 	clientsFetched: false,
 	usersFetched: false,
-	clientUserCount: 0,
+	// clientUserCount: 0,
 	
 	loaded: function() {
-		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched && this.clients.models.length == this.clientUserCount) return true;
+		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched) return true;
 		return false;
 	},
 
@@ -99,13 +99,10 @@ var AppRouter = Backbone.Router.extend({
 			//----------------------------------------
 			
 			// PEOPLE VIEW
-			var agents = app.users.agentUsers();
-			this.peopleView = new PeopleView({ collection: agents }); 
+			this.peopleView = new PeopleView({ collection: app.users.agentUsers() }); 
 
 			// CLIENTS VIEW
-			// this.clientsView = new ClientsView({ collection: this.clients });
-			
-			//----------------------------------------
+			this.clientsView = new ClientsView({ collection: this.clients });
 			
 			// ACCOUNT VIEW
 			this.accountView = new AccountView({ model: this.user });
@@ -124,25 +121,25 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	// Define controllers
-	indexFrontController: function() {
+	indexController: function() {
 		this.onLoadRender('ticketsView');
 	},
 
-	ticketDetailsFrontController: function(ticket) {
+	ticketDetailsController: function(ticket) {
 		var attributes = this.tickets.get(ticket).attributes;
 		this.ticketDetailView.model.set(attributes);
 		this.ticketDetailView.model.fetchMessages();
 	},
 
-	ticketFormFrontController: function() {
+	ticketFormController: function() {
 		this.onLoadRender('formView');
 	},
 	
-	peopleOverviewFrontController: function() {
+	peopleOverviewController: function() {
 		this.onLoadRender('peopleView');
 	},
 	
-	accountMainFrontController: function() {
+	accountMainController: function() {
 		this.onLoadRender('accountView');
 	}
 });

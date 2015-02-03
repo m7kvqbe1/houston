@@ -15,6 +15,9 @@ var BufferClientUserModel = Backbone.Model.extend({
 			response.id = response._id['$id'];
 			delete response._id;
 		}
+		if(response.clientID){
+			response.clientID = response.clientID['$id'];
+		}
 		return response;
 	}
 });
