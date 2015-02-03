@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
 
-// Get user object
+// Get authenticated session user object
 $app->get('/user/self', function(Request $request, Application $app) {	
 	$userModel = new UserModel($app);
 	$userModel->loadUserByID($app['session']->get('u'));
@@ -20,6 +20,14 @@ $app->get('/user/self', function(Request $request, Application $app) {
 	unset($userModel->user['password']);
 	
 	return json_encode($userModel->user);
+})->before($secure);
+
+// Get all users for authenticated sessions company
+$app->get('/users', function(Request $request, Application $app) {
+	$userModel = new UserModel($app);
+	$users = $userModel->getAllUsers();
+	
+	return json_encode($users);
 })->before($secure);
 
 // Delete user
@@ -38,7 +46,6 @@ $app->post('/user/update/{userID}/{property}', function(Request $request, Applic
 		$userModel = new UserModel($app);
 		$userModel->setProperty($userID, $property, $data);	
 	} catch(Exception $e) {
-		// Invalid property
 		echo $e->getMessage();
 	}	
 	
@@ -51,7 +58,6 @@ $app->delete('/user/delete/{userID}/{property}', function(Request $request, Appl
 		$userModel = new UserModel($app);
 		$userModel->deleteProperty($userID, $property);
 	} catch(Exception $e) {
-		// Invalid property
 		echo $e->getMessage();
 	}
 })->before($secure);

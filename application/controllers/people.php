@@ -6,7 +6,7 @@ use Houston\Model\UserModel;
 use Houston\Model\ClientModel;
 use Houston\Model\CompanyModel;
 
-// Get authenticated users companies
+// Get authenticated users company
 $app->get('/companies', function(Request $request, Application $app) {
 	$connections = $app['mongo'];
 	$db = $connections['default'];
@@ -37,11 +37,11 @@ $app->post('/clients', function(Request $request, Application $app) {
 	return json_encode($client);
 })->before($secure);
 
-// Get users for client
+/*DEPRECATED// Get users for client
 $app->get('/client/users/{clientID}', function(Request $request, Application $app, $clientID) {
 	$clientModel = new ClientModel($app);
 	return json_encode($clientModel->getUsersByClientID($clientID));
-})->before($secure);
+})->before($secure);*/
 
 // Add new user to client
 $app->post('/user', function(Request $request, Application $app) {
@@ -61,11 +61,11 @@ $app->delete('/client/{clientID}', function(Request $request, Application $app, 
 	return 1;
 })->before($secure);
 
-// Get agents
+/*DEPRECATED// Get agents
 $app->get('/agents', function(Request $request, Application $app) {
 	$userModel = new UserModel($app);
 	return $userModel->getAgents();
-})->before($secure);
+})->before($secure);*/
 
 // Add new agent
 $app->post('/agents', function(Request $request, Application $app) {
