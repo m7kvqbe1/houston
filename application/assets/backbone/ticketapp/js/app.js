@@ -116,9 +116,10 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	onLoadRender: function(view) {
-		var check = setInterval(function() {			
-			if(app.viewInit) {
-				$('#app').html(app[view].render().el);
+		var _this = this;
+		var check = setInterval(function() {
+			if(_this.viewInit) {
+				$('#app').html(_this[view].render().el);
 				clearInterval(check);
 			}
 		}, 50);
