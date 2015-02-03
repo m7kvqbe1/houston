@@ -241,7 +241,7 @@ class UserModel
 		}
 	}
 	
-	public function saveUser($user) 
+	private function saveUser($user) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
