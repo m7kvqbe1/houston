@@ -1,6 +1,6 @@
 var AppRouter = Backbone.Router.extend({
 	routes: {
-		"": "indexController",
+		"": "indexFrontController",
 		"tickets/new": "ticketFormFrontController",
 		"tickets/:ticket": "ticketDetailsFrontController",
 		"people": "peopleOverviewFrontController",
@@ -128,7 +128,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	// Define controllers
-	indexController: function() {
+	indexFrontController: function() {
 		this.onLoadRender('ticketsView');
 	},
 
