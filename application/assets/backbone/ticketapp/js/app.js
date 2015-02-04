@@ -12,7 +12,7 @@ var AppRouter = Backbone.Router.extend({
 		jQuery.event.props.push("dataTransfer");
 
 		// Check for File API support
-		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File APIs are not fully supported in this browser');
+		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File API is not fully supported by this browser');
 
 		// AUTHENTICATED SESSION USER MODEL
 		this.user = new UserModel();
