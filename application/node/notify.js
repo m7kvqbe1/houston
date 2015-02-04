@@ -20,6 +20,7 @@ io.on('connection', function(socket){
 	});
 });
 
+// Move into server side JavaScript utility class!
 function trimMessage(str) {
 	if(str.length > 30) {
 		msg = str.substr(0, 30);
