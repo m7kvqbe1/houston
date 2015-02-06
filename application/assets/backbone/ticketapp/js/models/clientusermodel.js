@@ -5,7 +5,12 @@ var BufferClientUserModel = Backbone.Model.extend({
 			// Fetch the users Collection, which resets the client's userCollections
 			app.users.fetch();
 		});
+	}
+});
 
+var clientUserModel = Backbone.Model.extend({
+	url: '/user',
+	initialize: function(){
 		// Create model's view as an attribute of itself
 		this.modelView = new UserView({model: this});
 	},
@@ -17,6 +22,9 @@ var BufferClientUserModel = Backbone.Model.extend({
 		}
 		if(response.clientID){
 			response.clientID = response.clientID['$id'];
+		}
+		if(response.companyID){
+			response.companyID = response.companyID['$id'];
 		}
 		return response;
 	}

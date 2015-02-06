@@ -34,7 +34,7 @@ var TicketView = Backbone.View.extend({
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
 							'<div class="ticket-info-inner">' +
 								'<div class="name">{{getAuthorName attributes.authorID}}</div>' +
-								'<div class="company-name">CompanyName</div>' +
+								'<div class="company-name">{{getCompanyName attributes.authorID}}</div>' +
 								'<div class="summary">{{attributes.subject}}</div>' +
 							'</div>' +
 						'</div>' +
@@ -57,6 +57,10 @@ var TicketView = Backbone.View.extend({
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
 		Handlebars.registerHelper("getAuthorName", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
+		});
+
+		Handlebars.registerHelper("getCompanyName", function(authorID) {
 			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
 		});
 
@@ -90,7 +94,6 @@ var TicketView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',

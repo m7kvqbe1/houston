@@ -34,7 +34,7 @@ var TicketDetailView = Backbone.View.extend({
 				'<div class="msg-dtl">'+
 					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{author}}"/>'+
 					'<div class="msg-dtl-inr">'+
-						'<h3 class="msg-agent">{{attributes.name}}</h3>'+
+						'<h3 class="msg-agent">{{getAuthorName attributes.authorID}}</h3>'+
 						'<h4 class="msg-company">{{attributes.company}}</h4>'+
 						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
@@ -101,6 +101,10 @@ var TicketDetailView = Backbone.View.extend({
 		var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
+
+		Handlebars.registerHelper("getAuthorName", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
+		});
 		
 		Handlebars.registerHelper("forEach",function(arr,options) {
 			return houston.forEach(arr, options);
@@ -208,7 +212,7 @@ var TicketDetailView = Backbone.View.extend({
 		}
 		
 		var attributes = {
-			"author": app.user.attributes.firstName + ' ' + app.user.attributes.lastName,
+			"authorID": app.user.id,
 			"role": "agent",
 			"avatar": app.user.attributes.avatar, 
 			"company": app.user.attributes.company,

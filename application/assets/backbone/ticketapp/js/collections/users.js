@@ -1,5 +1,5 @@
 var Users = Backbone.Collection.extend({
-	model: BufferClientUserModel,	
+	model: clientUserModel,	
 	url: '/users',	
 
 	initialize: function() {
