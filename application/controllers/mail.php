@@ -39,9 +39,16 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 		$message = $mailbox->extractMessage($email['messageBody']);
 		
 		if(isset($ticketID)) {
+			// Skip iteration ticket doesn't exist
+			$ticketModel = new TicketModel($app);
+			try {
+				$ticketModel->loadTicketByID($ticketID);	
+			} catch(Exception $e) {
+				continue;
+			}
+			
 			// Add reply to relevant ticket and save it
 			$replyModel = new ReplyModel($app);
-			
 			try {
 				$replyModel->generateReply($ticketID, $message, null, $email['fromAddress']);
 			} catch(Exception $e) {
