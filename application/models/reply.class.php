@@ -76,6 +76,9 @@ class ReplyModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
+		$reply->ticketID = new \MongoID($reply->ticketID);
+		$reply->authorID = new \MongoID($reply->authorID);
+		
 		try {	
 			$collection = $db->replies;
 			$collection->save($reply);
