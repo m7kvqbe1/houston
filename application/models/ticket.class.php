@@ -46,7 +46,7 @@ class TicketModel
 		return $docs;
 	}
 	
-	public function generateTicket($subject, $message, $date = null, $email) 
+	public function generateTicket($subject, $message, $date = null, $email, $firstName = null, $lastName = null) 
 	{
 		$this->ticket = new \stdClass();
 		
@@ -62,7 +62,11 @@ class TicketModel
 			$userModel->loadUser($email);			
 		} catch(\Exception $e) {
 			// User not found so save new user
-			$user = new \stdClass();			
+			$user = new \stdClass();
+			$user->emailAddress = $email;
+			$user->firstName = $firstName;
+			$user->lastName = $lastName;
+			
 			$userModel->addUser($user);
 			
 			// Load the new user we created		

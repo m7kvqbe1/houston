@@ -64,7 +64,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			// Generate new ticket and save it
 			$ticketModel = new TicketModel($app);
 			
-			$ticketModel->generateTicket($email['subject'], strip_tags($email['messageBody']), $email['date'], $email['fromAddress']);
+			$ticketModel->generateTicket($email['subject'], strip_tags($email['messageBody']), $email['date'], $email['fromAddress'], $email['firstName'], $email['lastName']);
 			$ticketModel->add($ticketModel->ticket);
 			
 			// Get all Agent email addresses

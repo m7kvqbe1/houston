@@ -54,7 +54,7 @@ class ReplyModel
 		
 		$this->reply->ticketID = new \MongoID($ticketID);
 		$this->reply->message = $message;
-		$this->ticket->date = (isset($date)) ? $date : Helper::convertTimestamp(date('Y-m-d H:i:s'));
+		$this->reply->date = (isset($date)) ? $date : Helper::convertTimestamp(date('Y-m-d H:i:s'));
 		
 		$userModel = new UserModel($this->app);
 		
@@ -65,7 +65,7 @@ class ReplyModel
 			throw new \Exception('Only registered users may generate a ticket reply');
 		}
 		
-		$this->ticket->authorID = new \MongoID($userModel->user['_id']);
+		$this->reply->authorID = new \MongoID($userModel->user['_id']);
 		
 		return $this->reply;
 	}

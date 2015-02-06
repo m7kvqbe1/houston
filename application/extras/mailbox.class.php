@@ -49,8 +49,12 @@ abstract class Mailbox
 			$email['read'] = ($overview[0]->seen ? 'read' : 'unread');
 			$email['subject'] = $overview[0]->subject;
 			
-			$email['from'] = preg_replace('/<[^>]*>/', '', $overview[0]->from);
-			$email['from'] = explode(' ', $email['from'], 2);	// Remove email address
+			// Split into array of firstname and surname
+			$email['from'] = preg_replace('/<[^>]*>/', '', $overview[0]->from);	// Remove email address
+			$email['from'] = explode(' ', $email['from'], 2);
+			$email['firstName'] = $email['from'][0];
+			$email['lastName'] = $email['from'][1];
+			$email['from'] = $overview[0]->from;	// Keep the unparsed from meta as a fall back
 			
 			$email['date'] = Helper::convertTimestamp($overview[0]->date);
 			$email['messageBody'] = imap_body($this->inbox, $num);	//($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
