@@ -2,11 +2,11 @@ var MessagesView = Backbone.View.extend({
 
 	template: Handlebars.compile(
 		'{{#forEach models}}'+
-			'<li class="msg from-{{attributes.role}}">'+
+			'<li class="msg from-{{getUserRole attributes.authorID}}">'+
 				'<div class="msg-dtl">'+
 					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.author}}"/>'+
 					'<div class="msg-dtl-inr">'+
-						'<h3 class="msg-agent">{{getAuthorName attributes.authorID}}</h3>'+
+						'<h3 class="msg-agent">{{getUserName attributes.authorID}}</h3>'+
 						'<h4 class="msg-company">{{getCompanyName attributes.authorID}}</h4>'+
 						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
@@ -66,6 +66,7 @@ var MessagesView = Backbone.View.extend({
 	},
 
 	render: function(){
+		console.log(app.users);
 		this.$el.html(this.template(this.collection));
 
 		this.fileUploadView.collection.reset();		

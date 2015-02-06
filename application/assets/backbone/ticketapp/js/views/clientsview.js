@@ -33,7 +33,6 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log(app.users);
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
 		this.delegateEvents({

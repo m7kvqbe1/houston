@@ -4,7 +4,7 @@ var MessageModel = Backbone.Model.extend({
 		response.id = response._id['$id'];
 		delete response._id;
 	}
-	if(response.authorID){
+	if(response.authorID['$id']){
 		response.authorID = response.authorID['$id'];
 	}
 		return response;

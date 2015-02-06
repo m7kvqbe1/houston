@@ -34,7 +34,7 @@ var TicketDetailView = Backbone.View.extend({
 				'<div class="msg-dtl">'+
 					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{author}}"/>'+
 					'<div class="msg-dtl-inr">'+
-						'<h3 class="msg-agent">{{getAuthorName attributes.authorID}}</h3>'+
+						'<h3 class="msg-agent">{{getUserName attributes.authorID}}</h3>'+
 						'<h4 class="msg-company">{{getCompanyName attributes.authorID}}</h4>'+
 						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
@@ -188,9 +188,6 @@ var TicketDetailView = Backbone.View.extend({
 		
 		var attributes = {
 			"authorID": app.user.id,
-			"role": "agent",
-			"avatar": app.user.attributes.avatar, 
-			"company": app.user.attributes.company,
 			"date": new Date(),
 			"message": this.$el.find('textarea[name="new-textarea"]').val(),
 			"files": this.messagesView.fileUploadView.createFilesArray()
