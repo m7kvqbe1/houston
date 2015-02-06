@@ -14,7 +14,7 @@ class CompanyModel
 		$this->app = $app;
 	}
 	
-	public function loadCompany($companyName) 
+	/*DEPRECATEDpublic function loadCompany($companyName) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -27,7 +27,7 @@ class CompanyModel
 		} else {
 			throw new \Exception('Company not found');
 		}
-	}
+	}*/
 	
 	public function loadCompanyByID($id) 
 	{

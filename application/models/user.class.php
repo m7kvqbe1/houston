@@ -75,7 +75,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		if(!$this->propertyExists($property)) throw new \InvalidArgumentException('Invalid property');
+		if(!self::propertyExists($property)) throw new \InvalidArgumentException('Invalid property');
 		
 		$userID = new \MongoID($userID);
 		
@@ -95,7 +95,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 				
-		if(!$this->propertyExists($property)) throw new \Exception('Invalid property');
+		if(!self::propertyExists($property)) throw new \Exception('Invalid property');
 		
 		$userID = new \MongoID($userID);
 		
@@ -109,7 +109,7 @@ class UserModel
 		} 
 	}
 	
-	private function propertyExists($property) 
+	private static function propertyExists($property) 
 	{
 		if(!in_array($property, self::$validProperties)) return false;		
 		return true;
@@ -241,7 +241,7 @@ class UserModel
 		}
 	}
 	
-	public function saveUser($user) 
+	private function saveUser($user) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];

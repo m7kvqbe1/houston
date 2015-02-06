@@ -8,7 +8,7 @@ var BufferClientUserModel = Backbone.Model.extend({
 	}
 });
 
-var clientUserModel = Backbone.Model.extend({
+var ClientUserModel = Backbone.Model.extend({
 	url: '/user',
 	initialize: function(){
 		// Create model's view as an attribute of itself

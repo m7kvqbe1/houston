@@ -1,10 +1,10 @@
 var AppRouter = Backbone.Router.extend({
 	routes: {
-		"": "indexController",
-		"tickets/new": "ticketFormController",
-		"tickets/:ticket": "ticketDetailsController",
-		"people": "peopleOverviewController",
-		"account": "accountMainController"
+		"": "indexFrontController",
+		"tickets/new": "ticketFormFrontController",
+		"tickets/:ticket": "ticketDetailsFrontController",
+		"people": "peopleOverviewFrontController",
+		"account": "accountMainFrontController"
 	},
 	
 	initialize: function() {
@@ -12,12 +12,23 @@ var AppRouter = Backbone.Router.extend({
 		jQuery.event.props.push("dataTransfer");
 
 		// Check for File API support
-		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File APIs are not fully supported in this browser');
+		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File API is not fully supported by this browser');
+		
+		// USERS COLLECTION
+		this.users = new Users();
+		this.users.fetch({
+			success: function(){
+				console.log('usersFetch');
+				app.usersFetched = true;
+				app.initViews();
+			}
+		});
 
 		// AUTHENTICATED SESSION USER MODEL
 		this.user = new UserModel();
 		this.user.fetch({
 			success: function(){
+				console.log('userFetch');
 				app.userFetched = true;
 				app.initViews();
 			}
@@ -29,6 +40,7 @@ var AppRouter = Backbone.Router.extend({
 		this.tickets = new Tickets();
 		this.tickets.fetch({
 			success: function(){
+				console.log('ticketFetch');	
 				app.ticketsFetched = true;	
 				app.initViews();
 			}
@@ -44,16 +56,8 @@ var AppRouter = Backbone.Router.extend({
 		this.clients = new Clients();
 		this.clients.fetch({
 			success: function(){
+				console.log('clientsFetch');
 				app.clientsFetched = true;
-				app.initViews();
-			}
-		});
-
-		// USERS COLLECTION
-		this.users = new Users();
-		this.users.fetch({
-			success: function(){
-				app.usersFetched = true;
 				app.initViews();
 			}
 		});
@@ -61,14 +65,14 @@ var AppRouter = Backbone.Router.extend({
 		// BUFFER CLIENT MODEL
 		this.addClientModel = new BufferClientModel();
 		
-		// BUFFER AGENT MODEL
-		this.addAgentModel = new BufferAgentModel();
-
 		// BUFFER CLIENT USER MODEL
 		this.addClientUserModel = new BufferClientUserModel();
-
-		/////////////////
+		
+		// AGENTS COLLECTION
 		this.agentsCollection =  new Backbone.Collection();
+		
+		// BUFFER AGENT MODEL
+		this.addAgentModel = new BufferAgentModel();
 	},
 
 	// Data fetched flags
@@ -76,7 +80,6 @@ var AppRouter = Backbone.Router.extend({
 	ticketsFetched: false,
 	clientsFetched: false,
 	usersFetched: false,
-	// clientUserCount: 0,
 	
 	loaded: function() {
 		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched) return true;
@@ -112,34 +115,38 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	onLoadRender: function(view) {
-		var check = setInterval(function() {			
-			if(app.viewInit) {
-				$('#app').html(app[view].render().el);
-				clearInterval(check);
+		var _this = this;
+					
+		(function check() {
+			if(_this.viewInit) {
+				$('#app').html(_this[view].render().el);
+				clearTimeout(timer);
+			} else {
+				var timer = setTimeout(check, 50);	
 			}
-		}, 50);
+		})();
 	},
 
 	// Define controllers
-	indexController: function() {
+	indexFrontController: function() {
 		this.onLoadRender('ticketsView');
 	},
 
-	ticketDetailsController: function(ticket) {
+	ticketDetailsFrontController: function(ticket) {
 		var attributes = this.tickets.get(ticket).attributes;
 		this.ticketDetailView.model.set(attributes);
 		this.ticketDetailView.model.fetchMessages();
 	},
 
-	ticketFormController: function() {
+	ticketFormFrontController: function() {
 		this.onLoadRender('formView');
 	},
 	
-	peopleOverviewController: function() {
+	peopleOverviewFrontController: function() {
 		this.onLoadRender('peopleView');
 	},
 	
-	accountMainController: function() {
+	accountMainFrontController: function() {
 		this.onLoadRender('accountView');
 	}
 });

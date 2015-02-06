@@ -102,6 +102,7 @@ class TicketModel
 		$json = str_replace('$', '', $json);
 		$ticket = json_decode($json);	
 		
+		// Remove MongoID
 		unset($ticket->_id);
 		
 		try {	
