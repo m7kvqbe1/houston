@@ -18,7 +18,6 @@ var AppRouter = Backbone.Router.extend({
 		this.users = new Users();
 		this.users.fetch({
 			success: function(){
-				console.log('usersFetch');
 				app.usersFetched = true;
 				app.initViews();
 			}
@@ -28,7 +27,6 @@ var AppRouter = Backbone.Router.extend({
 		this.user = new UserModel();
 		this.user.fetch({
 			success: function(){
-				console.log('userFetch');
 				app.userFetched = true;
 				app.initViews();
 			}
@@ -40,7 +38,6 @@ var AppRouter = Backbone.Router.extend({
 		this.tickets = new Tickets();
 		this.tickets.fetch({
 			success: function(){
-				console.log('ticketFetch');	
 				app.ticketsFetched = true;	
 				app.initViews();
 			}
@@ -56,7 +53,6 @@ var AppRouter = Backbone.Router.extend({
 		this.clients = new Clients();
 		this.clients.fetch({
 			success: function(){
-				console.log('clientsFetch');
 				app.clientsFetched = true;
 				app.initViews();
 			}

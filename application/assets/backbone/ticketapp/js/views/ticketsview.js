@@ -56,37 +56,7 @@ var TicketView = Backbone.View.extend({
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
-		Handlebars.registerHelper("getAuthorName", function(authorID) {
-			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
-		});
-
-		Handlebars.registerHelper("getCompanyName", function(authorID) {
-			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
-		});
-
-		Handlebars.registerHelper("convertToClass", function(attribute) {
-			return houston.convertToClass(attribute);
-		});
-
-		Handlebars.registerHelper("convertToDate", function(attribute) {
-			return houston.convertToDate(attribute);
-		});
-
-		Handlebars.registerHelper("updateCheck", function(arr) { 
-			return new Handlebars.SafeString(houston.updateCheck(arr));			
-		});
-
-		Handlebars.registerHelper("dateArrow", function() {
-			return new Handlebars.SafeString(houston.dateArrow());
-		});
-
-		Handlebars.registerHelper("companyArrow", function() {
-			return new Handlebars.SafeString(houston.companyArrow());	
-		});
-
-		Handlebars.registerHelper("fullHeightPage", function() {
-			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
-		});
+		handlebarsHelpers.bindHelpers();
 
 		//Resize event, unbind
 		$(window).on("resize", this.pageResize);
