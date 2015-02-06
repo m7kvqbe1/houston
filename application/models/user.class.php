@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserModel 
 {	
 	protected static $validProperties = array('_id', 'emailAddress', 'stripeCustomerID', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName');
+	protected static $validRoles = array('ADMIN', 'AGENT', 'USER');
 	
 	protected $app;	
 	public $user;
@@ -67,6 +68,31 @@ class UserModel
 		}
 		
 		return $docs;
+	}
+	
+	public function getUsersByRole($role) {
+		$role = strtoupper($role);
+		if(!self::roleExists($role)) throw new \InvalidArgumentException('Invalid role type: '.$role);
+		
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$collection = $db->usrs;
+		$result = $collection->find(array('role') => $role);
+		
+		$docs = array();
+		foreach($result as $doc) {
+			unset($doc['password']);
+		    array_push($docs, $doc);
+		}
+		
+		return $docs;
+	}
+	
+	public  static function roleExists($role) {		
+		if(!in_array($property, self::$validRoles)) return false;
+		return true;
 	}
 	
 	public function setProperty($userID, $property, $value) 
