@@ -11,6 +11,9 @@ var TicketModel = Backbone.Model.extend({
 		response.id = response._id['$id'];
 		delete response._id;
 	}
+	if(response.authorID['$id']){
+		response.authorID = response.authorID['$id'];
+	}
 		return response;
 	},
 	defaults: {

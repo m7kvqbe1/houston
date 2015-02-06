@@ -191,7 +191,6 @@ var TicketDetailView = Backbone.View.extend({
 			"date": new Date(),
 			"message": this.$el.find('textarea[name="new-textarea"]').val(),
 			"files": this.messagesView.fileUploadView.createFilesArray()
-
 		};
 
 		this.messageModel.url = '/tickets/reply/' + this.model.id;

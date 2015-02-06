@@ -1279,7 +1279,8 @@ input.inp-lst {
 	/*background: pink;*/
 }
 
-.from-agent .msg-dtl {
+.from-AGENT .msg-dtl,
+.from-ADMIN .msg-dtl {
 	float: right;
 }
 
@@ -1290,7 +1291,8 @@ input.inp-lst {
 	margin-right: 14px;
 }
 
-.from-agent .msg-avatar{
+.from-AGENT .msg-avatar,
+.from-ADMIN .msg-avatar {
 	float: right;
 	margin: 0 0 0 14px;
 }
@@ -1341,7 +1343,8 @@ input.inp-lst {
 	-webkit-transform: rotate(360deg);
 }
 
-.from-agent .msg-tri {
+.from-AGENT .msg-tri,
+.from-ADMIN .msg-tri  {
 	right: 82px;
 }
 
@@ -1868,7 +1871,8 @@ input.inp-lst {
 		width: 664px;
 	}
 	
-	.from-agent {
+	.from-AGENT,
+	.from-ADMIN {
 		float: right;
 	}
 	
@@ -1925,16 +1929,19 @@ input.inp-lst {
 		margin: 0 auto;
 	}
 	
-	.from-agent .msg-dtl {
+	.from-AGENT .msg-dtl,
+	.from-ADMIN .msg-dtl {
 		float: left;
 	}
 	
-	.from-agent .msg-avatar {
+	.from-AGENT .msg-avatar,
+	.from-ADMIN .msg-avatar {
 		float: left;
 		margin: 0 14px 0 0;
 	}
 	
-	.from-agent .msg-tri {
+	.from-AGENT .msg-tri,
+	.from-ADMIN .msg-tri {
 		left: 82px;
 	}
 }
