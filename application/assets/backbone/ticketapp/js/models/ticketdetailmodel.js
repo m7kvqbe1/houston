@@ -1,15 +1,19 @@
 var TicketDetailModel = Backbone.Model.extend({
 	urlRoot: '/tickets',
 	initialize: function(){
+		this.messagesCollection = new Messages();
+
 		this.on("sync",  function(){
-			app.ticketDetailView.messagesView.collection.url = '/tickets/reply/' + this.id;
-			app.ticketDetailView.messagesView.collection.fetch();
+			this.messagesCollection.url = '/tickets/reply/' + this.id;
+			this.messagesCollection.fetch();
 		});
+
+
 	},
 
 	fetchMessages: function(){
-		app.ticketDetailView.messagesView.collection.url = '/tickets/reply/' + this.id;
-		app.ticketDetailView.messagesView.collection.fetch({
+		this.messagesCollection.url = '/tickets/reply/' + this.id;
+		this.messagesCollection.fetch({
 			success: function(){
 				app.onLoadRender('ticketDetailView');
 			}

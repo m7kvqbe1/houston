@@ -2,7 +2,6 @@ var dataHelper = {
 
 	getUserName: function(userID){
 		var user = app.users.get(userID);
-		console.log(userID);
 		if(user.attributes.firstName){
 			var userName = user.attributes.firstName+' '+user.attributes.lastName;
 		} else {

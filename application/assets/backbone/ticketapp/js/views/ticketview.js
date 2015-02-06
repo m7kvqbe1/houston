@@ -98,8 +98,7 @@ var TicketDetailView = Backbone.View.extend({
 		this.messageModel = new MessageModel();
 
 		//MESSAGES COLLECTION
-		var messagesCollection = new Messages();
-		this.messagesView = new MessagesView({ collection: messagesCollection});
+		this.messagesView = new MessagesView({ collection: this.model.messagesCollection});
 		this.messagesView.parent = this;
 		
 	},
