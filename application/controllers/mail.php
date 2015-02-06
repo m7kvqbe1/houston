@@ -23,7 +23,7 @@ $app->get('/mailbox/test/generate', function(Request $request, Application $app)
 	return $mailbox->generateInfoHtml('t-2837982734982734', 'm-2837982734982734');
 })->before($secure);
 
-// Scan mailbox
+// Scan mailbox - Move logic into model!
 $app->get('/mailbox/scan', function(Request $request, Application $app) {
 	$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
 	$mailbox->getMail();
@@ -60,7 +60,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			$replyModel->reply($replyModel->reply);
 			
 			// Send new reply email to all agents
-			$userModel = $new UserModel($app);
+			$userModel = new UserModel($app);
 			$agents = $userModel->getUsersByRole('AGENT');
 			
 			foreach($agents as $agent) {
@@ -78,7 +78,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			$ticketModel->add($ticketModel->ticket);
 			
 			// Send new ticket emails to all agents
-			$userModel = $new UserModel($app);
+			$userModel = new UserModel($app);
 			$agents = $userModel->getUsersByRole('AGENT');
 			
 			foreach($agents as $agent) {

@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserModel 
 {	
-	protected static $validProperties = array('_id', 'emailAddress', 'stripeCustomerID', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName');
 	protected static $validRoles = array('ADMIN', 'AGENT', 'USER');
+	protected static $validProperties = array('_id', 'emailAddress', 'stripeCustomerID', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName');
 	
 	protected $app;	
 	public $user;
@@ -91,7 +91,7 @@ class UserModel
 	}
 	
 	public  static function roleExists($role) {		
-		if(!in_array($property, self::$validRoles)) return false;
+		if(!in_array($role, self::$validRoles)) return false;
 		return true;
 	}
 	
