@@ -148,7 +148,7 @@ class MailboxExtended extends Mailbox
 	public function getMessageMeta($message, $className) 
 	{			
 		$dom = new \DOMDocument();
-		$dom->loadHTML($message);
+		@$dom->loadHTML($message);	// Surpress PHP warnings because of malformed markup
 		$xpath = new \DOMXPath($dom);
 		$results = $xpath->query("//*[@class='" . $className . "']");
 		
