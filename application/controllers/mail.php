@@ -47,7 +47,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 				continue;
 			}
 			
-			// Add reply to relevant ticket and save it
+			// Generate reply
 			$replyModel = new ReplyModel($app);
 			try {
 				$replyModel->generateReply($ticketID, $message, null, $email['fromAddress']);
@@ -56,6 +56,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 				return $e->getMessage();
 			}
 			
+			// Save reply to system
 			$replyModel->reply($replyModel->reply);
 			
 			// Get all Agent email addresses

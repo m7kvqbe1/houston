@@ -14,21 +14,6 @@ class CompanyModel
 		$this->app = $app;
 	}
 	
-	/*DEPRECATEDpublic function loadCompany($companyName) 
-	{
-		$connections = $this->app['mongo'];
-		$db = $connections['default'];
-		$db = $db->houston;
-		
-		$criteria = array('companyName' => $companyName);
-		$this->company = $db->companies->findOne($criteria);
-		if(!empty($this->company)) { 
-			return $this->company;
-		} else {
-			throw new \Exception('Company not found');
-		}
-	}*/
-	
 	public function loadCompanyByID($id) 
 	{
 		$connections = $this->app['mongo'];
