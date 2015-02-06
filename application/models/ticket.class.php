@@ -46,13 +46,14 @@ class TicketModel
 		return $docs;
 	}
 	
-	public function generateTicket($firstName, $lastName, $subject, $message, $date, $email) 
+	public function generateTicket($subject, $message, $date = null, $email) 
 	{
 		$this->ticket = new \stdClass();
 		
 		$this->ticket->subject = $subject;
 		$this->ticket->message = $message;
-		$this->ticket->date = $date;
+		$this->ticket->date = (isset($date)) ? $date : Helper::convertTimestamp(date('Y-m-d H:i:s'));
+		$this->ticket->status = 'New';
 		
 		// Check to see if user account with email address already exists
 		$userModel = new UserModel($this->app);
@@ -61,11 +62,7 @@ class TicketModel
 			$userModel->loadUser($email);			
 		} catch(\Exception $e) {
 			// User not found so save new user
-			$user = new \stdClass();
-			$user->emailAddress = $email;
-			$user->firstName = $firstName;
-			$user->lastName = $lastName;
-			
+			$user = new \stdClass();			
 			$userModel->addUser($user);
 			
 			// Load the new user we created		
@@ -82,6 +79,8 @@ class TicketModel
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
+		
+		$ticket->authorID = new \MongoID($ticket->authorID);
 		
 		try {
 			$tickets = $db->tickets;

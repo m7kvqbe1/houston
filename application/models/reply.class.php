@@ -48,13 +48,24 @@ class ReplyModel
 		return $docs;
 	}
 	
-	public function generateReply($ticketID, $message, $author) 
+	public function generateReply($ticketID, $message, $date = null, $email)
 	{
 		$this->reply = new \stdClass();
 		
-		$this->reply->ticketID = $ticketID;
+		$this->reply->ticketID = new \MongoID($ticketID);
 		$this->reply->message = $message;
-		$this->reply->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
+		$this->ticket->date = (isset($date)) ? $date : Helper::convertTimestamp(date('Y-m-d H:i:s'));
+		
+		$userModel = new UserModel($this->app);
+		
+		try {
+			$userModel->loadUser($email);			
+		} catch(\Exception $e) {
+			// User not found
+			throw new \Exception('Only registered users may generate a ticket reply');
+		}
+		
+		$this->ticket->authorID = new \MongoID($userModel->user['_id']);
 		
 		return $this->reply;
 	}
