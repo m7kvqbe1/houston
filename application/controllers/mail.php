@@ -59,11 +59,13 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			// Save reply to system
 			$replyModel->reply($replyModel->reply);
 			
-			// Get all Agent email addresses
-			
-			// Generate email
-			
 			// Send new reply email to all agents
+			$userModel = $new UserModel($app);
+			$agents = $userModel->getUsersByRole('AGENT');
+			
+			foreach($agents as $agent) {
+				$mailbox->loadTemplate('reply');
+			}
 			
 			// Send new reply email to ticket sender
 			
@@ -75,11 +77,13 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 			$ticketModel->generateTicket($email['subject'], strip_tags($email['messageBody']), $email['date'], $email['fromAddress'], $email['firstName'], $email['lastName']);
 			$ticketModel->add($ticketModel->ticket);
 			
-			// Get all Agent email addresses
-			
-			// Generate email
-			
 			// Send new ticket emails to all agents
+			$userModel = $new UserModel($app);
+			$agents = $userModel->getUsersByRole('AGENT');
+			
+			foreach($agents as $agent) {
+				$mailbox->loadTemplate('new');
+			}
 			
 			// Send new ticket email to ticket sender
 			
