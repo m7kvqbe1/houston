@@ -37,6 +37,8 @@ class ReplyModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
+		$ticketID = new \MongoID($ticketID);
+		
 		$collection = $db->replies;
 		$result = $collection->find(array('ticketID' => $ticketID));
 		
