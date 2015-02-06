@@ -78,8 +78,8 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		$collection = $db->usrs;
-		$result = $collection->find(array('role') => $role);
+		$collection = $db->users;
+		$result = $collection->find(array('role' => $role));
 		
 		$docs = array();
 		foreach($result as $doc) {
