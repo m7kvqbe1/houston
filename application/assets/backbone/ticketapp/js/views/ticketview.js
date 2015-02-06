@@ -35,7 +35,7 @@ var TicketDetailView = Backbone.View.extend({
 					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{author}}"/>'+
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{getAuthorName attributes.authorID}}</h3>'+
-						'<h4 class="msg-company">{{attributes.company}}</h4>'+
+						'<h4 class="msg-company">{{getCompanyName attributes.authorID}}</h4>'+
 						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
 					'<div class="msg-tri"></div>'+
@@ -101,32 +101,7 @@ var TicketDetailView = Backbone.View.extend({
 		var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
-
-		Handlebars.registerHelper("getAuthorName", function(authorID) {
-			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
-		});
 		
-		Handlebars.registerHelper("forEach",function(arr,options) {
-			return houston.forEach(arr, options);
-		});
-		
-		Handlebars.registerHelper("populateAgentDropdown", function(){
-			// return new Handlebars.SafeString(houston.populateAgentDropdown());
-			return new Handlebars.SafeString('test');
-		});
-		
-		Handlebars.registerHelper("convertToDateTime", function(attribute) {
-			return houston.convertToDateTime(attribute);
-		});
-		
-		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
-			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
-
-		});
-
-		Handlebars.registerHelper("fullHeightPage", function() {
-			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
-		});
 	},
 	
 	render: function (){	

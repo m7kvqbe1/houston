@@ -35,11 +35,3 @@ var BufferClientModel = Backbone.Model.extend({
 		return response;
 	}
 });
-
-// this.usersCollection.url = '/client/users/' + this.id;
-// this.usersCollection.fetch({
-// 	success: function(){
-// 		app.clientUserCount += 1;
-// 		app.initViews();
-// 	}
-// });

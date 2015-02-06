@@ -29,10 +29,6 @@ var FormView = Backbone.View.extend({
 		var filesUploadCollection = new FilesUpload();
 		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
 		this.fileUploadView.parent = this;
-
-		Handlebars.registerHelper("fullHeightPage", function() {
-			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
-		});
 	},
 
 	render: function(){

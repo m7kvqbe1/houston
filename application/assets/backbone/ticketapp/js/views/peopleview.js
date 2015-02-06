@@ -43,14 +43,10 @@ var PeopleView = Backbone.View.extend({
 	),
 	
 	initialize: function() {		
-		console.log(this.collection);
+		console.log(app.users);
 		this.listenTo(this.collection, "add change remove", this.render);
 
 		this.collection.view = this;
-
-		Handlebars.registerHelper("fullHeightPage", function() {
-			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
-		});
 	},
 		
 	render: function() {

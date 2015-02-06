@@ -7,7 +7,7 @@ var MessagesView = Backbone.View.extend({
 					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.author}}"/>'+
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{getAuthorName attributes.authorID}}</h3>'+
-						'<h4 class="msg-company">{{attributes.company}}</h4>'+
+						'<h4 class="msg-company">{{getCompanyName attributes.authorID}}</h4>'+
 						'<div class="msg-date">{{convertToDateTime attributes.date}}</div>'+
 					'</div>'+
 					'<div class="msg-tri"></div>'+
@@ -63,9 +63,6 @@ var MessagesView = Backbone.View.extend({
 		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
 		this.fileUploadView.parent = this;
 
-		Handlebars.registerHelper("forEach",function(arr,options) {
-			return houston.forEach(arr, options);
-		});
 	},
 
 	render: function(){

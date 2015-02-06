@@ -2,34 +2,79 @@ var dataHelper = {
 
 	getUserName: function(userID){
 		var user = app.users.get(userID);
-		console.log(user);
 		var userName = user.attributes.firstName+' '+user.attributes.lastName;
 		return userName;
+	},
+
+	getCompanyName: function(userID){
+		var user = app.users.get(userID);
+		if(user.attributes.clientID){
+			var companyName = app.clients.get(user.attributes.clientID).attributes.name;
+		} else {
+			var companyName = app.user.attributes.companyName;
+		}
+		return companyName;
 	}
-	
-
-	// getCompanyName: function()
-
-	// getAuthorDetails: function(authorRole,authorID,companyID){
-	// 	var output = {};
-	// 	if(authorRole == 'user'){
-	// 		// var company = app.clients.get(companyID);		
-	// 		// var author = company.usersCollection.get(authorID).attributes;
-	// 		// var companyName = company.attributes.name;
-	// 		// if(author.firstName){
-	// 		// 	var authorName = author.firstName+' '+author.lastName;		
-	// 		// } else {
-	// 		// 	var authorName = author.emailAddress;
-	// 		// }
-	// 	} else {	
-	// 		// var author = app.agents.get(authorID);
-	// 		// output.authorName = author.attributes.firstName+' '+author.attributes.lastName;
-	// 		// output.companyName = app.user.attributes.companyName;			
-	// 	}
-
-	// 	return output;
-	// }
 
 }
+
+var handlebarsHelpers = {
+	bindHelpers: function(){
+		
+		Handlebars.registerHelper("fullHeightPage", function() {
+			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
+		});
+
+		Handlebars.registerHelper("forEach",function(arr,options) {
+			return houston.forEach(arr, options);
+		});
+
+		Handlebars.registerHelper("getAuthorName", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
+		});
+
+		Handlebars.registerHelper("getCompanyName", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getCompanyName(authorID));
+		});
+
+		Handlebars.registerHelper("convertToClass", function(attribute) {
+			return houston.convertToClass(attribute);
+		});
+
+		Handlebars.registerHelper("convertToDate", function(attribute) {
+			return houston.convertToDate(attribute);
+		});
+
+		//TicketsView Helpers
+		Handlebars.registerHelper("updateCheck", function(arr) { 
+			return new Handlebars.SafeString(houston.updateCheck(arr));			
+		});
+
+		Handlebars.registerHelper("dateArrow", function() {
+			return new Handlebars.SafeString(houston.dateArrow());
+		});
+
+		Handlebars.registerHelper("companyArrow", function() {
+			return new Handlebars.SafeString(houston.companyArrow());	
+		});
+
+		//TicketView Helpers		
+		Handlebars.registerHelper("populateAgentDropdown", function(){
+			// return new Handlebars.SafeString(houston.populateAgentDropdown());
+			return new Handlebars.SafeString('test');
+		});
+		
+		Handlebars.registerHelper("convertToDateTime", function(attribute) {
+			return houston.convertToDateTime(attribute);
+		});
+		
+		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
+			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
+
+		});
+
+	}
+}
+
 
 
