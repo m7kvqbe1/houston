@@ -56,23 +56,78 @@ var RegisterView = Backbone.View.extend({
 								'</div>'+
 							'</div>'+
 					'</div>'+
-					'<button class="confirm" type="button">Confirm</button>'+
+					'<button class="detailsConfirm" type="button">Confirm</button>'+
 					'<div class="beige or">or</div>'+
 					'<a class="btn-can" href="/#/">Cancel</a>'+
 				'</form>'+
 		'</div>'
 	),
-	
-	initialize: function() {
-		
-	},
+
+	paymentPlanTemplate: Handlebars.compile(
+		'<div class="box box-reg">'+
+			'<h2>Choose a Pricing Plan</h2>'+
+			'<h3>How much Houston do you want {{attributes.firstName}}?</h3>'+
+			'<div class="reg-form-wrap">'+
+				'<form id="form-payment-plan" action="">'+	
+					'<div class="form-row">'+
+						'<label>'+
+							'<span>Houston Plan 1 - Unlimited Access - Monthly</span>'+
+							'<input class="radio1" type="radio" name="plan" value="1" />'+
+						'</label>'+
+					'</div>'+				
+					'<div class="form-row">'+
+						'<label>'+
+							'<span>Houston Plan 2 - Unlimited Access - Annually</span>'+
+							'<input class="radio2" type="radio" name="plan" value="2" />'+
+						'</label>'+
+					'</div>'+			
+					'<button class="planConfirm" type="button">Confirm</button>'+
+					'<div class="beige or">or</div>'+
+					'<a class="btn-can" href="/#/">Cancel</a>'+
+				'</form>'+
+		'</div>'
+	),
+
+	paymentTemplate: Handlebars.compile(
+		'<div class="box box-reg">'+
+			'<h2>Enter Your Payment Details</h2>'+
+			'<h3>Almost got your Houston account!</h3>'+
+			'<div class="reg-form-wrap">'+
+				'<form id="form-payment" action="">'+	
+					'<span class="payment-errors"></span>'+
+					'<div class="form-row">'+
+						'<label>'+
+							'<span>Card Number</span>'+
+							'<input type="text" size="20" data-stripe="number" />'+
+						'</label>'+
+					'</div>'+
+					'<div class="form-row">'+
+						'<label>'+
+							'<span>CVC</span>'+
+							'<input type="text" size="4" data-stripe="cvc" />'+
+						'</label>'+
+					'</div>'+				
+					'<div class="form-row">'+
+						'<label>'+
+							'<span>Expiration (MM/YYYY)</span>'+
+							'<input type="text" size="2" data-stripe="exp-month" />'+
+						'</label>'+
+						'<span> / </span>'+
+						'<input type="text" size="4" data-stripe="exp-year" />'+
+					'</div>'+		
+					'<button class="paymentConfirm" type="button">Confirm</button>'+
+					'<div class="beige or">or</div>'+
+					'<a class="btn-can" href="/#/">Cancel</a>'+
+				'</form>'+
+		'</div>'
+	),
 
 	render: function (){	
 		this.model.set({password: ''});
 		console.log(this.model);
 		this.$el.html(this.template(this.model));
 		this.delegateEvents({
-			'click .confirm': 'confirm',
+			'click .detailsConfirm': 'detailsConfirm',
 			'blur input': 'validate',
 			'focus .reg-p': 'showCount',
 			'blur .reg-p': 'hideCount',
@@ -108,22 +163,66 @@ var RegisterView = Backbone.View.extend({
 		login.registerValidate(e.currentTarget);
 	},
 	
-	confirm: function(){
+	detailsConfirm: function(){
 		if(login.registerCreateValidate(this.$el)){
-			this.setModelData();
-			app.navigate('register/plan', {trigger: true});
+			this.model.set({
+				firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
+				lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),
+				emailAddress: this.$el.find('input[name="reg-e"]').val(),
+				company: this.$el.find('input[name="reg-c"]').val(),
+				password: this.$el.find('input[name="reg-p"]').val()
+			});
+
+			this.$el.html(app.registerView.paymentPlanTemplate(this.model));
+			this.delegateEvents({
+				'click .planConfirm': 'planConfirm'
+			});		
+		}
+	},
+
+	planConfirm: function(){
+		this.model.set({
+			plan: this.$el.find('input[type="radio"]:checked').val()
+		});
+		this.$el.html(app.registerView.paymentTemplate(this.model));
+		this.delegateEvents({
+			'click .paymentConfirm': 'paymentConfirm'
+		});
+	},
+
+	paymentConfirm: function(){
+		var form = this.$el.find('form');
+
+		// Disable the submit button to prevent repeated clicks
+		form.find('.paymentConfirm').prop('disabled', true);
+		console.log(this);
+		// Get a token from Stripe API
+		Stripe.card.createToken(form, this.responseHandler);
+
+	},
+
+	responseHandler: function(status, response){
+		var form = $('#form-payment');
+		if(response.error){
+			form.find('.payment-errors').text(response.error.message);
+			form.find('.paymentConfirm').prop('disabled', false);
+		} else {
+			app.registerModel.set({
+				token: response.id
+			});
+			app.registerModel.save(app.registerModel.attributes,
+				{
+					success: function(model,response,options){
+					console.log(response);
+					},
+					error: function(model,response,options){
+					console.log(response);
+					}
+				}
+			);
 		}
 	},
 	
-	setModelData: function(){
-		this.model.set({
-			firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
-			lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),
-			emailAddress: this.$el.find('input[name="reg-e"]').val(),
-			company: this.$el.find('input[name="reg-c"]').val(),
-			password: this.$el.find('input[name="reg-p"]').val()
-		});
-	}
 });
 
 // templateSuccess: Handlebars.compile(
