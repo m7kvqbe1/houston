@@ -130,8 +130,9 @@ var AppRouter = Backbone.Router.extend({
 
 	ticketDetailsFrontController: function(ticket) {
 		var attributes = this.tickets.get(ticket).attributes;
-		this.ticketDetailModel.set(attributes);
-		this.ticketDetailModel.fetchMessages();
+		this.ticketDetailView.model.set(attributes);
+		this.ticketDetailView.model.fetchMessages(ticket);
+		// app.onLoadRender('ticketDetailView');
 	},
 
 	ticketFormFrontController: function() {

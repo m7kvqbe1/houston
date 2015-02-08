@@ -13,8 +13,8 @@ var RegisterView = Backbone.View.extend({
 								'<div class="vld-cir vld-name">1</div>'+									
 							'</div>'+
 						'</div>'+
-						'<input type="text" name="reg-fn" placeholder="First Name" class="vld-aa" data-vld="vld-a" />'+
-						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="Last Name" data-vld="vld-b" />'+						
+						'<input type="text" name="reg-fn" placeholder="{{#if attributes.firstName}}{{attributes.firstName}}{{else}}First Name{{/if}}" class="vld-aa" data-vld="vld-a" val="{{attributes.firstName}}" />'+
+						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="{{#if attributes.lastName}}{{attributes.lastName}}{{else}}Last Name{{/if}}" data-vld="vld-b" val="{{attributes.lastName}}" />'+						
 					'</div>'+
 					'<div class="vld-wrap vld-pair-two">'+
 						'<div class="vld-box">'+
@@ -25,13 +25,13 @@ var RegisterView = Backbone.View.extend({
 							'</div>'+
 						'</div>'+
 						'<div class="reg-vrf">'+
-							'<input type="text" name="reg-e" placeholder="Email Address" class="email vld-aa" data-vld="vld-a" />'+
+							'<input type="text" name="reg-e" placeholder="{{#if attributes.emailAddress}}{{attributes.emailAddress}}{{else}}Email Address{{/if}}" class="email vld-aa" data-vld="vld-a" val="{{attributes.emailAddress}}" />'+
 							'<div class="vrf">'+
 								'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
 								'<div class="vrf-msg">Already<br />In Use</div>'+
 							'</div>'+
 						'</div>'+
-						'<input class="inp-spa vld-bb" type="text" name="reg-c" placeholder="Company" data-vld="vld-b" />'+
+						'<input class="inp-spa vld-bb" type="text" name="reg-c" placeholder="{{#if attributes.company}}{{attributes.company}}{{else}}Company{{/if}}" data-vld="vld-b" val="{{attributes.company}}" />'+
 					'</div>'+
 					'<div class="vld-wrap vld-pair-three">'+	
 						'<div class="vld-box">'+
@@ -56,21 +56,10 @@ var RegisterView = Backbone.View.extend({
 								'</div>'+
 							'</div>'+
 					'</div>'+
-					'<button class="create" type="button">Create</button>'+
+					'<button class="confirm" type="button">Confirm</button>'+
 					'<div class="beige or">or</div>'+
 					'<a class="btn-can" href="/#/">Cancel</a>'+
 				'</form>'+
-		'</div>'
-	),
-	
-	templateSuccess: Handlebars.compile(
-		'<div class="box box-suc">'+
-			'<h2>You Have a Houston Account!</h2>'+
-			'<h3>Hoot have thought it would be so easy?</h3>'+
-			'<div class="got-wrap">'+
-				'<h2>You\'ve Got Mail!</h2>'+
-				'<h3>Please click the verification link in the email we just sent you to complete your account creation</h3>'+
-			'</div>'+
 		'</div>'
 	),
 	
@@ -79,9 +68,11 @@ var RegisterView = Backbone.View.extend({
 	},
 
 	render: function (){	
-		this.$el.html(this.template());
+		this.model.set({password: ''});
+		console.log(this.model);
+		this.$el.html(this.template(this.model));
 		this.delegateEvents({
-			'click .create': 'create',
+			'click .confirm': 'confirm',
 			'blur input': 'validate',
 			'focus .reg-p': 'showCount',
 			'blur .reg-p': 'hideCount',
@@ -90,7 +81,6 @@ var RegisterView = Backbone.View.extend({
 			'focus .email': 'hideInUse'
 		});
 		return this;
-
 	},
 	
 	hideInUse: function(e){
@@ -118,22 +108,10 @@ var RegisterView = Backbone.View.extend({
 		login.registerValidate(e.currentTarget);
 	},
 	
-	create: function(){
+	confirm: function(){
 		if(login.registerCreateValidate(this.$el)){
 			this.setModelData();
-			this.model.save(this.model.attributes,
-				{
-					success: _.bind(function(model,response,options){
-					console.log(response);
-						if(response === 1){
-							this.$el.html(app.registerView.templateSuccess());
-						}
-					}, this),
-					error: _.bind(function(model,response,options){
-					console.log(response);
-					}, this)
-				}
-			);
+			app.navigate('register/plan', {trigger: true});
 		}
 	},
 	
@@ -147,3 +125,28 @@ var RegisterView = Backbone.View.extend({
 		});
 	}
 });
+
+// templateSuccess: Handlebars.compile(
+// 	'<div class="box box-suc">'+
+// 		'<h2>You Have a Houston Account!</h2>'+
+// 		'<h3>Hoot have thought it would be so easy?</h3>'+
+// 		'<div class="got-wrap">'+
+// 			'<h2>You\'ve Got Mail!</h2>'+
+// 			'<h3>Please click the verification link in the email we just sent you to complete your account creation</h3>'+
+// 		'</div>'+
+// 	'</div>'
+// ),
+
+// this.model.save(this.model.attributes,
+// 	{
+// 		success: _.bind(function(model,response,options){
+// 		console.log(response);
+// 			if(response === 1){
+// 				this.$el.html(app.registerView.templateSuccess());
+// 			}
+// 		}, this),
+// 		error: _.bind(function(model,response,options){
+// 		console.log(response);
+// 		}, this)
+// 	}
+// );

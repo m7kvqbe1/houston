@@ -98,7 +98,8 @@ var TicketDetailView = Backbone.View.extend({
 		this.messageModel = new MessageModel();
 
 		//MESSAGES COLLECTION
-		this.messagesView = new MessagesView({ collection: this.model.messagesCollection});
+		var messagesCollection = new Messages();
+		this.messagesView = new MessagesView({ collection: messagesCollection});
 		this.messagesView.parent = this;
 		
 	},
@@ -152,6 +153,7 @@ var TicketDetailView = Backbone.View.extend({
 	},
 	
 	replyToggle: function(){
+		console.log('toggle');
 		houston.replyToggle(this.$el);
 	},
 	
@@ -164,17 +166,10 @@ var TicketDetailView = Backbone.View.extend({
 	
 	saveModel: function(){
 		//Set updated attribute to empty array
-		console.log(this.model.attributes);
 		this.model.set({			
 			updated: []
 		});
-		this.model.save(this.model.attributes,
-			{
-				success: _.bind(function(model, response, options){
-					console.log('saveModelSuccess');
-				}, this)
-			}
-		);	
+		this.model.save(this.model.attributes);	
 	},
 	
 	addMessage: function(){	
