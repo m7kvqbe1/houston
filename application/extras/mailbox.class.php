@@ -95,7 +95,8 @@ abstract class Mailbox
 	}
 }
 
-class MailboxExtended extends Mailbox 
+// This class adds additional application specific methods (templating and ticket email parsing)
+class MailboxExtended extends Mailbox
 {
 	private $template;
 	private $templateDir = \Config::TEMPLATE_DIR;
@@ -139,6 +140,10 @@ class MailboxExtended extends Mailbox
 		// Generate reply markup to inject into HTML email template
 	}
 	
+	private function generateNewTicketHtml($ticketID) {
+		// Generate new ticket markup to inject into HTML email template
+	}
+	
 	private function generateInfoHtml($ticketID, $messageID) 
 	{
 		// Generate hidden ticket info to inject into HTML email template
@@ -154,6 +159,8 @@ class MailboxExtended extends Mailbox
 		
 		if($results->length > 0) {
 		    return $results->item(0)->nodeValue;
+		} else {
+			throw new Exception('Failed to extract message meta');
 		}
 	}
 	

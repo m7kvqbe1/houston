@@ -39,7 +39,7 @@ $app->get('/mailbox/scan', function(Request $request, Application $app) {
 		$message = $mailbox->extractMessage($email['messageBody']);
 		
 		if(isset($ticketID)) {
-			// Skip iteration ticket doesn't exist
+			// Skip iteration if ticket doesn't exist
 			$ticketModel = new TicketModel($app);
 			try {
 				$ticketModel->loadTicketByID($ticketID);	
