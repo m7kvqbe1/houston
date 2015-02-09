@@ -4,8 +4,7 @@ var TicketModel = Backbone.Model.extend({
 	initialize: function(){
 		this.on("sync", function(model){
 			//when a new ticket is saved fetch the tickets collection
-			// app.tickets.fetch();
-			app.tickets.add(model);
+			app.tickets.fetch({reset: true});
 		});
 	},
 	parse: function(response){

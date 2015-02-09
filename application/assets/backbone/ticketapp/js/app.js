@@ -69,6 +69,9 @@ var AppRouter = Backbone.Router.extend({
 		
 		// BUFFER AGENT MODEL
 		this.addAgentModel = new BufferAgentModel();
+
+		//BUFFER MESSAGE MODEL
+		this.addMessageModel = new MessageModel();
 	},
 
 	// Data fetched flags

@@ -94,12 +94,9 @@ var TicketDetailView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
 
-		//MESSAGE BUFFERMODEL
-		this.messageModel = new MessageModel();
-
 		//MESSAGES COLLECTION
-		var messagesCollection = new Messages();
-		this.messagesView = new MessagesView({ collection: messagesCollection});
+		// var messagesCollection = new Messages();
+		this.messagesView = new MessagesView({ collection: this.model.messagesCollection});
 		this.messagesView.parent = this;
 		
 	},
@@ -187,10 +184,10 @@ var TicketDetailView = Backbone.View.extend({
 			"files": this.messagesView.fileUploadView.createFilesArray()
 		};
 
-		this.messageModel.url = '/tickets/reply/' + this.model.id;
-		this.messageModel.save(attributes,{
+		app.addMessageModel.url = '/tickets/reply/' + this.model.id;
+		app.addMessageModel.save(attributes,{
 			success: _.bind(function(model){
-				this.messageModel.clear();
+				app.addMessageModel.clear();
 			}, this)
 		});
 
