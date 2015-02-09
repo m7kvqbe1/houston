@@ -87,7 +87,7 @@ $app->post('/auth/reset/complete', function(Request $request, Application $app) 
 });
 
 // Register new user
-$app->post('/auth/register', function(Request $request, Application $app) {
+$app->post('/register', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
 	$userModel = new UserModel($app);

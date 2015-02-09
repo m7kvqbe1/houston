@@ -9,7 +9,7 @@ use Houston\Model\ReplyModel;
 use Houston\Extra\Notify;
 
 // Get all tickets
-$app->get('/tickets/all', function(Request $request, Application $app) {
+$app->get('/tickets', function(Request $request, Application $app) {
 	$ticketModel = new TicketModel($app);
 	return json_encode($ticketModel->getAll());
 })->before($secure);
