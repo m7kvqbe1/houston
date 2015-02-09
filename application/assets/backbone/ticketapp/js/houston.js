@@ -149,29 +149,19 @@ var houston = {
 		return updateSeen;
 	},
 
-	// populateAgentDropdown: function(){
-	// 	// var arr = app.companyModel.attributes.users;
-	// 	var arr = app.agents;
-	// 	var i;
-	// 	var str = '';
-	// 	for (i = 0; i < arr.length; ++i) {
-	// 		str += '<li>'+arr[i].name+'</li>';
-	// 	}
-	// 	return str;
+	populateAgentDropdown: function(){
+		var arr = app.users.filter(function(data){
+			return data.get('role') !== 'USER' && data.get('verify') === true;
+		});
+		console.log(arr);
+		var i;
+		var str = '';
+		for (i = 0; i < arr.length; ++i) {
+			str += '<li>'+arr[i].attributes.firstName+' '+arr[i].attributes.lastName+'</li>';
+		}
+		return str;
 
-	// },
-
-	// populateAgentDropdown: function(){
-	// 	// var arr = app.companyModel.attributes.users;
-	// 	var arr = app.agents;
-	// 	var i;
-	// 	var str = '';
-	// 	// for (i = 0; i < arr.length; ++i) {
-	// 	// 	str += '<li>'+arr[i].name+'</li>';
-	// 	// }
-	// 	return str;
-
-	// },
+	},
 
 	dateArrow: function(){
 		if(app.tickets.byDateOrder === 1){

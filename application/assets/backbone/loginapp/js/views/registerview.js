@@ -162,6 +162,18 @@ var RegisterView = Backbone.View.extend({
 	validate: function(e){
 		login.registerValidate(e.currentTarget);
 	},
+
+	//Kept for previous register method
+	// templateSuccess: Handlebars.compile(
+	// 	'<div class="box box-suc">'+
+	// 		'<h2>You Have a Houston Account!</h2>'+
+	// 		'<h3>Hoot have thought it would be so easy?</h3>'+
+	// 		'<div class="got-wrap">'+
+	// 			'<h2>You\'ve Got Mail!</h2>'+
+	// 			'<h3>Please click the verification link in the email we just sent you to complete your account creation</h3>'+
+	// 		'</div>'+
+	// 	'</div>'
+	// ),
 	
 	detailsConfirm: function(){
 		if(login.registerCreateValidate(this.$el)){
@@ -172,6 +184,21 @@ var RegisterView = Backbone.View.extend({
 				company: this.$el.find('input[name="reg-c"]').val(),
 				password: this.$el.find('input[name="reg-p"]').val()
 			});
+
+			// 	Kept for previous register method
+			// this.model.save(this.model.attributes,
+			// 	{
+			// 		success: _.bind(function(model,response,options){
+			// 		console.log(response);
+			// 			if(response === 1){
+			// 				this.$el.html(app.registerView.templateSuccess());
+			// 			}
+			// 		}, this),
+			// 		error: _.bind(function(model,response,options){
+			// 		console.log(response);
+			// 		}, this)
+			// 	}
+			// );
 
 			this.$el.html(app.registerView.paymentPlanTemplate(this.model));
 			this.delegateEvents({

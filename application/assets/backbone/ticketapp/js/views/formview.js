@@ -32,6 +32,7 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
+		console.log(this.model);
 		this.fileUploadView.collection.reset();
 
 		this.$el.html(this.template(this.model));	
@@ -52,7 +53,8 @@ var FormView = Backbone.View.extend({
 	
 	saveModel: function(){
 		if(this.$el.find('input[name="new-sub"]').val()){
-			this.setModelData();			
+			this.setModelData();	
+			console.log(this.model);		
 			this.model.save(this.model.attributes,
 				{
 					success: _.bind(function(){					
@@ -68,7 +70,7 @@ var FormView = Backbone.View.extend({
 
 	setModelData: function(){
 		this.model.set({
-			id: null,
+			// id: null,
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			message: this.$el.find('textarea[name="new-textarea"]').val(),
 			authorID: app.user.attributes.id,

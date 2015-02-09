@@ -74,8 +74,8 @@ var handlebarsHelpers = {
 
 		//TicketView Helpers		
 		Handlebars.registerHelper("populateAgentDropdown", function(){
-			// return new Handlebars.SafeString(houston.populateAgentDropdown());
-			return new Handlebars.SafeString('test');
+			return new Handlebars.SafeString(houston.populateAgentDropdown());
+			// return new Handlebars.SafeString('test');
 		});
 		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {

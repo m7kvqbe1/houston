@@ -1,7 +1,6 @@
 var Tickets = Backbone.Collection.extend({
-	model: TicketModel,
-	
-	url: '/tickets/all',
+	model: TicketModel,	
+	url: '/tickets',
 	
 	initialize: function(models){
 		this.filtered = new Backbone.Collection(models);
