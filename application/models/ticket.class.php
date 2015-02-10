@@ -18,7 +18,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 				
 		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoID($id)));
 		
@@ -33,7 +33,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		$tickets = $db->tickets;
 		$result = $tickets->find();
@@ -82,7 +82,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		$ticket->authorID = new \MongoID($ticket->authorID);
 		
@@ -100,7 +100,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		$json = str_replace('$', '', $json);
 		$ticket = json_decode($json);	
@@ -124,7 +124,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		$ticketID = new \MongoID($ticketID);
 		
@@ -142,7 +142,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		// Remove MimeType from start of Base64 encoded binary string
 		$data = explode(',', $attachment->target);
@@ -162,7 +162,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 			
 		$gridfs = $db->getGridFS();	
 		$file = $gridfs->findOne(array('_id' => new \MongoID($id)));
@@ -181,7 +181,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		try {
 			$gridfs = $db->getGridFS();
@@ -197,7 +197,7 @@ class TicketModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->{\Config::$database};
+		$db = $db->{$this->app['session']->get('database')};
 		
 		$fileArr = array();
 		foreach($fileIDs as $fileID) {

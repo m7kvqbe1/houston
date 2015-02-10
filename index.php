@@ -40,9 +40,6 @@ $app->register(new MongoServiceProvider, array(
     ),
 ));
 
-// Set default database
-Config::$database = $app['session']->get('database');
-
 // Register Monolog service provider
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.Config::LOG_PATH,
