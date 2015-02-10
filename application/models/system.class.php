@@ -22,6 +22,6 @@ class System
 	public static function generateDatabaseIdentifier($token, $prefix = null) 
 	{
 		if(!isset($prefix)) $prefix = 'db_';
-		return md5(\Config::DEFAULT_SALT.$token);
+		return $prefix.md5(\Config::DEFAULT_SALT.$token);
 	}
 }
