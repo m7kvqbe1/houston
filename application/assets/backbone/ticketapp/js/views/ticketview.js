@@ -95,16 +95,14 @@ var TicketDetailView = Backbone.View.extend({
 		this.listenTo(this.model, "sync", this.render);
 
 		//MESSAGES COLLECTION
-		// var messagesCollection = new Messages();
 		this.messagesView = new MessagesView({ collection: this.model.messagesCollection});
-		this.messagesView.parent = this;
-		
+		this.messagesView.parent = this;	
 	},
 	
 	render: function (){	
 		this.$el.html(this.template(this.model));
 
-		this.messagesView.fileUploadView.collection.reset();
+		app.filesUploadCollection.reset();
 
 		this.$('#messages-wrap').append(this.messagesView.$el);
 		this.messagesView.render();		
@@ -188,6 +186,7 @@ var TicketDetailView = Backbone.View.extend({
 		app.addMessageModel.save(attributes,{
 			success: _.bind(function(model){
 				app.addMessageModel.clear();
+				app.filesUploadCollection.clear();
 			}, this)
 		});
 

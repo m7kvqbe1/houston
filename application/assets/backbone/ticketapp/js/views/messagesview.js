@@ -58,9 +58,8 @@ var MessagesView = Backbone.View.extend({
 	initialize: function(){
 		this.listenTo(this.collection, 'add sync', this.render);
 
-		//FILES COLLECTION AND VIEW
-		var filesUploadCollection = new FilesUpload();
-		this.fileUploadView = new FileUploadView({ collection: filesUploadCollection});
+		//FILES VIEW
+		this.fileUploadView = new FileUploadView({ collection: app.filesUploadCollection});
 		this.fileUploadView.parent = this;
 
 	},
@@ -68,7 +67,7 @@ var MessagesView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(this.template(this.collection));
 
-		this.fileUploadView.collection.reset();		
+		app.filesUploadCollection.reset();		
 		this.parent.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
 		this.fileUploadView.render();
 	}

@@ -57,6 +57,12 @@ var AppRouter = Backbone.Router.extend({
 				app.initViews();
 			}
 		});
+
+		// AGENTS COLLECTION
+		this.agentsCollection =  new Backbone.Collection();
+
+		//FILES COLLECTION
+		this.filesUploadCollection = new FilesUpload();
 		
 		// BUFFER CLIENT MODEL
 		this.addClientModel = new BufferClientModel();
