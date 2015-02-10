@@ -4,8 +4,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
+use Houston\Common\System;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
+use Houston\Extra\Payment;
 
 // Logout of system
 $app->get('/auth/logout', function(Request $request, Application $app){	
@@ -32,6 +34,15 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	
 	// Do password hashes match or remember token match?
 	if($userModel::hashPassword($json->password) === $userModel->user['password']) {
+		// Register default database connection
+		$companyModel = new CompanyModel($app);
+		$companyModel->loadCompanyByID($userModel->user['companyID']);
+		
+		/*$mongoFactory = $app['mongo.factory'];
+		$connections = $app['mongo'];
+		$connections['default'] = $mongoFactory('mongodb://'.Config::MONGO_USER.':'.Config::MONGO_PASSWORD.'@'.Config::MONGO_HOST, array('connect' => true));*/
+				
+		$app['session']->set('database', $companyModel->company['database']);
 	    $app['session']->set('u', $userModel->user['_id']);
 	    $app['session']->set('isAuthenticated', true);
 	} else {
@@ -90,6 +101,12 @@ $app->post('/auth/reset/complete', function(Request $request, Application $app) 
 $app->post('/register', function(Request $request, Application $app) {
 	$json = json_decode(file_get_contents('php://input'));
 	
+	$stripeToken = $json->stripeToken; 
+	unset($json->stripeToken);
+	
+	$stripePlan = $json->plan; 
+	unset($json->plan);
+	
 	$userModel = new UserModel($app);
 	$companyModel = new CompanyModel($app);
 	
@@ -99,17 +116,34 @@ $app->post('/register', function(Request $request, Application $app) {
 	// Create company
 	$company = $companyModel->generateCompany($json);
 	$json->companyID = $company->_id;
-	
-	// Remove company name from user JSON before invoking registerUser method
 	unset($json->company);
+	
+	// Generate unique database identifier
+	$databaseIdentifier = System::generateDatabaseIdentifier($json->companyID);
+	
+	// Update company with database identifier
+	$companyModel->updateDatabaseIdentifier($json->companyID, $databaseIdentifier);
 	
 	// Create user account
 	$userModel->registerUser($json);
+	
+	// Perform stripe charge
+	$payment = new Payment($app);
+	$payment->setPlan($stripePlan);
+	$payment->setToken($stripeToken);
+	
+	try {
+		$customer = $payment->createStripeCustomer($payment->token, $json->_id, $payment->plan['id']);
+	} catch(\Stripe_Error $e) {
+		$body = $e->getJsonBody();
+		return json_encode($body['error']);
+	}
 
 	// Send verification email
 	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);
 	
-	return 1;
+	// Return stripe customer gubbins - do something with this - DO NOT RETURN TO CLIENT
+	return $customer->__toJSON();
 });
 
 // Verify user registration

@@ -30,7 +30,7 @@ $app->register(new UrlGeneratorServiceProvider());
 // Register session handling service provider
 $app->register(new SessionServiceProvider());
 
-// Register MongoDB service provider
+// Register houston master MongoDB service provider
 $app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
@@ -51,6 +51,8 @@ $app->register(new MonologServiceProvider(), array(
 $secure = function(Request $request, Application $app) {
 	if(!$app['session']->get('isAuthenticated')) {
 		return $app->redirect('/');
+	} else {
+		Config::$database = $app['session']->get('database');
 	}
 };
 

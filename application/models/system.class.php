@@ -17,4 +17,11 @@ class System
 		
 		return $template;
 	}
+	
+	// Refactor? Move this into company model or move other methods into here
+	public static function generateDatabaseIdentifier($token, $prefix = null) 
+	{
+		if(!isset($prefix)) $prefix = 'db_';
+		return md5(\Config::DEFAULT_SALT.$token);
+	}
 }

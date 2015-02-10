@@ -14,13 +14,13 @@ class CompanyModel
 		$this->app = $app;
 	}
 	
-	public function loadCompanyByID($id) 
+	public function loadCompanyByID($id)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 			
-		$id = new \MongoId($id);
+		$id = new \MongoID($id);
 		
 		$this->company = $db->companies->findOne(array('_id' => $id));
 		
@@ -29,6 +29,24 @@ class CompanyModel
 		} else {
 			throw new \Exception('Company not found');
 		}
+	}
+	
+	public function updateDatabaseIdentifier($companyID, $identifier) 
+	{	
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$companyID = new \MongoID($companyID);
+		
+		try {
+			$collection = $db->companies;
+			$collection->findAndModify(array('_id' => $companyID), array('$set' => array('database' => $identifier)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
+		} 	
 	}
 	
 	public function companyExists($companyName) 

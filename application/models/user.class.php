@@ -276,6 +276,8 @@ class UserModel
 		try {
 			$collection = $db->users;
 		    $collection->save($user);
+		    $this->user = $user;
+		    return $this->user;
 		} catch(MongoConnectionException $e) {
 		    die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {

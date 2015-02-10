@@ -221,7 +221,7 @@ var RegisterView = Backbone.View.extend({
 		var form = this.$el.find('form');
 
 		// Disable the submit button to prevent repeated clicks
-		form.find('.paymentConfirm').prop('disabled', true);
+		//form.find('.paymentConfirm').prop('disabled', true);
 		console.log(this);
 		// Get a token from Stripe API
 		Stripe.card.createToken(form, this.responseHandler);
@@ -232,18 +232,18 @@ var RegisterView = Backbone.View.extend({
 		var form = $('#form-payment');
 		if(response.error){
 			form.find('.payment-errors').text(response.error.message);
-			form.find('.paymentConfirm').prop('disabled', false);
+			//form.find('.paymentConfirm').prop('disabled', false);
 		} else {
 			app.registerModel.set({
-				token: response.id
+				stripeToken: response.id
 			});
 			app.registerModel.save(app.registerModel.attributes,
 				{
-					success: function(model,response,options){
-					console.log(response);
+					success: function(model, response, options){
+						console.log(response);
 					},
-					error: function(model,response,options){
-					console.log(response);
+					error: function(model, response, options){
+						console.log(response);
 					}
 				}
 			);

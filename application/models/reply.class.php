@@ -20,7 +20,7 @@ class ReplyModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->houston;
+		$db = $db->{\Config::$database};
 				
 		$this->reply = $db->replies->findOne(array('_id' => new \MongoID($id)));
 		
@@ -35,7 +35,7 @@ class ReplyModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->houston;
+		$db = $db->{\Config::$database};
 		
 		$ticketID = new \MongoID($ticketID);
 		
@@ -76,7 +76,7 @@ class ReplyModel
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
-		$db = $db->houston;
+		$db = $db->{\Config::$database};
 		
 		$reply->ticketID = new \MongoID($reply->ticketID);
 		$reply->authorID = new \MongoID($reply->authorID);

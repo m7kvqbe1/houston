@@ -22,4 +22,6 @@ class Config
 	const TEMPLATE_DIR = '/application/assets/email/';
 	
 	const STRIPE_API_KEY = 'sk_0BVRYmClEHeZvUq5hEdwluffwn0dp';
+	
+	public static $database;
 }
