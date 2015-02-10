@@ -25,7 +25,7 @@ io.on('connection', function(socket){
 });
 
 // Get all company IDs from MongoDB
-db.getAllCompanyIds(function(companyIds) {
+db.getAllCompanyIds(function(err, companyIds) {
 	console.log(companyIds);	
 });
 
