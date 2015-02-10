@@ -157,11 +157,7 @@ class MailboxExtended extends Mailbox
 		$xpath = new \DOMXPath($dom);
 		$results = $xpath->query("//*[@class='" . $className . "']");
 		
-		if($results->length > 0) {
-		    return $results->item(0)->nodeValue;
-		} else {
-			throw new Exception('Failed to extract message meta');
-		}
+		return ($results->length > 0) ? $results->item(0)->nodeValue : false;
 	}
 	
 	public function extractMessage($emailBody) 
