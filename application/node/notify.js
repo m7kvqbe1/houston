@@ -9,10 +9,14 @@ app.use(bodyParser.json());
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-http.listen(3000, function(){
-	console.log('listening on *:3000');
-});
+// Load custom modules
+var helper = require('./helper.js');
+var db = require('./database.js');
 
+// Listening for sockets
+http.listen(3000, function(){ console.log('listening on *:3000'); });
+
+// Listening on socket
 io.on('connection', function(socket){
 	socket.on('response', function(data) {
 		// Output response from client server side
@@ -20,24 +24,19 @@ io.on('connection', function(socket){
 	});
 });
 
-// Move into server side JavaScript utility class!
-function trimMessage(str) {
-	if(str.length > 30) {
-		msg = str.substr(0, 30);
-		return msg+'...';		
-	}
-	return str;
-}
+// Get all company IDs from MongoDB
+db.getAllCompanyIds(function(companyIds) {
+	console.log(companyIds);	
+});
 
 // Broadcast new ticket event
 app.post('/new/ticket', function(req, res) {	
 	console.log(req.body);
 	
 	var msg = req.body.message;
-	msg = trimMessage(msg);
+	msg = helper.trimMessage(msg);
 	
 	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
-	
 	res.end();
 });
 
@@ -46,21 +45,8 @@ app.post('/new/reply', function(req, res) {
 	console.log(req.body);
 
 	var msg = req.body.message;
-	msg = trimMessage(msg);
-	
-	console.log(req.body.id);
+	msg = helper.trimMessage(msg);
 
 	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
-	
-	res.end();
-});
-
-// Broadcast status update event
-app.post('/new/status', function(req, res) {
-	console.log(req.body);
-	var msg = 'test';
-	
-	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>Status Update:</strong>&nbsp;'+msg+'</a>');
-	
 	res.end();
 });

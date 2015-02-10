@@ -19,7 +19,7 @@ var AppRouter = Backbone.Router.extend({
 		this.users.fetch({
 			success: function(){
 				app.usersFetched = true;
-				app.initViews();
+				app.loaded();
 			}
 		});
 
@@ -28,7 +28,7 @@ var AppRouter = Backbone.Router.extend({
 		this.user.fetch({
 			success: function(){
 				app.userFetched = true;
-				app.initViews();
+				app.loaded();
 			}
 		});
 		
@@ -39,7 +39,7 @@ var AppRouter = Backbone.Router.extend({
 		this.tickets.fetch({
 			success: function(){
 				app.ticketsFetched = true;	
-				app.initViews();
+				app.loaded();
 			}
 		});
 		
@@ -54,7 +54,7 @@ var AppRouter = Backbone.Router.extend({
 		this.clients.fetch({
 			success: function(){
 				app.clientsFetched = true;
-				app.initViews();
+				app.loaded();
 			}
 		});
 
@@ -87,36 +87,34 @@ var AppRouter = Backbone.Router.extend({
 	usersFetched: false,
 	
 	loaded: function() {
-		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched) return true;
+		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched) this.initViews();
 		return false;
 	},
 
 	viewInit: false,
 	initViews: function() {
-		if(app.loaded()) {			
-			// TICKETS VIEW
-			this.ticketsView = new TicketView({ collection: this.tickets.filtered });
-			
-			// TICKET VIEW
-			this.ticketDetailView = new TicketDetailView({ model: this.ticketDetailModel });
+		// TICKETS VIEW
+		this.ticketsView = new TicketView({ collection: this.tickets.filtered });
+		
+		// TICKET VIEW
+		this.ticketDetailView = new TicketDetailView({ model: this.ticketDetailModel });
 
-			// NEW TICKET VIEW
-			this.formView = new FormView({ model: new TicketModel() });
-			
-			//----------------------------------------
-			
-			// PEOPLE VIEW
-			// var peopleCollection = new Backbone.Collection(app.users.agentUsers());
-			this.peopleView = new PeopleView({ collection: this.agentsCollection }); 
+		// NEW TICKET VIEW
+		this.formView = new FormView({ model: new TicketModel() });
+		
+		//----------------------------------------
+		
+		// PEOPLE VIEW
+		// var peopleCollection = new Backbone.Collection(app.users.agentUsers());
+		this.peopleView = new PeopleView({ collection: this.agentsCollection }); 
 
-			// CLIENTS VIEW
-			this.clientsView = new ClientsView({ collection: this.clients });
-			
-			// ACCOUNT VIEW
-			this.accountView = new AccountView({ model: this.user });
-			
-			this.viewInit = true;
-		}
+		// CLIENTS VIEW
+		this.clientsView = new ClientsView({ collection: this.clients });
+		
+		// ACCOUNT VIEW
+		this.accountView = new AccountView({ model: this.user });
+		
+		this.viewInit = true;
 	},
 	
 	onLoadRender: function(view) {
