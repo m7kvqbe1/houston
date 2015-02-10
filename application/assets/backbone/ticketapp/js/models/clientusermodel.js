@@ -3,7 +3,7 @@ var BufferClientUserModel = Backbone.Model.extend({
 	initialize: function(){
 		this.on("sync", function(){
 			// Fetch the users Collection, which resets the client's userCollections
-			app.users.fetch();
+			app.users.fetch({reset:true});
 		});
 	}
 });

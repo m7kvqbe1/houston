@@ -31,7 +31,6 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log(this.model);
 		app.filesUploadCollection.reset();
 
 		this.$el.html(this.template(this.model));	
@@ -75,7 +74,7 @@ var FormView = Backbone.View.extend({
 			authorID: app.user.attributes.id,
 			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id),
-			files: this.fileUploadView.createFilesArray()
+			files: app.filesUploadCollection.createFilesArray()
 		});		
 	},
 

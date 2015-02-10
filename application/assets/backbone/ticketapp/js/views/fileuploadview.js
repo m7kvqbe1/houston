@@ -96,20 +96,6 @@ var FileUploadView = Backbone.View.extend({
 		this.$el.find('.preview-window').hide();
 	},
 
-	createFilesArray: function(){
-		var filesArray = [];
-		this.collection.each(function(model){
-			var fileData = {
-				ref: model.attributes.id,
-				name: model.attributes.name,
-				type: model.attributes.type,
-				date: model.attributes.lastModifiedDate
-			}
-			filesArray.push(fileData);
-		});
-		return filesArray;
-	},
-
 	addFiles: function(files){
 		for (var i = 0, f; f = files[i]; i++) {
 	        var reader = new FileReader();

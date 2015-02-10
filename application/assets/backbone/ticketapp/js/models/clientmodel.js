@@ -22,7 +22,7 @@ var BufferClientModel = Backbone.Model.extend({
 	initialize: function(){
 		// On save of app.addClientModel fetch app.clients which triggers the clientview to render
 		this.on("sync", function(){
-			app.clients.fetch();
+			app.clients.fetch({reset:true});
 		});
 
 	},

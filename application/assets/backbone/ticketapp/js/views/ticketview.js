@@ -148,7 +148,6 @@ var TicketDetailView = Backbone.View.extend({
 	},
 	
 	replyToggle: function(){
-		console.log('toggle');
 		houston.replyToggle(this.$el);
 	},
 	
@@ -179,7 +178,7 @@ var TicketDetailView = Backbone.View.extend({
 			"authorID": app.user.id,
 			"date": new Date(),
 			"message": this.$el.find('textarea[name="new-textarea"]').val(),
-			"files": this.messagesView.fileUploadView.createFilesArray()
+			"files": app.filesUploadCollection.createFilesArray()
 		};
 
 		app.addMessageModel.url = '/tickets/reply/' + this.model.id;
