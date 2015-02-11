@@ -1,7 +1,7 @@
 <?php
 // Require application config
 define('DOCUMENT_ROOT', __DIR__);
-require_once(__DIR__.'/application/config.php');
+require_once __DIR__.'/application/config.php';
 
 // PHP error reporting
 if(Config::ERROR_REPORTING === true) {
@@ -10,7 +10,7 @@ if(Config::ERROR_REPORTING === true) {
 }
 
 // Require Composer autoloader
-require_once(__DIR__.'/vendor/autoload.php');
+require_once __DIR__.'/vendor/autoload.php';
 
 // Class importing / aliasing
 use Silex\Application;
@@ -69,17 +69,17 @@ $secure = function(Request $request, Application $app) {
 
 // Autoload extras
 foreach(glob(__DIR__."/application/extras/*.php") as $filename) {
-    include $filename;
+    require_once $filename;
 }
 
 // Autoload models
 foreach(glob(__DIR__."/application/models/*.php") as $filename) {
-    include $filename;
+    require_once $filename;
 }
 
 // Autoload routes & controllers
 foreach(glob(__DIR__."/application/controllers/*.php") as $filename) {
-    include $filename;
+    require_once $filename;
 }
 
 $app->run();

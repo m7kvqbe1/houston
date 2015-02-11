@@ -13,10 +13,9 @@ var io = require('socket.io')(http);
 var helper = require('./helper.js');
 var db = require('./database.js');
 
-// Listening for sockets
+// Listening for http on port 3000
 http.listen(3000, function(){ console.log('listening on *:3000'); });
 
-// Listening on socket
 io.on('connection', function(socket){
 	socket.on('response', function(data) {
 		// Output response from client server side
@@ -26,7 +25,7 @@ io.on('connection', function(socket){
 
 // Get all company IDs from MongoDB
 db.getAllCompanyIds(function(err, companyIds) {
-	console.log(companyIds);	
+	console.log(companyIds);
 });
 
 // Broadcast new ticket event
