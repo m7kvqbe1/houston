@@ -31,6 +31,6 @@ class Notify
 	
 	public static function socketBroadcast($route, $payload, $socketNamespace = null) {
 		if(isset($socketNamespace)) $payload->socketNamespace = (string) $socketNamespace;
-		self::sendRequest('http://localhost:3000'.$route, $payload);
+		self::sendRequest(\Config::NODE_SERVER.$route, $payload);
 	}
 }
