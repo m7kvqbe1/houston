@@ -153,7 +153,6 @@ var houston = {
 		var arr = app.users.filter(function(data){
 			return data.get('role') !== 'USER' && data.get('verify') === true;
 		});
-		console.log(arr);
 		var i;
 		var str = '';
 		for (i = 0; i < arr.length; ++i) {

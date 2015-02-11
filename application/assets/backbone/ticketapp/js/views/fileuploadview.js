@@ -30,21 +30,21 @@ var FileUploadView = Backbone.View.extend({
 		this.listenTo(this.collection, 'reset add change remove', this.render);
 
 		Handlebars.registerHelper("generateFileUploadPreview", function(obj){ 
-			var typeEsc = Handlebars.Utils.escapeExpression(obj.attributes.type);
-			var nameEsc = Handlebars.Utils.escapeExpression(obj.attributes.name);
-			var targetEsc = Handlebars.Utils.escapeExpression(obj.attributes.target);
-      		var cidEsc = Handlebars.Utils.escapeExpression(obj.cid);
+			var type = Handlebars.Utils.escapeExpression(obj.attributes.type);
+			var name = Handlebars.Utils.escapeExpression(obj.attributes.name);
+			var target = Handlebars.Utils.escapeExpression(obj.attributes.target);
+      		var cid = Handlebars.Utils.escapeExpression(obj.cid);
 		
-			if(typeEsc){
-				if(typeEsc.indexOf('image')!== -1){
+			if(type){
+				if(type.indexOf('image')!== -1){
 					return new Handlebars.SafeString(
-						'<img class="file-thumb" src="'+ targetEsc +'" title="'+ nameEsc +'"/>'+
+						'<img class="file-thumb" src="'+ target +'" title="'+ name +'"/>'+
 						'<div class="file-text">'+
 			  				'<div class="file-icon jpg"></div>'+
 			  				'<div class="file-info">'+
-								'<div class="filename">'+ nameEsc +'</div>'+
-								'<a data-img="'+ targetEsc +'" data-type="'+ typeEsc +'" data-name="'+ nameEsc +'" class="file-preview">Preview</a>'+
-								'<a data-cid="'+ cidEsc +'" class="file-del">Delete</a>'+
+								'<div class="filename">'+ name +'</div>'+
+								'<a data-img="'+ target +'" data-type="'+ type +'" data-name="'+ name +'" class="file-preview">Preview</a>'+
+								'<a data-cid="'+ cid +'" class="file-del">Delete</a>'+
 							'</div>'+
 						'</div>'
 					);
@@ -53,8 +53,8 @@ var FileUploadView = Backbone.View.extend({
 						'<div class="file-text">'+
 			  				'<div class="file-icon jpg"></div>'+
 			  				'<div class="file-info">'+
-								'<div class="filename">'+ nameEsc +'</div>'+
-								'<a data-cid="'+ cidEsc +'" class="file-del">Delete</a>'+
+								'<div class="filename">'+ name +'</div>'+
+								'<a data-cid="'+ cid +'" class="file-del">Delete</a>'+
 							'</div>'+
 						'</div>'
 					);
@@ -168,3 +168,38 @@ var FileUploadView = Backbone.View.extend({
 	}
 
 });
+
+// addFiles: function(files){
+// 	for (var i = 0, f; f = files[i]; i++) {
+// 		var fileMdl = new FileUploadModel(); 
+//         var reader = new FileReader();
+// 		reader.onerror = this.fileErrorHandler;
+// 		this.collection.add(fileMdl);
+
+// 		reader.onloadstart = _.bind((function(theFile) {
+// 	        return function(e) {	        	
+// 		        this.collection.add(fileMdl);
+// 		        console.log('filestart');
+// 	        };
+//         })(f), this);
+
+
+//         reader.onloadend = _.bind((function(theFile) {
+// 	        return function(e) {	        	
+// 		        theFile["target"] = e.target.result;
+// 				delete theFile["webkitRelativePath"];
+// 				// var fileMdl = new FileUploadModel();
+// 				// this.collection.add(fileMdl);
+// 				console.log('fileend');
+// 				fileMdl.save(theFile,{
+// 					success: function(){
+// 						console.log('success');
+// 					}
+// 				});
+
+// 	        };
+//         })(f), this);
+
+//         reader.readAsDataURL(f);
+//   	}
+// },

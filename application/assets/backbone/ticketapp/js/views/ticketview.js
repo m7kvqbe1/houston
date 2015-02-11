@@ -2,31 +2,7 @@ var TicketDetailView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
-				'<div class="box-app-top msg-top">'+
-					'{{#if attributes.agent}}'+
-						'<h2><a href="#">< All Tickets</a></h2>'+
-						'{{generateDropSwitch attributes.status}}'+					
-						'<div class="dropdown droplist">'+
-							'<div class="drop-top rounded">'+
-								'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
-							'</div>'+						
-							'<ul class="drop">'+
-								'{{populateAgentDropdown}}'+
-							'</ul>'+
-						'</div>'+
-					'{{else}}'+
-						'<h2><a href="#">< All Tickets</a></h2>'+
-						'<div class="btn new">New</div>'+
-						'<div class="dropdown droplist">'+
-							'<div class="drop-top rounded">'+
-								'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
-							'</div>'+						
-							'<ul class="drop">'+
-								'{{populateAgentDropdown}}'+
-							'</ul>'+
-						'</div>'+
-					'{{/if}}'+
-				'</div>'+
+
 			'</div>'+
 		'</div>'+			
 		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+
@@ -92,10 +68,14 @@ var TicketDetailView = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "sync", this.render);
+		// this.listenTo(this.model, "sync", this.render);
 
-		//MESSAGES COLLECTION
-		this.messagesView = new MessagesView({ collection: this.model.messagesCollection});
+		//TICKET HEADER VIEW
+		this.ticketHeaderView = new TicketHeaderView({model: this.model});
+		this.ticketHeaderView.parent = this;
+
+		//MESSAGES VIEW
+		this.messagesView = new MessagesView({collection: this.model.messagesCollection});
 		this.messagesView.parent = this;	
 	},
 	
@@ -103,6 +83,9 @@ var TicketDetailView = Backbone.View.extend({
 		this.$el.html(this.template(this.model));
 
 		app.filesUploadCollection.reset();
+
+		this.$('.box-app-fixed-inner').append(this.ticketHeaderView.$el);
+		this.ticketHeaderView.render();
 
 		this.$('#messages-wrap').append(this.messagesView.$el);
 		this.messagesView.render();		
@@ -185,7 +168,6 @@ var TicketDetailView = Backbone.View.extend({
 		app.addMessageModel.save(attributes,{
 			success: _.bind(function(model){
 				app.addMessageModel.clear();
-				app.filesUploadCollection.clear();
 			}, this)
 		});
 
@@ -198,3 +180,46 @@ var TicketDetailView = Backbone.View.extend({
 	}
 	
 });
+
+var TicketHeaderView = Backbone.View.extend({
+	className: 'box-app-top msg-top',
+	template: Handlebars.compile(
+		'{{#if attributes.agent}}'+
+			'<h2><a href="#">< All Tickets</a></h2>'+
+			'{{generateDropSwitch attributes.status}}'+					
+			'<div class="dropdown droplist">'+
+				'<div class="drop-top rounded">'+
+					'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
+				'</div>'+						
+				'<ul class="drop">'+
+					'{{populateAgentDropdown}}'+
+				'</ul>'+
+			'</div>'+
+		'{{else}}'+
+			'<h2><a href="#">< All Tickets</a></h2>'+
+			'<div class="btn new">New</div>'+
+			'<div class="dropdown droplist">'+
+				'<div class="drop-top rounded">'+
+					'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
+				'</div>'+						
+				'<ul class="drop">'+
+					'{{populateAgentDropdown}}'+
+				'</ul>'+
+			'</div>'+
+		'{{/if}}'
+	),
+
+	initialize: function() {
+		this.listenTo(this.model, "sync", this.render);
+	},
+
+	render: function (){
+		console.log('headerRender');
+		console.log(this.model);	
+		this.$el.html(this.template(this.model));
+	}
+
+});
+
+
+
