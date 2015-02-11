@@ -154,9 +154,9 @@ class UserModel
 		$db = $db->houston;
 		
 		$criteria = array('remember' => $token);
-		$user = $db->users->findOne($criteria);
+		$this->user = $db->users->findOne($criteria);
 		
-		$verified = (empty($user)) ? false : $user; 
+		$verified = (empty($this->user)) ? false : $this->user; 
 		return $verified;
 	}
 	

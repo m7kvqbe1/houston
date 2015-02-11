@@ -18,7 +18,6 @@ class System
 		return $template;
 	}
 	
-	// Refactor? Move this into company model or move other methods into here
 	public static function generateDatabaseIdentifier($token, $prefix = null) 
 	{
 		if(!isset($prefix)) $prefix = 'db_';

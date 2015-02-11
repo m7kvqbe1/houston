@@ -8,7 +8,7 @@ use Houston\Model\CompanyModel;
 // Get authenticated session user object
 $app->get('/user/self', function(Request $request, Application $app) {	
 	$userModel = new UserModel($app);
-	$userModel->loadUserByID($app['session']->get('u'));
+	$userModel->loadUserByID($app['session']->get('uid'));
 	
 	// Add company name to user JSON returned to backbone
 	$companyModel = new CompanyModel($app);
