@@ -11,7 +11,7 @@ module.exports = {
 				companyIds.push(record._id);	
 			});
 			
-			callback(companyIds);
+			callback(err, companyIds);
 		});
 	}
-}
+};
