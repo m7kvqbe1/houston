@@ -24,22 +24,30 @@ io.on('connection', function(socket){
 });
 
 // Get all company IDs from MongoDB and create a new namespaced socket for each one
+var namespaces = {};
 db.getAllCompanyIds(function(err, companyIds) {	
 	companyIds.forEach(function(val) {
-		var nsp = io.of('/'+val);
-		nsp.on('connection', function(socket) {
+		namespaces[val] = io.of('/'+val);
+		namespaces[val].on('connection', function(socket) {
 			console.log('client connected');
 		});
 	});
 });
 
+// Broadcase notify message to the appropriate socket namespace!
+app.post('/new/ticket', function(req, res) {
+	console.log(req);
+	
+	var companyID = '';	// Hard coded company ID for testing
+	
+	var msg = req.body.message;
+	msg = helper.trimMessage(msg);
+	namespaces[companyID].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
+	
+	res.end();
+});
 
-
-// Broadcase message to the appropriate socket!
-
-
-
-// Broadcast new ticket event
+/*DEPRECATED// Broadcast new ticket event
 app.post('/new/ticket', function(req, res) {	
 	console.log(req.body);
 	
@@ -59,4 +67,4 @@ app.post('/new/reply', function(req, res) {
 
 	io.emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	res.end();
-});
+});*/

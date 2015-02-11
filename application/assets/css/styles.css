@@ -714,7 +714,7 @@ input.inp-lst {
 	float: left;
 	display: block;
 	width: 95px;
-	height: 26px;
+	height: auto;
 	margin: 0;
 	padding: 25px 0 0 15px;
 }
@@ -1525,7 +1525,7 @@ input.inp-lst {
 	
 	.app-wrap .logo {
 		width: 208px;
-		height: 49px;
+		height: auto;
 		padding: 26px 0 0 30px;
 	}
 

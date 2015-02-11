@@ -4,7 +4,8 @@ var AppRouter = Backbone.Router.extend({
 		"tickets/new": "ticketFormFrontController",
 		"tickets/:ticket": "ticketDetailsFrontController",
 		"people": "peopleOverviewFrontController",
-		"account": "accountMainFrontController"
+		"account": "accountMainFrontController",
+		"analytics": "analyticsMainFrontController"
 	},
 	
 	initialize: function() {
@@ -111,6 +112,9 @@ var AppRouter = Backbone.Router.extend({
 		// CLIENTS VIEW
 		this.clientsView = new ClientsView({ collection: this.clients });
 		
+		// ANALYTICS VIEW
+		this.analyticsView = new AnalyticsView({ model: this.user });
+		
 		// ACCOUNT VIEW
 		this.accountView = new AccountView({ model: this.user });
 		
@@ -152,6 +156,10 @@ var AppRouter = Backbone.Router.extend({
 	
 	accountMainFrontController: function() {
 		this.onLoadRender('accountView');
+	},
+	
+	analyticsMainFrontController: function() {
+		this.onLoadRender('analyticsView');
 	}
 });
 

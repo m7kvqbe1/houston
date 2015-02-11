@@ -43,6 +43,7 @@
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/messagesview.js"></script>
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/clientsview.js"></script>
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/accountview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/analyticsview.js"></script>
 	
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/app.js"></script>	
 </head>
@@ -52,6 +53,7 @@
 	<ul>
 		<li><a href="#"><i class="icon-comment"></i>All Tickets</a></li>
 		<li><a href="#/people"><i class="icon-user"></i>People</a></li>
+		<li><a href="#/analytics"><i class="icon-cog"></i>Analytics</a></li>
 		<li><a href="#/account"><i class="icon-cog"></i>Account</a></li>
 		<li><a href="/auth/logout"><i class="icon-logout"></i>Log Out</a></li>
 	</ul>
@@ -70,6 +72,7 @@
 			<nav>
 				<a href="#">Tickets</a>
 				<a href="#/people">People</a>
+				<a href="#/analytics">Analytics</a>
 				<a href="#/account">Account</a>
 				<a href="/auth/logout">Log Out</a>
 			</nav>
@@ -106,13 +109,14 @@
 	// Connect to namespaced socket using company ID
 	var socket = io('http://80.82.116.223:3000/companyid');
 	
-	// On receiving a notify event
+	// On receiving a notify event display the notification popup
 	socket.on('notify', function(data) {		
 		$('#notice span').html(data);
 		$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
 		socket.emit('response', 'success');
 	});
 	
+	// On receiving a sync event trigger backbone sync on the appropriate model / collection
 	socket.on('sync', function(data) {
 		// Sync all backbone collections and models
 	});
