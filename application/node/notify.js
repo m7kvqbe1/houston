@@ -34,29 +34,30 @@ db.getAllCompanyIds(function(err, companyIds) {
 	});
 });
 
-// Broadcase notify message to the appropriate socket namespace!
+// Broadcast new ticket notification event to the appropriate socket namespace
 app.post('/new/ticket', function(req, res) {
 	console.log(req);
-	
-	var companyID = '54da7ddad21a58157f46c975';	// Hard coded company ID for testing
 	
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
 	
-	namespaces[companyID].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
+	console.log(req.body);
+	
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });
 
+// Broadcast new reply notification event to the appropriate socket namespace
 app.post('/new/reply', function(req, res) {
 	console.log(req.body);
-	
-	var companyID = '54da7ddad21a58157f46c975';	// Hard coded company ID for testing
 
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
 	
-	namespaces[companyID].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
+	console.log(req.body);
+	
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });

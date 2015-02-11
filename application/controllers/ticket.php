@@ -27,7 +27,7 @@ $app->post('/tickets', function(Request $request, Application $app) {
 	$ticketModel = new TicketModel($app);
 	$ticketModel->add($ticket);
 		
-	Notify::newTicket($ticket);
+	Notify::socketBroadcast('/new/ticket', $ticket, $app['session']->get('cid'));
 	
 	return json_encode($ticket);
 })->before($secure);
@@ -51,7 +51,7 @@ $app->post('/tickets/reply/{ticketID}', function(Request $request, Application $
 	$replyModel = new ReplyModel($app);
 	$replyModel->reply($reply);
 	
-	Notify::newReply($reply);	
+	Notify::socketBroadcast('/new/reply', $reply, $app['session']->get('cid'));
 
 	return json_encode($reply);
 })->before($secure);
