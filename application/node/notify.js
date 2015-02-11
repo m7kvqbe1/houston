@@ -23,10 +23,21 @@ io.on('connection', function(socket){
 	});
 });
 
-// Get all company IDs from MongoDB
-db.getAllCompanyIds(function(err, companyIds) {
-	console.log(companyIds);
+// Get all company IDs from MongoDB and create a new namespaced socket for each one
+db.getAllCompanyIds(function(err, companyIds) {	
+	companyIds.forEach(function(val) {
+		var nsp = io.of('/'+val);
+		nsp.on('connection', function(socket) {
+			console.log('client connected');
+		});
+	});
 });
+
+
+
+// Broadcase message to the appropriate socket!
+
+
 
 // Broadcast new ticket event
 app.post('/new/ticket', function(req, res) {	

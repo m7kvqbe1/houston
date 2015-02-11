@@ -39,7 +39,7 @@ $app->delete('/user/{userID}', function(Request $request, Application $app, $use
 })->before($secure);
 
 // Update user account property
-$app->post('/user/update/{userID}/{property}', function(Request $request, Application $app, $userID, $property) {
+$app->put('/user/update/{userID}/{property}', function(Request $request, Application $app, $userID, $property) {
 	$data = json_decode(file_get_contents('php://input'));
 	
 	try {
@@ -48,12 +48,12 @@ $app->post('/user/update/{userID}/{property}', function(Request $request, Applic
 	} catch(Exception $e) {
 		echo $e->getMessage();
 	}	
-	
-	return 'foo';
 })->before($secure);
 
 // Delete user account property
 $app->delete('/user/delete/{userID}/{property}', function(Request $request, Application $app, $userID, $property) {
+	$data = json_decode(file_get_contents('php://input'));
+	
 	try {
 		$userModel = new UserModel($app);
 		$userModel->deleteProperty($userID, $property);

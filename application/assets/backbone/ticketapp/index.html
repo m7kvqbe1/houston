@@ -44,8 +44,7 @@
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/clientsview.js"></script>
 	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/accountview.js"></script>
 	
-	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/app.js"></script>
-	
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/app.js"></script>	
 </head>
 <body class="ticket-body">
 <div class="mob-menu">
@@ -75,9 +74,9 @@
 				<a href="/auth/logout">Log Out</a>
 			</nav>
 		</header>
-		<div id="app" class="box-app-wrap">
-			
-		</div>
+		
+		<div id="app" class="box-app-wrap"></div>
+		
 		<footer>
 			<div class="copy">
 				&copy;Copyright 2015 Houston Support Desk
@@ -101,16 +100,24 @@
 
 <div href="" id="notice"><span></span><i class="close">x</i></div>
 
-<!-- Node.js Notify -->
+<!-- Node.js Notify - Refactor this code into Backbone app.js -->
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
-	var socket = io('http://80.82.116.223:3000');
+	// Connect to namespaced socket using company ID
+	var socket = io('http://80.82.116.223:3000/companyid');
+	
+	// On receiving a notify event
 	socket.on('notify', function(data) {		
 		$('#notice span').html(data);
 		$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
 		socket.emit('response', 'success');
 	});
 	
+	socket.on('sync', function(data) {
+		// Sync all backbone collections and models
+	});
+	
+	// Close notification popup
 	$('#notice .close').click( function() {
 		$(this).parent().hide();
 	});
