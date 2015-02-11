@@ -14,8 +14,7 @@ $app->get('/auth/logout', function(Request $request, Application $app){
 	$response = Response::create('', 302, array("Location" => "/"));
 	$response->headers->clearCookie('r');
 	
-	$app['session']->set('u', '');
-	$app['session']->set('isAuthenticated', false);
+	System::destroySession($app);
 
 	return $response;
 });
@@ -28,29 +27,20 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	$userModel->loadUser($json->user);
 		
 	// Does verified user exist?
-	if(!$userModel->isVerified($json->user)) {
-	    return -1;
-	}
+	if(!$userModel->isVerified($json->user)) return -1;
 	
-	// Do password hashes match or remember token match?
-	if($userModel::hashPassword($json->password) === $userModel->user['password']) {
-		// Register default database connection
-		$companyModel = new CompanyModel($app);
-		$companyModel->loadCompanyByID($userModel->user['companyID']);
-		
-		/*$mongoFactory = $app['mongo.factory'];
-		$connections = $app['mongo'];
-		$connections['default'] = $mongoFactory('mongodb://'.Config::MONGO_USER.':'.Config::MONGO_PASSWORD.'@'.Config::MONGO_HOST, array('connect' => true));*/
-				
-		$app['session']->set('database', $companyModel->company['database']);
-	    $app['session']->set('u', $userModel->user['_id']);
-	    $app['session']->set('isAuthenticated', true);
-	} else {
-	    return -1;
-	}
+	// Do password hashes match?
+	if($userModel::hashPassword($json->password) !== $userModel->user['password']) return -1;
 	
+	// Register default database connection
+	$companyModel = new CompanyModel($app);
+	$companyModel->loadCompanyByID($userModel->user['companyID']);
+	
+	// Authenticate session
+	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
+
 	// Remember me?
-	if($json->remember == 1) {	
+	if($json->remember == 1) {
 		$remember = $userModel->rememberMeSet($json->user);
 		
 		$cookie = new Cookie('r', $remember, (time() + 3600 * 24 * 30));
@@ -90,9 +80,12 @@ $app->post('/auth/reset/complete', function(Request $request, Application $app) 
 	
 	$userModel->resetPassword($json->token, $json->password);
 	
+	// Load users company to get the database identifier
+	$companyModel = new CompanyModel($app);
+	$companyModel->loadCompanyByID($userModel->user['companyID']);
+	
 	// Authenticate session
-	$app['session']->set('u', $userModel->user['_id']);
-	$app['session']->set('isAuthenticated', true);
+	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 	
 	return 1;
 });
@@ -142,7 +135,6 @@ $app->post('/register', function(Request $request, Application $app) {
 	// Send verification email
 	mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);
 	
-	// Return stripe customer gubbins - do something with this - DO NOT RETURN TO CLIENT
 	return $customer->__toJSON();
 });
 
@@ -151,14 +143,16 @@ $app->get('/verify/{token}', function(Request $request, Application $app, $token
 	$userModel = new UserModel($app);
 	$userModel->isVerified(null, $token);
 	
-	if(!isset($userModel->user)) return 'The verification code supplied was invalid.';	// Update to redirect to invalid token error page
+	if(!isset($userModel->user)) return 'The verification code supplied was invalid.';	// Return error message to backbone
 	
 	// Set account as verified
 	$userModel->verifyAccount($userModel->user['emailAddress']);
 	
-	// Authenticate session
-	$app['session']->set('u', $userModel->user['_id']);
-	$app['session']->set('isAuthenticated', true);
+	// Load users company to get the database identifier
+	$companyModel = new CompanyModel($app);
+	$companyModel->loadCompanyByID($userModel->user['companyID']);
+	
+	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 	
 	// Redirect to load authenticated assets
 	return $app->redirect('/');

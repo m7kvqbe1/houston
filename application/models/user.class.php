@@ -54,7 +54,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		$this->loadUserByID($this->app['session']->get('u'));
+		$this->loadUserByID($this->app['session']->get('uid'));
 		
 		$companyID = new \MongoID($this->user['companyID']);
 		
@@ -305,7 +305,7 @@ class UserModel
 		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
 		// Lookup current authenticated session company ID
-		$this->loadUserByID($this->app['session']->get('u'));
+		$this->loadUserByID($this->app['session']->get('uid'));
 		$user->companyID = $this->user['companyID'];
 		
 		$user->role = 'AGENT';
@@ -320,7 +320,7 @@ class UserModel
 		$user->verify = $this->generateVerificationToken($user->emailAddress);
 		
 		// Lookup current authenticated session company ID
-		$this->loadUserByID($this->app['session']->get('u'));
+		$this->loadUserByID($this->app['session']->get('uid'));
 		$user->companyID = $this->user['companyID'];
 		
 		if(isset($user->clientID)) $user->clientID = new \MongoId($user->clientID);

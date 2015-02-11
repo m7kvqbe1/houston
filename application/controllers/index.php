@@ -13,10 +13,9 @@ $app->get('/', function(Request $request, Application $app){
 	$token = $cookies->get('r');
 	
 	$remember = (is_null($token)) ? false : $userModel->rememberMeLookup($token);
-	if($remember !== false) {
+	if($remember !== false) {		
 		// Authenticate session
-		$app['session']->set('u', $remember['_id']);
-	    $app['session']->set('isAuthenticated', true);
+		System::setupSession($app, true, $companyModel->company['database'], (string) $remember['_id']);
 	}
 	
 	return System::generateAssets($request, $app);

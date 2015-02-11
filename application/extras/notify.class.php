@@ -29,18 +29,18 @@ class Notify
 		return $output;
 	}
 	
-	public static function newTicket($ticket) 
-	{
-		self::sendRequest('http://localhost:3000/new/ticket', $ticket);
+	public static function newTicket($json) 
+	{	
+		self::sendRequest('http://localhost:3000/new/ticket', $json);
 	}
 	
-	public static function newReply($ticket) 
+	public static function newReply($json) 
 	{
-		self::sendRequest('http://localhost:3000/new/reply', $ticket);
+		self::sendRequest('http://localhost:3000/new/reply', $json);
 	}
 	
-	public static function newStatus($ticket) 
+	public static function newStatus($json) 
 	{
-		self::sendRequest('http://localhost:3000/new/status', $ticket);
+		self::sendRequest('http://localhost:3000/new/status', $json);
 	}
 }

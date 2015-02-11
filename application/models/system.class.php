@@ -24,4 +24,19 @@ class System
 		if(!isset($prefix)) $prefix = 'db_';
 		return $prefix.md5(\Config::DEFAULT_SALT.$token);
 	}
+	
+	public static function setupSession(Application $app, $authenticated = false, $database, $uid, $cid) 
+	{
+		$app['session']->set('isAuthenticated', $authenticated);
+		$app['session']->set('database', $database);
+	    $app['session']->set('uid', $uid);
+	    $app['session']->set('cid', $cid);	
+	}
+	
+	public static function destroySession(Application $app) {
+		$app['session']->set('isAuthenticated', false);
+		$app['session']->set('database', '');
+		$app['session']->set('uid', '');
+		$app['session']->set('cid', '');
+	}
 }

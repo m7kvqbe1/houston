@@ -24,7 +24,7 @@ class ClientModel
 		
 		// Load user to get authenticated users company ID
 		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('u'));
+		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
 		$collection = $db->companies;
 		$result = $collection->find(
@@ -50,7 +50,7 @@ class ClientModel
 		
 		// Load user to get authenticated users company ID
 		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('u'));
+		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
 		// Generate unique MongoId for new client
 		$client->_id = new \MongoId();
@@ -76,7 +76,7 @@ class ClientModel
 		
 		// Load user to get authenticated users company ID
 		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('u'));
+		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
 		$id = new \MongoId($id);
 		
