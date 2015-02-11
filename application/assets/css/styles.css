@@ -800,6 +800,13 @@ input.inp-lst {
 	min-width: 122px;		
 	/*margin: 8px 0 0;*/
 	z-index: 100;
+	
+	-moz-user-select: none; 
+	-khtml-user-select: none; 
+	-webkit-user-select: none; 
+	-o-user-select: none; 
+	
+	cursor: default;
 }
 
 .drop-inner {
@@ -842,6 +849,8 @@ input.inp-lst {
 	padding: 0 10px;
 	line-height: 36px;
 	color: #fff;
+	
+	cursor: pointer;
 }
 
 .dropdown li.slct {
