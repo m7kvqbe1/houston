@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Components;
+namespace Houston\Component;
 
 use Silex\Application;
 use Houston\Model\UserModel;

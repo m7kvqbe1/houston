@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Components;
+namespace Houston\Component;
 
 class ErrorTrap {
 	protected $callback;
