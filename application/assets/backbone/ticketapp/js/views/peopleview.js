@@ -1,6 +1,5 @@
 var PeopleView = Backbone.View.extend({
-	template: Handlebars.compile(
-		
+	template: Handlebars.compile(		
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
 				'<div class="box-app-top">'+
@@ -14,7 +13,7 @@ var PeopleView = Backbone.View.extend({
 				'<div class="add-person add-agent">'+
 					'<form id="form-add-agent">'+
 						'<h4>To add a new agent, simply input their email address and Houston will do the rest. Simple!</h4>'+
-						'<input type="text" placeholder="New Agent\'s Email Address" />'+
+						'<input class="required" type="email" placeholder="New Agent\'s Email Address" />'+
 						'<button type="button">Submit</button>' +
 						'<div class="beige or">or</div>' +
 						'<a class="cancel-btn ib">Cancel</a>' +
@@ -63,22 +62,23 @@ var PeopleView = Backbone.View.extend({
 	},
 
 	addToggle: function() {
-		this.$el.find('.add-agent').slideToggle().find('input[type="text"]').focus();
+		this.$el.find('.add-agent').slideToggle().find('input[type="email"]').focus();
 	},
 
-	addAgent: function() {
-		var attributes = 
-			{
-				"emailAddress": this.$el.find('#form-add-agent input[type="text"]').val(),
-				"verify": false
-			};
+	addAgent: function(e) {
+		if(houston.validateForm(e.currentTarget)){
+			var attributes = 
+				{
+					"emailAddress": this.$el.find('#form-add-agent input[type="email"]').val(),
+					"verify": false
+				};
 
-		app.addAgentModel.save(attributes,{
-			success: _.bind(function(model){
-				app.addAgentModel.clear();
-			}, this)
-		});
-
+			app.addAgentModel.save(attributes,{
+				success: _.bind(function(model){
+					app.addAgentModel.clear();
+				}, this)
+			});
+		}
 	}
 			
 });

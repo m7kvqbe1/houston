@@ -8,7 +8,7 @@ var ClientsView = Backbone.View.extend({
 			'<div class="add-person add-client">'+
 				'<form id="form-add-client">'+
 					'<h4>To add a new client, simply add the client\'s name below.</h4>'+
-					'<input type="text" placeholder="Clients Name" />'+
+					'<input class="required" type="text" placeholder="Clients Name" />'+
 					'<button type="button">Submit</button>' +
 					'<div class="beige or">or</div>' +
 					'<a class="cancel-btn ib">Cancel</a>' +
@@ -48,14 +48,16 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	addClient: function(e) {
-		var name = this.$el.find('#form-add-client input[type="text"]').val();
-		var attributes = { "name": name };
+		if(houston.validateForm(e.currentTarget)){
+			var name = this.$el.find('#form-add-client input[type="text"]').val();
+			var attributes = { "name": name };
 
-		app.addClientModel.save(attributes,{
-			success: _.bind(function(model){
-				app.addClientModel.clear();
-			}, this)
-		});
+			app.addClientModel.save(attributes,{
+				success: _.bind(function(model){
+					app.addClientModel.clear();
+				}, this)
+			});
+		}
 	}
 
 });
@@ -72,7 +74,7 @@ var ClientView = Backbone.View.extend({
 			'<div class="add-person add-client-user">'+
 				'<form class="form-add-client-user">'+
 					'<h4>To add a new user, simply input their email address and Houston will do the rest. Simple!</h4>'+
-					'<input type="text" placeholder="Email Address" />'+
+					'<input class="required" type="email" placeholder="Email Address" />'+
 					'<button type="button">Submit</button>' +
 					'<div class="beige or">or</div>' +
 					'<a class="cancel-btn ib">Cancel</a>' +
@@ -104,23 +106,27 @@ var ClientView = Backbone.View.extend({
 	},
 
 	addToggle: function() {
-		this.$el.find('.add-client-user').slideToggle().find('input[type="text"]').focus();
+		this.$el.find('.add-client-user').slideToggle().find('input[type="email"]').focus();
 	},
 
-	addClientUser: function() {
-		var emailAddress = this.$el.find('.form-add-client-user input[type="text"]').val();
-		var clientID = this.model.id;
-		var attributes = 
-			{
-				"emailAddress": emailAddress,
-				"clientID": clientID
-			};
+	addClientUser: function(e) {
+		if(houston.validateForm(e.currentTarget)){
+			var emailAddress = this.$el.find('.form-add-client-user input[type="email"]').val();
+			var clientID = this.model.id;
+			var attributes = 
+				{
+					"emailAddress": emailAddress,
+					"clientID": clientID
+				};
 
-		app.addClientUserModel.save(attributes,{
-			success: _.bind(function(model){
-				app.addClientUserModel.clear();
-			}, this)
-		});
+			app.addClientUserModel.save(attributes,{
+				success: _.bind(function(model){
+					//Hide form with render
+					this.render();
+					app.addClientUserModel.clear();
+				}, this)
+			});
+		}
 	}
 
 });

@@ -390,6 +390,7 @@ input[type="checkbox"] {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"] {
 	display: block;
 	width: 236px;
@@ -441,6 +442,7 @@ textarea:focus {
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
 input[type="password"]:focus,
 textarea:focus {
 	border-color: #f69228;
@@ -448,6 +450,7 @@ textarea:focus {
 
 input[type="text"].in-use,
 input[type="text"].error,
+input[type="email"].error,
 input[type="password"].error,
 textarea.error {
 	border-color: #ff6e3e;
@@ -1765,7 +1768,8 @@ input.inp-lst {
 	}
 
 
-	.add-person input[type="text"]{
+	.add-person input[type="text"],
+	.add-person input[type="email"]{
 		float: left;
 		width: 64%;
 		margin: 0 15px 15px 30px;	

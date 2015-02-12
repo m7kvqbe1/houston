@@ -10,7 +10,7 @@ var FormView = Backbone.View.extend({
 		'</div>'+
 		'<div class="box-app" style="{{fullHeightPage}}">' +
 			'<form id="form-new">' +
-				'<input type="text" class="new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
+				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
 				'<div class="char-count"><span>75</span> Characters Remaining</div>' +
 				'<textarea name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>' +
 				'<div id="file-upload-view-wrap">'+	
@@ -49,8 +49,8 @@ var FormView = Backbone.View.extend({
 		return houston.subjectCharCount(this.$el);
 	},
 	
-	saveModel: function(){
-		if(this.$el.find('input[name="new-sub"]').val()){
+	saveModel: function(e){
+		if(houston.validateForm(e.currentTarget)){
 			this.setModelData();	
 			console.log(this.model);		
 			this.model.save(this.model.attributes,
@@ -62,9 +62,7 @@ var FormView = Backbone.View.extend({
 					}, this)
 				}
 			);
-		} else {
-			console.log('invalid');
-		}	
+		} 
 	},
 
 	setModelData: function(){
