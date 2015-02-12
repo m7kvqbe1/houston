@@ -226,6 +226,41 @@ var houston = {
 		var headerHeight = $('header').height() + $('.box-app-fixed').height();
 		var idealHeight = windowHeight - footerHeight - headerHeight - 37;
 		return idealHeight;
+	},
+
+	isDisplayableImage: function(type){
+		if(type.indexOf('jpeg') == -1 && type.indexOf('png') == -1){
+			return false;
+		}
+		return true;
+	},
+
+	validateForm: function(button){
+		var valid = true;
+		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+		var form = $(button).closest('form');
+		var inputs = form.find('.required');
+		inputs.each(function(){
+			var input = $(this);
+			if(input.val() == ''){
+				input.addClass('error');
+				valid = false;
+			} else {
+				input.removeClass('error')
+			}
+
+			if(input.is('input[type=email]')){
+				address = input.val();
+				if(!re.test(address)){
+					valid = false;
+					input.addClass('error');	
+					console.log('error');		
+				} else {
+					input.removeClass('error');
+				}
+			}
+		});
+		return valid;
 	}
 
 }
