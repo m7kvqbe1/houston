@@ -2,10 +2,10 @@
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+use Houston\Component\MailboxExtended as Mailbox;
 use Houston\Model\TicketModel;
 use Houston\Model\ReplyModel;
 use Houston\Model\UserModel;
-use Houston\Extra\MailboxExtended as Mailbox;
 
 // IMAP mailbox connect test
 $app->get('/mailbox/test', function(Request $request, Application $app) {

@@ -35,13 +35,9 @@ db.getAllCompanyIds(function(err, companyIds) {
 });
 
 // Broadcast new ticket notification event to the appropriate socket namespace
-app.post('/new/ticket', function(req, res) {
-	console.log(req);
-	
+app.post('/new/ticket', function(req, res) {	
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
-	
-	console.log(req.body);
 	
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
 	
@@ -50,12 +46,8 @@ app.post('/new/ticket', function(req, res) {
 
 // Broadcast new reply notification event to the appropriate socket namespace
 app.post('/new/reply', function(req, res) {
-	console.log(req.body);
-
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
-	
-	console.log(req.body);
 	
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	

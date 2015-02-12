@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyModel 
 {		
+	protected static $validProperties = array('_id', 'companyName', 'database', 'stripeCustomerID');
+	
 	protected $app;
 	public $company;
 
@@ -14,20 +16,46 @@ class CompanyModel
 		$this->app = $app;
 	}
 	
-	public function loadCompanyByID($id)
+	public function loadCompanyByID($companyID)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 			
-		$id = new \MongoID($id);
+		$companyID = new \MongoID($companyID);
 		
-		$this->company = $db->companies->findOne(array('_id' => $id));
+		$this->company = $db->companies->findOne(array('_id' => $companyID));
 		
 		if(!empty($this->company)) {			
 			return $this->company;
 		} else {
 			throw new \Exception('Company not found');
+		}
+	}
+	
+	private static function propertyExists($property) 
+	{
+		if(!in_array($property, self::$validProperties)) return false;		
+		return true;
+	}
+	
+	public function setProperty($companyID, $property, $value)
+	{
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		if(!self::propertyExists($property)) throw new \InvalidArgumentException('Invalid property');
+		
+		$companyID = new \MongoID($companyID);
+		
+		try {
+			$collection = $db->companies;
+			$collection->findAndModify(array('_id' => $companyID), array('$set' => array($property => $value)));
+		} catch(MongoConnectionException $e) {
+			die('Error connecting to MongoDB server');
+		} catch(MongoException $e) {
+			die('Error: '.$e->getMessage());
 		}
 	}
 	

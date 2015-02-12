@@ -1,8 +1,9 @@
 <?php
-namespace Houston\Extra;
+namespace Houston\Component;
 
 use Silex\Application;
 use Houston\Model\UserModel;
+use Houston\Model\CompanyModel;
 
 class Payment 
 {
@@ -63,18 +64,28 @@ class Payment
 		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($userID);
 		
+		// Load company associated with user
+		$companyModel = new CompanyModel($this->app);
+		$companyModel->loadCompanyByID($userModel->user['companyID']);
+		
 		// Create stripe customer
 		$this->customer = \Stripe_Customer::create(array(
-			'description' => 'Houston Customer',
+			'description' => $companyModel->company['companyName'],
 			'card' => $token,
 			'email' => $userModel->user['emailAddress'],
 			'plan' => $plan
 		));
 		
-		// Update Houston user with stripeCustomerID
-		$userModel->setProperty($userID, 'stripeCustomerID', $this->customer->id);
+		// Update Houston company with stripeCustomerID
+		$companyModel->setProperty($companyModel->company['_id'], 'stripeCustomerID', $this->customer->id);
 		
 		return $this->customer;
+	}
+	
+	public function validSubscription($stripeCustomerID) {
+		$this->fetchStripeSubscriptionPlan($stripeCustomerID);
+		if(!isset($this->plan->data[0]->current_period_end) || $this->plan->data[0]->current_period_end < time()) return false; // No active subscription found
+		return true;
 	}
 	
 	public function fetchStripeSubscriptionPlan($stripeCustomerID)

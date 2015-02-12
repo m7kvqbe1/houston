@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Extra;
+namespace Houston\Component;
 	
 class Notify 
 {	

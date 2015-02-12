@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Extra;
+namespace Houston\Component;
 
 use Silex\Application;
 
@@ -152,8 +152,10 @@ class MailboxExtended extends Mailbox
 	
 	public function getMessageMeta($message, $className) 
 	{			
+		libxml_use_internal_errors(true);	// Surpress PHP warnings because of malformed markup
+		
 		$dom = new \DOMDocument();
-		@$dom->loadHTML($message);	// Surpress PHP warnings because of malformed markup
+		$dom->loadHTML($message);	
 		$xpath = new \DOMXPath($dom);
 		$results = $xpath->query("//*[@class='" . $className . "']");
 		

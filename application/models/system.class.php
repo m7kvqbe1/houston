@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Common;
+namespace Houston\Core;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;

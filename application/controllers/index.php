@@ -2,7 +2,7 @@
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-use Houston\Common\System;
+use Houston\Core\System;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
 

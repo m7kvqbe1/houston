@@ -67,8 +67,8 @@ $secure = function(Request $request, Application $app) {
     require $fileName;
 });*/
 
-// Autoload extras
-foreach(glob(__DIR__."/application/extras/*.php") as $filename) {
+// Autoload houston components
+foreach(glob(__DIR__."/application/components/*.php") as $filename) {
     require_once $filename;
 }
 
