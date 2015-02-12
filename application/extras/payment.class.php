@@ -82,6 +82,12 @@ class Payment
 		return $this->customer;
 	}
 	
+	public function validSubscription($stripeCustomerID) {
+		$this->fetchStripeSubscriptionPlan($stripeCustomerID);
+		if(!isset($this->plan->data[0]->current_period_end) || $this->plan->data[0]->current_period_end < time()) return false; // No active subscription found
+		return true;
+	}
+	
 	public function fetchStripeSubscriptionPlan($stripeCustomerID)
 	{
 		$this->plan = \Stripe_Customer::retrieve($stripeCustomerID)->subscriptions->all(array('limit' => 1));

@@ -36,7 +36,8 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	$companyModel->loadCompanyByID($userModel->user['companyID']);
 	
 	// Does this company have a valid subscription (check with Stripe)
-	
+	$payment = new Payment($app);
+	if(!$payment->validSubscription($companyModel->company['stripeCustomerID'])) return -1;
 	
 	// Authenticate session and register default database connection
 	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
