@@ -17,6 +17,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
 
@@ -29,6 +30,9 @@ $app->register(new UrlGeneratorServiceProvider());
 
 // Register session handling service provider
 $app->register(new SessionServiceProvider());
+
+// Register controller service provider
+$app->register(new ServiceControllerServiceProvider());
 
 // Register MongoDB service provider
 $app->register(new MongoServiceProvider, array(
@@ -77,8 +81,13 @@ foreach(glob(__DIR__."/application/models/*.php") as $filename) {
     require_once $filename;
 }
 
-// Autoload routes & controllers
+// Autoload controllers
 foreach(glob(__DIR__."/application/controllers/*.php") as $filename) {
+    require_once $filename;
+}
+
+// Autoload routes
+foreach(glob(__DIR__."/application/routes/*.php") as $filename) {
     require_once $filename;
 }
 
