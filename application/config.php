@@ -18,6 +18,8 @@ class Config
 	const STRIPE_API_KEY = 'sk_0BVRYmClEHeZvUq5hEdwluffwn0dp';
 	
 	const NODE_HOST = 'http://localhost:3000';
+	const NODE_USER = '';
+	const NODE_PASSWORD = '';
 	
 	// This will be taken from company account preferences stored in database
 	const MAILBOX_HOST = '{imap.gmail.com:993/ssl/novalidate-cert}[Gmail]/All Mail';

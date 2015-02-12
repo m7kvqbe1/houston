@@ -65,8 +65,16 @@ $app->get('/tickets/reply/{ticketID}', function(Request $request, Application $a
 	return json_encode($replyModel->getReplies($ticketID));
 })->before($secure);
 
+// Get attachment meta
+$app->get('/tickets/file/meta/{fileID}', function(Request $request, Application $app, $fileID) {	
+	$ticketModel = new TicketModel($app);
+	$meta = $ticketModel->getFileMeta($fileID);
+	
+	return json_encode($meta);
+})->before($secure);
+
 // Upload attachment
-$app->post('/tickets/file/add', function(Request $request, Application $app) {
+$app->post('/tickets/file', function(Request $request, Application $app) {
 	$ticket = json_decode(file_get_contents('php://input'));
 	
 	$ticketModel = new TicketModel($app);
@@ -76,7 +84,7 @@ $app->post('/tickets/file/add', function(Request $request, Application $app) {
 })->before($secure);
 
 // Download attachment
-$app->get('/tickets/file/download/{fileID}', function(Request $request, Application $app, $fileID) {
+$app->get('/tickets/file/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticketModel = new TicketModel($app);
 	$file = $ticketModel->downloadAttachment($fileID);
 	
@@ -99,12 +107,4 @@ $app->get('/tickets/file/download/{fileID}', function(Request $request, Applicat
 $app->delete('/tickets/file/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticketModel = new TicketModel($app);
 	return $ticketModel->deleteAttachment($fileID);
-})->before($secure);
-
-// Get attachment meta
-$app->get('/tickets/file/meta/{fileID}', function(Request $request, Application $app, $fileID) {	
-	$ticketModel = new TicketModel($app);
-	$meta = $ticketModel->getFileMeta($fileID);
-	
-	return json_encode($meta);
 })->before($secure);

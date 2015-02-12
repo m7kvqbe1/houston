@@ -14,13 +14,13 @@ class TicketModel
 		$this->app = $app;
 	}
 	
-	public function loadTicketByID($id) 
+	public function loadTicketByID($ticketID) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
 				
-		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoID($id)));
+		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoID($ticketID)));
 		
 		if(!empty($this->ticket)) {			
 			return $this->ticket;
@@ -158,14 +158,14 @@ class TicketModel
 		}
 	}
 	
-	public function downloadAttachment($id = null, $filename = null) 
+	public function downloadAttachment($fileID = null, $filename = null) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
 			
 		$gridfs = $db->getGridFS();	
-		$file = $gridfs->findOne(array('_id' => new \MongoID($id)));
+		$file = $gridfs->findOne(array('_id' => new \MongoID($fileID)));
 		
 		$fileArr = array(
 			'data' => $file->getBytes(),
@@ -177,7 +177,7 @@ class TicketModel
 		return $fileArr;
 	}
 	
-	public function deleteAttachment($id) 
+	public function deleteAttachment($fileID)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];

@@ -32,7 +32,8 @@ class System
 	    $app['session']->set('cid', $cid);	
 	}
 	
-	public static function destroySession(Application $app) {
+	public static function destroySession(Application $app) 
+	{
 		$app['session']->set('isAuthenticated', false);
 		$app['session']->set('database', '');
 		$app['session']->set('uid', '');

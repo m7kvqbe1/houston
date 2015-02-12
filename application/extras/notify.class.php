@@ -29,7 +29,8 @@ class Notify
 		return $output;
 	}
 	
-	public static function socketBroadcast($route, $payload, $socketNamespace = null) {
+	public static function socketBroadcast($route, $payload, $socketNamespace = null) 
+	{
 		if(isset($socketNamespace)) $payload->socketNamespace = (string) $socketNamespace;
 		self::sendRequest(\Config::NODE_HOST.$route, $payload);
 	}
