@@ -113,7 +113,7 @@ class AuthController
 		}
 		
 		// Send verification email
-		mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".Config::DOMAIN."/verify/".$json->verify);
+		mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".\Config::DOMAIN."/verify/".$json->verify);
 		
 		return $customer->__toJSON();	
 	}
