@@ -32,11 +32,13 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 	// Do password hashes match?
 	if($userModel::hashPassword($json->password) !== $userModel->user['password']) return -1;
 	
-	// Register default database connection
 	$companyModel = new CompanyModel($app);
 	$companyModel->loadCompanyByID($userModel->user['companyID']);
 	
-	// Authenticate session
+	// Does this company have a valid subscription (check with Stripe)
+	
+	
+	// Authenticate session and register default database connection
 	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 
 	// Remember me?
@@ -120,7 +122,7 @@ $app->post('/register', function(Request $request, Application $app) {
 	// Create user account
 	$userModel->registerUser($json);
 	
-	// Perform stripe charge
+	// Perform stripe charge and link stripe customer to company
 	$payment = new Payment($app);
 	$payment->setPlan($stripePlan);
 	$payment->setToken($stripeToken);
