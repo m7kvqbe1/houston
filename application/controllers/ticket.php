@@ -106,5 +106,6 @@ $app->get('/tickets/file/{fileID}', function(Request $request, Application $app,
 // Delete attachment
 $app->delete('/tickets/file/{fileID}', function(Request $request, Application $app, $fileID) {
 	$ticketModel = new TicketModel($app);
-	return $ticketModel->deleteAttachment($fileID);
+	$response = $ticketModel->deleteAttachment($fileID);
+	return $response['ok'];
 })->before($secure);
