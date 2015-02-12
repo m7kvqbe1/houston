@@ -171,9 +171,11 @@ var TicketDetailView = Backbone.View.extend({
 			}, this)
 		});
 
-		this.model.set({			
-			hasMessages: true
-		});
+		//If a first reply render the view to remove the form
+		if(!this.model.attributes.hasMessages){
+			this.model.set({hasMessages: true});
+			this.render();
+		} 
 
 		this.saveModel();
 
@@ -214,8 +216,6 @@ var TicketHeaderView = Backbone.View.extend({
 	},
 
 	render: function (){
-		console.log('headerRender');
-		console.log(this.model);	
 		this.$el.html(this.template(this.model));
 	}
 

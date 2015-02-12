@@ -17,7 +17,17 @@ var FileUploadView = Backbone.View.extend({
 			'<ul id="files" class="files">'+
 			'{{#each models}}'+
 				'<li class="file">'+
+					// '<span>{{progressReport attributes.status}}</span>'+
+					'<div>{{attributes.status}}</div>'+
+					'{{#if attributes.status}}'+
+					'<a data-cid="{{cid}}" class="cancelFileUpload">Cancel</a>'+
+					'{{/if}}'+
 					'{{generateFileUploadPreview this}}'+
+							'{{#unless attributes.status}}'+
+							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+							'{{/unless}}'+
+						'</div>'+
+					'</div>'+
 				'</li>'+
 			'{{/each}}'+
 			'</ul>' +	
@@ -28,6 +38,20 @@ var FileUploadView = Backbone.View.extend({
 
 	initialize : function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
+
+		Handlebars.registerHelper("progressReport", function(attribute){
+			if(attribute = 'initialising'){
+				return new Handlebars.SafeString(
+					'<span>Initialising</span>'
+					// '<a data-cid="'+ cid +'" class="abortFileUpload">Abort</a>'
+				);
+			} else if(attribute = 'loading'){
+				return new Handlebars.SafeString(
+					'<span>Uploading</span>'
+					// '<a data-cid="'+ cid +'" class="cancelFileUpload">Cancel</a>'
+				);
+			} 
+		}); 
 
 		Handlebars.registerHelper("generateFileUploadPreview", function(obj){ 
 			var type = Handlebars.Utils.escapeExpression(obj.attributes.type);
@@ -43,20 +67,20 @@ var FileUploadView = Backbone.View.extend({
 			  				'<div class="file-icon jpg"></div>'+
 			  				'<div class="file-info">'+
 								'<div class="filename">'+ name +'</div>'+
-								'<a data-img="'+ target +'" data-type="'+ type +'" data-name="'+ name +'" class="file-preview">Preview</a>'+
-								'<a data-cid="'+ cid +'" class="file-del">Delete</a>'+
-							'</div>'+
-						'</div>'
+								'<a data-img="'+ target +'" data-type="'+ type +'" data-name="'+ name +'" class="file-preview">Preview</a>'
+						// 		'<a data-cid="'+ cid +'" class="file-del">Delete</a>'+
+						// 	'</div>'+
+						// '</div>'
 					);
 				} else {
 					return new Handlebars.SafeString(
 						'<div class="file-text">'+
 			  				'<div class="file-icon jpg"></div>'+
 			  				'<div class="file-info">'+
-								'<div class="filename">'+ name +'</div>'+
-								'<a data-cid="'+ cid +'" class="file-del">Delete</a>'+
-							'</div>'+
-						'</div>'
+								'<div class="filename">'+ name +'</div>'
+						// 		'<a data-cid="'+ cid +'" class="file-del">Delete</a>'+
+						// 	'</div>'+
+						// '</div>'
 					);
 				}
 			}
@@ -65,6 +89,7 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	render : function(){
+		// console.log(this.collection);
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({
 			'click .attach-link': 'fileDialogTrigger',
@@ -72,55 +97,89 @@ var FileUploadView = Backbone.View.extend({
 			'dragleave #drop_zone': 'handleDragLeave',
 			'drop #drop_zone': 'handleDragFileSelect',
 			'change #filesInput': 'handleFileSelect',
+			'click .cancelFileUpload': 'cancelFileUpload',
 			'click .file-preview': 'previewFile',
 			'click .file-del': 'deleteFile',
-			'click .preview-close': 'previewClose'
+			'click .preview-close': 'previewClose',
 		});
 	},
 
-	fileDialogTrigger: function(){
-		this.$el.find('#filesInput').trigger('click');
-	},
-
-	previewFile: function(e){
+	cancelFileUpload: function(e){
 		var button = $(e.currentTarget);
-		var img = button.data("img");
-		var prevWindow = this.$el.find('.preview-window');
-		prevWindow.html("<i class='preview-close icon-cancel-circled'></i>"+
-			"<img src='" + img + "' />"
-		);	
-		prevWindow.show();
-	},
-
-	previewClose: function(){
-		this.$el.find('.preview-window').hide();
-	},
-
-	addFiles: function(files){
-		for (var i = 0, f; f = files[i]; i++) {
-	        var reader = new FileReader();
-			reader.onerror = this.fileErrorHandler;
-
-	        reader.onloadend = _.bind((function(theFile) {
-		        return function(e) {	        	
-			        theFile["target"] = e.target.result;
-					delete theFile["webkitRelativePath"];
-					var fileMdl = new FileUploadModel();
-					this.collection.add(fileMdl);
-					fileMdl.save(theFile);
-
-		        };
-	        })(f), this);
-
-	        reader.readAsDataURL(f);
-	  	}
+		var cid = button.data("cid");	
+		var fileToDelete = this.collection.get(cid);
+		fileToDelete.reader.abort();
+		fileToDelete.destroy({
+			success: function(model, reponse){
+				console.log(response);
+			},
+			error: function(model, reponse){
+				console.log(response);
+			}
+		});		
 	},
 
 	deleteFile: function(e){
 		var button = $(e.currentTarget);
 		var cid = button.data("cid");	
 		var fileToDelete = this.collection.get(cid);
-		this.collection.remove(fileToDelete);
+		fileToDelete.url = '/tickets/file/'+fileToDelete.id;
+		fileToDelete.destroy({
+			success: function(model, reponse){
+				console.log(response);
+			},
+			error: function(model, reponse){
+				console.log(response);
+			}
+		});	
+	},
+
+	addFiles: function(files){
+		for (var i = 0, f; f = files[i]; i++) {
+			//Create FileReader
+	        var reader = new FileReader();
+	        //Create file model 
+	        var fileMdl = new FileUploadModel();
+	        //Set file reader as property of model
+	        fileMdl.reader = reader;
+
+	        //On load start add the model to the collection
+	        reader.onloadstart = _.bind((function() {
+		        return function() {	 	    
+					this.collection.add(fileMdl);
+		        };
+	        })(f), this);
+
+	        //On load end save file to server
+	        reader.onloadend = _.bind((function(theFile) {
+		        return function(e) {	   	
+					var attributes = {
+						status: 'loading',
+						target: e.target.result,
+						name: theFile.name,
+						type: theFile.type,
+						lastModifiedDate: theFile.lastModifiedDate
+					}
+
+					fileMdl.save(attributes,{
+						success: function(model){
+							console.log('save');
+							model.set({status: false});
+							model.reader = false;
+						}
+					});
+
+		        };
+	        })(f), this);
+
+	        reader.onabort = function(e) {
+		     	alert('File read cancelled');
+		    };
+
+	        reader.onerror = this.fileErrorHandler;
+
+	        reader.readAsDataURL(f);
+	  	}
 	},
 
 	fileErrorHandler: function(evt){
@@ -150,10 +209,6 @@ var FileUploadView = Backbone.View.extend({
 	    this.addFiles(evt.dataTransfer.files);
 	},
 
-	abortFileUpload: function(){
-		reader.abort();
-	},
-
 	handleDragOver: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
@@ -165,6 +220,24 @@ var FileUploadView = Backbone.View.extend({
 		evt.stopPropagation();
 	    evt.preventDefault();
 	    $(evt.currentTarget).removeClass('drop-highlight');
+	},
+
+	fileDialogTrigger: function(){
+		this.$el.find('#filesInput').trigger('click');
+	},
+
+	previewFile: function(e){
+		var button = $(e.currentTarget);
+		var img = button.data("img");
+		var prevWindow = this.$el.find('.preview-window');
+		prevWindow.html("<i class='preview-close icon-cancel-circled'></i>"+
+			"<img src='" + img + "' />"
+		);	
+		prevWindow.show();
+	},
+
+	previewClose: function(){
+		this.$el.find('.preview-window').hide();
 	}
 
 });
@@ -203,3 +276,4 @@ var FileUploadView = Backbone.View.extend({
 //         reader.readAsDataURL(f);
 //   	}
 // },
+

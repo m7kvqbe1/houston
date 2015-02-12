@@ -1,5 +1,5 @@
 var FileUploadModel = Backbone.Model.extend({
-	url : '/tickets/file/add',
+	url : '/tickets/file',
 	initialise: function(){},
 	parse: function(response){
 	if(response._id){
@@ -7,5 +7,8 @@ var FileUploadModel = Backbone.Model.extend({
 		delete response._id;
 	}
 		return response;
+	},
+	defaults: {
+		status: 'initialising'
 	}
 });
