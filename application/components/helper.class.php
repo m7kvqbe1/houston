@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Extra;
+namespace Houston\Components;
 	
 class Helper 
 {

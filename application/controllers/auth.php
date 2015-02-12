@@ -5,9 +5,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
 use Houston\Common\System;
+use Houston\Component\Payment;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
-use Houston\Extra\Payment;
 
 // Logout of system
 $app->get('/auth/logout', function(Request $request, Application $app){	

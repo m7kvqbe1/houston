@@ -4,7 +4,7 @@ namespace Houston\Model;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-use Houston\Extra\Helper;
+use Houston\Component\Helper;
 
 class ReplyModel 
 {

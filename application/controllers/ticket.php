@@ -4,9 +4,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Silex\Application;
 
+use Houston\Component\Notify;
 use Houston\Model\TicketModel;
 use Houston\Model\ReplyModel;
-use Houston\Extra\Notify;
 
 // Get all tickets
 $app->get('/tickets', function(Request $request, Application $app) {
