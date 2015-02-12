@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
-use Houston\Common\System;
+use Houston\Core\System;
 use Houston\Component\Payment;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
@@ -55,40 +55,6 @@ $app->post('/auth/login', function(Request $request, Application $app) {
 		
 		return $response;
 	}
-	
-	return 1;
-});
-
-// Reset password request
-$app->post('/auth/reset', function(Request $request, Application $app) {		
-	$json = json_decode(file_get_contents('php://input'));
-	
-	$userModel = new UserModel($app);
-	$userModel->loadUser($json->emailAddress);
-	
-	// Flag password reset request on user account and generate token
-	$token = $userModel->resetPasswordRequest($json->emailAddress);
-	
-	// Send email link
-	mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not submitted by you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: ".Config::DOMAIN."/#/reset/".$token);
-	
-	return 1;
-});
-
-// Reset password
-$app->post('/auth/reset/complete', function(Request $request, Application $app) {
-	$json = json_decode(file_get_contents('php://input'));
-	
-	$userModel = new UserModel($app);
-	
-	$userModel->resetPassword($json->token, $json->password);
-	
-	// Load users company to get the database identifier
-	$companyModel = new CompanyModel($app);
-	$companyModel->loadCompanyByID($userModel->user['companyID']);
-	
-	// Authenticate session
-	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 	
 	return 1;
 });
@@ -159,4 +125,38 @@ $app->get('/verify/{token}', function(Request $request, Application $app, $token
 	
 	// Redirect to load authenticated assets
 	return $app->redirect('/');
+});
+
+// Reset password request
+$app->post('/auth/reset', function(Request $request, Application $app) {		
+	$json = json_decode(file_get_contents('php://input'));
+	
+	$userModel = new UserModel($app);
+	$userModel->loadUser($json->emailAddress);
+	
+	// Flag password reset request on user account and generate token
+	$token = $userModel->resetPasswordRequest($json->emailAddress);
+	
+	// Send email link
+	mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not submitted by you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: ".Config::DOMAIN."/#/reset/".$token);
+	
+	return 1;
+});
+
+// Reset password
+$app->post('/auth/reset/complete', function(Request $request, Application $app) {
+	$json = json_decode(file_get_contents('php://input'));
+	
+	$userModel = new UserModel($app);
+	
+	$userModel->resetPassword($json->token, $json->password);
+	
+	// Load users company to get the database identifier
+	$companyModel = new CompanyModel($app);
+	$companyModel->loadCompanyByID($userModel->user['companyID']);
+	
+	// Authenticate session
+	System::setupSession($app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
+	
+	return 1;
 });
