@@ -68,8 +68,7 @@
 			
 			<div class="grip">
 				<i class="icon-menu"></i>
-			</div>
-			
+			</div>			
 			<nav>
 				<a href="#">Tickets</a>
 				<a href="#/people">People</a>
@@ -99,39 +98,13 @@
 			}
 		});
 
+		// Close notification popup
+		$('#notice .close').click( function() {
+			$(this).parent().hide();
+		});
 	});
 </script>
 
 <div href="" id="notice"><span></span><i class="close">x</i></div>
-<<<<<<< Updated upstream
-
-<!-- Node.js Notify - Refactor this code into Backbone app.js -->
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<script>
-	// Connect to namespaced socket using company ID
-	var socket = io('http://80.82.116.223:3000/54dcdb14d21a58d052e67f84');	// Hard coded company ID for testing
-	
-	// On receiving a notify event display the notification popup
-	
-	socket.on('notify', function(data) {		
-		$('#notice span').html(data);
-		$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
-		socket.emit('response', 'success');
-		
-		model.sync();
-	});
-	
-	// On receiving a sync event trigger backbone sync on the appropriate model / collection
-	socket.on('sync', function(data) {
-		// Sync all backbone collections and models
-	});
-	
-	// Close notification popup
-	$('#notice .close').click( function() {
-		$(this).parent().hide();
-	});
-</script>
-=======
->>>>>>> Stashed changes
 </body>
 </html>

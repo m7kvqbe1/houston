@@ -2,27 +2,36 @@ var dataHelper = {
 
 	getUserName: function(userID){
 		var user = app.users.get(userID);
-		if(user.attributes.firstName){
-			var userName = user.attributes.firstName+' '+user.attributes.lastName;
-		} else {
-			var userName = user.attributes.emailAddress;
+		var username = 'Unknown User';
+		if(typeof user !== "undefined"){
+			if(user.attributes.firstName){
+				userName = user.attributes.firstName+' '+user.attributes.lastName;
+			} else {
+				userName = user.attributes.emailAddress;
+			}
 		}
 		return userName;
 	},
 
 	getCompanyName: function(userID){
 		var user = app.users.get(userID);
-		if(user.attributes.clientID){
-			var companyName = app.clients.get(user.attributes.clientID).attributes.name;
-		} else {
-			var companyName = app.user.attributes.companyName;
+		var companyName = 'Unknown Company';
+		if(typeof user !== "undefined"){				
+			if(user.attributes.clientID){
+				companyName = app.clients.get(user.attributes.clientID).attributes.name;
+			} else {
+				companyName = app.user.attributes.companyName;
+			}
 		}
 		return companyName;
 	},
 
 	getUserRole: function(userID){
 		var user = app.users.get(userID);
-		var userRole = user.attributes.role;
+		var userRole = 'Unknown Role';
+		if(typeof user !== "undefined"){
+			var userRole = user.attributes.role;
+		} 
 		return userRole;
 	}
 
