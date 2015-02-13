@@ -41,7 +41,7 @@ var TicketView = Backbone.View.extend({
 						'<div class="ticket-status">' +
 							'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
 							'{{#if attributes.agent}}'+
-								'<div class="ticket-agent">{{attributes.agent}}</div>' +
+								'<div class="ticket-agent">{{getUserName attributes.agent}}</div>' +
 							'{{else}}'+
 								'<div class="ticket-agent">Awaiting Agent</div>'+
 							'{{/if}}'+								
@@ -54,6 +54,7 @@ var TicketView = Backbone.View.extend({
 	),
 	
 	initialize: function() {	
+		console.log(this.collection);
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
 		handlebarsHelpers.bindHelpers();

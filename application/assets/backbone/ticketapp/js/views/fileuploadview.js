@@ -21,6 +21,7 @@ var FileUploadView = Backbone.View.extend({
 					'{{#if attributes.status}}'+
 					'<div>{{attributes.status}}</div>'+					
 					'<a data-cid="{{cid}}" class="cancelFileUpload">Cancel</a>'+
+					// '<a data-cid="{{cid}}" onclick="app.formView.fileUploadView.cancelFileUpload();">Cancel</a>'+
 					'{{/if}}'+
 					//If a displayable image add thumb
 					'{{showFileThumb attributes.type attributes.target attributes.name}}'+
@@ -80,20 +81,20 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	cancelFileUpload: function(e){
-		var button = $(e.currentTarget);
-		var cid = button.data("cid");	
-		console.log(cid);
-		var fileToDelete = this.collection.get(cid);
-		fileToDelete.url = '/tickets/file/'+fileToDelete.id;
-		// fileToDelete.reader.abort();
-		fileToDelete.destroy({
-			success: function(){
-				console.log('success');
-			},
-			error: function(){
-				console.log(response);
-			}
-		});		
+		// var button = $(e.currentTarget);
+		// var cid = button.data("cid");	
+		console.log('cid');
+		// var fileToDelete = this.collection.get(cid);
+		// fileToDelete.url = '/tickets/file/'+fileToDelete.id;
+		// // fileToDelete.reader.abort();
+		// fileToDelete.destroy({
+		// 	success: function(){
+		// 		console.log('success');
+		// 	},
+		// 	error: function(){
+		// 		console.log(response);
+		// 	}
+		// });		
 	},
 
 	deleteFile: function(e){
@@ -114,6 +115,7 @@ var FileUploadView = Backbone.View.extend({
 
 	        //On load start add the model to the collection
 	        reader.onloadstart = _.bind((function() {
+	        	console.log('start');
 		        return function() {	 	    
 					this.collection.add(fileMdl);
 		        };
@@ -121,6 +123,7 @@ var FileUploadView = Backbone.View.extend({
 
 	        //On load end save file to server
 	        reader.onloadend = _.bind((function(theFile) {
+	        	console.log('end');
 		        return function(e) {	   	
 					var attributes = {
 						status: 'loading',

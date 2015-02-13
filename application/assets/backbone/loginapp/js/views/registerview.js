@@ -122,6 +122,17 @@ var RegisterView = Backbone.View.extend({
 		'</div>'
 	),
 
+	templateSuccess: Handlebars.compile(
+		'<div class="box box-suc">'+
+			'<h2>You Have a Houston Account!</h2>'+
+			'<h3>Hoot have thought it would be so easy?</h3>'+
+			'<div class="got-wrap">'+
+				'<h2>You\'ve Got Mail!</h2>'+
+				'<h3>Please click the verification link in the email we just sent you to complete your account creation</h3>'+
+			'</div>'+
+		'</div>'
+	),
+
 	render: function (){	
 		this.model.set({password: ''});
 		console.log(this.model);
@@ -162,18 +173,6 @@ var RegisterView = Backbone.View.extend({
 	validate: function(e){
 		login.registerValidate(e.currentTarget);
 	},
-
-	//Kept for previous register method
-	// templateSuccess: Handlebars.compile(
-	// 	'<div class="box box-suc">'+
-	// 		'<h2>You Have a Houston Account!</h2>'+
-	// 		'<h3>Hoot have thought it would be so easy?</h3>'+
-	// 		'<div class="got-wrap">'+
-	// 			'<h2>You\'ve Got Mail!</h2>'+
-	// 			'<h3>Please click the verification link in the email we just sent you to complete your account creation</h3>'+
-	// 		'</div>'+
-	// 	'</div>'
-	// ),
 	
 	detailsConfirm: function(){
 		if(login.registerCreateValidate(this.$el)){
@@ -239,9 +238,10 @@ var RegisterView = Backbone.View.extend({
 			});
 			app.registerModel.save(app.registerModel.attributes,
 				{
-					success: function(model, response, options){
+					success: _.bind(function(model, response, options){
 						console.log(response);
-					},
+						this.$el.html(app.registerView.templateSuccess());
+					}, this),
 					error: function(model, response, options){
 						console.log(response);
 					}

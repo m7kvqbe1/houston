@@ -69,7 +69,7 @@ var houston = {
 		var text = val+'<i class="icon-down-dir-1"></i>';
 		var dropdown = item.closest('.dropdown');
 			
-		dropdown.find('.drop-slct').removeClass('on-hold in-progress').addClass(css).html(text);
+		dropdown.find('.drop-slct').removeClass('on-hold in-progress').addClass(css).html(text); //works without, used for visual
 
 		var drop = item.closest('.drop');
 		drop.slideToggle(200, function(){
@@ -94,6 +94,7 @@ var houston = {
 		if(dropdown.hasClass('dropswitch')){
 			output = {param: 'status', value: val}; 
 		}else {
+			val = item.data('id');
 			output = {param: 'agent', value: val};
 		}
 		
@@ -156,7 +157,8 @@ var houston = {
 		var i;
 		var str = '';
 		for (i = 0; i < arr.length; ++i) {
-			str += '<li>'+arr[i].attributes.firstName+' '+arr[i].attributes.lastName+'</li>';
+			// str += '<li>'+arr[i].attributes.firstName+' '+arr[i].attributes.lastName+'</li>';
+			str += '<li data-id="'+arr[i].id+'">'+dataHelper.getUserName(arr[i].id)+'</li>';
 		}
 		return str;
 
