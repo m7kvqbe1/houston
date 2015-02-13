@@ -107,13 +107,16 @@
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
 	// Connect to namespaced socket using company ID
-	var socket = io('http://80.82.116.223:3000/54da7ddad21a58157f46c975');	// Hard coded company ID for testing
+	var socket = io('http://80.82.116.223:3000/54dcdb14d21a58d052e67f84');	// Hard coded company ID for testing
 	
 	// On receiving a notify event display the notification popup
+	
 	socket.on('notify', function(data) {		
 		$('#notice span').html(data);
 		$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
 		socket.emit('response', 'success');
+		
+		model.sync();
 	});
 	
 	// On receiving a sync event trigger backbone sync on the appropriate model / collection
