@@ -323,7 +323,7 @@ class UserModel
 		$this->loadUserByID($this->app['session']->get('uid'));
 		$user->companyID = $this->user['companyID'];
 		
-		if(isset($user->clientID)) $user->clientID = new \MongoId($user->clientID);
+		if(isset($user->clientID)) $user->clientID = new \MongoID($user->clientID);
 		
 		$user->role = 'USER';
 				
@@ -337,7 +337,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		$id = new \MongoId($id);
+		$id = new \MongoID($id);
 		
 		try {
 			$collection = $db->users;			
