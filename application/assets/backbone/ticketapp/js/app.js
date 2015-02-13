@@ -30,6 +30,8 @@ var AppRouter = Backbone.Router.extend({
 			success: function(){
 				app.userFetched = true;
 				app.loaded();
+
+				app.setUpSocket();
 			}
 		});
 		
@@ -79,6 +81,21 @@ var AppRouter = Backbone.Router.extend({
 
 		//BUFFER MESSAGE MODEL
 		this.addMessageModel = new BufferMessageModel();
+
+	},
+
+	setUpSocket: function(){
+		// Connect to namespaced socket using company ID
+		var socket = io('http://houstonsupportdesk.com:3000/'+app.user.attributes.companyID);
+		// On receiving a notify event display the notification popup
+		socket.on('notify', function(data) {	
+			$('#notice span').html(data);
+			$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
+			socket.emit('response', 'success');
+
+			app.tickets.fetch({reset:true});
+		});
+		
 	},
 
 	// Data fetched flags

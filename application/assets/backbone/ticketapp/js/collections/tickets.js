@@ -28,7 +28,7 @@ var Tickets = Backbone.Collection.extend({
 	byAgent: function(){
 		//Needs to change to use id
 		filtered = this.filter(function(data){
-			return data.get('agent') == app.user.attributes.firstName + ' ' + app.user.attributes.lastName && data.get('status') !== 'Completed';
+			return data.get('agent') == app.user.id && data.get('status') !== 'Completed';
 		});
 		return filtered;	
 	},
@@ -78,14 +78,15 @@ var Tickets = Backbone.Collection.extend({
 		if(this.byCompanyOrder === 1 || !this.byCompanyOrder){
 			this.byCompanyOrder = 2;
 			this.filtered.comparator = function(model) {
-				return model.get('company');
+				// return model.get('company');
+				return dataHelper.getCompanyName(model.get('authorID'));
 			}
 		} else if(this.byCompanyOrder === 2) {
 			this.byCompanyOrder = 1;
 			this.filtered.comparator = function(a, b) {
-				if(a.get('company') < b.get('company')) {
+				if(dataHelper.getCompanyName(a.get('authorID')) < dataHelper.getCompanyName(b.get('authorID'))) {
 					return 1;	
-				} else if(b.get('company') > a.get('company')){
+				} else if(dataHelper.getCompanyName(b.get('authorID')) > dataHelper.getCompanyName(a.get('authorID'))){
 					return -1;
 				}
 				return 0;

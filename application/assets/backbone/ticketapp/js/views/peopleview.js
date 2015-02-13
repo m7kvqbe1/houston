@@ -48,7 +48,6 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(app.clientsView.$el); 
 		app.clientsView.render();

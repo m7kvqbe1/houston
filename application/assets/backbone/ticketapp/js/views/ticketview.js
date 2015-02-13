@@ -80,6 +80,7 @@ var TicketDetailView = Backbone.View.extend({
 	},
 	
 	render: function (){	
+		console.log(this.model.attributes)
 		this.$el.html(this.template(this.model));
 
 		app.filesUploadCollection.reset();
@@ -136,7 +137,7 @@ var TicketDetailView = Backbone.View.extend({
 	
 	updateSeen: function() {
 		this.model.set({			
-			updated: this.model.get('updated').concat(app.user.attributes.id)
+			updated: this.model.get('updated').concat(app.user.id)
 		});
 		this.model.save(this.model.attributes);	
 	},
@@ -144,7 +145,7 @@ var TicketDetailView = Backbone.View.extend({
 	saveModel: function(){
 		//Set updated attribute to empty array
 		this.model.set({			
-			updated: []
+			updated: [app.user.id]
 		});
 		this.model.save(this.model.attributes);	
 	},
@@ -191,7 +192,7 @@ var TicketHeaderView = Backbone.View.extend({
 			'{{generateDropSwitch attributes.status}}'+					
 			'<div class="dropdown droplist">'+
 				'<div class="drop-top rounded">'+
-					'<div class="btn in-progress drop-slct">{{attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
+					'<div class="btn in-progress drop-slct">{{getUserName attributes.agent}}<i class="icon-down-dir-1"></i></div>'+
 				'</div>'+						
 				'<ul class="drop">'+
 					'{{populateAgentDropdown}}'+
@@ -216,6 +217,7 @@ var TicketHeaderView = Backbone.View.extend({
 	},
 
 	render: function (){
+		console.log(this.model);
 		this.$el.html(this.template(this.model));
 	}
 
