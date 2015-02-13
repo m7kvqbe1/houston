@@ -40,15 +40,15 @@ class System
 		$app['session']->set('cid', '');
 	}
 	
-	public function validApiKey(Application $app, $apiKey)
+	public static function validApiKey(Application $app, $apiKey)
 	{
-		$connections = $this->app['mongo'];
+		$connections = $app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		$company = $db->companies->findOne(array('apiKey' => $apiKey));
 		
-		if($company['apiAccess'] === true) {			
+		if(isset($company['apiAccess']) && $company['apiAccess'] === true) {			
 			return true;
 		} else {
 			throw new \Exception('Invalid API key');

@@ -55,8 +55,12 @@ $app->register(new MonologServiceProvider(), array(
 
 // Define REST API security middleware
 $secure = function(Request $request, Application $app) {
-	// Accept requests from either an authenticated session or a valid API key
-	if(!$app['session']->get('isAuthenticated') || !System::validApiKey($request->get('apikey'))) return $app->redirect('/');
+	// Accept requests from either a valid API key or an authenticated session
+	try {
+		System::validApiKey($app, $request->get('apikey'));
+	} catch(\Exception $e) {
+		if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
+	}	
 };
 
 // Define API error handler
