@@ -39,17 +39,19 @@ app.post('/new/ticket', function(req, res) {
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
 	
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID.$id+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });
 
 // Broadcast new reply notification event to the appropriate socket namespace
 app.post('/new/reply', function(req, res) {
+	console.log(req.body);
+	
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
 	
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/#/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
 });
