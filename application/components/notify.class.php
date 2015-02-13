@@ -10,7 +10,7 @@ class Notify
 		// Send HTTP request via cURL to Node.js server
 		$ch = curl_init($url);
     	
-    	// Use HTTP Header authentication for Node.js server also restrict access to localhost only
+    	// Use HTTP Header authentication for sending requests to Node.js server (non socket)
     	//curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
     	//curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
 		
@@ -35,7 +35,8 @@ class Notify
 		self::sendRequest(\Config::NODE_HOST.$route, self::removeAttachments($payload));
 	}
 	
-	public static removeAttachments($payload) {
+	public static function removeAttachments($payload) 
+	{
 		if(isset($payload->files)) unset($payload->files);
 		return $payload;
 	}
