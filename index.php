@@ -21,6 +21,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
+use Houston\Core\System;
 
 // Instantiate Silex framework
 $app = new Application();
@@ -54,7 +55,8 @@ $app->register(new MonologServiceProvider(), array(
 
 // Define REST API security middleware
 $secure = function(Request $request, Application $app) {
-	if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
+	// Accept requests from either an authenticated session or a valid API key
+	if(!$app['session']->get('isAuthenticated') || !System::validApiKey($request->get('apikey'))) return $app->redirect('/');
 };
 
 // Define API error handler

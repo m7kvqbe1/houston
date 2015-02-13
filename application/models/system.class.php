@@ -39,4 +39,19 @@ class System
 		$app['session']->set('uid', '');
 		$app['session']->set('cid', '');
 	}
+	
+	public function validApiKey(Application $app, $apiKey)
+	{
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+		
+		$company = $db->companies->findOne(array('apiKey' => $apiKey));
+		
+		if($company['apiAccess'] === true) {			
+			return true;
+		} else {
+			throw new \Exception('Invalid API key');
+		}	
+	}
 }
