@@ -40,7 +40,7 @@ class System
 		$app['session']->set('cid', '');
 	}
 	
-	public static function validApiKey(Application $app, $apiKey)
+	public static function validateApiKey(Application $app, $apiKey)
 	{
 		$connections = $app['mongo'];
 		$db = $connections['default'];

@@ -57,7 +57,7 @@ $app->register(new MonologServiceProvider(), array(
 $secure = function(Request $request, Application $app) {
 	// Accept requests from either a valid API key or an authenticated session
 	try {
-		System::validApiKey($app, $request->get('apikey'));
+		System::validateApiKey($app, $request->get('apikey'));
 	} catch(\Exception $e) {
 		if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
 	}	
