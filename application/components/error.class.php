@@ -1,15 +1,18 @@
 <?php
 namespace Houston\Component;
 
-class ErrorTrap {
+class ErrorTrap 
+{
 	protected $callback;
 	protected $errors = array();
 	
-	public function __construct($callback) {
+	public function __construct($callback) 
+	{
 		$this->callback = $callback;
 	}
 
-	public function call() {
+	public function call() 
+	{
 		$result = null;
 		set_error_handler(array($this, 'onError'));
 		try {
@@ -23,15 +26,24 @@ class ErrorTrap {
 		return $result;
 	}
 
-	public function onError($errno, $errstr, $errfile, $errline) {
+	public function onError($errno, $errstr, $errfile, $errline) 
+	{
 		$this->errors[] = array($errno, $errstr, $errfile, $errline);
 	}
 
-	public function ok() {
+	public function ok() 
+	{
 		return count($this->errors) === 0;
 	}
 
-	public function errors() {
+	public function errors() 
+	{
 		return $this->errors;
 	}
+}
+
+// Manage all error objects and output to client as JSON
+class Error 
+{
+	
 }

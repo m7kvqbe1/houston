@@ -15,6 +15,7 @@ require_once __DIR__.'/vendor/autoload.php';
 // Class importing / aliasing
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -55,6 +56,11 @@ $app->register(new MonologServiceProvider(), array(
 $secure = function(Request $request, Application $app) {
 	if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
 };
+
+// Define API error handler
+$app->error(function(\Exception $e, Request $request, $code) use($app) {
+	if($app['debug']) return;
+});
 
 // Autoload only required classes (PSR-4) - MAKE THIS WORK!
 /*spl_autoload_register( function ($className) {

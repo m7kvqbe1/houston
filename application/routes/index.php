@@ -8,3 +8,5 @@ $app['index.controller'] = $app->share(function() use ($app) {
 });
 
 $app->get('/', 'index.controller:indexAction');
+
+$app->get('/api', 'index.controller:apiIndexAction');
