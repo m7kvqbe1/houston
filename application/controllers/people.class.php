@@ -4,6 +4,7 @@ namespace Houston\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
+use Houston\Component\ApiResponse;
 use Houston\Model\UserModel;
 use Houston\Model\ClientModel;
 use Houston\Model\CompanyModel;
@@ -54,20 +55,25 @@ class PeopleController {
 	
 	public function deleteClientAction($clientID) {
 		$clientModel = new ClientModel($this->app);
-		$clientModel->removeClient($clientID);
-	
-		return 1;	
+		
+		if($clientModel->removeClient($clientID)){
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('USER_REMOVE_FAIL');
+		}
 	}
 	
 	public function postAgentAction() {
 		$agent = json_decode(file_get_contents('php://input'));
 	
 		$userModel = new UserModel($this->app);
-		$userModel->addAgent($agent);
 		
-		// Send verification email
-		mail($agent->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".Config::DOMAIN."/verify/".$agent->verify);
-		
-		return 1;
+		if($userModel->addAgent($agent)) {
+			// Send verification email
+			mail($agent->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".\Config::DOMAIN."/verify/".$agent->verify);
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('USER_ADD_FAIL');
+		}
 	}
 }

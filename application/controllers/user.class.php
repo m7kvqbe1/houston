@@ -4,6 +4,7 @@ namespace Houston\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+use Houston\Component\ApiResponse;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
 
@@ -26,7 +27,7 @@ class UserController
 		$companyModel->loadCompanyByID($userModel->user['companyID']);
 		$userModel->user['companyName'] = $companyModel->company['companyName'];
 		
-		if(!isset($userModel->user)) return -1;
+		if(!isset($userModel->user)) return ApiResponse::error('USER_NOT_FOUND');
 		
 		unset($userModel->user['password']);
 		
@@ -46,7 +47,7 @@ class UserController
 		$userModel = new UserModel($this->app);
 		$userModel->removeUser($userID);
 	
-		return 1;
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 	
 	public function putUserPropertyAction($userID, $property) 

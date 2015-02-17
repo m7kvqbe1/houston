@@ -33,7 +33,7 @@ class MailController {
 		return $mailbox->generateInfoHtml('t-2837982734982734', 'm-2837982734982734');	
 	}
 	
-	public function mailboxScanAction() 
+	public function mailboxScanAction()
 	{
 		$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
 		$mailbox->getMail();

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Silex\Application;
 
+use Houston\Component\ApiResponse;
 use Houston\Component\Notify;
 use Houston\Model\TicketModel;
 use Houston\Model\ReplyModel;
@@ -111,6 +112,7 @@ class TicketController
 	public function deleteAttachmentAction($fileID) {
 		$ticketModel = new TicketModel($this->app);
 		$response = $ticketModel->deleteAttachment($fileID);
-		return $response['ok'];		
+		
+		return ($response['ok']) ? ApiResponse::success('DEFAULT_RESPONSE_SUCCESS') : ApiResponse::error('ATTACHMENT_DELETE_FAIL');
 	}
 }

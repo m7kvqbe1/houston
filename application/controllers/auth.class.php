@@ -21,7 +21,7 @@ class AuthController
 		$this->app = $app;
 	}
 	
-	public function authLoginAction() 
+	public function authLoginAction()
 	{
 		$json = json_decode(file_get_contents('php://input'));
 		

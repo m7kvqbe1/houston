@@ -108,10 +108,10 @@ class UserModel
 		try {
 			$collection = $db->users;
 			$collection->findAndModify(array('_id' => $userID), array('$set' => array($property => $value)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		} 
 	}
 	
@@ -128,10 +128,10 @@ class UserModel
 		try {
 			$collection = $db->users;
 			$collection->findAndModify(array('_id' => $userID), array('$unset' => array($property => 1)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		} 
 	}
 	
@@ -174,13 +174,11 @@ class UserModel
 		try {
 			$collection = $db->users;						
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('remember' => $remember)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return $remember;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
-		
-		return $remember;
 	}
 	
 	public function resetPassword($token, $newPassword) 
@@ -194,13 +192,12 @@ class UserModel
 		try {
 			$collection = $db->users;						
 			$doc = $collection->findAndModify(array('reset' => $token), array('$set' => array('password' => $newPassword, 'reset' => '')));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			$this->loadUser($doc['emailAddress']);	// Refactor this call out into relevant places in controllers
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
-		
-		$this->loadUser($doc['emailAddress']);
 	}
 	
 	public function resetPasswordRequest($username) 
@@ -216,13 +213,11 @@ class UserModel
 		try {
 			$collection = $db->users;						
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('reset' => $token)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return $token;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
-		
-		return $token;
 	}
 	
 	public static function generateVerificationToken($username) 
@@ -260,10 +255,10 @@ class UserModel
 		try {
 			$collection = $db->users;						
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('verify' => true)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -272,17 +267,12 @@ class UserModel
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-
-		try {
-			$collection = $db->users;
-		    $collection->save($user);
-		    $this->user = $user;
-		    return $this->user;
-		} catch(MongoConnectionException $e) {
-		    die('Error connecting to MongoDB server');
-		} catch(MongoException $e) {
-		    die('Error: '.$e->getMessage());
-		}
+		
+		$collection = $db->users;
+		$collection->save($user);
+		$this->user = $user;
+		
+		return $this->user;
 	}
 	
 	public function registerUser($user) 
@@ -296,10 +286,16 @@ class UserModel
 		$user->role = 'ADMIN';
 		
 		// Save user to database
-		$this->saveUser($user);
+		try {
+			$this->saveUser($user);
+			return true;
+		} catch(MongoException $e) {
+			// Log database exception $e->getMessage() then return false
+			return false;
+		}	
 	}
 	
-	public function addAgent($user) 
+	public function addAgent($user)
 	{
 		// Generate email verification token
 		$user->verify = $this->generateVerificationToken($user->emailAddress);
@@ -311,7 +307,13 @@ class UserModel
 		$user->role = 'AGENT';
 				
 		// Save user to database
-		$this->saveUser($user);
+		try {
+			$this->saveUser($user);
+			return true;
+		} catch(MongoException $e) {
+			// Log database exception $e->getMessage() then return false
+			return false;
+		}	
 	}
 	
 	public function addUser($user) 
@@ -328,7 +330,13 @@ class UserModel
 		$user->role = 'USER';
 				
 		// Save user to database
-		$this->saveUser($user);
+		try {
+			$this->saveUser($user);
+			return true;
+		} catch(MongoException $e) {
+			// Log exception $e->getMessage() then return false
+			return false;
+		}	
 	}
 	
 	public function removeUser($id) 
@@ -345,10 +353,11 @@ class UserModel
 				array('_id' => $id),
 				array('justOne' => true)
 			);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			
+			 return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 }

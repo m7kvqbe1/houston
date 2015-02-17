@@ -52,4 +52,9 @@ class ErrorDefinition
 	const USER_UNVERIFIED = 'This user account has not yet been verified.';
 	
 	const STRIPE_INVALID_SUBSCRIPTION = 'No valid subscription found.';	
+	
+	const ATTACHMENT_DELETE_FAIL = 'There was a problem deleting this attachment.';
+	
+	const USER_NOT_FOUND = 'The specified user does not exist.';
+	const USER_REMOVE_FAIL = 'There was a problem removing this user.';
 }
