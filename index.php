@@ -63,11 +63,6 @@ $secure = function(Request $request, Application $app) {
 	}	
 };
 
-// Define API error handler
-$app->error(function(\Exception $e, Request $request, $code) use($app) {
-	if($app['debug']) return;
-});
-
 // Autoload only required classes (PSR-4) - MAKE THIS WORK!
 /*spl_autoload_register( function ($className) {
     $className = ltrim($className, '\\');

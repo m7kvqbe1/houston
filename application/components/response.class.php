@@ -1,61 +1,55 @@
 <?php
-namespace Houston\Components;
+namespace Houston\Component;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class ApiResponse extends Response 
-{
-	protected $app;
-	
-	public function __construct(Application $app) 
+class ApiResponse
+{		
+	public static function error($code, $customMessage = null) 
 	{
-		$this->app = $app;
+		return self::generateResponse($code, 'error', $customMessage);
 	}
 	
-	public function error($code, $customMessage = null) 
+	public static function success($code, $customMessage = null) 
 	{
-		if(isset($customMessage)) $message = $customMessage;
-		return self::encodeResponse(array('code' => $code, 'status' => 'error', 'message' => $message));
+		return self::generateResponse($code, 'success', $customMessage);
 	}
 	
-	public function success($code, $customMessage = null) 
-	{
+	public static function generateResponse($code, $status, $customMessage = null) {
 		if(isset($customMessage)) {
 			$message = $customMessage;	
 		} else {
-			$message = this::fetchErrorMessage($code);	
+			$message = self::fetchErrorMessage($code);	
 		}
 		
-		return self::encodeResponse(array('code' => $code, 'status' => 'success', 'message' => $message));
+		return self::encodeResponse(array('code' => $code, 'status' => $status, 'message' => $message));		
 	}
 	
-	public function fetchErrorMessage($code) 
+	public static function fetchErrorMessage($code) 
 	{
-		return constant(ErrorDefinition::$code);
-	}
-	
-	public function setResponseHeader($code) 
-	{
-		switch($code) {
-			default:
-				break;
-		}
+		return constant("\Houston\Component\ErrorDefinition::$code");
 	}
 	
 	public static function encodeResponse(array $response) 
 	{
 		return json_encode($response);
 	}
+	
+	public static function setResponseHeader($code) 
+	{
+		switch($code) {
+			default:
+				break;
+		}
+	}
 }
 
-class ErrorDefinition 
+class ErrorDefinition
 {
-	const RESPONSE_SUCCESS = 'RESPONSE_SUCCESS';
+	const DEFAULT_RESPONSE_SUCCESS = 'DEFAULT_RESPONSE_SUCCESS';
 	
 	const PASSWORD_INVALID = 'The password provided is incorrect.';
 	const USER_UNVERIFIED = 'This user account has not yet been verified.';
 	
-	const STRIPE_INVALID_SUBSCRIPTION = 'No valid subscription found.';
+	const STRIPE_INVALID_SUBSCRIPTION = 'No valid subscription found.';	
 }
