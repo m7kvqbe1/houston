@@ -61,10 +61,10 @@ class ClientModel
 				array('_id' => $userModel->user['companyID']), 
 				array('$push' => array('clients' => $client))
 			);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -87,10 +87,9 @@ class ClientModel
 				array('_id' => $userModel->user['companyID']), 
 				array('$pull' => array('clients' => array('_id' => $id)))
 			);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 		
 		// Remove all users linked to client
@@ -99,10 +98,11 @@ class ClientModel
 			$collection->remove(
 				array('clientID' => $id)
 			);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
+		
+		return true;
 	}
 }
