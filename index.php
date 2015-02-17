@@ -23,7 +23,7 @@ use Silex\Provider\MonologServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
 use Houston\Core\System;
 
-// Instantiate Silex framework
+// Instantiate Silex
 $app = new Application();
 $app['debug'] = true;
 
