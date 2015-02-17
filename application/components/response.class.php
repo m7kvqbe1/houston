@@ -15,7 +15,7 @@ class ApiResponse
 		return self::generateResponse($code, 'success', $customMessage);
 	}
 	
-	public static function generateResponse($code, $status, $customMessage = null) {
+	private static function generateResponse($code, $status, $customMessage = null) {
 		if(isset($customMessage)) {
 			$message = $customMessage;	
 		} else {
@@ -25,17 +25,17 @@ class ApiResponse
 		return self::encodeResponse(array('code' => $code, 'status' => $status, 'message' => $message));		
 	}
 	
-	public static function fetchErrorMessage($code) 
+	private static function fetchErrorMessage($code) 
 	{
 		return constant("\Houston\Component\ErrorDefinition::$code");
 	}
 	
-	public static function encodeResponse(array $response) 
+	private static function encodeResponse(array $response) 
 	{
 		return json_encode($response);
 	}
 	
-	public static function setResponseHeader($code) 
+	private static function setResponseHeader($code) 
 	{
 		switch($code) {
 			default:
