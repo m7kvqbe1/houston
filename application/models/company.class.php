@@ -52,10 +52,10 @@ class CompanyModel
 		try {
 			$collection = $db->companies;
 			$collection->findAndModify(array('_id' => $companyID), array('$set' => array($property => $value)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -70,10 +70,10 @@ class CompanyModel
 		try {
 			$collection = $db->companies;
 			$collection->findAndModify(array('_id' => $companyID), array('$set' => array('database' => $identifier)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		} 	
 	}
 	
@@ -108,10 +108,9 @@ class CompanyModel
 			
 			$this->company = $company;
 			return $this->company;
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 }

@@ -84,10 +84,10 @@ class ReplyModel
 		try {	
 			$collection = $db->replies;
 			$collection->save($reply);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return $reply;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 }

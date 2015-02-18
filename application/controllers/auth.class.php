@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
 use Houston\Core\System;
+use Houston\Component\ApiResponse;
 use Houston\Component\Payment;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
@@ -20,7 +21,7 @@ class AuthController
 		$this->app = $app;
 	}
 	
-	public function authLoginAction() 
+	public function authLoginAction()
 	{
 		$json = json_decode(file_get_contents('php://input'));
 		
@@ -28,17 +29,17 @@ class AuthController
 		$userModel->loadUser($json->user);
 			
 		// Does verified user exist?
-		if(!$userModel->isVerified($json->user)) return -1;
+		if(!$userModel->isVerified($json->user)) return ApiResponse::error('USER_UNVERIFIED');
 		
 		// Do password hashes match?
-		if($userModel::hashPassword($json->password) !== $userModel->user['password']) return -1;
+		if($userModel::hashPassword($json->password) !== $userModel->user['password']) return ApiResponse::error('PASSWORD_INVALID');
 		
 		$companyModel = new CompanyModel($this->app);
 		$companyModel->loadCompanyByID($userModel->user['companyID']);
 		
 		// Does this company have a valid subscription (check with Stripe)
 		$payment = new Payment($this->app);
-		if(!$payment->validSubscription($companyModel->company['stripeCustomerID'])) return -1;
+		if(!$payment->validSubscription($companyModel->company['stripeCustomerID'])) return ApiResponse::error('STRIPE_INVALID_SUBSCRIPTION');
 		
 		// Authenticate session and register default database connection
 		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
@@ -57,7 +58,7 @@ class AuthController
 			return $response;
 		}
 		
-		return 1;	
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 	
 	public function authLogoutAction()
@@ -84,7 +85,7 @@ class AuthController
 		$companyModel = new CompanyModel($this->app);
 		
 		// Does verified user or company already exist?
-		if($userModel->isVerified($json->emailAddress) || $companyModel->companyExists($json->company)) return -1;
+		if($userModel->isVerified($json->emailAddress) || $companyModel->companyExists($json->company)) return ApiResponse::error('USER_UNVERIFIED');
 		
 		// Create company
 		$company = $companyModel->generateCompany($json);
@@ -151,7 +152,7 @@ class AuthController
 		// Send email link
 		mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not submitted by you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: ".Config::DOMAIN."/#/reset/".$token);
 		
-		return 1;	
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 	
 	public function authResetCompleteAction()
@@ -169,6 +170,6 @@ class AuthController
 		// Authenticate session
 		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 		
-		return 1;	
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 }

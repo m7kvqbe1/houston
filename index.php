@@ -23,7 +23,7 @@ use Silex\Provider\MonologServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
 use Houston\Core\System;
 
-// Instantiate Silex framework
+// Instantiate Silex
 $app = new Application();
 $app['debug'] = true;
 
@@ -62,11 +62,6 @@ $secure = function(Request $request, Application $app) {
 		if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
 	}	
 };
-
-// Define API error handler
-$app->error(function(\Exception $e, Request $request, $code) use($app) {
-	if($app['debug']) return;
-});
 
 // Autoload only required classes (PSR-4) - MAKE THIS WORK!
 /*spl_autoload_register( function ($className) {

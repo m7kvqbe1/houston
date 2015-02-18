@@ -36,9 +36,4 @@ class IndexController
 		
 		return System::generateAssets($request, $this->app);
 	}
-	
-	public function apiIndexAction() {
-		// Prompt for system credentials via HTTP Authentication
-		
-	}
 }

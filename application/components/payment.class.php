@@ -2,6 +2,7 @@
 namespace Houston\Component;
 
 use Silex\Application;
+
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
 

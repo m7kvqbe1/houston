@@ -89,10 +89,10 @@ class TicketModel
 		try {
 			$tickets = $db->tickets;
 			$tickets->save($ticket);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -113,10 +113,10 @@ class TicketModel
 			
 			$tickets = $db->tickets;
 			$tickets->update(array('_id' => $id), $ticket);
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return $ticket;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -131,10 +131,10 @@ class TicketModel
 		try {	
 			$collection = $db->tickets;
 			$collection->remove(array('_id' => $ticketID));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
+			return true;
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -151,10 +151,9 @@ class TicketModel
 		try {	
 			$gridfs = $db->getGridFS();
 			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	
@@ -186,10 +185,9 @@ class TicketModel
 		try {
 			$gridfs = $db->getGridFS();
 			return $gridfs->remove(array('_id' => new \MongoID($fileID)));
-		} catch(MongoConnectionException $e) {
-			die('Error connecting to MongoDB server');
 		} catch(MongoException $e) {
-			die('Error: '.$e->getMessage());
+			// Log database exception $e->getMessage() then return false
+			return false;
 		}
 	}
 	

@@ -1,49 +1,45 @@
 <?php
 namespace Houston\Component;
 
-class ErrorTrap 
+interface ExceptionInterface
 {
-	protected $callback;
-	protected $errors = array();
-	
-	public function __construct($callback) 
-	{
-		$this->callback = $callback;
-	}
+    // Protected methods inherited from Exception class
+	public function getMessage();                 
+    public function getCode();                    
+    public function getFile();                    
+    public function getLine();                    
+    public function getTrace();                   
+    public function getTraceAsString();           
 
-	public function call() 
-	{
-		$result = null;
-		set_error_handler(array($this, 'onError'));
-		try {
-			$result = call_user_func_array($this->callback, func_get_args());
-		} catch (Exception $ex) {
-			restore_error_handler();        
-			throw $ex;
-		}
-		
-		restore_error_handler();
-		return $result;
-	}
-
-	public function onError($errno, $errstr, $errfile, $errline) 
-	{
-		$this->errors[] = array($errno, $errstr, $errfile, $errline);
-	}
-
-	public function ok() 
-	{
-		return count($this->errors) === 0;
-	}
-
-	public function errors() 
-	{
-		return $this->errors;
-	}
+    // Overrideable methods inherited from Exception class
+    public function __toString();
+    public function __construct($message = null, $code = 0);
 }
 
-// Manage all error objects and output to client as JSON
-class Error 
+abstract class CustomException extends \Exception implements ExceptionInterface
+{
+    protected $message = 'Unknown exception';     
+    private   $string;                            
+    protected $code    = 0;                       
+    protected $file;                              
+    protected $line;                              
+    private   $trace;
+
+    public function __construct($message = null, $code = 0)
+    {
+        if(!$message) throw new $this('Unknown '. get_class($this));
+        parent::__construct($message, $code);
+    }
+
+    public function __toString()
+    {
+        return get_class($this) . " '{$this->message}' in {$this->file}({$this->line})\n"
+                                . "{$this->getTraceAsString()}";
+    }
+}
+
+// Define all custom exception types
+class ApiException extends CustomException implements ExceptionInterface
 {
 	
 }
