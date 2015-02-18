@@ -1209,10 +1209,12 @@ input.inp-lst {
 }
 
 .file {
+	position: relative;
 	display: block;
 	width: 290px;
 	/*height: 46px;*/
-	margin: 30px auto;
+	margin: 0 auto;
+	padding: 30px 0;
 	text-align: left;
 }
 
@@ -1230,18 +1232,24 @@ input.inp-lst {
 }
 
 .file-icon {
-	/*float: left;*/
-	position: absolute;
+	float: left;
+	position: relative;
 	margin-right: 15px;
 	width: 52px;
 	height: 70px;
 	width: 33px;
 	height: 44px;
 	background-size: 33px 44px; 
+	background-image: url(../img/file-icon.png);
 }
 
-.file-icon.jpg {
-	background-image: url(../img/jpg-icon.png);
+.file-icon span {
+	position: absolute;
+	bottom: 0px;
+	left: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #c3a272;
 }
 
 .file-text {
@@ -1256,6 +1264,16 @@ input.inp-lst {
 	width: 100%;
 	height: auto;
 	margin-bottom: 15px;
+}
+
+.loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 26px;
+	height: 26px;
+	background: url(../img/loader.gif) no-repeat;
+	background-size: 26px;
 }
 
 /* Single Ticket */
@@ -1360,7 +1378,7 @@ input.inp-lst {
 	right: 82px;
 }
 
-.from-client .msg-tri {
+.from-USER .msg-tri {
 	left: 82px;
 }
 
@@ -1378,7 +1396,7 @@ input.inp-lst {
 
 /*PREVIEW WINDOW*/
 
-.preview-window {
+#preview-window {
 	display: none;
 	position: fixed;
 	top: 0;
@@ -1393,7 +1411,7 @@ input.inp-lst {
     zoom: 1;
 }
 
-.preview-window(n) {
+#preview-window(n) {
     filter: none;
 }
 
@@ -1406,7 +1424,7 @@ input.inp-lst {
 	cursor: pointer;
 }
 
-.preview-window img {
+#preview-window img {
 	display: block;
 	width: 60%;
 	margin: 20% auto 0;
@@ -1827,6 +1845,11 @@ input.inp-lst {
 		height: inherit;
 	}
 	
+	.thumb-wrap {
+		height: 70px;
+		width: 100%;
+	}
+
 	.file-thumb {
 		height: 70px;
 		width: auto;
@@ -1845,8 +1868,14 @@ input.inp-lst {
 		background-size: 52px 70px;
 	}
 
+	.file-icon span {
+		bottom: 2px;
+		left: 6px;
+		font-size: 14px;
+	}
+
 	.file-info {
-		padding-left: 76px;
+		padding: 0 24px 0 76px;
 	}
 
 	#drop_zone {

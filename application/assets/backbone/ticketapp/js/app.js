@@ -17,49 +17,22 @@ var AppRouter = Backbone.Router.extend({
 		
 		// USERS COLLECTION
 		this.users = new Users();
-		this.users.fetch({
-			success: function(){
-				app.usersFetched = true;
-				app.loaded();
-			}
-		});
 
 		// AUTHENTICATED SESSION USER MODEL
 		this.user = new UserModel();
-		this.user.fetch({
-			success: function(){
-				app.userFetched = true;
-				app.loaded();
-
-				app.setUpSocket();
-			}
-		});
 		
 		//----------------------------------------
 	
 		// TICKETS COLLECTION
 		this.tickets = new Tickets();
-		this.tickets.fetch({
-			success: function(){
-				app.ticketsFetched = true;	
-				app.loaded();
-			}
-		});
 		
 		// TICKET MODEL
 		this.ticketDetailModel = new TicketDetailModel();
-		
-		
+			
 		//----------------------------------------
 		
 		// CLIENTS COLLECTION
 		this.clients = new Clients();
-		this.clients.fetch({
-			success: function(){
-				app.clientsFetched = true;
-				app.loaded();
-			}
-		});
 
 		// AGENTS COLLECTION
 		this.agentsCollection =  new Backbone.Collection();
@@ -82,6 +55,12 @@ var AppRouter = Backbone.Router.extend({
 		//BUFFER MESSAGE MODEL
 		this.addMessageModel = new BufferMessageModel();
 
+		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
+		.done(function(){
+			app.setUpSocket();
+			app.initViews();
+		});
+
 	},
 
 	setUpSocket: function(){
@@ -96,17 +75,6 @@ var AppRouter = Backbone.Router.extend({
 			app.tickets.fetch({reset:true});
 		});
 		
-	},
-
-	// Data fetched flags
-	userFetched: false,
-	ticketsFetched: false,
-	clientsFetched: false,
-	usersFetched: false,
-	
-	loaded: function() {
-		if(this.userFetched && this.ticketsFetched && this.clientsFetched && this.usersFetched) this.initViews();
-		return false;
 	},
 
 	viewInit: false,
@@ -134,6 +102,9 @@ var AppRouter = Backbone.Router.extend({
 		
 		// ACCOUNT VIEW
 		this.accountView = new AccountView({ model: this.user });
+
+		// PREVIEW WINDOW
+		this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection});
 		
 		this.viewInit = true;
 	},

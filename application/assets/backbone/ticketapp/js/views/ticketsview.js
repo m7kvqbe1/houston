@@ -54,7 +54,6 @@ var TicketView = Backbone.View.extend({
 	),
 	
 	initialize: function() {	
-		console.log(this.collection);
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);
 
 		handlebarsHelpers.bindHelpers();

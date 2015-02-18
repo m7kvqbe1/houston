@@ -263,6 +263,30 @@ var houston = {
 			}
 		});
 		return valid;
+	},
+
+	formatFileType: function(type){
+		var fileType = 'FILE';
+		if(type){ 
+			switch(type.split('/')[1]){
+				case 'jpeg':
+					fileType = 'JPG';
+					break;
+				case 'png':
+					fileType = 'PNG';
+					break;
+				case 'gif':
+					fileType = 'GIF';
+					break;
+				case 'psd':
+					fileType = 'PSD';
+					break;
+				case 'plain':
+					fileType = 'TXT';
+					break;
+			}
+		}
+		return fileType;
 	}
 
 }

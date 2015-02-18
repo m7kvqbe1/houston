@@ -98,6 +98,3 @@ var handlebarsHelpers = {
 
 	}
 }
-
-
-

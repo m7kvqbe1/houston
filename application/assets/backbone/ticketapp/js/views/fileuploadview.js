@@ -1,5 +1,6 @@
 var FileUploadView = Backbone.View.extend({
-
+//paydirtapp.com/blog/backbone-in-practice-dirty-object-handling/
+//blog.soom.la/2014/04/backbone-js-a-better-fetch-function.html
 	template: Handlebars.compile(
 		'<div class="attach-files">' +
 			'<a class="attach-link">Attach files to this ticket</a>' + 
@@ -19,50 +20,61 @@ var FileUploadView = Backbone.View.extend({
 				'<li class="file">'+
 					//If still uploading show loading and cancel button
 					'{{#if attributes.status}}'+
-					'<div>{{attributes.status}}</div>'+					
+					'<div class="loader"></div>'+					
 					'<a data-cid="{{cid}}" class="cancelFileUpload">Cancel</a>'+
-					// '<a data-cid="{{cid}}" onclick="app.formView.fileUploadView.cancelFileUpload();">Cancel</a>'+
 					'{{/if}}'+
 					//If a displayable image add thumb
-					'{{showFileThumb attributes.type attributes.target attributes.name}}'+
-						'<div class="file-text">'+
-			  				'<div class="file-icon jpg"></div>'+
-			  				'<div class="file-info">'+
-								'<div class="filename">{{attributes.name}}</div>'+
-								//If a displayable image add preview button
-								'{{showFileDownloadLink attributes.type attributes.cid}}'+				
-								//If loaded show delete button
-								'{{#unless attributes.status}}'+
-								'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-								'{{/unless}}'+
-							'</div>'+
-						'</div>'+
+					'<div class="thumb-wrap">'+
+						'{{showFileThumb attributes.type attributes.target attributes.name}}'+
 					'</div>'+
+					'<div class="file-text">'+
+		  				'<div class="file-icon jpg">'+
+		  					'<span>'+
+		  					'{{#if attributes.type}}'+
+		  					'{{formatFileType attributes.type}}'+
+		  					'{{else}}'+
+		  					'FILE'+
+		  					'{{/if}}'+
+		  					'</span>'+
+		  				'</div>'+
+		  				'<div class="file-info">'+
+							'<div class="filename">{{attributes.name}}</div>'+
+							//If a displayable image add preview button
+							'{{showFilePreviewLink attributes.type attributes.target cid}}'+				
+							//If loaded show delete button
+							'{{#unless attributes.status}}'+
+							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+							'{{/unless}}'+
+						'</div>'+
+					'</div>'+					
 				'</li>'+
 			'{{/each}}'+
 			'</ul>' +	
-		'</div>'+
-		'<div class="preview-window">'+
-		'</div>' 
+		'</div>'
+
 	),
 
 	initialize : function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
 
 		Handlebars.registerHelper("showFileThumb", function(type, target, name){ 
-			if(!type) return;
+			if(!target) return;
 			if(houston.isDisplayableImage(type)){
 				return new Handlebars.SafeString('<img class="file-thumb" src="'+target+'" alt="'+name+'"/>');
 			}
 		});
 
-		Handlebars.registerHelper("showFileDownloadLink", function(type, cid){ 
-			if(!type) return;
+		Handlebars.registerHelper("showFilePreviewLink", function(type, target, cid){ 
+			if(!target) return;
 			if(houston.isDisplayableImage(type)){
 				return new Handlebars.SafeString('<a data-cid="'+cid+'" class="file-preview">Preview</a>');
 			}
 		});
 
+		Handlebars.registerHelper("formatFileType", function(type){
+		    if(!type) return;
+			return new Handlebars.SafeString(houston.formatFileType(type));
+		});
 	},
 
 	render : function(){
@@ -81,20 +93,10 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	cancelFileUpload: function(e){
-		// var button = $(e.currentTarget);
-		// var cid = button.data("cid");	
-		console.log('cid');
-		// var fileToDelete = this.collection.get(cid);
-		// fileToDelete.url = '/tickets/file/'+fileToDelete.id;
-		// // fileToDelete.reader.abort();
-		// fileToDelete.destroy({
-		// 	success: function(){
-		// 		console.log('success');
-		// 	},
-		// 	error: function(){
-		// 		console.log(response);
-		// 	}
-		// });		
+		var button = $(e.currentTarget);
+		var cid = button.data("cid");	
+		
+		this.collection.get(cid).attributes.request.abort();	// Cancel AJAX request	
 	},
 
 	deleteFile: function(e){
@@ -105,51 +107,60 @@ var FileUploadView = Backbone.View.extend({
 		fileToDelete.destroy();	
 	},
 
+	onLoadStart: function(fileMdl){
+		console.log('starting');
+		this.collection.add(fileMdl);
+	},
+	
+	saveFile: function(attributes, fileMdl) {
+		fileMdl.save(attributes,{
+			success: function(model){
+				console.log('save');
+				model.set({status: false});
+				model.reader = false;
+			}
+		});
+	},
+
 	addFiles: function(files){
 		for (var i = 0, f; f = files[i]; i++) {
 
-			var reader = new FileReader();
-	        var fileMdl = new FileUploadModel();
-	        //Create file reader as property of model
-	        fileMdl.reader = reader;
+			//Create model as property of the file
+			f['model'] = new FileUploadModel();
 
-	        //On load start add the model to the collection
-	        reader.onloadstart = _.bind((function() {
-	        	console.log('start');
-		        return function() {	 	    
-					this.collection.add(fileMdl);
+			//Create a fileReader object
+			var reader = new FileReader();
+
+			//Setup fileReader events
+			reader.onloadstart = _.bind((function(theFile) {
+		        return function() {        	
+			        this.collection.add(theFile.model);
 		        };
 	        })(f), this);
 
-	        //On load end save file to server
-	        reader.onloadend = _.bind((function(theFile) {
-	        	console.log('end');
-		        return function(e) {	   	
-					var attributes = {
+			reader.onloadend = (function(theFile) {
+		        return function(e) {
+		        	var attributes = {
 						status: 'loading',
 						target: e.target.result,
 						name: theFile.name,
 						type: theFile.type,
-						lastModifiedDate: theFile.lastModifiedDate
+						lastModifiedDate: theFile.lastModifiedDate,
 					}
-
-					fileMdl.save(attributes,{
-						success: function(model){
-							console.log('save');
-							model.set({status: false});
-							model.reader = false;
-						}
+					
+					theFile.model.set({ 
+						request: theFile.model.save(attributes,{
+							success: function(model){
+								model.set({status: false});
+								//destroy the model?
+								console.log('success');
+							}
+						})
 					});
-
 		        };
-	        })(f), this);
-
-	        reader.onabort = function(e) {
-		     	alert('File read cancelled');
-		    };
+	        })(f);
 
 	        reader.onerror = this.fileErrorHandler;
-
 	        reader.readAsDataURL(f);
 	  	}
 	},
@@ -198,21 +209,135 @@ var FileUploadView = Backbone.View.extend({
 	    $(evt.currentTarget).removeClass('drop-highlight');
 	},
 
-	previewFile: function(e){
-		var button = $(e.currentTarget);
-		var img = button.data("img");
-		var prevWindow = this.$el.find('.preview-window');
-		prevWindow.html("<i class='preview-close icon-cancel-circled'></i>"+
-			"<img src='" + img + "' />"
-		);	
-		prevWindow.show();
-	},
-
-	previewClose: function(){
-		this.$el.find('.preview-window').hide();
+	previewFile: function(e){ 
+		// app.previewWindow.model.attributes = app.filesUploadCollection.get($(e.currentTarget).data("cid")).attributes;
+		this.$el.closest('.app-wrap').find('#preview-window').append(app.previewWindow.$el);//change
+		// app.previewWindow.render();
+		this.$el.closest('.app-wrap').find('#preview-window').show();
 	}
 
 });
+
+var PreviewWindow = Backbone.View.extend({
+	template: Handlebars.compile(
+		'<i class="preview-close icon-cancel-circled"></i>'+
+		'{{#each models}}'+
+		'<div>{{attributes.name}}</div>'+
+		'{{/each}}'
+		// '<img src="{{attributes.target}}" />'
+	),
+
+	initialize: function(){
+		this.listenTo(this.collection, 'reset add change remove', this.render);
+	},
+
+	render: function(){
+		// console.log(this.model.attributes.target);
+		this.$el.html(this.template(this.collection));
+		this.delegateEvents({
+			'click .preview-close': 'previewClose'
+		});
+	},
+
+	previewClose: function(){
+		this.$el.closest('.app-wrap').find('#preview-window').hide();
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	        // reader.onloadend = (function(theFile, fileMdl){
+	        // 	console.log(fileMdl.reader.readyState);
+	        // 	console.log(fileMdl.reader);
+	        // 	console.log(theFile);
+	        // })(f);
+
+	        //On load end save file to server
+	    	//   reader.onloadend = (function(theFile) {
+		   //      return function(e) {
+		   //      	console.log(reader.result);
+					// var attributes = {
+					// 	status: 'loading',
+					// 	target: e.target.result,
+					// 	name: theFile.name,
+					// 	type: theFile.type,
+					// 	lastModifiedDate: theFile.lastModifiedDate
+					// }
+
+					// fileMdl.save(attributes,{
+					// 	success: function(model){
+					// 		console.log('save');
+					// 		model.set({status: false});
+					// 		model.reader = false;
+					// 	}
+					// });
+
+		   //      };
+	    //     })(f);
+
+	// addFiles: function(files){
+	// 	for (var i = 0, f; f = files[i]; i++) {
+
+	// 		var reader = new FileReader();
+	//         var fileMdl = new FileUploadModel();
+	//         //Create file reader as property of model
+	//         fileMdl.reader = reader;
+
+	//         //On load start add the model to the collection
+	//         reader.onloadstart = _.bind((function() {
+	//         	console.log('start');
+	// 	        return function() {	 	    
+	// 				this.collection.add(fileMdl);
+	// 	        };
+	//         })(f), this);
+
+	//         //On load end save file to server
+	//         reader.onloadend = _.bind((function(theFile) {
+	//         	console.log('end');
+	// 	        return function(e) {	   	
+	// 				var attributes = {
+	// 					status: 'loading',
+	// 					target: e.target.result,
+	// 					name: theFile.name,
+	// 					type: theFile.type,
+	// 					lastModifiedDate: theFile.lastModifiedDate
+	// 				}
+
+	// 				fileMdl.save(attributes,{
+	// 					success: function(model){
+	// 						console.log('save');
+	// 						model.set({status: false});
+	// 						model.reader = false;
+	// 					}
+	// 				});
+
+	// 	        };
+	//         })(f), this);
+
+	//         reader.onabort = function(e) {
+	// 	     	alert('File read cancelled');
+	// 	    };
+
+	//         reader.onerror = this.fileErrorHandler;
+
+	//         reader.readAsDataURL(f);
+	//   	}
+	// },
 
 // addFiles: function(files){
 // 	for (var i = 0, f; f = files[i]; i++) {

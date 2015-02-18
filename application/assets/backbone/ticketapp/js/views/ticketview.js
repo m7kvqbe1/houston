@@ -6,7 +6,7 @@ var TicketDetailView = Backbone.View.extend({
 			'</div>'+
 		'</div>'+			
 		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+
-			'<li class="msg from-client">'+
+			'<li class="msg from-{{getUserRole attributes.authorID}}">'+
 				'<div class="msg-dtl">'+
 					'<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{author}}"/>'+
 					'<div class="msg-dtl-inr">'+
@@ -68,8 +68,6 @@ var TicketDetailView = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		// this.listenTo(this.model, "sync", this.render);
-
 		//TICKET HEADER VIEW
 		this.ticketHeaderView = new TicketHeaderView({model: this.model});
 		this.ticketHeaderView.parent = this;
