@@ -4,8 +4,54 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ad6e23944834aa68f18ed2d87229fa8e",
+    "hash": "be1835c54eb0200ce969eb6642d91479",
     "packages": [
+        {
+            "name": "dbtlr/php-airbrake",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dbtlr/php-airbrake.git",
+                "reference": "508e1e1f0de64810b9547777d29326b421c6db7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dbtlr/php-airbrake/zipball/508e1e1f0de64810b9547777d29326b421c6db7c",
+                "reference": "508e1e1f0de64810b9547777d29326b421c6db7c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php": ">=5.3.3",
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Airbrake\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Drew Butler",
+                    "email": "hi@dbtlr.com",
+                    "homepage": "http://dbtlr.com"
+                }
+            ],
+            "description": "A PHP 5.3 library for sending errors to the Airbrake.io service.",
+            "homepage": "https://github.com/dbtlr/php-airbrake",
+            "keywords": [
+                "airbrake",
+                "errors",
+                "exceptions",
+                "logging"
+            ],
+            "time": "2015-02-13 17:28:15"
+        },
         {
             "name": "monolog/monolog",
             "version": "1.12.0",

@@ -16,12 +16,7 @@ class ApiResponse
 	}
 	
 	private static function generateResponse($code, $status, $customMessage = null) {
-		if(isset($customMessage)) {
-			$message = $customMessage;	
-		} else {
-			$message = self::fetchErrorMessage($code);	
-		}
-		
+		$message = (isset($customMessage)) ? $customMessage : self::fetchErrorMessage($code);		
 		return self::encodeResponse(array('code' => $code, 'status' => $status, 'message' => $message));		
 	}
 	

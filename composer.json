@@ -28,7 +28,8 @@
         "symfony/monolog-bridge": "~2.3",
         "swiftmailer/swiftmailer": "5.*",
         "moriony/silex-mongo-provider": "*",
-        "stripe/stripe-php": "1.*"
+        "stripe/stripe-php": "1.*",
+        "dbtlr/php-airbrake": "~1.1"
     },
     
     "require-dev": {

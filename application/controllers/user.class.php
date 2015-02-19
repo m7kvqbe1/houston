@@ -59,7 +59,9 @@ class UserController
 			$userModel->setProperty($userID, $property, $data);	
 		} catch(Exception $e) {
 			echo $e->getMessage();
-		}			
+		}
+		
+		//return ($userModel->setProperty($userID, $property, $data)) ? ApiResponse::success('DEFAULT_SUCCESS_RESPONSE') : ApiResponse::error('PROPERTY_SET_FAILURE');
 	}
 	
 	public function deleteUserPropertyAction($userID, $property) 

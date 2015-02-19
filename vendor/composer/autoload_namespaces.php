@@ -27,4 +27,5 @@ return array(
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'Mongo\\Silex' => array($vendorDir . '/moriony/silex-mongo-provider/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
+    'Airbrake\\' => array($vendorDir . '/dbtlr/php-airbrake/src'),
 );
