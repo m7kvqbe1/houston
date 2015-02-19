@@ -53,6 +53,10 @@ $app->register(new MonologServiceProvider(), array(
 	'monolog.level' => Config::LOG_LEVEL
 ));
 
+// Setup Airbrake error tracking
+$airbrakeConfig = new Airbrake\Configuration(Config::AIRBRAKE_API_KEY, array());
+$app['airbrake'] = new Airbrake\Client($airbrakeConfig);
+
 // Define REST API security middleware
 $secure = function(Request $request, Application $app) {
 	// Accept requests from either a valid API key or an authenticated session

@@ -17,6 +17,8 @@ class Config
 	
 	const STRIPE_API_KEY = 'sk_0BVRYmClEHeZvUq5hEdwluffwn0dp';
 	
+	const AIRBRAKE_API_KEY = '8d1b91c7738c496048b077615e11c166';
+	
 	const NODE_HOST = 'http://localhost:3000';
 	const NODE_USER = '';
 	const NODE_PASSWORD = '';

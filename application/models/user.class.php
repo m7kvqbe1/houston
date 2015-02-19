@@ -111,6 +111,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		} 
 	}
@@ -131,6 +132,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		} 
 	}
@@ -177,6 +179,7 @@ class UserModel
 			return $remember;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -196,6 +199,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -216,6 +220,7 @@ class UserModel
 			return $token;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -258,6 +263,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -291,6 +297,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}	
 	}
@@ -312,6 +319,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}	
 	}
@@ -335,6 +343,7 @@ class UserModel
 			return true;
 		} catch(MongoException $e) {
 			// Log exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}	
 	}
@@ -357,6 +366,7 @@ class UserModel
 			 return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbreak']->notifyOnException($e);
 			return false;
 		}
 	}
