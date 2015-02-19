@@ -21,7 +21,6 @@ var FileUploadView = Backbone.View.extend({
 					//If still uploading show loading and cancel button
 					'{{#if attributes.status}}'+
 					'<div class="loader"></div>'+					
-					'<a data-cid="{{cid}}" class="cancelFileUpload">Cancel</a>'+
 					'{{/if}}'+
 					//If a displayable image add thumb
 					'<div class="thumb-wrap">'+
@@ -41,10 +40,7 @@ var FileUploadView = Backbone.View.extend({
 							'<div class="filename">{{attributes.name}}</div>'+
 							//If a displayable image add preview button
 							'{{showFilePreviewLink attributes.type attributes.target cid}}'+				
-							//If loaded show delete button
-							'{{#unless attributes.status}}'+
 							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-							'{{/unless}}'+
 						'</div>'+
 					'</div>'+					
 				'</li>'+
@@ -85,49 +81,29 @@ var FileUploadView = Backbone.View.extend({
 			'dragleave #drop_zone': 'handleDragLeave',
 			'drop #drop_zone': 'handleDragFileSelect',
 			'change #filesInput': 'handleFileSelect',
-			'click .cancelFileUpload': 'cancelFileUpload',
 			'click .file-del': 'deleteFile',
 			'click .file-preview': 'previewFile',
 			'click .preview-close': 'previewClose',
 		});
 	},
 
-	cancelFileUpload: function(e){
-		var button = $(e.currentTarget);
-		var cid = button.data("cid");	
-		
-		this.collection.get(cid).attributes.request.abort();	// Cancel AJAX request	
-	},
-
 	deleteFile: function(e){
 		var button = $(e.currentTarget);
 		var cid = button.data("cid");	
 		var fileToDelete = this.collection.get(cid);
-		fileToDelete.url = '/tickets/file/'+fileToDelete.id;
-		fileToDelete.destroy();	
-	},
-
-	onLoadStart: function(fileMdl){
-		console.log('starting');
-		this.collection.add(fileMdl);
-	},
-	
-	saveFile: function(attributes, fileMdl) {
-		fileMdl.save(attributes,{
-			success: function(model){
-				console.log('save');
-				model.set({status: false});
-				model.reader = false;
-			}
-		});
+		if(fileToDelete.isNew()){
+			fileToDelete.attributes.request.abort();
+			fileToDelete.destroy();
+		} else {
+			fileToDelete.url = '/tickets/file/'+fileToDelete.id;
+			fileToDelete.destroy();
+		}
 	},
 
 	addFiles: function(files){
 		for (var i = 0, f; f = files[i]; i++) {
-
 			//Create model as property of the file
-			f['model'] = new FileUploadModel();
-
+			f.model = new FileUploadModel();
 			//Create a fileReader object
 			var reader = new FileReader();
 
@@ -152,8 +128,6 @@ var FileUploadView = Backbone.View.extend({
 						request: theFile.model.save(attributes,{
 							success: function(model){
 								model.set({status: false});
-								//destroy the model?
-								console.log('success');
 							}
 						})
 					});
@@ -166,15 +140,15 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	fileErrorHandler: function(evt){
-		console.log(evt);
 		switch(evt.target.error.code) {
-			case evt.target.error.NOT_FOUND_ERR:
+			case 1:
 				alert('File Not Found!');
 				break;
-			case evt.target.error.NOT_READABLE_ERR:
+			case 4:
 				alert('File is not readable');
 				break;
-			case evt.target.error.ABORT_ERR:
+			case 3:
+				alert('File upload aborted');
 				break; 
 			default:
 				alert('An error occurred reading this file.');
@@ -232,7 +206,6 @@ var PreviewWindow = Backbone.View.extend({
 	},
 
 	render: function(){
-		// console.log(this.model.attributes.target);
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({
 			'click .preview-close': 'previewClose'

@@ -14,12 +14,12 @@ var AppRouter = Backbone.Router.extend({
 
 		// Check for File API support
 		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File API is not fully supported by this browser');
-		
-		// USERS COLLECTION
-		this.users = new Users();
 
 		// AUTHENTICATED SESSION USER MODEL
 		this.user = new UserModel();
+		
+		// USERS COLLECTION
+		this.users = new Users();
 		
 		//----------------------------------------
 	
@@ -45,9 +45,6 @@ var AppRouter = Backbone.Router.extend({
 		
 		// BUFFER CLIENT USER MODEL
 		this.addClientUserModel = new BufferClientUserModel();
-		
-		// AGENTS COLLECTION
-		this.agentsCollection =  new Backbone.Collection();
 		
 		// BUFFER AGENT MODEL
 		this.addAgentModel = new BufferAgentModel();
