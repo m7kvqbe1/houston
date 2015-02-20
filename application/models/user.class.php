@@ -67,6 +67,8 @@ class UserModel
 		    array_push($docs, $doc);
 		}
 		
+		if(empty($docs)) throw new \Exception('No users found');
+		
 		return $docs;
 	}
 	

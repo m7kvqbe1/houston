@@ -37,42 +37,40 @@ class UserController
 	public function getUsersAction() 
 	{
 		$userModel = new UserModel($this->app);
-		$users = $userModel->getAllUsers();
 		
-		return json_encode($users);		
+		try {
+			$users = $userModel->getAllUsers();	
+			return json_encode($users);
+		} catch(Exception $e) {
+			return ApiResponse::error('USER_FETCH_FAIL');
+		}
 	}
 	
 	public function deleteUserAction($userID) 
 	{
 		$userModel = new UserModel($this->app);
-		$userModel->removeUser($userID);
-	
-		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		
+		$response = ($userModel->removeUser($userID)) ? ApiResponse::success('DEFAULT_RESPONSE_SUCCESS') : ApiResponse::error('USER_REMOVE_FAIL');
+		return $response;
 	}
 	
 	public function putUserPropertyAction($userID, $property) 
 	{
 		$data = json_decode(file_get_contents('php://input'));
 		
-		try {
-			$userModel = new UserModel($this->app);
-			$userModel->setProperty($userID, $property, $data);	
-		} catch(Exception $e) {
-			echo $e->getMessage();
-		}
+		$userModel = new UserModel($this->app);
 		
-		//return ($userModel->setProperty($userID, $property, $data)) ? ApiResponse::success('DEFAULT_SUCCESS_RESPONSE') : ApiResponse::error('PROPERTY_SET_FAILURE');
+		$response = ($userModel->setProperty($userID, $property, $data)) ? ApiResponse::success('DEFAULT_SUCCESS_RESPONSE') : ApiResponse::error('USER_PROPERTY_SET_FAIL');
+		return $response;
 	}
 	
 	public function deleteUserPropertyAction($userID, $property) 
 	{
 		$data = json_decode(file_get_contents('php://input'));
 		
-		try {
-			$userModel = new UserModel($this->app);
-			$userModel->deleteProperty($userID, $property);
-		} catch(Exception $e) {
-			echo $e->getMessage();
-		}		
+		$userModel = new UserModel($this->app);
+		
+		$response = ($userModel->deleteProperty($userID, $property)) ? ApiResponse::success('DEFAULT_SUCCESS_RESPONSE')	 : ApiResponse::error('USER_PROPERTY_DELETE_FAIL');
+		return $response;
 	}
 }

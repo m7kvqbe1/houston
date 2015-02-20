@@ -51,5 +51,8 @@ class ErrorDefinition
 	const ATTACHMENT_DELETE_FAIL = 'There was a problem deleting this attachment.';
 	
 	const USER_NOT_FOUND = 'The specified user does not exist.';
+	const USER_FETCH_FAIL = 'No users found';
 	const USER_REMOVE_FAIL = 'There was a problem removing this user.';
+	const USER_PROPERTY_DELETE_FAIL = 'There was a problem removing the specified user property.';
+	const USER_PROPERTY_SET_FAIL = 'There was a problem setting the specified user property.';
 }
