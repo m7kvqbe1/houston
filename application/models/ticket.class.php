@@ -92,6 +92,7 @@ class TicketModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -116,6 +117,7 @@ class TicketModel
 			return $ticket;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -134,6 +136,7 @@ class TicketModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -153,6 +156,7 @@ class TicketModel
 			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate));
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -187,6 +191,7 @@ class TicketModel
 			return $gridfs->remove(array('_id' => new \MongoID($fileID)));
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}

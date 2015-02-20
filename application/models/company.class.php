@@ -55,6 +55,7 @@ class CompanyModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}
@@ -73,6 +74,7 @@ class CompanyModel
 			return true;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		} 	
 	}
@@ -110,6 +112,7 @@ class CompanyModel
 			return $this->company;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}

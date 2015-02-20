@@ -26,6 +26,7 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'Mongo\\Silex' => array($vendorDir . '/moriony/silex-mongo-provider/src'),
+    'Merqlove' => array($vendorDir . '/merqlove/airbrake-silex-service-provider/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
     'Airbrake\\' => array($vendorDir . '/dbtlr/php-airbrake/src'),
 );

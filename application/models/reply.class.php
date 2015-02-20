@@ -87,6 +87,7 @@ class ReplyModel
 			return $reply;
 		} catch(MongoException $e) {
 			// Log database exception $e->getMessage() then return false
+			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
 	}

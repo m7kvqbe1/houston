@@ -29,7 +29,8 @@
         "swiftmailer/swiftmailer": "5.*",
         "moriony/silex-mongo-provider": "*",
         "stripe/stripe-php": "1.*",
-        "dbtlr/php-airbrake": "~1.1"
+        "dbtlr/php-airbrake": "dev-master",
+        "merqlove/airbrake-silex-service-provider": "dev-master"
     },
     
     "require-dev": {

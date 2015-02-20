@@ -21,6 +21,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
+use Merqlove\Silex\Provider\AirbrakeServiceProvider;
 use Houston\Core\System;
 
 // Instantiate Silex
@@ -41,21 +42,29 @@ $app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
             'server' => 'mongodb://'.Config::MONGO_USER.':'.Config::MONGO_PASSWORD.'@'.Config::MONGO_HOST,
-            'options' => array("connect" => true)
+            'options' => array('connect' => true)
         )
     ),
 ));
 
-// Register Monolog service provider
+// Register Monolog service provider for local logging
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.Config::LOG_PATH,
 	'monolog.name' => 'Houston',
 	'monolog.level' => Config::LOG_LEVEL
 ));
 
-// Setup Airbrake error tracking
-$airbrakeConfig = new Airbrake\Configuration(Config::AIRBRAKE_API_KEY, array());
-$app['airbrake'] = new Airbrake\Client($airbrakeConfig);
+// Setup Airbrake error tracking service provider
+$app->register(new AirbrakeServiceProvider(), array(
+    'airbrake.api_key' => Config::AIRBRAKE_API_KEY,
+	'airbrake.options' => array('secure' => false)
+));
+
+// Error handler
+$app->error(function(\Exception $e, $code) use ($app) {
+	$app['airbrake']->notifyOnException($e);
+	return new Response('Sorry, something went wrong.');	// Update this to custom error page
+});
 
 // Define REST API security middleware
 $secure = function(Request $request, Application $app) {
@@ -82,7 +91,7 @@ $secure = function(Request $request, Application $app) {
     require $fileName;
 });*/
 
-// Autoload houston components
+// Autoload houston components - MOVE THESE INTO SERVICE PROVIDERS!
 foreach(glob(__DIR__."/application/components/*.php") as $filename) {
     require_once $filename;
 }
