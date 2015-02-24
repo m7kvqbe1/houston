@@ -48,10 +48,9 @@ abstract class Mailbox
 			
 			$email['read'] = ($overview[0]->seen ? 'read' : 'unread');
 			$email['subject'] = $overview[0]->subject;
-			
-			// Split into array of firstname and surname
+						
 			$email['from'] = preg_replace('/<[^>]*>/', '', $overview[0]->from);	// Remove email address
-			$email['from'] = explode(' ', $email['from'], 2);
+			$email['from'] = explode(' ', $email['from'], 2); // Split into array of firstname and surname
 			$email['firstName'] = $email['from'][0];
 			$email['lastName'] = $email['from'][1];
 			$email['from'] = $overview[0]->from;	// Keep the unparsed from meta as a fall back

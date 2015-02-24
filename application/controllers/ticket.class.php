@@ -23,9 +23,12 @@ class TicketController
 	public function getTicketsAction() 
 	{	
 		$ticketModel = new TicketModel($this->app);	
-		$response = ($tickets = $ticketModel->getAll()) ? json_encode($tickets) : ApiResponse::error('TICKET_NOT_FOUND');
 		
-		return $response;
+		if($tickets = $ticketModel->getAll()) {
+			return json_encode($tickets);
+		} else {
+			return ApiResponse::error('TICKET_NOT_FOUND');
+		}
 	}
 	
 	public function getTicketAction($ticketID) 
@@ -83,26 +86,35 @@ class TicketController
 	public function getRepliesAction($ticketID) {
 		$ticket = json_decode(file_get_contents('php://input'));
 		
-		$replyModel = new ReplyModel($this->app);	
-		$response = ($replies = $replyModel->getReplies($ticketID)) ? json_encode($replies) : ApiResponse::error('REPLIES_NOT_FOUND');
+		$replyModel = new ReplyModel($this->app);
 		
-		return $response;
+		if($replies = $replyModel->getReplies($ticketID)) {
+			return json_encode($replies);
+		} else {
+			return ApiResponse::error('REPLIES_NOT_FOUND');
+		}
 	}
 	
 	public function getAttachmentMetaAction($fileID) {
 		$ticketModel = new TicketModel($this->app);
-		$response = ($meta = $ticketModel->getFileMeta($fileID)) ? json_encode($meta) : ApiResponse::error('FILE_NOT_FOUND');
 		
-		return $response;
+		if($meta = $ticketModel->getFileMeta($fileID)) {
+			return json_encode($meta);
+		} else {
+			return ApiResponse::error('FILE_NOT_FOUND');
+		}
 	}
 	
 	public function postAttachmentAction() {
 		$ticket = json_decode(file_get_contents('php://input'));
 		
 		$ticketModel = new TicketModel($this->app);
-		$response = ($id = $ticketModel->uploadAttachment($ticket)) ? json_encode(array('_id' => $id)) : ApiResponse::error('FILE_UPLOAD_FAIL');
 		
-		return $response; 
+		if($id = $ticketModel->uploadAttachment($ticket)) {
+			return json_encode(array('_id' => $id));
+		} else {
+			return ApiResponse::error('FILE_UPLOAD_FAIL');
+		}
 	}
 	
 	public function getAttachmentAction($fileID) {
@@ -130,6 +142,10 @@ class TicketController
 		$ticketModel = new TicketModel($this->app);
 		$response = $ticketModel->deleteAttachment($fileID);
 		
-		return ($response['ok']) ? ApiResponse::success('DEFAULT_RESPONSE_SUCCESS') : ApiResponse::error('ATTACHMENT_DELETE_FAIL');
+		if($response['ok']) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('ATTACHMENT_DELETE_FAIL');
+		}
 	}
 }

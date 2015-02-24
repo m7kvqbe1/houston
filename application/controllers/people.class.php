@@ -27,41 +27,55 @@ class PeopleController {
 		$companyModel = new CompanyModel($this->app);
 		$companyModel->loadCompanyByID($userModel->user['companyID']);
 		
-		$response = (isset($companyModel->company)) ? json_encode($companyModel->company) : ApiResponse::error('USER_COMPANY_NOT_FOUND');
-		
-		return $response;
+		if(isset($companyModel->company)) {
+			return json_encode($companyModel->company);
+		} else {
+			return ApiResponse::error('USER_COMPANY_NOT_FOUND');
+		}
 	}
 	
 	public function getClientsAction() {
 		$clientModel = new ClientModel($this->app);
-		$response = ($clients = $clientModel->getClients()) ? json_encode($clients) : ApiResponse::error('CLIENT_NOT_FOUND');
-	
-		return $response;
+		
+		if($clients = $clientModel->getClients()) {
+			return json_encode($clients);
+		} else {
+			return ApiResponse::error('CLIENT_NOT_FOUND');
+		}
 	}
 	
 	public function postClientAction() {
 		$client = json_decode(file_get_contents('php://input'));
 	
 		$clientModel = new ClientModel($this->app);
-		$response = ($clientModel->addClient($client)) ? json_encode($client) : ApiResponse::error('CLIENT_ADD_FAIL');
-	
-		return $response;
+		
+		if($clientModel->addClient($client)) {
+			return json_encode($client);
+		} else {
+			return ApiResponse::error('CLIENT_ADD_FAIL');
+		}
 	}
 	
 	public function postUserAction() {
 		$user = json_decode(file_get_contents('php://input'));
 	
 		$userModel = new UserModel($this->app);
-		$response = ($user = $userModel->addUser($user)) ? json_encode($user) : ApiResponse::error('USER_ADD_FAIL');
-	
-		return $response;
+		
+		if($user = $userModel->addUser($user)) {
+			return json_encode($user);
+		} else {
+			return ApiResponse::error('USER_ADD_FAIL');
+		}
 	}
 	
 	public function deleteClientAction($clientID) {
 		$clientModel = new ClientModel($this->app);
-		$response = ($clientModel->removeClient($clientID)) ? ApiResponse::success('DEFAULT_RESPONSE_SUCCESS') : ApiResponse::error('USER_REMOVE_FAIL');
 		
-		return $response;
+		if($clientModel->removeClient($clientID)) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('USER_REMOVE_FAIL');
+		}
 	}
 	
 	public function postAgentAction() {

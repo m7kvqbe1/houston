@@ -50,8 +50,11 @@ class UserController
 	{
 		$userModel = new UserModel($this->app);
 		
-		$response = ($userModel->removeUser($userID)) ? ApiResponse::success('DEFAULT_RESPONSE_SUCCESS') : ApiResponse::error('USER_REMOVE_FAIL');
-		return $response;
+		if($userModel->removeUser($userID)) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('USER_REMOVE_FAIL');
+		}
 	}
 	
 	public function putUserPropertyAction($userID, $property) 
@@ -60,8 +63,11 @@ class UserController
 		
 		$userModel = new UserModel($this->app);
 		
-		$response = ($userModel->setProperty($userID, $property, $data)) ? ApiResponse::success('DEFAULT_SUCCESS_RESPONSE') : ApiResponse::error('USER_PROPERTY_SET_FAIL');
-		return $response;
+		if($userModel->setProperty($userID, $property, $data)) {
+			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+		} else {
+			return ApiResponse::error('USER_PROPERTY_SET_FAIL');
+		}
 	}
 	
 	public function deleteUserPropertyAction($userID, $property) 
@@ -70,7 +76,10 @@ class UserController
 		
 		$userModel = new UserModel($this->app);
 		
-		$response = ($userModel->deleteProperty($userID, $property)) ? ApiResponse::success('DEFAULT_SUCCESS_RESPONSE')	 : ApiResponse::error('USER_PROPERTY_DELETE_FAIL');
-		return $response;
+		if($userModel->deleteProperty($userID, $property)) {
+			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+		} else {
+			return ApiResponse::error('USER_PROPERTY_DELETE_FAIL');
+		}
 	}
 }
