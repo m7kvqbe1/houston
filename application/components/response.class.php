@@ -45,6 +45,7 @@ class ErrorDefinition
 	
 	const PASSWORD_INVALID = 'The password provided is incorrect.';
 	const USER_UNVERIFIED = 'This user account has not yet been verified.';
+	const INVALID_VERIFICATION_CODE = 'The supplied verification code is invalid.';
 	
 	const STRIPE_INVALID_SUBSCRIPTION = 'No valid subscription found.';	
 	
@@ -69,9 +70,5 @@ class ErrorDefinition
 	
 	const TICKET_EDIT_FAIL = 'There was a problem editing the ticket.';
 	const TICKET_ADD_FAIL = 'There was a problem adding this ticket.';
-	const TICKET_NOT_FOUND = 'The specified ticket(s) could not be found.';
-	
-	
-	
-	
+	const TICKET_NOT_FOUND = 'The specified ticket(s) could not be found.';	
 }

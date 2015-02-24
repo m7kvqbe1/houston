@@ -124,7 +124,7 @@ class AuthController
 		$userModel = new UserModel($this->app);
 		$userModel->isVerified(null, $token);
 		
-		if(!isset($userModel->user)) return 'The verification code supplied was invalid.';	// Return error message to backbone
+		if(!isset($userModel->user)) return ApiResponse::error('INVALID_VERIFICATION_CODE');
 		
 		// Set account as verified
 		$userModel->verifyAccount($userModel->user['emailAddress']);
