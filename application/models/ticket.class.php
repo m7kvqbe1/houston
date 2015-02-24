@@ -43,7 +43,11 @@ class TicketModel
 		    array_push($docs, $doc);
 		}
 		
-		return $docs;
+		if(empty($docs)) {
+			return false;
+		} else {
+			return $docs;	
+		}
 	}
 	
 	public function generateTicket($subject, $message, $date = null, $email, $firstName = null, $lastName = null) 
@@ -91,7 +95,6 @@ class TicketModel
 			$tickets->save($ticket);
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -116,7 +119,6 @@ class TicketModel
 			$tickets->update(array('_id' => $id), $ticket);
 			return $ticket;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -135,7 +137,6 @@ class TicketModel
 			$collection->remove(array('_id' => $ticketID));
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -155,7 +156,6 @@ class TicketModel
 			$gridfs = $db->getGridFS();
 			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate));
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -169,6 +169,8 @@ class TicketModel
 			
 		$gridfs = $db->getGridFS();	
 		$file = $gridfs->findOne(array('_id' => new \MongoID($fileID)));
+		
+		if(!isset($file)) return false;
 		
 		$fileArr = array(
 			'data' => $file->getBytes(),
@@ -190,7 +192,6 @@ class TicketModel
 			$gridfs = $db->getGridFS();
 			return $gridfs->remove(array('_id' => new \MongoID($fileID)));
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -216,7 +217,11 @@ class TicketModel
 			
 			array_push($fileArr, $meta);
 		}
-
-		return $fileArr;
+		
+		if(empty($fileArr)) {
+			return false;
+		} else {
+			return $fileArr;	
+		}
 	}
 }

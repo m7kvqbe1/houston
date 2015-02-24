@@ -21,15 +21,23 @@ class TicketController
 	}
 	
 	public function getTicketsAction() 
-	{
-		$ticketModel = new TicketModel($this->app);
-		return json_encode($ticketModel->getAll());
+	{	
+		$ticketModel = new TicketModel($this->app);	
+		$response = ($tickets = $ticketModel->getAll()) ? json_encode($tickets) : ApiResponse::error('TICKET_NOT_FOUND');
+		
+		return $response;
 	}
 	
 	public function getTicketAction($ticketID) 
 	{
 		$ticketModel = new TicketModel($this->app);
-		return json_encode($ticketModel->loadTicketByID($ticketID));
+		
+		try {
+			$ticket = $ticketModel->loadTicketByID($ticketID);
+			return json_encode($ticket);
+		} catch(Exception $e) {
+			return ApiResponse::error('TICKET_NOT_FOUND');
+		}
 	}
 	
 	public function postTicketAction() 
@@ -37,20 +45,24 @@ class TicketController
 		$ticket = json_decode(file_get_contents('php://input'));
 	
 		$ticketModel = new TicketModel($this->app);
-		$ticketModel->add($ticket);
-				
-		Notify::socketBroadcast('/new/ticket', $ticket, $this->app['session']->get('cid'));
-			
-		return json_encode($ticket);
+		
+		if($ticketModel->add($ticket)) {
+			Notify::socketBroadcast('/new/ticket', $ticket, $this->app['session']->get('cid'));	
+			return json_encode($ticket);
+		} else {
+			return ApiResponse::error('TICKET_ADD_FAIL');
+		}
 	}
 	
 	public function putTicketAction() {
 		$ticket = file_get_contents('php://input');
 		
 		$ticketModel = new TicketModel($this->app);
-		$ticketModel->edit($ticket);
-		
-		return json_encode($ticket);		
+		if($ticketModel->edit($ticket)) {
+			return json_encode($ticket);	
+		} else {
+			return ApiResponse::error('TICKET_EDIT_FAIL');
+		}
 	}
 	
 	public function postReplyAction($ticketID) {
@@ -59,40 +71,45 @@ class TicketController
 		$reply->ticketID = $ticketID;
 		
 		$replyModel = new ReplyModel($this->app);
-		$replyModel->reply($reply);
 		
-		Notify::socketBroadcast('/new/reply', $reply, $this->app['session']->get('cid'));
-		
-		return json_encode($reply);		
+		if($replyModel->reply($reply)) {
+			Notify::socketBroadcast('/new/reply', $reply, $this->app['session']->get('cid'));
+			return json_encode($reply);
+		} else {
+			return ApiResponse::error('REPLY_FAIL');
+		}
 	}
 	
 	public function getRepliesAction($ticketID) {
 		$ticket = json_decode(file_get_contents('php://input'));
 		
-		$replyModel = new ReplyModel($this->app);
+		$replyModel = new ReplyModel($this->app);	
+		$response = ($replies = $replyModel->getReplies($ticketID)) ? json_encode($replies) : ApiResponse::error('REPLIES_NOT_FOUND');
 		
-		return json_encode($replyModel->getReplies($ticketID));		
+		return $response;
 	}
 	
 	public function getAttachmentMetaAction($fileID) {
 		$ticketModel = new TicketModel($this->app);
-		$meta = $ticketModel->getFileMeta($fileID);
+		$response = ($meta = $ticketModel->getFileMeta($fileID)) ? json_encode($meta) : ApiResponse::error('FILE_NOT_FOUND');
 		
-		return json_encode($meta);		
+		return $response;
 	}
 	
 	public function postAttachmentAction() {
 		$ticket = json_decode(file_get_contents('php://input'));
 		
 		$ticketModel = new TicketModel($this->app);
-		$id = $ticketModel->uploadAttachment($ticket);
+		$response = ($id = $ticketModel->uploadAttachment($ticket)) ? json_encode(array('_id' => $id)) : ApiResponse::error('FILE_UPLOAD_FAIL');
 		
-		return json_encode(array('_id' => $id));		
+		return $response; 
 	}
 	
 	public function getAttachmentAction($fileID) {
 		$ticketModel = new TicketModel($this->app);
 		$file = $ticketModel->downloadAttachment($fileID);
+		
+		if(!file) return ApiResponse::error('FILE_NOT_FOUND');
 		
 		$response = new Response();
 		$response->setContent($file['data']);

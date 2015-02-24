@@ -55,4 +55,18 @@ class ErrorDefinition
 	const USER_REMOVE_FAIL = 'There was a problem removing this user.';
 	const USER_PROPERTY_DELETE_FAIL = 'There was a problem removing the specified user property.';
 	const USER_PROPERTY_SET_FAIL = 'There was a problem setting the specified user property.';
+	
+	const FILE_NOT_FOUND = 'The specified file(s) could not be found.';
+	const FILE_UPLOAD_FAIL = 'There was a problem saving the file.';
+	
+	const REPLIES_NOT_FOUND = 'No replies were found.';	
+	const REPLY_FAIL = 'There was a problem replying to the ticket.';
+	
+	const TICKET_EDIT_FAIL = 'There was a problem editing the ticket.';
+	const TICKET_ADD_FAIL = 'There was a problem adding this ticket.';
+	const TICKET_NOT_FOUND = 'The specified ticket(s) could not be found.';
+	
+	
+	
+	
 }

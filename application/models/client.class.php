@@ -63,7 +63,6 @@ class ClientModel
 			);
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -89,7 +88,6 @@ class ClientModel
 				array('$pull' => array('clients' => array('_id' => $id)))
 			);
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -101,7 +99,6 @@ class ClientModel
 				array('clientID' => $id)
 			);
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}

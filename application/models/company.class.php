@@ -54,7 +54,6 @@ class CompanyModel
 			$collection->findAndModify(array('_id' => $companyID), array('$set' => array($property => $value)));
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -73,7 +72,6 @@ class CompanyModel
 			$collection->findAndModify(array('_id' => $companyID), array('$set' => array('database' => $identifier)));
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		} 	
@@ -111,7 +109,6 @@ class CompanyModel
 			$this->company = $company;
 			return $this->company;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}

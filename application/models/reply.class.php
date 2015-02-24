@@ -47,7 +47,11 @@ class ReplyModel
 		    array_push($docs, $doc);
 		}
 		
-		return $docs;
+		if(empty($docs)) {
+			return false;
+		} else {
+			return $docs;	
+		}
 	}
 	
 	public function generateReply($ticketID, $message, $date = null, $email)
@@ -86,7 +90,6 @@ class ReplyModel
 			$collection->save($reply);
 			return $reply;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}

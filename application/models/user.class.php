@@ -112,7 +112,6 @@ class UserModel
 			$collection->findAndModify(array('_id' => $userID), array('$set' => array($property => $value)));
 			return true;
 		} catch(\MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		} 
@@ -133,7 +132,6 @@ class UserModel
 			$collection->findAndModify(array('_id' => $userID), array('$unset' => array($property => 1)));
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		} 
@@ -180,7 +178,6 @@ class UserModel
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('remember' => $remember)));
 			return $remember;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -200,7 +197,6 @@ class UserModel
 			$this->loadUser($doc['emailAddress']);	// Refactor this call out into relevant places in controllers
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -221,7 +217,6 @@ class UserModel
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('reset' => $token)));
 			return $token;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -264,7 +259,6 @@ class UserModel
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('verify' => true)));
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -298,7 +292,6 @@ class UserModel
 			$this->saveUser($user);
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}	
@@ -320,7 +313,6 @@ class UserModel
 			$this->saveUser($user);
 			return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}	
@@ -344,7 +336,6 @@ class UserModel
 			$this->saveUser($user);
 			return true;
 		} catch(MongoException $e) {
-			// Log exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}	
@@ -367,7 +358,6 @@ class UserModel
 			
 			 return true;
 		} catch(MongoException $e) {
-			// Log database exception $e->getMessage() then return false
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
