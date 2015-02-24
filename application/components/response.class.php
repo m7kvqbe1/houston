@@ -55,6 +55,11 @@ class ErrorDefinition
 	const USER_REMOVE_FAIL = 'There was a problem removing this user.';
 	const USER_PROPERTY_DELETE_FAIL = 'There was a problem removing the specified user property.';
 	const USER_PROPERTY_SET_FAIL = 'There was a problem setting the specified user property.';
+	const USER_ADD_FAIL = 'There was a problem creating this user.';
+	const USER_COMPANY_NOT_FOUND = 'The authenticated users company could not be found.';
+	
+	const CLIENT_ADD_FAIL = 'There was a problem creating this client.';
+	const CLIENT_NOT_FOUND = 'The specified client(s) could not be found.';
 	
 	const FILE_NOT_FOUND = 'The specified file(s) could not be found.';
 	const FILE_UPLOAD_FAIL = 'There was a problem saving the file.';

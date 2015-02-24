@@ -270,11 +270,17 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		$collection = $db->users;
-		$collection->save($user);
-		$this->user = $user;
+		// Save user to database
+		try {
+			$collection = $db->users;
+			$collection->save($user);
+			$this->user = $user;
 		
-		return $this->user;
+			return $this->user;
+		} catch(MongoException $e) {
+			$this->app['airbrake']->notifyOnException($e);
+			return false;
+		}	
 	}
 	
 	public function registerUser($user) 
@@ -288,13 +294,7 @@ class UserModel
 		$user->role = 'ADMIN';
 		
 		// Save user to database
-		try {
-			$this->saveUser($user);
-			return true;
-		} catch(MongoException $e) {
-			$this->app['airbrake']->notifyOnException($e);
-			return false;
-		}	
+		return $this->saveUser($user);
 	}
 	
 	public function addAgent($user)
@@ -309,13 +309,7 @@ class UserModel
 		$user->role = 'AGENT';
 				
 		// Save user to database
-		try {
-			$this->saveUser($user);
-			return true;
-		} catch(MongoException $e) {
-			$this->app['airbrake']->notifyOnException($e);
-			return false;
-		}	
+		return $this->saveUser($user);
 	}
 	
 	public function addUser($user) 
@@ -332,13 +326,7 @@ class UserModel
 		$user->role = 'USER';
 				
 		// Save user to database
-		try {
-			$this->saveUser($user);
-			return true;
-		} catch(MongoException $e) {
-			$this->app['airbrake']->notifyOnException($e);
-			return false;
-		}	
+		return $this->saveUser($user);
 	}
 	
 	public function removeUser($id) 

@@ -39,6 +39,8 @@ class ClientModel
 		
 		if(isset($docs[0]['clients'])) $this->client = $docs[0]['clients'];
 		
+		if(empty($docs)) return false;
+		
 		return $this->client;
 	}
 	
