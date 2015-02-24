@@ -65,19 +65,19 @@ var PeopleView = Backbone.View.extend({
 	},
 
 	addAgent: function(e) {
-		if(houston.validateForm(e.currentTarget)){
-			var attributes = 
-				{
-					"emailAddress": this.$el.find('#form-add-agent input[type="email"]').val(),
-					"verify": false
-				};
+		if(!houston.validateForm(e.currentTarget)) return;
+		var attributes = 
+			{
+				"emailAddress": this.$el.find('#form-add-agent input[type="email"]').val(),
+				"verify": false
+			};
 
-			app.addAgentModel.save(attributes,{
-				success: _.bind(function(model){
-					app.addAgentModel.clear();
-				}, this)
-			});
-		}
+		app.addAgentModel.save(attributes,{
+			success: _.bind(function(model){
+				app.addAgentModel.clear();
+			}, this)
+		});
+
 	}
 			
 });

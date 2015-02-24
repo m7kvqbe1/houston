@@ -256,8 +256,7 @@ var houston = {
 				address = input.val();
 				if(!re.test(address)){
 					valid = false;
-					input.addClass('error');	
-					console.log('error');		
+					input.addClass('error');		
 				} else {
 					input.removeClass('error');
 				}

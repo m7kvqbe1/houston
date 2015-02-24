@@ -18,16 +18,16 @@ var FileUploadView = Backbone.View.extend({
 			'<ul id="files" class="files">'+
 			'{{#each models}}'+
 				'<li class="file">'+
-					//If still uploading show loading and cancel button
+					//If still uploading show loader
 					'{{#if attributes.status}}'+
 					'<div class="loader"></div>'+					
 					'{{/if}}'+
 					//If a displayable image add thumb
-					'<div class="thumb-wrap">'+
-						'{{showFileThumb attributes.type attributes.target attributes.name}}'+
-					'</div>'+
+					// '<div class="thumb-wrap">'+
+					// 	'{{showFileThumb attributes.type attributes.target attributes.name}}'+
+					// '</div>'+
 					'<div class="file-text">'+
-		  				'<div class="file-icon jpg">'+
+		  				'<div class="file-icon">'+
 		  					'<span>'+
 		  					'{{#if attributes.type}}'+
 		  					'{{formatFileType attributes.type}}'+
@@ -38,9 +38,11 @@ var FileUploadView = Backbone.View.extend({
 		  				'</div>'+
 		  				'<div class="file-info">'+
 							'<div class="filename">{{attributes.name}}</div>'+
-							//If a displayable image add preview button
-							'{{showFilePreviewLink attributes.type attributes.target cid}}'+				
 							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+							//If a displayable image add preview button
+							'{{#unless attributes.status}}'+
+							'{{showFileUploadPreviewLink attributes.type attributes.target cid}}'+
+							'{{/unless}}'+				
 						'</div>'+
 					'</div>'+					
 				'</li>'+
@@ -60,7 +62,7 @@ var FileUploadView = Backbone.View.extend({
 			}
 		});
 
-		Handlebars.registerHelper("showFilePreviewLink", function(type, target, cid){ 
+		Handlebars.registerHelper("showFileUploadPreviewLink", function(type, target, cid){ 
 			if(!target) return;
 			if(houston.isDisplayableImage(type)){
 				return new Handlebars.SafeString('<a data-cid="'+cid+'" class="file-preview">Preview</a>');
@@ -83,7 +85,7 @@ var FileUploadView = Backbone.View.extend({
 			'change #filesInput': 'handleFileSelect',
 			'click .file-del': 'deleteFile',
 			'click .file-preview': 'previewFile',
-			'click .preview-close': 'previewClose',
+			'click .preview-close': 'previewClose'
 		});
 	},
 
@@ -184,41 +186,133 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	previewFile: function(e){ 
-		// app.previewWindow.model.attributes = app.filesUploadCollection.get($(e.currentTarget).data("cid")).attributes;
-		this.$el.closest('.app-wrap').find('#preview-window').append(app.previewWindow.$el);//change
-		// app.previewWindow.render();
+		var button = $(e.currentTarget);
+		var cid = button.data("cid");	
+		var fileToPreview = this.collection.get(cid);
+		fileToPreview.set({preview: true});
 		this.$el.closest('.app-wrap').find('#preview-window').show();
 	}
 
 });
-
+//Have two collections one as a file upload collection one as a filepreview collection, they use the same view
 var PreviewWindow = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<i class="preview-close icon-cancel-circled"></i>'+
 		'{{#each models}}'+
-		'<div>{{attributes.name}}</div>'+
+			'{{#if attributes.preview}}'+
+				'{{generateFilePreviousLink @index}}'+
+				'<div>{{attributes.name}}</div>'+	
+				'{{generateFileNextLink @index collection.imagesCollection.length}}'+
+				'{{#if attributes.ref}}'+
+					'<img src="http://edd.houston.com/tickets/file/{{attributes.ref}}" />'+
+				'{{else}}'+
+					'<img src="{{attributes.target}}" />'+
+				'{{/if}}'+
+			'{{/if}}'+
 		'{{/each}}'
-		// '<img src="{{attributes.target}}" />'
 	),
 
 	initialize: function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
+
+		Handlebars.registerHelper("generateFilePreviousLink", function(index){
+			if(index > 0){
+				return new Handlebars.SafeString('<a class="prev" data-index="'+index+'">Prev'+index+'</a>');
+			} 
+		});
+
+		Handlebars.registerHelper("generateFileNextLink", function(index, length){
+			if((length - 1) > index){
+				return new Handlebars.SafeString('<a class="next" data-index="'+index+'">Next'+index+length+'</a>');
+			}
+		});
 	},
 
 	render: function(){
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({
-			'click .preview-close': 'previewClose'
+			'click .preview-close': 'previewClose',
+			'click .prev': 'previous',
+			'click .next': 'next'
 		});
+	},
+
+	previous: function(e){
+		var button = $(e.currentTarget);
+		var index = button.data("index");
+		var prev = index - 1;
+		this.collection.models[index].set({preview:false});
+		this.collection.models[prev].set({preview:true})
+
+	},
+
+	next: function(e){
+		console.log(this.collection);
+		var button = $(e.currentTarget);
+		var index = button.data("index");
+		var next = index + 1;
+		this.collection.models[index].set({preview:false});
+		this.collection.models[next].set({preview:true})
 	},
 
 	previewClose: function(){
 		this.$el.closest('.app-wrap').find('#preview-window').hide();
+		this.collection.forEach(function(model, index) {
+		    model.unset('preview',{silent: true});
+		});
 	}
 });
 
 
+	// template: Handlebars.compile(
+	// 	'<div class="attach-files">' +
+	// 		'<a class="attach-link">Attach files to this ticket</a>' + 
+	// 		'<div class="supported">Supported -</div>' + 
+	// 		'<ul class="filetypes">' +
+	// 			'<li>Jpg</li>' +
+	// 			'<li>Png</li>' +
+	// 			'<li>Gif</li>' +
+	// 			'<li>Pdf</li>' +
+	// 		'</ul>' +
+	// 		'<div class="file-input-wrapper">'+
+	// 			'<div id="drop_zone">Drop files here</div>'+
+	// 			'<input type="file" id="filesInput" name="files[]" multiple />'+
+	// 		'</div>'+
+	// 		'<ul id="files" class="files">'+
+	// 		'{{#each models}}'+
+	// 			'<li class="file">'+
+	// 				//If still uploading show loading and cancel button
+	// 				'{{#if attributes.status}}'+
+	// 				'<div class="loader"></div>'+					
+	// 				'{{/if}}'+
+	// 				//If a displayable image add thumb
+	// 				'<div class="thumb-wrap">'+
+	// 					'{{showFileThumb attributes.type attributes.target attributes.name}}'+
+	// 				'</div>'+
+	// 				'<div class="file-text">'+
+	// 	  				'<div class="file-icon jpg">'+
+	// 	  					'<span>'+
+	// 	  					'{{#if attributes.type}}'+
+	// 	  					'{{formatFileType attributes.type}}'+
+	// 	  					'{{else}}'+
+	// 	  					'FILE'+
+	// 	  					'{{/if}}'+
+	// 	  					'</span>'+
+	// 	  				'</div>'+
+	// 	  				'<div class="file-info">'+
+	// 						'<div class="filename">{{attributes.name}}</div>'+
+	// 						//If a displayable image add preview button
+	// 						'{{showFilePreviewLink attributes.type attributes.target cid}}'+				
+	// 						'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+	// 					'</div>'+
+	// 				'</div>'+					
+	// 			'</li>'+
+	// 		'{{/each}}'+
+	// 		'</ul>' +	
+	// 	'</div>'
 
+	// ),
 
 
 

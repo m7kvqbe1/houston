@@ -50,19 +50,18 @@ var FormView = Backbone.View.extend({
 	},
 	
 	saveModel: function(e){
-		if(houston.validateForm(e.currentTarget)){
-			this.setModelData();	
-			console.log(this.model);		
-			this.model.save(this.model.attributes,
-				{
-					success: _.bind(function(){					
-						this.model = new TicketModel();
-						app.filesUploadCollection.reset();
-						app.navigate('', {trigger: true});
-					}, this)
-				}
-			);
-		} 
+		if(!houston.validateForm(e.currentTarget)) return;
+		this.setModelData();	
+		console.log(this.model);		
+		this.model.save(this.model.attributes,
+			{
+				success: _.bind(function(){					
+					this.model = new TicketModel();
+					app.filesUploadCollection.reset();
+					app.navigate('', {trigger: true});
+				}, this)
+			}
+		);
 	},
 
 	setModelData: function(){
