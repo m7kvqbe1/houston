@@ -29,10 +29,18 @@ var TicketDetailView = Backbone.View.extend({
 					'{{#each attributes.files}}'+
 						'<li class="file">'+
 							'<div class="file-text">'+
-				  				'<div class="file-icon jpg"></div>'+
+				  				'<div class="file-icon">'+
+				  					'<span>'+
+				  					'{{#if type}}'+
+				  					'{{formatFileType type}}'+
+				  					'{{else}}'+
+				  					'FILE'+
+				  					'{{/if}}'+
+				  					'</span>'+
+				  				'</div>'+
 				  				'<div class="file-info">'+
 									'<div class="filename">{{name}}</div>'+
-									'<a href="">Preview</a>'+
+									'{{showFilePreviewLink type @index}}'+
 									'<a href="http://edd.houston.com/tickets/file/{{ref}}">Download</a>'+
 								'</div>'+
 							'</div>'+
@@ -46,7 +54,7 @@ var TicketDetailView = Backbone.View.extend({
 				'</div>'+
 				'<div class="reply">'+
 					'<form id="form-reply">' +
-						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+						'<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
 						'<div id="file-upload-view-wrap">'+	
 
 						'</div>'+
@@ -66,6 +74,15 @@ var TicketDetailView = Backbone.View.extend({
 			'</div>'+	
 		'</ul>'	
 	),
+
+	filePreview: function(e){
+		var button = $(e.currentTarget);
+		var index = button.data("index");	
+		app.filesUploadCollection.reset(this.model.attributes.files);
+		app.filesUploadCollection.models[index].set({preview:true});
+		this.$el.closest('.app-wrap').find('#preview-window').show();
+
+	},
 	
 	initialize: function() {
 		//TICKET HEADER VIEW
@@ -75,10 +92,17 @@ var TicketDetailView = Backbone.View.extend({
 		//MESSAGES VIEW
 		this.messagesView = new MessagesView({collection: this.model.messagesCollection});
 		this.messagesView.parent = this;	
+
+		Handlebars.registerHelper("showFilePreviewLink", function(type, index){ 
+			console.log(type);
+			if(!type) return;
+			if(houston.isDisplayableImage(type)){
+				return new Handlebars.SafeString('<a data-index="'+index+'" class="file-preview">Preview</a>');
+			}
+		});
 	},
 	
 	render: function (){	
-		console.log(this.model.attributes)
 		this.$el.html(this.template(this.model));
 
 		app.filesUploadCollection.reset();
@@ -99,7 +123,8 @@ var TicketDetailView = Backbone.View.extend({
 			'click .dropdown li': 'dropDown',
 			'click .reply-btn': 'replyToggle',
 			'click .cancel-btn': 'replyToggle',
-			'click .add-message': 'addMessage'
+			'click .add-message': 'addMessage',
+			'click .file-preview': 'filePreview'
 		});
 		return this;
 	},
@@ -148,7 +173,9 @@ var TicketDetailView = Backbone.View.extend({
 		this.model.save(this.model.attributes);	
 	},
 	
-	addMessage: function(){	
+	addMessage: function(e){
+		if(!houston.validateForm(e.currentTarget)) return;
+
 		//If ticket marked as complete
 		if(this.$el.find('input[name="ticket-completed"]').prop('checked')){
 			this.model.set({
@@ -215,7 +242,6 @@ var TicketHeaderView = Backbone.View.extend({
 	},
 
 	render: function (){
-		console.log(this.model);
 		this.$el.html(this.template(this.model));
 	}
 

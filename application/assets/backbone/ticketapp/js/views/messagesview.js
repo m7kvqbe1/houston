@@ -35,7 +35,7 @@ var MessagesView = Backbone.View.extend({
 				'</div>'+
 				'<div class="reply">'+
 					'<form id="form-reply">' +
-						'<textarea name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+						'<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
 						'<div id="file-upload-view-wrap">'+	
 
 						'</div>'+

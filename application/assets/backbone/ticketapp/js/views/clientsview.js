@@ -48,16 +48,15 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	addClient: function(e) {
-		if(houston.validateForm(e.currentTarget)){
-			var name = this.$el.find('#form-add-client input[type="text"]').val();
-			var attributes = { "name": name };
+		if(!houston.validateForm(e.currentTarget)) return;
+		var name = this.$el.find('#form-add-client input[type="text"]').val();
+		var attributes = { "name": name };
 
-			app.addClientModel.save(attributes,{
-				success: _.bind(function(model){
-					app.addClientModel.clear();
-				}, this)
-			});
-		}
+		app.addClientModel.save(attributes,{
+			success: _.bind(function(model){
+				app.addClientModel.clear();
+			}, this)
+		});
 	}
 
 });
@@ -110,23 +109,22 @@ var ClientView = Backbone.View.extend({
 	},
 
 	addClientUser: function(e) {
-		if(houston.validateForm(e.currentTarget)){
-			var emailAddress = this.$el.find('.form-add-client-user input[type="email"]').val();
-			var clientID = this.model.id;
-			var attributes = 
-				{
-					"emailAddress": emailAddress,
-					"clientID": clientID
-				};
+		if(!houston.validateForm(e.currentTarget)) return;
+		var emailAddress = this.$el.find('.form-add-client-user input[type="email"]').val();
+		var clientID = this.model.id;
+		var attributes = 
+			{
+				"emailAddress": emailAddress,
+				"clientID": clientID
+			};
 
-			app.addClientUserModel.save(attributes,{
-				success: _.bind(function(model){
-					//Hide form with render
-					this.render();
-					app.addClientUserModel.clear();
-				}, this)
-			});
-		}
+		app.addClientUserModel.save(attributes,{
+			success: _.bind(function(model){
+				//Hide form with render
+				this.render();
+				app.addClientUserModel.clear();
+			}, this)
+		});
 	}
 
 });

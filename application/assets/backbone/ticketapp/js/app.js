@@ -101,7 +101,7 @@ var AppRouter = Backbone.Router.extend({
 		this.accountView = new AccountView({ model: this.user });
 
 		// PREVIEW WINDOW
-		this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection});
+		this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection.imagesCollection});
 		
 		this.viewInit = true;
 	},
@@ -112,6 +112,7 @@ var AppRouter = Backbone.Router.extend({
 		(function check() {
 			if(_this.viewInit) {
 				$('#app').html(_this[view].render().el);
+				$('.app-wrap').find('#preview-window').append(app.previewWindow.$el);
 				clearTimeout(timer);
 			} else {
 				var timer = setTimeout(check, 50);	

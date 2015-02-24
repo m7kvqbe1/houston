@@ -1268,8 +1268,10 @@ input.inp-lst {
 
 .loader {
 	position: absolute;
-	top: 0;
+/*	top: 18px;
+	left: 13px;*/
 	left: 0;
+	top: 0;
 	width: 26px;
 	height: 26px;
 	background: url(../img/loader.gif) no-repeat;
