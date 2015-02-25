@@ -13,7 +13,7 @@ var RegisterView = Backbone.View.extend({
 								'<div class="vld-cir vld-name">1</div>'+									
 							'</div>'+
 						'</div>'+
-						'<input type="text" name="reg-fn" placeholder="{{#if attributes.firstName}}{{attributes.firstName}}{{else}}First Name{{/if}}" class="vld-aa" data-vld="vld-a" val="{{attributes.firstName}}" />'+
+						'<input type="text" name="reg-fn" placeholder="{{#if attributes.firstName}}{{attributes.firstName}}{{else}}First Name{{/if}}" class="vld-aa" data-vld="vld-a" val="{{attributes.firstName}}" autofocus />'+
 						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="{{#if attributes.lastName}}{{attributes.lastName}}{{else}}Last Name{{/if}}" data-vld="vld-b" val="{{attributes.lastName}}" />'+						
 					'</div>'+
 					'<div class="vld-wrap vld-pair-two">'+
