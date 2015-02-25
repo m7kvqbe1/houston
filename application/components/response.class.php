@@ -20,7 +20,7 @@ class ApiResponse extends Response
 	{
 		$response = self::create();
 		$response->setContent(self::generateResponseBody($code, $status, $customMessage));	
-		self::setResponseHeader($response, $code);
+		self::setResponseStatusCode($response, $code);
 		
 		return $response;
 	}
@@ -40,7 +40,7 @@ class ApiResponse extends Response
 		return json_encode($response);
 	}
 	
-	private static function setResponseHeader($response, $code) 
+	private static function setResponseStatusCode($response, $code) 
 	{
 		switch($code) {
 			case 'DEFAULT_RESPONSE_SUCCESS':
