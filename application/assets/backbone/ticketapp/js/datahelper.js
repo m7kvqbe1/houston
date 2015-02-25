@@ -84,7 +84,6 @@ var handlebarsHelpers = {
 		//TicketView Helpers		
 		Handlebars.registerHelper("populateAgentDropdown", function(){
 			return new Handlebars.SafeString(houston.populateAgentDropdown());
-			// return new Handlebars.SafeString('test');
 		});
 		
 		Handlebars.registerHelper("convertToDateTime", function(attribute) {
@@ -94,6 +93,19 @@ var handlebarsHelpers = {
 		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
 			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
 
+		});
+
+		//FileUploadView Helpers
+		Handlebars.registerHelper("showFileUploadPreviewLink", function(type, target, cid){ 
+			if(!target) return;
+			if(houston.isDisplayableImage(type)){
+				return new Handlebars.SafeString('<a data-cid="'+cid+'" class="file-preview">Preview</a>');
+			}
+		});
+
+		Handlebars.registerHelper("formatFileType", function(type){
+		    if(!type) return;
+			return new Handlebars.SafeString(houston.formatFileType(type));
 		});
 
 	}

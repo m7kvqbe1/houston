@@ -37,8 +37,11 @@ var AppRouter = Backbone.Router.extend({
 		// AGENTS COLLECTION
 		this.agentsCollection =  new Backbone.Collection();
 
-		//FILES COLLECTION
+		//FILESUPLOAD COLLECTION
 		this.filesUploadCollection = new FilesUpload();
+
+		//FILEPREVIEW COLLECTION
+		this.filesPreviewCollection = new FilesPreview();
 		
 		// BUFFER CLIENT MODEL
 		this.addClientModel = new BufferClientModel();
@@ -101,7 +104,8 @@ var AppRouter = Backbone.Router.extend({
 		this.accountView = new AccountView({ model: this.user });
 
 		// PREVIEW WINDOW
-		this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection.imagesCollection});
+		// this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection.imagesCollection});
+		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
 		
 		this.viewInit = true;
 	},

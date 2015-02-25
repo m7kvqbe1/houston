@@ -22,10 +22,6 @@ var FileUploadView = Backbone.View.extend({
 					'{{#if attributes.status}}'+
 					'<div class="loader"></div>'+					
 					'{{/if}}'+
-					//If a displayable image add thumb
-					// '<div class="thumb-wrap">'+
-					// 	'{{showFileThumb attributes.type attributes.target attributes.name}}'+
-					// '</div>'+
 					'<div class="file-text">'+
 		  				'<div class="file-icon">'+
 		  					'<span>'+
@@ -54,13 +50,6 @@ var FileUploadView = Backbone.View.extend({
 
 	initialize : function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
-
-		Handlebars.registerHelper("showFileThumb", function(type, target, name){ 
-			if(!target) return;
-			if(houston.isDisplayableImage(type)){
-				return new Handlebars.SafeString('<img class="file-thumb" src="'+target+'" alt="'+name+'"/>');
-			}
-		});
 
 		Handlebars.registerHelper("showFileUploadPreviewLink", function(type, target, cid){ 
 			if(!target) return;
@@ -194,7 +183,7 @@ var FileUploadView = Backbone.View.extend({
 	}
 
 });
-//Have two collections one as a file upload collection one as a filepreview collection, they use the same view
+
 var PreviewWindow = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<i class="preview-close icon-cancel-circled"></i>'+
@@ -202,7 +191,7 @@ var PreviewWindow = Backbone.View.extend({
 			'{{#if attributes.preview}}'+
 				'{{generateFilePreviousLink @index}}'+
 				'<div>{{attributes.name}}</div>'+	
-				'{{generateFileNextLink @index collection.imagesCollection.length}}'+
+				'{{generateFileNextLink @index collection.length}}'+
 				'{{#if attributes.ref}}'+
 					'<img src="http://edd.houston.com/tickets/file/{{attributes.ref}}" />'+
 				'{{else}}'+
@@ -229,7 +218,6 @@ var PreviewWindow = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log(this.collection);
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({
 			'click .preview-close': 'previewClose',
@@ -248,7 +236,6 @@ var PreviewWindow = Backbone.View.extend({
 	},
 
 	next: function(e){
-		console.log(this.collection);
 		var button = $(e.currentTarget);
 		var index = button.data("index");
 		var next = index + 1;
@@ -263,181 +250,3 @@ var PreviewWindow = Backbone.View.extend({
 		});
 	}
 });
-
-
-	// template: Handlebars.compile(
-	// 	'<div class="attach-files">' +
-	// 		'<a class="attach-link">Attach files to this ticket</a>' + 
-	// 		'<div class="supported">Supported -</div>' + 
-	// 		'<ul class="filetypes">' +
-	// 			'<li>Jpg</li>' +
-	// 			'<li>Png</li>' +
-	// 			'<li>Gif</li>' +
-	// 			'<li>Pdf</li>' +
-	// 		'</ul>' +
-	// 		'<div class="file-input-wrapper">'+
-	// 			'<div id="drop_zone">Drop files here</div>'+
-	// 			'<input type="file" id="filesInput" name="files[]" multiple />'+
-	// 		'</div>'+
-	// 		'<ul id="files" class="files">'+
-	// 		'{{#each models}}'+
-	// 			'<li class="file">'+
-	// 				//If still uploading show loading and cancel button
-	// 				'{{#if attributes.status}}'+
-	// 				'<div class="loader"></div>'+					
-	// 				'{{/if}}'+
-	// 				//If a displayable image add thumb
-	// 				'<div class="thumb-wrap">'+
-	// 					'{{showFileThumb attributes.type attributes.target attributes.name}}'+
-	// 				'</div>'+
-	// 				'<div class="file-text">'+
-	// 	  				'<div class="file-icon jpg">'+
-	// 	  					'<span>'+
-	// 	  					'{{#if attributes.type}}'+
-	// 	  					'{{formatFileType attributes.type}}'+
-	// 	  					'{{else}}'+
-	// 	  					'FILE'+
-	// 	  					'{{/if}}'+
-	// 	  					'</span>'+
-	// 	  				'</div>'+
-	// 	  				'<div class="file-info">'+
-	// 						'<div class="filename">{{attributes.name}}</div>'+
-	// 						//If a displayable image add preview button
-	// 						'{{showFilePreviewLink attributes.type attributes.target cid}}'+				
-	// 						'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-	// 					'</div>'+
-	// 				'</div>'+					
-	// 			'</li>'+
-	// 		'{{/each}}'+
-	// 		'</ul>' +	
-	// 	'</div>'
-
-	// ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	        // reader.onloadend = (function(theFile, fileMdl){
-	        // 	console.log(fileMdl.reader.readyState);
-	        // 	console.log(fileMdl.reader);
-	        // 	console.log(theFile);
-	        // })(f);
-
-	        //On load end save file to server
-	    	//   reader.onloadend = (function(theFile) {
-		   //      return function(e) {
-		   //      	console.log(reader.result);
-					// var attributes = {
-					// 	status: 'loading',
-					// 	target: e.target.result,
-					// 	name: theFile.name,
-					// 	type: theFile.type,
-					// 	lastModifiedDate: theFile.lastModifiedDate
-					// }
-
-					// fileMdl.save(attributes,{
-					// 	success: function(model){
-					// 		console.log('save');
-					// 		model.set({status: false});
-					// 		model.reader = false;
-					// 	}
-					// });
-
-		   //      };
-	    //     })(f);
-
-	// addFiles: function(files){
-	// 	for (var i = 0, f; f = files[i]; i++) {
-
-	// 		var reader = new FileReader();
-	//         var fileMdl = new FileUploadModel();
-	//         //Create file reader as property of model
-	//         fileMdl.reader = reader;
-
-	//         //On load start add the model to the collection
-	//         reader.onloadstart = _.bind((function() {
-	//         	console.log('start');
-	// 	        return function() {	 	    
-	// 				this.collection.add(fileMdl);
-	// 	        };
-	//         })(f), this);
-
-	//         //On load end save file to server
-	//         reader.onloadend = _.bind((function(theFile) {
-	//         	console.log('end');
-	// 	        return function(e) {	   	
-	// 				var attributes = {
-	// 					status: 'loading',
-	// 					target: e.target.result,
-	// 					name: theFile.name,
-	// 					type: theFile.type,
-	// 					lastModifiedDate: theFile.lastModifiedDate
-	// 				}
-
-	// 				fileMdl.save(attributes,{
-	// 					success: function(model){
-	// 						console.log('save');
-	// 						model.set({status: false});
-	// 						model.reader = false;
-	// 					}
-	// 				});
-
-	// 	        };
-	//         })(f), this);
-
-	//         reader.onabort = function(e) {
-	// 	     	alert('File read cancelled');
-	// 	    };
-
-	//         reader.onerror = this.fileErrorHandler;
-
-	//         reader.readAsDataURL(f);
-	//   	}
-	// },
-
-// addFiles: function(files){
-// 	for (var i = 0, f; f = files[i]; i++) {
-// 		var fileMdl = new FileUploadModel(); 
-//         var reader = new FileReader();
-// 		reader.onerror = this.fileErrorHandler;
-// 		this.collection.add(fileMdl);
-
-// 		reader.onloadstart = _.bind((function(theFile) {
-// 	        return function(e) {	        	
-// 		        this.collection.add(fileMdl);
-// 		        console.log('filestart');
-// 	        };
-//         })(f), this);
-
-
-//         reader.onloadend = _.bind((function(theFile) {
-// 	        return function(e) {	        	
-// 		        theFile["target"] = e.target.result;
-// 				delete theFile["webkitRelativePath"];
-// 				// var fileMdl = new FileUploadModel();
-// 				// this.collection.add(fileMdl);
-// 				console.log('fileend');
-// 				fileMdl.save(theFile,{
-// 					success: function(){
-// 						console.log('success');
-// 					}
-// 				});
-
-// 	        };
-//         })(f), this);
-
-//         reader.readAsDataURL(f);
-//   	}
-// },
-

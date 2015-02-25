@@ -1235,12 +1235,35 @@ input.inp-lst {
 	float: left;
 	position: relative;
 	margin-right: 15px;
-	width: 52px;
-	height: 70px;
 	width: 33px;
 	height: 44px;
-	background-size: 33px 44px; 
-	background-image: url(../img/file-icon.png);
+	border-radius: 2px;
+	background: #ecd1a3;
+}
+
+.file-icon:before {
+	content: '';
+	float: right;
+	width: 14px;
+	height: 14px;
+	border-radius: 0 0 0 2px;
+	background: #d5a75d;
+}
+
+.file-icon:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 14px 14px 0;
+	border-color: transparent #ffffff transparent transparent;
+}
+
+.msg-body .file-icon:after {
+	border-color: transparent #f3f0ea transparent transparent;
 }
 
 .file-icon span {
@@ -1867,7 +1890,18 @@ input.inp-lst {
 		width: 52px;
 		height: 70px;
 		margin-right: 24px;
-		background-size: 52px 70px;
+		border-radius: 3px;
+	}
+
+	.file-icon:before {
+		width: 22px;
+		height: 22px;
+		border-radius: 0 0 0 3px;
+
+	}
+
+	.file-icon:after {
+		border-width: 0 22px 22px 0;	
 	}
 
 	.file-icon span {

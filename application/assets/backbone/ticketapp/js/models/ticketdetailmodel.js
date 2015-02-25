@@ -14,9 +14,9 @@ var TicketDetailModel = Backbone.Model.extend({
 	fetchMessages: function(ticket){
 		app.ticketDetailView.messagesView.collection.url = '/tickets/reply/' + ticket;
 		app.ticketDetailView.messagesView.collection.fetch({
-			success: _.bind(function(){
+			success: function(){
 				app.onLoadRender('ticketDetailView');
-			}, this)
+			}
 		});
 	},
 

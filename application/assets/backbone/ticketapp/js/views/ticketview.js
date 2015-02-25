@@ -74,15 +74,6 @@ var TicketDetailView = Backbone.View.extend({
 			'</div>'+	
 		'</ul>'	
 	),
-
-	filePreview: function(e){
-		var button = $(e.currentTarget);
-		var index = button.data("index");	
-		app.filesUploadCollection.reset(this.model.attributes.files);
-		app.filesUploadCollection.models[index].set({preview:true});
-		this.$el.closest('.app-wrap').find('#preview-window').show();
-
-	},
 	
 	initialize: function() {
 		//TICKET HEADER VIEW
@@ -94,7 +85,6 @@ var TicketDetailView = Backbone.View.extend({
 		this.messagesView.parent = this;	
 
 		Handlebars.registerHelper("showFilePreviewLink", function(type, index){ 
-			console.log(type);
 			if(!type) return;
 			if(houston.isDisplayableImage(type)){
 				return new Handlebars.SafeString('<a data-index="'+index+'" class="file-preview">Preview</a>');
@@ -204,6 +194,23 @@ var TicketDetailView = Backbone.View.extend({
 		} 
 
 		this.saveModel();
+
+	},
+
+	filePreview: function(e){
+		var button = $(e.currentTarget);
+		var index = button.data("index");
+		//If a reply get the reference of the reply
+		var ul = button.closest('ul');
+		if (ul.data("reply")){
+			var messageRef = ul.data("reply");
+			app.filesPreviewCollection.createImagesCollection(this.model.messagesCollection.get(messageRef).attributes.files);
+		} else {
+			app.filesPreviewCollection.createImagesCollection(this.model.attributes.files);
+		}
+
+		app.filesPreviewCollection.models[index].set({preview:true});
+		this.$el.closest('.app-wrap').find('#preview-window').show();
 
 	}
 	

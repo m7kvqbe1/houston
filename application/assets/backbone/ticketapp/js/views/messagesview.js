@@ -16,14 +16,22 @@ var MessagesView = Backbone.View.extend({
 					'<div class="msg-text">'+
 						'{{attributes.message}}'+							
 					'</div>'+						
-					'<ul class="files">'+
+					'<ul class="files" data-reply="{{id}}">'+
 					'{{#each attributes.files}}'+
 						'<li class="file">'+
 							'<div class="file-text">'+
-				  				'<div class="file-icon jpg"></div>'+
+				  				'<div class="file-icon">'+
+				  					'<span>'+
+				  					'{{#if type}}'+
+				  					'{{formatFileType type}}'+
+				  					'{{else}}'+
+				  					'FILE'+
+				  					'{{/if}}'+
+				  					'</span>'+
+				  				'</div>'+
 				  				'<div class="file-info">'+
 									'<div class="filename">{{name}}</div>'+
-									'<a href="">Preview</a>'+
+									'{{showFilePreviewLink type @index}}'+
 									'<a href="http://edd.houston.com/tickets/file/{{ref}}">Download</a>'+
 								'</div>'+
 							'</div>'+

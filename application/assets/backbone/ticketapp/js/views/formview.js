@@ -21,7 +21,6 @@ var FormView = Backbone.View.extend({
 				'<a class="cancel-btn ib">Cancel</a>' +
 			'</form>' +
 		'</div>'
-
 	),
 
 	initialize: function() {
