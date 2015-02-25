@@ -3,7 +3,7 @@ var AccountView = Backbone.View.extend({
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
 				'<div class="box-app-top">' +
-					'<h2>Account Settings</h2>' +
+					'<h2>Manage Your Account</h2>' +
 				'</div>' +
 			'</div>'+
 		'</div>'+

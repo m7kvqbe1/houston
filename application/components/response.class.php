@@ -2,8 +2,19 @@
 namespace Houston\Component;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 
-class ApiResponse
+// Extend Symfony response component
+
+// Generate new response via factory method (generateResponse)
+
+// Create and couple response body
+
+// Set response HTTP status code
+
+// Return response object
+
+class ApiResponse extends Response
 {		
 	public static function error($code, $customMessage = null) 
 	{

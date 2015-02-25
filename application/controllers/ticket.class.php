@@ -121,7 +121,7 @@ class TicketController
 		$ticketModel = new TicketModel($this->app);
 		$file = $ticketModel->downloadAttachment($fileID);
 		
-		if(!file) return ApiResponse::error('FILE_NOT_FOUND');
+		if(!$file) return ApiResponse::error('FILE_NOT_FOUND');
 		
 		$response = new Response();
 		$response->setContent($file['data']);
