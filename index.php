@@ -1,6 +1,8 @@
 <?php
 // Require application config
 define('DOCUMENT_ROOT', __DIR__);
+define('PHP_START', microtime(true));
+
 require_once __DIR__.'/application/config.php';
 
 // PHP error reporting
