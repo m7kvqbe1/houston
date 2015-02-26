@@ -60,6 +60,18 @@ var TicketView = Backbone.View.extend({
 
 		//Resize event, unbind
 		$(window).on("resize", this.pageResize);
+
+		//Mobile menu
+		$('.nav-icon, .mob-menu a').click(function(){
+			$('.outer-wrap, .mob-menu').fadeToggle(300);
+			$('.nav-icon').toggleClass('cross');
+			// $('body').toggleClass('dark');
+		});
+		
+		// Close notification popup
+		$('#notice .close').click( function() {
+			$(this).parent().hide();
+		});
 		
 	},
 		

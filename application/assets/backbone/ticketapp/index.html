@@ -50,7 +50,12 @@
 </head>
 <body class="ticket-body">
 <div class="mob-menu">
-	<img class="logo" src="application/assets/img/logo@2x.png" />
+	<div class="mob-menu-top">
+		<img class="logo" src="application/assets/img/logo@2x.png" />
+		<div class="nav-icon">
+			<div></div>
+		</div>	
+	</div>
 	<ul>
 		<li><a href="#"><i class="icon-comment"></i>All Tickets</a></li>
 		<li><a href="#/people"><i class="icon-user"></i>People</a></li>
@@ -65,10 +70,9 @@
     <div class="app-wrap">
 		<header>
 			<img class="logo" src="application/assets/img/logo@2x.png" />
-			
-			<div class="grip">
-				<i class="icon-menu"></i>
-			</div>			
+			<div class="nav-icon">
+				<div></div>
+			</div>				
 			<nav>
 				<a href="#">Tickets</a>
 				<a href="#/people">People</a>
@@ -76,8 +80,7 @@
 				<a href="#/account">Account</a>
 				<a href="/auth/logout">Log Out</a>
 			</nav>
-		</header>
-		
+		</header>		
 		<div id="app" class="box-app-wrap"></div>
 
 		<footer>
@@ -88,24 +91,6 @@
 		<div id="preview-window"></div>
 	</div>
 </div>
-
-<div href="" id="notice"><span></span><i class="close">x</i></div>
-
-<script>
-	$(document).ready(function(){
-		$('.grip').click(function(){
-			if($('.outer-wrap').css('right') == '0px'){
-				$('.outer-wrap').animate({right: '268px'}, 400);
-			} else {
-				$('.outer-wrap').animate({right: '0px'}, 400);
-			}
-		});
-
-		// Close notification popup
-		$('#notice .close').click( function() {
-			$(this).parent().hide();
-		});
-	});
-</script>
+<div href="" id="notice"><span></span><i class="close"><i class="icon-cancel-circled"></i></i></div>
 </body>
 </html>
