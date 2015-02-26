@@ -114,7 +114,9 @@ class AuthController
 		}
 		
 		// Send verification email
-		mail($json->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to verify your user account: ".DOMAIN."/verify/".$json->verify);
+		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
+		$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$json->verify, $template);
+		mail($json->emailAddress, "Welcome to Houston!", $emailBody);
 		
 		return $customer->__toJSON();	
 	}
@@ -150,7 +152,9 @@ class AuthController
 		$token = $userModel->resetPasswordRequest($json->emailAddress);
 		
 		// Send email link
-		mail($json->emailAddress, "Houston - Reset Password", "A request to reset the password of the account associated with this email address was recently submitted. If this was not submitted by you, please ignore this email.\r\n\r\nIf you would like to proceed with the password reset please click the following link: ".Config::DOMAIN."/#/reset/".$token);
+		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/reset_password.phtml');
+		$emailBody = str_replace('{button_url}', DOMAIN."/#/reset/".$token, $template);
+		mail($json->emailAddress, "Houston - Reset Password", $emailBody);
 		
 		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
