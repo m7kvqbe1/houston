@@ -32,7 +32,7 @@ class Notify
 	public static function socketBroadcast($route, $payload, $socketNamespace = null) 
 	{
 		if(isset($socketNamespace)) $payload->socketNamespace = (string) $socketNamespace;
-		self::sendRequest(\Config::NODE_HOST.$route, self::removeAttachments($payload));
+		self::sendRequest(NODE_HOST.$route, self::removeAttachments($payload));
 	}
 	
 	public static function removeAttachments($payload) 

@@ -98,7 +98,7 @@ abstract class Mailbox
 class MailboxExtended extends Mailbox
 {
 	private $template;
-	private $templateDir = \Config::TEMPLATE_DIR;
+	private $templateDir = TEMPLATE_DIR;
 	
 	public function __construct($host, $username, $password, $serverEncoding = 'utf-8', $templateName = null, $templateDir = null) 
 	{

@@ -19,7 +19,7 @@ class MailController {
 	
 	public function mailboxTestAction() 
 	{
-		$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
+		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
 		$mailbox->getMail();
 	
 		return print_r($mailbox->emails, true);
@@ -27,7 +27,7 @@ class MailController {
 	
 	public function mailboxTestGenerateAction() 
 	{
-		$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
+		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
 		$mailbox->getMail();
 	
 		return $mailbox->generateInfoHtml('t-2837982734982734', 'm-2837982734982734');	
@@ -35,7 +35,7 @@ class MailController {
 	
 	public function mailboxScanAction()
 	{
-		$mailbox = new Mailbox(\Config::MAILBOX_HOST, \Config::MAILBOX_USER, \Config::MAILBOX_PASSWORD);
+		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
 		$mailbox->getMail();
 		
 		// Tally import result

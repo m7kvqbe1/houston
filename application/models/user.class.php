@@ -145,7 +145,7 @@ class UserModel
 
 	public static function hashPassword($password) 
 	{
-		$password = crypt($password, \Config::DEFAULT_SALT);
+		$password = crypt($password, DEFAULT_SALT);
 		return $password;
 	}
 	
@@ -224,7 +224,7 @@ class UserModel
 	
 	public static function generateVerificationToken($username) 
 	{
-		return md5(\Config::DEFAULT_SALT.$username);
+		return md5(DEFAULT_SALT.$username);
 	}
 	
 	public function isVerified($username = null, $token = null) 

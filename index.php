@@ -1,12 +1,15 @@
 <?php
-// Require application config
-define('DOCUMENT_ROOT', __DIR__);
 define('PHP_START', microtime(true));
+define('DOCUMENT_ROOT', __DIR__);
 
-require_once __DIR__.'/application/config.php';
+// Require application config
+$ini_array = parse_ini_file(__DIR__.'/application/config.ini');
+foreach($ini_array as $key => $val) {
+	define($key, $val);
+}
 
 // PHP error reporting
-if(Config::ERROR_REPORTING === true) {
+if(ERROR_REPORTING === true) {
 	error_reporting(E_ALL);
 	ini_set("display_errors", 1);	
 }
@@ -43,7 +46,7 @@ $app->register(new ServiceControllerServiceProvider());
 $app->register(new MongoServiceProvider, array(
     'mongo.connections' => array(
         'default' => array(
-            'server' => 'mongodb://'.Config::MONGO_USER.':'.Config::MONGO_PASSWORD.'@'.Config::MONGO_HOST,
+            'server' => 'mongodb://'.MONGO_USER.':'.MONGO_PASSWORD.'@'.MONGO_HOST,
             'options' => array('connect' => true)
         )
     ),
@@ -51,14 +54,14 @@ $app->register(new MongoServiceProvider, array(
 
 // Register Monolog service provider for local logging
 $app->register(new MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.Config::LOG_PATH,
+    'monolog.logfile' => __DIR__.LOG_PATH,
 	'monolog.name' => 'Houston',
-	'monolog.level' => Config::LOG_LEVEL
+	'monolog.level' => LOG_LEVEL
 ));
 
 // Setup Airbrake error tracking service provider
 $app->register(new AirbrakeServiceProvider(), array(
-    'airbrake.api_key' => Config::AIRBRAKE_API_KEY,
+    'airbrake.api_key' => AIRBRAKE_API_KEY,
 	'airbrake.options' => array('secure' => false)
 ));
 
