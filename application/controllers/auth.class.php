@@ -116,7 +116,10 @@ class AuthController
 		// Send verification email
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
 		$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$json->verify, $template);
-		mail($json->emailAddress, "Welcome to Houston!", $emailBody);
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		$headers .= 'From: <noreply@houstonsupportdesk.com>' . "\r\n";
+		mail($json->emailAddress, "Welcome to Houston!", $emailBody, $headers);
 		
 		return $customer->__toJSON();	
 	}
@@ -154,7 +157,10 @@ class AuthController
 		// Send email link
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/reset_password.phtml');
 		$emailBody = str_replace('{button_url}', DOMAIN."/#/reset/".$token, $template);
-		mail($json->emailAddress, "Houston - Reset Password", $emailBody);
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		$headers .= 'From: <noreply@houstonsupportdesk.com>' . "\r\n";
+		mail($json->emailAddress, "Houston - Reset Password", $emailBody, $headers);
 		
 		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
