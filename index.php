@@ -62,7 +62,10 @@ $app->register(new MonologServiceProvider(), array(
 // Setup Airbrake error tracking service provider
 $app->register(new AirbrakeServiceProvider(), array(
     'airbrake.api_key' => AIRBRAKE_API_KEY,
-	'airbrake.options' => array('secure' => false)
+	'airbrake.options' => array(
+		'secure' => false, 
+		'environmentName' => APP_ENV
+	)
 ));
 
 // Error handler
