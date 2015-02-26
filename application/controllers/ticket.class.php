@@ -88,11 +88,7 @@ class TicketController
 		
 		$replyModel = new ReplyModel($this->app);
 		
-		if($replies = $replyModel->getReplies($ticketID)) {
-			return json_encode($replies);
-		} else {
-			return ApiResponse::error('REPLIES_NOT_FOUND');
-		}
+		return json_encode($replyModel->getReplies($ticketID));
 	}
 	
 	public function getAttachmentMetaAction($fileID) {

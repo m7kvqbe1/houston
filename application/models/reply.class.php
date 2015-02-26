@@ -47,11 +47,7 @@ class ReplyModel
 		    array_push($docs, $doc);
 		}
 		
-		if(empty($docs)) {
-			return false;
-		} else {
-			return $docs;	
-		}
+		return $docs;
 	}
 	
 	public function generateReply($ticketID, $message, $date = null, $email)

@@ -66,7 +66,7 @@ $app->error(function(\Exception $e, $code) use ($app) {
 	return new Response('Sorry, something went wrong.');	// Update this to custom error page
 });
 
-// Define REST API security middleware
+// Define security middleware
 $secure = function(Request $request, Application $app) {
 	// Accept requests from either a valid API key or an authenticated session
 	try {

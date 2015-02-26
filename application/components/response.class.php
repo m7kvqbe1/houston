@@ -26,11 +26,11 @@ class ApiResponse extends Response
 	}
 	
 	private static function generateResponseBody($code, $status, $customMessage = null) {
-		$message = (isset($customMessage)) ? $customMessage : self::fetchErrorMessage($code);		
+		$message = (isset($customMessage)) ? $customMessage : self::fetchErrorMessage($code);
 		return self::encodeResponse(array('code' => $code, 'status' => $status, 'message' => $message));		
 	}
 	
-	private static function fetchErrorMessage($code) 
+	private static function fetchErrorMessage($code)
 	{
 		return constant("\Houston\Component\ErrorMessageDefinition::$code");
 	}
