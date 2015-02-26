@@ -2,10 +2,8 @@ var FilesUpload = Backbone.Collection.extend({
 	model: FileUploadModel,	
 	url: '/tickets/file/add',
 
-	initialize: function(models){
-		// this.imagesCollection = new Backbone.Collection(models);
+	initialize: function(){
 		this.on("reset add change delete", function(){		
-			// this.imagesCollection.reset(this.createImagesCollection());
 			app.filesPreviewCollection.reset(this.createImagesCollection());
 		});
 	},

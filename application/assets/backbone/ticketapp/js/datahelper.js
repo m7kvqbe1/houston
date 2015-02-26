@@ -108,5 +108,18 @@ var handlebarsHelpers = {
 			return new Handlebars.SafeString(houston.formatFileType(type));
 		});
 
+		//FilePreviewView Helpers
+		Handlebars.registerHelper("generateFilePreviousLink", function(index){
+			if(index > 0){
+				return new Handlebars.SafeString('<a class="prev" data-index="'+index+'"><i class="icon-angle-circled-left"></i></a>');
+			} 
+		});
+
+		Handlebars.registerHelper("generateFileNextLink", function(index, length){
+			if((length - 1) > index){
+				return new Handlebars.SafeString('<a class="next" data-index="'+index+'"><i class="icon-angle-circled-right"></i></a>');
+			}
+		});
+
 	}
 }

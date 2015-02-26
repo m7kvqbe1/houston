@@ -63,6 +63,7 @@ var ClientsView = Backbone.View.extend({
 
 var ClientView = Backbone.View.extend({
 	tagName: "li",
+	className: "client",
 	template: Handlebars.compile(
 		'<div class="company-info">'+
 			'<h3>{{attributes.name}}</h3>'+
