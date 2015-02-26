@@ -50,18 +50,6 @@ var FileUploadView = Backbone.View.extend({
 
 	initialize : function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
-
-		Handlebars.registerHelper("showFileUploadPreviewLink", function(type, target, cid){ 
-			if(!target) return;
-			if(houston.isDisplayableImage(type)){
-				return new Handlebars.SafeString('<a data-cid="'+cid+'" class="file-preview">Preview</a>');
-			}
-		});
-
-		Handlebars.registerHelper("formatFileType", function(type){
-		    if(!type) return;
-			return new Handlebars.SafeString(houston.formatFileType(type));
-		});
 	},
 
 	render : function(){
@@ -185,36 +173,41 @@ var FileUploadView = Backbone.View.extend({
 });
 
 var PreviewWindow = Backbone.View.extend({
+	className: 'preview-window-inner',
 	template: Handlebars.compile(
-		'<i class="preview-close icon-cancel-circled"></i>'+
 		'{{#each models}}'+
 			'{{#if attributes.preview}}'+
-				'{{generateFilePreviousLink @index}}'+
-				'<div>{{attributes.name}}</div>'+	
-				'{{generateFileNextLink @index collection.length}}'+
-				'{{#if attributes.ref}}'+
-					'<img src="http://edd.houston.com/tickets/file/{{attributes.ref}}" />'+
-				'{{else}}'+
-					'<img src="{{attributes.target}}" />'+
-				'{{/if}}'+
+				'<div class="preview-wrap">'+
+					'<div class="preview-img-wrap">'+
+						'<i class="preview-close icon-cancel-circled"></i>'+
+						'<div class="preview-img-box">'+
+							'<div class="preview-img-info">'+
+								'<div class="preview-prev">'+
+									'{{generateFilePreviousLink @index}}'+				
+								'</div>'+
+								'<h3 class="preview-filename">{{attributes.name}}</h3>'+
+								'<div class="preview-next">'+	
+									'{{generateFileNextLink @index collection.length}}'+
+								'</div>'+
+							'</div>'+
+							'<img class="preview-img" src="{{#if attributes.ref}}http://edd.houston.com/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+
+							'<div class="preview-img-bottom">'+
+								'<div class="preview-type">'+
+									'{{formatFileType attributes.type}}'+
+								'</div>'+
+								'<div class="preview-download">'+
+									'<a href="{{#if attributes.ref}}http://edd.houston.com/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}"><i class="icon-down-circled2"></i></a>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
 			'{{/if}}'+
 		'{{/each}}'
 	),
 
 	initialize: function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
-
-		Handlebars.registerHelper("generateFilePreviousLink", function(index){
-			if(index > 0){
-				return new Handlebars.SafeString('<a class="prev" data-index="'+index+'">Prev'+index+'</a>');
-			} 
-		});
-
-		Handlebars.registerHelper("generateFileNextLink", function(index, length){
-			if((length - 1) > index){
-				return new Handlebars.SafeString('<a class="next" data-index="'+index+'">Next'+index+length+'</a>');
-			}
-		});
 	},
 
 	render: function(){
@@ -232,7 +225,6 @@ var PreviewWindow = Backbone.View.extend({
 		var prev = index - 1;
 		this.collection.models[index].set({preview:false});
 		this.collection.models[prev].set({preview:true})
-
 	},
 
 	next: function(e){

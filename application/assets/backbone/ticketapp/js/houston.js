@@ -224,10 +224,7 @@ var houston = {
 
 	calculateBoxHeight: function(){
 		var windowHeight = $(window).height();
-		// var footerHeight = 60;
-		// var headerHeight = $('header').height() + $('.box-app-fixed').height();
-		// var idealHeight = windowHeight - footerHeight - headerHeight - 37 - 125;
-		var idealHeight = windowHeight - 322;
+		var idealHeight = windowHeight - 270;
 		return idealHeight;
 	},
 
