@@ -21,7 +21,7 @@ class System
 	public static function generateDatabaseIdentifier($token, $prefix = null) 
 	{
 		if(!isset($prefix)) $prefix = 'db_';
-		return $prefix.md5(\Config::DEFAULT_SALT.$token);
+		return $prefix.md5(DEFAULT_SALT.$token);
 	}
 	
 	public static function setupSession(Application $app, $authenticated = false, $database, $uid, $cid) 

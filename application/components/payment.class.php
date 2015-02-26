@@ -24,7 +24,7 @@ class Payment
 	{
 		$this->app = $app;
 		
-		\Stripe::setApiKey(\Config::STRIPE_API_KEY);
+		\Stripe::setApiKey(STRIPE_API_KEY);
 	}
 	
 	public function getPlan() 

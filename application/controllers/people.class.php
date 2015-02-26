@@ -85,7 +85,7 @@ class PeopleController {
 		
 		if($userModel->addAgent($agent)) {
 			// Send verification email
-			mail($agent->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".\Config::DOMAIN."/verify/".$agent->verify);
+			mail($agent->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".DOMAIN."/verify/".$agent->verify);
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_ADD_FAIL');

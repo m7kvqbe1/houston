@@ -19,8 +19,10 @@ class TicketModel
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
+		
+		$ticketID = new \MongoID($ticketID);
 				
-		$this->ticket = $db->tickets->findOne(array('_id' => new \MongoID($ticketID)));
+		$this->ticket = $db->tickets->findOne(array('_id' => $ticketID));
 		
 		if(!empty($this->ticket)) {			
 			return $this->ticket;
