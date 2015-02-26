@@ -38,6 +38,8 @@ class MailController {
 		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
 		$mailbox->getMail();
 		
+		// Lookup company database associated with this mailbox
+		
 		// Tally import result
 		$status = new \stdClass();
 		$status->newTickets = 0; 
