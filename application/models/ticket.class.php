@@ -96,7 +96,7 @@ class TicketModel
 			$tickets = $db->tickets;
 			$tickets->save($ticket);
 			return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -120,7 +120,7 @@ class TicketModel
 			$tickets = $db->tickets;
 			$tickets->update(array('_id' => $id), $ticket);
 			return $ticket;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -138,7 +138,7 @@ class TicketModel
 			$collection = $db->tickets;
 			$collection->remove(array('_id' => $ticketID));
 			return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -157,7 +157,7 @@ class TicketModel
 		try {	
 			$gridfs = $db->getGridFS();
 			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate));
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -193,7 +193,7 @@ class TicketModel
 		try {
 			$gridfs = $db->getGridFS();
 			return $gridfs->remove(array('_id' => new \MongoID($fileID)));
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}

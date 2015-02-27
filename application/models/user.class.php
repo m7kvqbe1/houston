@@ -131,7 +131,7 @@ class UserModel
 			$collection = $db->users;
 			$collection->findAndModify(array('_id' => $userID), array('$unset' => array($property => 1)));
 			return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		} 
@@ -177,7 +177,7 @@ class UserModel
 			$collection = $db->users;						
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('remember' => $remember)));
 			return $remember;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -196,7 +196,7 @@ class UserModel
 			$doc = $collection->findAndModify(array('reset' => $token), array('$set' => array('password' => $newPassword, 'reset' => '')));
 			$this->loadUser($doc['emailAddress']);	// Refactor this call out into relevant places in controllers
 			return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -216,7 +216,7 @@ class UserModel
 			$collection = $db->users;						
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('reset' => $token)));
 			return $token;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -258,7 +258,7 @@ class UserModel
 			$collection = $db->users;						
 			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('verify' => true)));
 			return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -277,7 +277,7 @@ class UserModel
 			$this->user = $user;
 		
 			return $this->user;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}	
@@ -345,7 +345,7 @@ class UserModel
 			);
 			
 			 return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}

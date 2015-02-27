@@ -64,7 +64,7 @@ class ClientModel
 				array('$push' => array('clients' => $client))
 			);
 			return true;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -89,7 +89,7 @@ class ClientModel
 				array('_id' => $userModel->user['companyID']), 
 				array('$pull' => array('clients' => array('_id' => $id)))
 			);
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
@@ -100,7 +100,7 @@ class ClientModel
 			$collection->remove(
 				array('clientID' => $id)
 			);
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}

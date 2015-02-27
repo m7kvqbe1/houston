@@ -85,7 +85,7 @@ class ReplyModel
 			$collection = $db->replies;
 			$collection->save($reply);
 			return $reply;
-		} catch(MongoException $e) {
+		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
 		}
