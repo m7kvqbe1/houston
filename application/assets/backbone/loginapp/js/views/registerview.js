@@ -135,7 +135,6 @@ var RegisterView = Backbone.View.extend({
 
 	render: function (){	
 		this.model.set({password: ''});
-		console.log(this.model);
 		this.$el.html(this.template(this.model));
 		this.delegateEvents({
 			'click .detailsConfirm': 'detailsConfirm',
@@ -221,7 +220,7 @@ var RegisterView = Backbone.View.extend({
 
 		// Disable the submit button to prevent repeated clicks
 		//form.find('.paymentConfirm').prop('disabled', true);
-		console.log(this);
+
 		// Get a token from Stripe API
 		Stripe.card.createToken(form, this.responseHandler);
 
@@ -238,10 +237,10 @@ var RegisterView = Backbone.View.extend({
 			});
 			app.registerModel.save(app.registerModel.attributes,
 				{
-					success: _.bind(function(model, response, options){
+					success: function(model, response, options){
 						console.log(response);
-						this.$el.html(app.registerView.templateSuccess());
-					}, this),
+						app.registerView.$el.html(app.registerView.templateSuccess());
+					},
 					error: function(model, response, options){
 						console.log(response);
 					}

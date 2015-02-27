@@ -24,6 +24,16 @@ var Tickets = Backbone.Collection.extend({
 		});
 		return filtered;
 	},
+
+	updatedTickets: function(){
+		var updated = [];
+		this.filter(function(model){
+			if(!houston.updateCheck(model.get('updated'))){
+				updated.push(model);
+			}
+		});
+		return updated;
+	},
 	
 	byAgent: function(){
 		//Needs to change to use id
@@ -45,6 +55,23 @@ var Tickets = Backbone.Collection.extend({
 			return data.get(key) === value;
 		});
 		return filtered;
+	},
+
+	countUpdated: function(){
+		var updated = 0;
+		this.filter(function(model){
+			if(!houston.updateCheck(model.get('updated')))
+				updated++;
+		});
+		if(updated > 99){
+			return '<div class="update-alert">99</div>';
+		} else if (updated > 9){
+			return '<div class="update-alert"><span>'+updated+'</span></div>'
+		} else if (updated !== 0){
+			return '<div class="update-alert">'+updated+'</div>';
+		} else {
+			return '';
+		}
 	},
 	
 	byDateOrder: 2,

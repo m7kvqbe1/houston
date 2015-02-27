@@ -213,7 +213,6 @@ var PreviewWindow = Backbone.View.extend({
 	},
 
 	imgMaxHeight: function(){
-		console.log(houston.previewImageResize());
 		this.$('.preview-img').css('max-height', houston.previewImageResize());
 	},
 

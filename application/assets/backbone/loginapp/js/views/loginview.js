@@ -63,7 +63,6 @@ var LoginView = Backbone.View.extend({
 			'click .forgot': 'forgot',
 			'click .btn-can': 'render',
 			'click .login': 'login',
-			// 'submit #form-pass': 'login',
 			'click .reset': 'reset'
 		});
 		return this;
@@ -72,7 +71,6 @@ var LoginView = Backbone.View.extend({
 	forgot: function() {
 		this.$el.html(this.templatePass());
 	},
-	
 	
 	login: function(e) {
 		if(login.loginValidate(e.currentTarget)){
@@ -85,21 +83,12 @@ var LoginView = Backbone.View.extend({
 			this.model.save(this.model.attributes,
 				{
 				//http://stackoverflow.com/questions/11167698/backbone-js-binding-this-to-success-error-callbacks
-					success: _.bind(function(model,response,options){
-						console.log(response);
-						if(response === 1){
-							location.reload();
-						} else {
-							this.$el.find('.box-log h2').text('Oops!');
-							this.$el.find('.box-log h3.log-tag').text('Please try again');
-						}
-					}, this),
-
+					success: function(model,response,options){
+						location.reload();
+					},
 					error: _.bind(function(model,response,options){
-						// console.log('error');
 						this.$el.find('.box-log h2').text('Oops!');
-						this.$el.find('.box-log h3.log-tag').text('Please try again');
-						
+						this.$el.find('.box-log h3.log-tag').text('Please try again');					
 					}, this)
 				}
 			);

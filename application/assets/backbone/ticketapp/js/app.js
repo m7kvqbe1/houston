@@ -91,7 +91,6 @@ var AppRouter = Backbone.Router.extend({
 		//----------------------------------------
 		
 		// PEOPLE VIEW
-		// var peopleCollection = new Backbone.Collection(app.users.agentUsers());
 		this.peopleView = new PeopleView({ collection: this.agentsCollection }); 
 
 		// CLIENTS VIEW
@@ -104,8 +103,10 @@ var AppRouter = Backbone.Router.extend({
 		this.accountView = new AccountView({ model: this.user });
 
 		// PREVIEW WINDOW
-		// this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection.imagesCollection});
 		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
+
+		// UPDATE ALERT VIEW 
+		this.updateAlertView = new UpdateAlertView({collection: this.tickets});
 
 		handlebarsHelpers.bindHelpers();
 
@@ -134,6 +135,8 @@ var AppRouter = Backbone.Router.extend({
 			if(_this.viewInit) {
 				$('#app').html(_this[view].render().el);
 				$('.app-wrap').find('#preview-window').append(app.previewWindow.$el);
+				$('#update-alert').html(app.updateAlertView.$el);
+				app.updateAlertView.render();
 				clearTimeout(timer);
 			} else {
 				var timer = setTimeout(check, 50);	

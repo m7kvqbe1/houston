@@ -15,9 +15,11 @@ var TicketView = Backbone.View.extend({
 								'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>' +
 							'</div>' +
 							'<div class="filter">' +
-								'<a class="allTickets">All Tickets</a>' +
-								'<a class="myTickets mid-link">My Tickets</a>' +
-								'<a class="completedTickets">Completed Tickets</a>' +
+								
+								'<a class="allTickets">All<span> Tickets</span></a>' +
+								'<a class="updatedTickets">Updated<span> Tickets</span></a>' +
+								'<a class="myTickets"><span class="mine">Mine</span><span>My Tickets</span></a>' +
+								'<a class="completedTickets">Completed<span> Tickets</span></a>' +
 							'</div>' +
 						'</div>'+
 					'</div>' +
@@ -64,6 +66,7 @@ var TicketView = Backbone.View.extend({
 			'click .sortByCompany': 'sortByCompany',
 			'click .myTickets': 'byAgent',
 			'click .completedTickets': 'byCompleted',
+			'click .updatedTickets': 'updated',
 			'click .allTickets': 'all'
 		});
 		return this;		
@@ -75,6 +78,10 @@ var TicketView = Backbone.View.extend({
 	
 	all: function(){
 		this.collection.reset(app.tickets.allTickets());
+	},
+
+	updated: function(){
+		this.collection.reset(app.tickets.updatedTickets());
 	},
 	
 	byAgent: function(){
@@ -91,6 +98,25 @@ var TicketView = Backbone.View.extend({
 	
 	sortByCompany: function(){
 		app.tickets.byCompany();
+	}		
+});
+
+var UpdateAlertView = Backbone.View.extend({
+	className: 'update-alert-wrap',
+	template: Handlebars.compile(
+		'{{calculateUpdates}}'
+	),
+
+	initialize: function(){
+		this.listenTo(this.collection, "reset add remove change sync", this.render);
+
+		Handlebars.registerHelper("calculateUpdates", function() {
+			return new Handlebars.SafeString(app.tickets.countUpdated());
+		});		
+	},
+
+	render: function(){
+		this.$el.html(this.template(this.collection));
+		return this;
 	}
-			
 });
