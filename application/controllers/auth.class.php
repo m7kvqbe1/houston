@@ -85,7 +85,8 @@ class AuthController
 		$companyModel = new CompanyModel($this->app);
 		
 		// Does verified user or company already exist?
-		if($userModel->isVerified($json->emailAddress) || $companyModel->companyExists($json->company)) return ApiResponse::error('USER_UNVERIFIED');
+		if($userModel->isVerified($json->emailAddress)) return ApiResponse::error('USER_EXISTS');
+		if($companyModel->companyExists($json->company)) return ApiResponse::error('COMPANY_EXISTS');
 		
 		// Create company
 		$company = $companyModel->generateCompany($json);

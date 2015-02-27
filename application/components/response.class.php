@@ -47,7 +47,9 @@ class ApiResponse extends Response
 				// 200 - Success
 				$response->setStatusCode(Response::HTTP_OK);
 				break;
-				
+			
+			case 'USER_EXISTS':
+			case 'COMPANY_EXISTS':
 			case 'USER_NOT_FOUND':
 			case 'USER_FETCH_FAIL':
 			case 'USER_REMOVE_FAIL':
@@ -99,6 +101,7 @@ class ErrorMessageDefinition
 	
 	const STRIPE_INVALID_SUBSCRIPTION = 'No valid subscription found.';	
 	
+	const USERS_EXISTS = 'This user account already exists';
 	const USER_NOT_FOUND = 'The specified user does not exist.';
 	const USER_FETCH_FAIL = 'No users found';
 	const USER_REMOVE_FAIL = 'There was a problem removing this user.';
@@ -106,6 +109,8 @@ class ErrorMessageDefinition
 	const USER_PROPERTY_SET_FAIL = 'There was a problem setting the specified user property.';
 	const USER_ADD_FAIL = 'There was a problem creating this user.';
 	const USER_COMPANY_NOT_FOUND = 'The authenticated users company could not be found.';
+	
+	const COMPANY_EXISTS = 'This company already exists';
 	
 	const CLIENT_ADD_FAIL = 'There was a problem creating this client.';
 	const CLIENT_NOT_FOUND = 'The specified client(s) could not be found.';
