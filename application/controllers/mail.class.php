@@ -55,7 +55,7 @@ class MailController {
 				$ticketModel = new TicketModel($this->app);
 				try {
 					$ticketModel->loadTicketByID($ticketID);	
-				} catch(Exception $e) {
+				} catch(\Exception $e) {
 					continue;
 				}
 				

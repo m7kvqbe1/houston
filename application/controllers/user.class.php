@@ -41,7 +41,7 @@ class UserController
 		try {
 			$users = $userModel->getAllUsers();	
 			return json_encode($users);
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			return ApiResponse::error('USER_FETCH_FAIL');
 		}
 	}

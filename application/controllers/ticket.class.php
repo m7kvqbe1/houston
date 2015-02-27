@@ -38,7 +38,7 @@ class TicketController
 		try {
 			$ticket = $ticketModel->loadTicketByID($ticketID);
 			return json_encode($ticket);
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			return ApiResponse::error('TICKET_NOT_FOUND');
 		}
 	}
