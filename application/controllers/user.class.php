@@ -51,7 +51,7 @@ class UserController
 		$userModel = new UserModel($this->app);
 		
 		if($userModel->removeUser($userID)) {
-			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
 		} else {
 			return ApiResponse::error('USER_REMOVE_FAIL');
 		}
