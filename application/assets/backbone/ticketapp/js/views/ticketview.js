@@ -253,6 +253,3 @@ var TicketHeaderView = Backbone.View.extend({
 	}
 
 });
-
-
-

@@ -121,5 +121,9 @@ var handlebarsHelpers = {
 			}
 		});
 
+		Handlebars.registerHelper("maxHeightImg", function() {
+			return new Handlebars.SafeString('max-height:' + houston.previewImageResize() +'px;');
+		});		
+
 	}
 }

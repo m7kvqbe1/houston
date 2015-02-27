@@ -284,6 +284,12 @@ var houston = {
 			}
 		}
 		return fileType;
+	},
+
+	previewImageResize: function(){
+		var windowHeight = $(window).height();
+		var maxHeight = windowHeight - 190;
+		return maxHeight;
 	}
 
 }

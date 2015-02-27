@@ -1463,7 +1463,7 @@ input.inp-lst {
 	position: absolute;
 	top: 20px;
 	right: 20px;
-	bottom: 20px;
+	bottom: 50px;
 	left: 20px;
 }
 
@@ -1497,7 +1497,7 @@ input.inp-lst {
 .preview-img-box {
 	position: relative;
 	display: inline-block;
-	margin-top: 20px;
+	margin-top: 50px;
 	padding: 5px;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -1505,7 +1505,11 @@ input.inp-lst {
 	background:rgba(0,0,0,0.3);
 }
 
-#preview-window img {
+.img-wrap {
+	background: #000000;
+}
+
+.img-wrap img {
 	display: block;
 	max-width: 100%;
 	margin: 5px auto;

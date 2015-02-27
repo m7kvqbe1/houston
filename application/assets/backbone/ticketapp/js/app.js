@@ -106,7 +106,24 @@ var AppRouter = Backbone.Router.extend({
 		// PREVIEW WINDOW
 		// this.previewWindow = new PreviewWindow({collection: app.filesUploadCollection.imagesCollection});
 		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
+
+		handlebarsHelpers.bindHelpers();
+
+		//EVENTS
+		$(window).on("resize", this.ticketsView.pageResize).on("resize", this.previewWindow.imgMaxHeight);
+
+		//Mobile menu
+		$('.nav-icon, .mob-menu a').click(function(){
+			$('.outer-wrap, .mob-menu').fadeToggle(300);
+			$('.nav-icon').toggleClass('cross');
+			// $('body').toggleClass('dark');
+		});
 		
+		// Close notification popup
+		$('#notice .close').click( function() {
+			$(this).parent().hide();
+		});
+
 		this.viewInit = true;
 	},
 	

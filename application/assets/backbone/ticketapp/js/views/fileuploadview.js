@@ -190,7 +190,9 @@ var PreviewWindow = Backbone.View.extend({
 									'{{generateFileNextLink @index collection.length}}'+
 								'</div>'+
 							'</div>'+
-							'<img class="preview-img" src="{{#if attributes.ref}}http://edd.houston.com/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+
+							'<div class="img-wrap">'+
+								'<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://edd.houston.com/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
+							'</div>'+
 							'<div class="preview-img-bottom">'+
 								'<div class="preview-type">'+
 									'{{formatFileType attributes.type}}'+
@@ -208,6 +210,11 @@ var PreviewWindow = Backbone.View.extend({
 
 	initialize: function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
+	},
+
+	imgMaxHeight: function(){
+		console.log(houston.previewImageResize());
+		this.$('.preview-img').css('max-height', houston.previewImageResize());
 	},
 
 	render: function(){
