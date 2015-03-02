@@ -1,3 +1,8 @@
+Backbone.View.prototype.markAsChanged = function () {
+	console.log('marking');
+	app.changed = Backbone.history.fragment;
+};
+
 var FormView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
@@ -39,22 +44,24 @@ var FormView = Backbone.View.extend({
 		this.delegateEvents({
 			'click .save': 'saveModel',
 			'input .new-sub': 'subjectCharCount',
-			'click .cancel-btn': 'cancelTicket'
+			'click .cancel-btn': 'cancelTicket',
+			'input input': 'markAsChanged',
+			'input textarea': 'markAsChanged'
 		});
 		return this;
 	},
-	
+
 	subjectCharCount: function(){
 		return houston.subjectCharCount(this.$el);
 	},
 	
 	saveModel: function(e){
 		if(!houston.validateForm(e.currentTarget)) return;
-		this.setModelData();	
-		console.log(this.model);		
+		this.setModelData();		
 		this.model.save(this.model.attributes,
 			{
-				success: _.bind(function(){					
+				success: _.bind(function(){		
+					app.changed = false;		
 					this.model = new TicketModel();
 					app.filesUploadCollection.reset();
 					app.navigate('', {trigger: true});
@@ -75,9 +82,7 @@ var FormView = Backbone.View.extend({
 	},
 
 	cancelTicket: function(){
-		app.navigate('', {trigger: true});
-		this.model.clear();
-		app.filesUploadCollection.reset();		
+		app.navigate('', {trigger: true});		
 	}
 
 });

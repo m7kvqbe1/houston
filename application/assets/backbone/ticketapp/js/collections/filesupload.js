@@ -5,6 +5,7 @@ var FilesUpload = Backbone.Collection.extend({
 	initialize: function(){
 		this.on("reset add change delete", function(){		
 			app.filesPreviewCollection.reset(this.createImagesCollection());
+			// app.changed = Backbone.history.fragment;
 		});
 	},
 

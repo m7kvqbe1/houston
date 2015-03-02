@@ -55,7 +55,8 @@ var PeopleView = Backbone.View.extend({
 		this.delegateEvents({
 			'click .box-app-top .btn':'addToggle',
 			'click .add-agent .cancel-btn':'addToggle',
-			'click #form-add-agent button': 'addAgent'
+			'click #form-add-agent button': 'addAgent',
+			'input input': 'markAsChanged'
 		});
 		return this;		
 	},

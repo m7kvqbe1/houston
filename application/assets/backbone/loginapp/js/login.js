@@ -35,6 +35,40 @@ var login = {
 		}
 	},
 
+	validateEmail: function(email){
+		$.ajax({
+			url: "/check/email",
+			type: "POST",
+			data: { email : email },
+			dataType: "json",
+			success: function(){
+				console.log('email');
+				return true;						
+			},
+			error: function(){
+				alert('Validation Error');
+				return false;
+			}
+		});
+	},
+
+	validateCompany: function(company){
+		var request = $.ajax({
+			url: "/check/company",
+			type: "POST",
+			data: { company : company},
+			dataType: "json"
+		});
+
+		request.done(function( msg ) {
+		  alert('Done');
+		});
+		 
+		request.fail(function( jqXHR, textStatus ) {
+		  alert( "Request failed: " + textStatus );
+		});
+	},
+
 	registerValidate: function(input){
 		//set up flags
 		var lFlag = true;
@@ -42,6 +76,7 @@ var login = {
 		var iFlag = true;
 		var pFlag = true;
 		var qflag = true;
+		var cflag = true;
 		
 		//get elements
 		var input = $(input);
@@ -52,6 +87,13 @@ var login = {
 		//check if field has been filled
 		if(!length) {
 			eFlag = false;
+		}
+
+		if(input.hasClass('company')){
+			if(!this.validateCompany(input.val())){
+				cFlag = false;
+				console.log('companyInUse');
+			}
 		}
 		
 		//check if valid email
@@ -67,7 +109,8 @@ var login = {
 			}
 			
 			//check if email already in use
-			if(address == "eddnealeddneal@hotmail.co.uk"){
+			// if(address == "eddnealeddneal@hotmail.co.uk"){
+			if(!this.validateEmail(address)){
 				iFlag = false;
 				login.emailVal = address;
 				//add ellipsis if mobile view

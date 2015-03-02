@@ -31,7 +31,7 @@ var RegisterView = Backbone.View.extend({
 								'<div class="vrf-msg">Already<br />In Use</div>'+
 							'</div>'+
 						'</div>'+
-						'<input class="inp-spa vld-bb" type="text" name="reg-c" placeholder="{{#if attributes.company}}{{attributes.company}}{{else}}Company{{/if}}" data-vld="vld-b" val="{{attributes.company}}" />'+
+						'<input class="inp-spa vld-bb company" type="text" name="reg-c" placeholder="{{#if attributes.company}}{{attributes.company}}{{else}}Company{{/if}}" data-vld="vld-b" val="{{attributes.company}}" />'+
 					'</div>'+
 					'<div class="vld-wrap vld-pair-three">'+	
 						'<div class="vld-box">'+

@@ -69,6 +69,9 @@ var TicketView = Backbone.View.extend({
 			'click .updatedTickets': 'updated',
 			'click .allTickets': 'all'
 		});
+
+		//reset filesUploadCollection (after a cancelled new ticket)
+		// app.filesUploadCollection.reset();
 		return this;		
 	},
 

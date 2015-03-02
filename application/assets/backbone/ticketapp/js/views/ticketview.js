@@ -114,7 +114,9 @@ var TicketDetailView = Backbone.View.extend({
 			'click .reply-btn': 'replyToggle',
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage',
-			'click .file-preview': 'filePreview'
+			'click .file-preview': 'filePreview',
+			'input input': 'markAsChanged',
+			'input textarea': 'markAsChanged'
 		});
 		return this;
 	},
