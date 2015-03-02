@@ -16,3 +16,7 @@ $app->delete('/user/{userID}', 'user.controller:deleteUserAction')->before($secu
 $app->put('/user/update/{userID}/{property}', 'user.controller:putUserPropertyAction')->before($secure);
 
 $app->delete('/user/delete/{userID}/{property}', 'user.controller:deleteUserPropertyAction')->before($secure);
+
+$app->get('/check/email', 'user.controller:checkExistsEmailAction');
+
+$app->get('/check/company', 'user.controller:checkExistsCompanyNameAction');

@@ -82,4 +82,31 @@ class UserController
 			return ApiResponse::error('USER_PROPERTY_DELETE_FAIL');
 		}
 	}
+	
+	public function checkExistsEmailAction() 
+	{
+		$data = json_decode(file_get_contents('php://input'));
+		
+		$userModel = new UserModel($this->app);
+		
+		try {
+			$userModel->loadUser($data->email);
+			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+		} catch(\Exception $e) {
+			return ApiResponse::error('USER_EXISTS');
+		}
+	}
+	
+	public function checkExistsCompanyNameAction() 
+	{
+		$data = json_decode(file_get_contents('php://input'));
+		
+		$companyModel = new CompanyModel($this->app);
+		
+		if($companyModel->companyExists($data->company)) {
+			return ApiResponse::error('COMPANY_EXISTS');
+		} else {
+			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+		}
+	}
 }
