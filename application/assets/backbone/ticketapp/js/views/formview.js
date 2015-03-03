@@ -30,7 +30,7 @@ var FormView = Backbone.View.extend({
 
 	initialize: function() {
 		//FILES VIEW
-		this.fileUploadView = new FileUploadView({ collection: app.filesUploadCollection});
+		this.fileUploadView = new FileUploadView({collection: app.filesUploadCollection});
 		this.fileUploadView.parent = this;
 	},
 

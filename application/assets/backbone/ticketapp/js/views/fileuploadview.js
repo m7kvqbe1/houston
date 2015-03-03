@@ -50,6 +50,7 @@ var FileUploadView = Backbone.View.extend({
 
 	initialize : function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
+		this.listenTo(this.collection, 'add', this.markAsChanged);
 	},
 
 	render : function(){
