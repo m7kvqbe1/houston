@@ -83,8 +83,8 @@ class CompanyModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		$criteria = array('company' => $companyName);
-		$company = $db->users->findOne($criteria);
+		$criteria = array('companyName' => $companyName);
+		$company = $db->companies->findOne($criteria);
 		
 		if(empty($company)) return false;
 		return true;

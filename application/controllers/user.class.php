@@ -51,7 +51,7 @@ class UserController
 		$userModel = new UserModel($this->app);
 		
 		if($userModel->removeUser($userID)) {
-			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_REMOVE_FAIL');
 		}
@@ -64,7 +64,7 @@ class UserController
 		$userModel = new UserModel($this->app);
 		
 		if($userModel->setProperty($userID, $property, $data)) {
-			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_PROPERTY_SET_FAIL');
 		}
@@ -77,36 +77,36 @@ class UserController
 		$userModel = new UserModel($this->app);
 		
 		if($userModel->deleteProperty($userID, $property)) {
-			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_PROPERTY_DELETE_FAIL');
 		}
 	}
 	
-	public function checkExistsEmailAction() 
+	public function checkExistsEmailAction(Request $request) 
 	{
-		$data = json_decode(file_get_contents('php://input'));
+		$email = $request->get('email');
 		
 		$userModel = new UserModel($this->app);
 		
 		try {
-			$userModel->loadUser($data->email);
-			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
-		} catch(\Exception $e) {
+			$userModel->loadUser($email);
 			return ApiResponse::error('USER_EXISTS');
+		} catch(\Exception $e) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		}
 	}
 	
-	public function checkExistsCompanyNameAction() 
-	{
-		$data = json_decode(file_get_contents('php://input'));
+	public function checkExistsCompanyNameAction(Request $request) 
+	{		
+		$company = $request->get('company');
 		
 		$companyModel = new CompanyModel($this->app);
 		
-		if($companyModel->companyExists($data->company)) {
+		if($companyModel->companyExists($company)) {
 			return ApiResponse::error('COMPANY_EXISTS');
 		} else {
-			return ApiResponse::success('DEFAULT_SUCCESS_RESPONSE');
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		}
 	}
 }

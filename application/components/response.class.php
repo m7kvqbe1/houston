@@ -101,7 +101,7 @@ class ErrorMessageDefinition
 	
 	const STRIPE_INVALID_SUBSCRIPTION = 'No valid subscription found.';	
 	
-	const USERS_EXISTS = 'This user account already exists';
+	const USER_EXISTS = 'This user account already exists';
 	const USER_NOT_FOUND = 'The specified user does not exist.';
 	const USER_FETCH_FAIL = 'No users found';
 	const USER_REMOVE_FAIL = 'There was a problem removing this user.';
