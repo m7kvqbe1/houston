@@ -1,4 +1,6 @@
 //danialk.github.io/blog/2013/06/08/backbone-tips-after-and-before-methods-for-router/
+//www.developphp.com/video/JavaScript/Custom-Confirm-Box-Programming-Tutorial
+//lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/
 var AppRouter = Backbone.Router.extend({
 	routes: {
 		"": "indexFrontController",
@@ -9,36 +11,6 @@ var AppRouter = Backbone.Router.extend({
 		"analytics": "analyticsMainFrontController"
 	},
 
-	changed: false,
-
-	checkIfChanged: function () {
-		if(!this.changed) return true;
-		this.modalWarningView.model.set({type: 'Warning', message: 'All unsaved changes will be lost, are you sure you want to continue?', cancel: true});
-		$('#modal-window').show();
-		this.modalWarningView.render();
-		var confirmation = this.modalWarningView.evaluate();
-
-		//www.developphp.com/video/JavaScript/Custom-Confirm-Box-Programming-Tutorial
-
-		// var confirmation = confirm('All unsaved changes will be lost, are you sure you want to continue?');
-		// if(confirmation){
-		// 	this.changed = false;
-		// 	return true;
-		// } else {
-		// 	return false;
-		// }
-	},
-
-	execute: function(callback, args, name) {
-		var router = this;
-		var confirmation = this.checkIfChanged.apply(router, arguments);
-	    if(!confirmation){
-	    	app.navigate(this.changed, {trigger: false});
-	    	return this;
-	    } 
-      	if (callback) callback.apply(this, args);
-    },
-	
 	initialize: function() {
 		// Add dataTransfer to jquery events
 		jQuery.event.props.push("dataTransfer");
@@ -85,9 +57,6 @@ var AppRouter = Backbone.Router.extend({
 
 		//BUFFER MESSAGE MODEL
 		this.addMessageModel = new BufferMessageModel();
-
-		//MODAL WARNING MODEL
-		// this.modalWarningModel = new modalWarningModel();
 
 		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
 		.done(function(){
@@ -143,7 +112,7 @@ var AppRouter = Backbone.Router.extend({
 		this.updateAlertView = new UpdateAlertView({collection: this.tickets});
 
 		// MODAL WARNING VIEW
-		this.modalWarningView = new ModalWarningView({model: new Backbone.Model({type: 'Warning', message: 'This is a test message', cancel: true})});
+		this.modalView = new ModalView({model: new Backbone.Model()});
 
 		handlebarsHelpers.bindHelpers();
 
@@ -172,9 +141,8 @@ var AppRouter = Backbone.Router.extend({
 			if(_this.viewInit) {
 				$('#app').html(_this[view].render().el);
 				$('#preview-window').append(app.previewWindow.$el);
-				$('#modal-window').append(app.modalWarningView.$el);
-				app.modalWarningView.render();
-				$('#update-alert').html(app.updateAlertView.$el);
+				$('#modal-window').append(app.modalView.$el);
+				$('#update-alert').append(app.updateAlertView.$el);
 				app.updateAlertView.render();
 				clearTimeout(timer);
 			} else {
@@ -209,80 +177,37 @@ var AppRouter = Backbone.Router.extend({
 	
 	analyticsMainFrontController: function() {
 		this.onLoadRender('analyticsView');
-	}
+	},
+
+	changed: false,
+	createUnsavedChangesModal: function () {
+		if(!this.changed) return true;
+		this.modalView.model.set({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true});
+		this.modalView.render();
+		return false;
+	},
+
+	executeArguments: false,
+	execute: function(callback, args, name) {
+	    //If nothing has been changed  and no arguments have been set then continue with execute as normal
+	    if(this.createUnsavedChangesModal() && !this.executeArguments){
+	    	if (callback) callback.apply(this, args);
+	    //If something has been changed and arguments have been previously set by an attempted execute use the arguments
+		} else if (!this.changed && this.executeArguments){
+			this.executeArguments.callback.apply(this, this.executeArguments.args);
+	    	this.executeArguments = false;
+	    //If something has changed set the arguments to global variables to be use in the future 
+	    } else {
+	    	this.executeArguments = {
+		    	callback: callback,
+		    	args: args,
+		    	name: name
+		    }
+	    }
+    }
+
 });
 
 var app = new AppRouter();
 
 $(function() { Backbone.history.start(); });
-
- //    navigate: function(fragment, options) {
- //    	console.log('navigate');
-	// 	var router = this;
-	// 	var confirmation = this.checkIfChanged.apply(router, arguments);
-	//     if(!confirmation) {
-	//     	console.log(this.changed.model.attributes);
-	//     	return this; 
-	//     }
-	// 	Backbone.history.navigate(fragment, options);
-	// 	return this;
-	// },
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Backbone.Router.prototype.before = function () {
-// 	if(!this.changed) return true;
-// 	var confirmation = confirm('You have unsaved changes, are you sure you want to continue?');
-// 	if(confirmation){
-// 		this.changed = false;
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// };
-
-// Backbone.Router.prototype.navigate = function(fragment, options) {
-//  	console.log('navigate');
-// 	var router = this;
-// 	var confirmation = this.before.apply(router, arguments);
-//     if(!confirmation)return this; 
-// 	Backbone.history.navigate(fragment, options);
-// 	return this;
-// };
-
-// Backbone.Router.prototype.after = function () {};
-
-// Backbone.Router.prototype.route = function (route, name, callback) {
-//   if (!_.isRegExp(route)) route = this._routeToRegExp(route);
-//   if (_.isFunction(name)) {
-//     callback = name;
-//     name = '';
-//   }
-//   if (!callback) callback = this[name];
-
-//   var router = this;
-
-//   Backbone.history.route(route, function(fragment) {
-//     var args = router._extractParameters(route, fragment);
-
-//     // router.before.apply(router, arguments);
-//     var confirmation = router.before.apply(router, arguments);
-//     if(!confirmation)return this; 
-//     callback && callback.apply(router, args);
-//     router.after.apply(router, arguments);
-//     router.trigger.apply(router, ['route:' + name].concat(args));
-//     router.trigger('route', name, args);
-//     Backbone.history.trigger('route', router, name, args);
-//   });
-//   return this;
-// };
