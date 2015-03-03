@@ -86,8 +86,7 @@ class CompanyModel
 		$criteria = array('companyName' => $companyName);
 		$company = $db->companies->findOne($criteria);
 		
-		if(empty($company)) return false;
-		return true;
+		return (!empty($company)) ? true : false;
 	}
 	
 	public function generateCompany($json) 
