@@ -25,7 +25,8 @@ class ApiResponse extends Response
 		return $response;
 	}
 	
-	private static function generateResponseBody($code, $status, $customMessage = null) {
+	private static function generateResponseBody($code, $status, $customMessage = null) 
+	{
 		$message = (isset($customMessage)) ? $customMessage : self::fetchErrorMessage($code);
 		return self::encodeResponse(array('code' => $code, 'status' => $status, 'message' => $message));		
 	}

@@ -7,14 +7,14 @@ $app['auth.controller'] = $app->share(function() use ($app) {
 	return new AuthController($app);
 });
 
-$app->get('/auth/logout', 'auth.controller:authLogoutAction');
+$app->get('/api/auth/logout', 'auth.controller:authLogoutAction');
 
-$app->post('/auth/login', 'auth.controller:authLoginAction');
+$app->post('/api/auth/login', 'auth.controller:authLoginAction');
 
-$app->post('/register', 'auth.controller:registerAction');
+$app->post('/api/register', 'auth.controller:registerAction');
 
-$app->get('/verify/{token}', 'auth.controller:verifyAction');
+$app->get('/api/verify/{token}', 'auth.controller:verifyAction');
 
-$app->post('/auth/reset', 'auth.controller:authResetAction');
+$app->post('/api/auth/reset', 'auth.controller:authResetAction');
 
-$app->post('/auth/reset/complete', 'auth.controller:authResetCompleteAction');
+$app->post('/api/auth/reset/complete', 'auth.controller:authResetCompleteAction');

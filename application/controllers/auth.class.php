@@ -116,7 +116,7 @@ class AuthController
 		
 		// Send verification email
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
-		$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$json->verify, $template);
+		$emailBody = str_replace('{button_url}', DOMAIN."/api/verify/".$json->verify, $template);
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <noreply@houstonsupportdesk.com>' . "\r\n";
@@ -157,7 +157,7 @@ class AuthController
 		
 		// Send email link
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/reset_password.phtml');
-		$emailBody = str_replace('{button_url}', DOMAIN."/#/reset/".$token, $template);
+		$emailBody = str_replace('{button_url}', DOMAIN."/reset/".$token, $template);
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <noreply@houstonsupportdesk.com>' . "\r\n";

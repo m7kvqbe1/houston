@@ -7,22 +7,22 @@ $app['ticket.controller'] = $app->share(function() use ($app) {
 	return new TicketController($app);
 });
 
-$app->get('/tickets', 'ticket.controller:getTicketsAction')->before($secure);
+$app->get('/api/tickets', 'ticket.controller:getTicketsAction')->before($secure);
 
-$app->get('/tickets/{ticketID}', 'ticket.controller:getTicketAction')->before($secure);
+$app->get('/api/tickets/{ticketID}', 'ticket.controller:getTicketAction')->before($secure);
 
-$app->post('/tickets', 'ticket.controller:postTicketAction')->before($secure);
+$app->post('/api/tickets', 'ticket.controller:postTicketAction')->before($secure);
 
-$app->put('/tickets/{ticketID}', 'ticket.controller:putTicketAction')->before($secure);
+$app->put('/api/tickets/{ticketID}', 'ticket.controller:putTicketAction')->before($secure);
 
-$app->post('/tickets/reply/{ticketID}', 'ticket.controller:postReplyAction')->before($secure);
+$app->post('/api/tickets/reply/{ticketID}', 'ticket.controller:postReplyAction')->before($secure);
 
-$app->get('/tickets/reply/{ticketID}', 'ticket.controller:getRepliesAction')->before($secure);
+$app->get('/api/tickets/reply/{ticketID}', 'ticket.controller:getRepliesAction')->before($secure);
 
-$app->get('/tickets/file/meta/{fileID}', 'ticket.controller:getAttachmentMetaAction')->before($secure);
+$app->get('/api/tickets/file/meta/{fileID}', 'ticket.controller:getAttachmentMetaAction')->before($secure);
 
-$app->post('/tickets/file', 'ticket.controller:postAttachmentAction')->before($secure);
+$app->post('/api/tickets/file', 'ticket.controller:postAttachmentAction')->before($secure);
 
-$app->get('/tickets/file/{fileID}', 'ticket.controller:getAttachmentAction')->before($secure);
+$app->get('/api/tickets/file/{fileID}', 'ticket.controller:getAttachmentAction')->before($secure);
 
-$app->delete('/tickets/file/{fileID}', 'ticket.controller:deleteAttachmentAction')->before($secure);
+$app->delete('/api/tickets/file/{fileID}', 'ticket.controller:deleteAttachmentAction')->before($secure);

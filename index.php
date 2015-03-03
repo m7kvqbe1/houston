@@ -1,4 +1,9 @@
 <?php
+mb_internal_encoding('UTF-8');
+mb_detect_order(array('UTF-8', 'ASCII'));
+mb_http_output('UTF-8');
+date_default_timezone_set('UTC');
+	
 define('PHP_START', microtime(true));
 define('DOCUMENT_ROOT', __DIR__);
 
@@ -32,6 +37,7 @@ use Houston\Core\System;
 // Instantiate Silex
 $app = new Application();
 $app['debug'] = true;
+$app['charset'] = 'UTF-8';
 
 // Register URL generator service provider
 $app->register(new UrlGeneratorServiceProvider());
