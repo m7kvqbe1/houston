@@ -1,5 +1,5 @@
 var BufferAgentModel = Backbone.Model.extend({
-	url: '/agents',
+	url: '/api/agents',
 	
 	initialize: function() {
 		this.on("sync", function() {

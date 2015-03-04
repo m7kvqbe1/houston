@@ -1,11 +1,10 @@
 var FilesUpload = Backbone.Collection.extend({
 	model: FileUploadModel,	
-	url: '/tickets/file/add',
+	url: '/api/tickets/file/add',
 
 	initialize: function(){
 		this.on("reset add change delete", function(){		
 			app.filesPreviewCollection.reset(this.createImagesCollection());
-			// app.changed = Backbone.history.fragment;
 		});
 	},
 

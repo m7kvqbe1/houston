@@ -1,6 +1,6 @@
 var Users = Backbone.Collection.extend({
 	model: ClientUserModel,	
-	url: '/users',	
+	url: '/api/users',	
 
 	initialize: function() {
 		this.on("sync", function() {

@@ -1,3 +1,3 @@
 var RegisterModel = Backbone.Model.extend({
-	url:'/register'
+	url:'/api/register'
 });

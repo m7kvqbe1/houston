@@ -1,5 +1,5 @@
 var Clients = Backbone.Collection.extend({
 	model: ClientModel,	
-	url: '/clients',	
+	url: '/api/clients',	
 	comparator: 'name'
 });

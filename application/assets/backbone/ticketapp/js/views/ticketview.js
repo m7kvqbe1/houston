@@ -41,7 +41,7 @@ var TicketDetailView = Backbone.View.extend({
 				  				'<div class="file-info">'+
 									'<div class="filename">{{name}}</div>'+
 									'{{showFilePreviewLink type @index}}'+
-									'<a href="http://edd.houston.com/tickets/file/{{ref}}">Download</a>'+
+									'<a href="http://edd.houston.com/api/tickets/file/{{ref}}">Download</a>'+
 								'</div>'+
 							'</div>'+
 						'</li>'+	
@@ -182,7 +182,7 @@ var TicketDetailView = Backbone.View.extend({
 			"files": app.filesUploadCollection.createFilesArray()
 		};
 
-		app.addMessageModel.url = '/tickets/reply/' + this.model.id;
+		app.addMessageModel.url = '/api/tickets/reply/' + this.model.id;
 		app.addMessageModel.save(attributes,{
 			success: _.bind(function(model){
 				app.addMessageModel.clear();

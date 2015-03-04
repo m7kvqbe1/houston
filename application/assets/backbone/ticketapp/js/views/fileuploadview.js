@@ -75,7 +75,7 @@ var FileUploadView = Backbone.View.extend({
 			fileToDelete.attributes.request.abort();
 			fileToDelete.destroy();
 		} else {
-			fileToDelete.url = '/tickets/file/'+fileToDelete.id;
+			fileToDelete.url = '/api/tickets/file/'+fileToDelete.id;
 			fileToDelete.destroy();
 		}
 	},
@@ -192,14 +192,14 @@ var PreviewWindow = Backbone.View.extend({
 								'</div>'+
 							'</div>'+
 							'<div class="img-wrap">'+
-								'<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://edd.houston.com/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
+								'<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://edd.houston.com/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
 							'</div>'+
 							'<div class="preview-img-bottom">'+
 								'<div class="preview-type">'+
 									'{{formatFileType attributes.type}}'+
 								'</div>'+
 								'<div class="preview-download">'+
-									'<a href="{{#if attributes.ref}}http://edd.houston.com/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}"><i class="icon-down-circled2"></i></a>'+
+									'<a href="{{#if attributes.ref}}http://edd.houston.com/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}"><i class="icon-down-circled2"></i></a>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+

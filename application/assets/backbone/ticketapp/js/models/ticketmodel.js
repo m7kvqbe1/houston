@@ -1,5 +1,5 @@
 var TicketModel = Backbone.Model.extend({
-	url: '/tickets',
+	url: '/api/tickets',
 
 	initialize: function(){
 		this.on("sync", function(model){

@@ -1,5 +1,5 @@
 var UserModel = Backbone.Model.extend({
-	url: '/user/self',
+	url: '/api/user/self',
 	parse: function(response){
 		if(response._id){
 			response.id = response._id['$id'];

@@ -74,7 +74,7 @@ var LoginView = Backbone.View.extend({
 	
 	login: function(e) {
 		if(login.loginValidate(e.currentTarget)){
-			this.model.urlRoot = '/auth/login';
+			this.model.url = '/api/auth/login';
 			this.model.set({
 				user: this.$el.find('input[name="log-e"]').val(),
 				password: this.$el.find('input[name="log-p"]').val(),
@@ -96,7 +96,7 @@ var LoginView = Backbone.View.extend({
 	},
 	
 	reset: function() {
-		this.model.urlRoot = '/auth/reset';
+		this.model.url = '/api/auth/reset';
 		//set user,password and remember to null values, possibly use user as value instead of emailAddress when resetting
 		this.model.set({
 			emailAddress: this.$el.find('input[name="pass-e"]').val(),

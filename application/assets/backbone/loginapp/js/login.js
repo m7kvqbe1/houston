@@ -35,39 +35,22 @@ var login = {
 		}
 	},
 
-	validateEmail: function(email){
-		$.ajax({
-			url: "/check/email",
-			type: "POST",
-			data: { email : email },
-			dataType: "json",
-			success: function(){
-				console.log('email');
-				return true;						
-			},
-			error: function(){
-				alert('Validation Error');
-				return false;
-			}
-		});
-	},
+	// validateCompany: function(company){
+	// 	var request = $.ajax({
+	// 		url: "/check/company",
+	// 		type: "POST",
+	// 		data: { company : company},
+	// 		dataType: "json"
+	// 	});
 
-	validateCompany: function(company){
-		var request = $.ajax({
-			url: "/check/company",
-			type: "POST",
-			data: { company : company},
-			dataType: "json"
-		});
-
-		request.done(function( msg ) {
-		  alert('Done');
-		});
+	// 	request.done(function( msg ) {
+	// 	  alert('Done');
+	// 	});
 		 
-		request.fail(function( jqXHR, textStatus ) {
-		  alert( "Request failed: " + textStatus );
-		});
-	},
+	// 	request.fail(function( jqXHR, textStatus ) {
+	// 	  alert( "Request failed: " + textStatus );
+	// 	});
+	// },
 
 	registerValidate: function(input){
 		//set up flags
@@ -90,10 +73,27 @@ var login = {
 		}
 
 		if(input.hasClass('company')){
-			if(!this.validateCompany(input.val())){
+			var request = $.ajax({
+				url: "/check/company",
+				type: "POST",
+				data: { company : input.val()},
+				dataType: "json"
+			});
+
+			request.done(function( msg ) {
+				console.log('company-ok');
+				cFlag = true;
+				input.removeClass('in-use');
+				input.closest('.reg-vrf').find('.vrf').fadeOut();
+			});
+			 
+			request.fail(function( jqXHR, textStatus ) {
+				console.log('companyinuse')
 				cFlag = false;
-				console.log('companyInUse');
-			}
+
+				input.addClass('in-use');
+				input.closest('.reg-vrf').find('.vrf').fadeIn();
+			});
 		}
 		
 		//check if valid email
@@ -107,10 +107,22 @@ var login = {
 				eFlag = true;
 				input.removeClass('error');
 			}
+
+			var request = $.ajax({
+				url: "/check/email",
+				type: "POST",
+				data: { email : address },
+				dataType: "json"
+			});
 			
-			//check if email already in use
-			// if(address == "eddnealeddneal@hotmail.co.uk"){
-			if(!this.validateEmail(address)){
+			request.done(function( msg ) {
+				console.log('emailok');
+				iFlag = true;
+				input.removeClass('in-use');
+				input.closest('.reg-vrf').find('.vrf').fadeOut();
+			});
+			 
+			request.fail(function( jqXHR, textStatus ) {
 				iFlag = false;
 				login.emailVal = address;
 				//add ellipsis if mobile view
@@ -121,12 +133,9 @@ var login = {
 					input.val(abbr);
 				}
 				input.addClass('in-use');
-				input.closest('.reg-vrf').find('.vrf').fadeIn();			
-			} else {
-				iFlag = true;
-				input.removeClass('in-use');
-				input.closest('.reg-vrf').find('.vrf').fadeOut();
-			}
+				input.closest('.reg-vrf').find('.vrf').fadeIn();	
+			});
+
 		}
 		
 		//check password count of first password input

@@ -1,5 +1,5 @@
 var Messages = Backbone.Collection.extend({
 	model: MessageModel,	
-	url: '/tickets/reply/',
+	url: '/api/tickets/reply/',
 	comparator: 'date'
 });

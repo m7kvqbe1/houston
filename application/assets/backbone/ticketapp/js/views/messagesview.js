@@ -32,7 +32,7 @@ var MessagesView = Backbone.View.extend({
 				  				'<div class="file-info">'+
 									'<div class="filename">{{name}}</div>'+
 									'{{showFilePreviewLink type @index}}'+
-									'<a href="http://edd.houston.com/tickets/file/{{ref}}">Download</a>'+
+									'<a href="http://edd.houston.com/api/tickets/file/{{ref}}">Download</a>'+
 								'</div>'+
 							'</div>'+
 						'</li>'+	

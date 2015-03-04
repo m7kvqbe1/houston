@@ -43,7 +43,7 @@ var ResetView = Backbone.View.extend({
 			return;
 		}
 		
-		this.model.urlRoot = '/auth/reset/complete';
+		this.model.url = '/api/auth/reset/complete';
 		this.model.set({
 			password: this.$el.find('input[name="pass-c"]').val()
 		});

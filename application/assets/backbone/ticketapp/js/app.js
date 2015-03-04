@@ -1,6 +1,7 @@
 //danialk.github.io/blog/2013/06/08/backbone-tips-after-and-before-methods-for-router/
 //www.developphp.com/video/JavaScript/Custom-Confirm-Box-Programming-Tutorial
 //lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/
+//artsy.github.io/blog/2012/06/25/replacing-hashbang-routes-with-pushstate/
 var AppRouter = Backbone.Router.extend({
 	routes: {
 		"": "indexFrontController",
@@ -210,4 +211,4 @@ var AppRouter = Backbone.Router.extend({
 
 var app = new AppRouter();
 
-$(function() { Backbone.history.start(); });
+$(function() { Backbone.history.start()});
