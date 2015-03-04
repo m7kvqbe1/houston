@@ -1,5 +1,4 @@
 Backbone.View.prototype.markAsChanged = function () {
-	console.log('marking');
 	app.changed = Backbone.history.fragment;
 };
 

@@ -30,7 +30,7 @@ var TicketView = Backbone.View.extend({
 			'<ul id="ticket-stream">' +
 			'{{#each models}}'+
 				'<li class="ticket">' +
-					'<a href="/#/tickets/{{attributes.id}}">'+
+					'<a href="/tickets/{{attributes.id}}">'+
 						'<div class="update-alert {{updateCheck attributes.updated}}"></div>' +
 						'<div class="ticket-info">' +					
 							'<div class="date">{{convertToDate attributes.date}}</div>' +
