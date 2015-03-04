@@ -45,24 +45,24 @@ class PeopleController {
 	}
 	
 	public function postClientAction() {
-		$client = json_decode(file_get_contents('php://input'));
+		$data = json_decode(file_get_contents('php://input'));
 	
 		$clientModel = new ClientModel($this->app);
 		
-		if($clientModel->addClient($client)) {
-			return json_encode($client);
+		if($clientModel->addClient($data)) {
+			return json_encode($data);
 		} else {
 			return ApiResponse::error('CLIENT_ADD_FAIL');
 		}
 	}
 	
 	public function postUserAction() {
-		$user = json_decode(file_get_contents('php://input'));
+		$data = json_decode(file_get_contents('php://input'));
 	
 		$userModel = new UserModel($this->app);
 		
-		if($user = $userModel->addUser($user)) {
-			return json_encode($user);
+		if($user = $userModel->addUser($data)) {
+			return json_encode($data);
 		} else {
 			return ApiResponse::error('USER_ADD_FAIL');
 		}
@@ -79,13 +79,23 @@ class PeopleController {
 	}
 	
 	public function postAgentAction() {
-		$agent = json_decode(file_get_contents('php://input'));
+		$data = json_decode(file_get_contents('php://input'));
 	
 		$userModel = new UserModel($this->app);
 		
 		if($userModel->addAgent($agent)) {
 			// Send verification email
-			mail($agent->emailAddress, "Welcome to Houston!", "Welcome to Houston!\r\n\r\nPlease click the link to complete the registration process: ".DOMAIN."/verify/".$agent->verify);
+			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
+			$emailBody = str_replace('{button_url}', DOMAIN."/api/verify/".$data->verify, $template);
+			
+			$message = \Swift_Message::newInstance()
+				->setSubject('Welcome to Houston!')
+				->setFrom(array('noreply@houstonsupportdesk.com'))
+				->setTo(array($data->emailAddress))
+				->setBody($emailBody, 'text/html');
+			
+			$this->app['mailer']->send($message);
+			
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_ADD_FAIL');
