@@ -7,6 +7,8 @@ $app['auth.controller'] = $app->share(function() use ($app) {
 	return new AuthController($app);
 });
 
+$app->get('/logout', 'auth.controller:authLogoutAction');
+$app->get('/auth/logout', 'auth.controller:authLogoutAction');
 $app->get('/api/auth/logout', 'auth.controller:authLogoutAction');
 
 $app->post('/api/auth/login', 'auth.controller:authLoginAction');

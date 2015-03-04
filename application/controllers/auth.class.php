@@ -117,10 +117,14 @@ class AuthController
 		// Send verification email
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
 		$emailBody = str_replace('{button_url}', DOMAIN."/api/verify/".$json->verify, $template);
-		$headers = "MIME-Version: 1.0" . "\r\n";
-		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-		$headers .= 'From: <noreply@houstonsupportdesk.com>' . "\r\n";
-		mail($json->emailAddress, "Welcome to Houston!", $emailBody, $headers);
+		
+		$message = \Swift_Message::newInstance()
+			->setSubject('Welcome to Houston!')
+			->setFrom(array('noreply@houstonsupportdesk.com'))
+			->setTo(array($json->emailAddress))
+			->setBody($emailBody, 'text/html');
+		
+		$this->app['mailer']->send($message);
 		
 		return $customer->__toJSON();	
 	}
@@ -146,33 +150,37 @@ class AuthController
 	}
 	
 	public function authResetAction()
-	{
-		$json = json_decode(file_get_contents('php://input'));
+	{	
+		$data = json_decode(file_get_contents('php://input'));
 		
 		$userModel = new UserModel($this->app);
-		$userModel->loadUser($json->emailAddress);
+		$userModel->loadUser($data->emailAddress);
 		
 		// Flag password reset request on user account and generate token
-		$token = $userModel->resetPasswordRequest($json->emailAddress);
+		$token = $userModel->resetPasswordRequest($data->emailAddress);
 		
-		// Send email link
+		// Send reset password link email
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/reset_password.phtml');
-		$emailBody = str_replace('{button_url}', DOMAIN."/reset/".$token, $template);
-		$headers = "MIME-Version: 1.0" . "\r\n";
-		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-		$headers .= 'From: <noreply@houstonsupportdesk.com>' . "\r\n";
-		mail($json->emailAddress, "Houston - Reset Password", $emailBody, $headers);
+		$emailBody = str_replace('{button_url}', DOMAIN.'/reset/'.$token, $template);
+		
+		$message = \Swift_Message::newInstance()
+			->setSubject('Houston - Reset Password')
+			->setFrom(array('noreply@houstonsupportdesk.com'))
+			->setTo(array($data->emailAddress))
+			->setBody($emailBody, 'text/html');
+		
+		$this->app['mailer']->send($message);
 		
 		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 	
 	public function authResetCompleteAction()
 	{
-		$json = json_decode(file_get_contents('php://input'));
+		$data = json_decode(file_get_contents('php://input'));
 		
 		$userModel = new UserModel($this->app);
 		
-		$userModel->resetPassword($json->token, $json->password);
+		$userModel->resetPassword($data->token, $data->password);
 		
 		// Load users company to get the database identifier
 		$companyModel = new CompanyModel($this->app);
