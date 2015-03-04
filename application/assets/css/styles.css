@@ -1354,6 +1354,14 @@ input.inp-lst {
 	padding-bottom: 15px;
 }
 
+.msg {
+	margin-bottom: 30px;
+}
+
+#messages-wrap ul li:last-child {
+	margin-bottom: 0;
+}
+
 .msg-top h2 { 
 	display: none;
 }
@@ -1895,8 +1903,8 @@ input.inp-lst {
 	
 	.ticket-info .name {
 		display: inline-block;
-		padding-right: 7px;
-		margin-right: 4px;
+		padding-right: 5px;
+		margin-right: 5px;
 		border-right: 2px solid #cfc3af;
 		line-height: 16px;
 		font-weight: 900;
@@ -2053,8 +2061,9 @@ input.inp-lst {
 		padding-top: 30px;
 	}
 
-	.file:first-child {
-		padding-top: 30px;
+	.file:first-child,
+	.file:nth-child(2) {
+		padding-top: 10px;
 	}
 	
 	.thumb-wrap {
@@ -2122,7 +2131,7 @@ input.inp-lst {
 
 /* Single Ticket */
 	#msg-stream {
-		padding-bottom: 20px;
+		padding-bottom: 30px;
 	}
 
 	.msg-top h2 { 
@@ -2144,6 +2153,10 @@ input.inp-lst {
 		max-width: 100%;
 		padding-top: 12px;
 	}
+
+	.msg-body {
+		padding: 30px;
+	}
 	
 	.msg-agent {
 		padding-right: 7px;
@@ -2164,6 +2177,10 @@ input.inp-lst {
 
 	.dropswitch {
 		margin-right: 0;
+	}
+
+	.reply-btn {
+		margin-top: 40px;
 	}
 
 /* Register */

@@ -191,6 +191,8 @@ var AppRouter = Backbone.Router.extend({
 		    }
 		    app.modalView.createUnsavedChangesModal();
 	    }
+	    //Always hide preview window when navigating
+	    $('#preview-window').hide();
     }
 
 });

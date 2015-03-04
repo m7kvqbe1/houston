@@ -1,5 +1,5 @@
 var MessagesView = Backbone.View.extend({
-
+	tagName: "ul",
 	template: Handlebars.compile(
 		'{{#forEach models}}'+
 			'<li class="msg from-{{getUserRole attributes.authorID}}">'+
