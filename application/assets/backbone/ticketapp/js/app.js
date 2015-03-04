@@ -1,5 +1,6 @@
 //danialk.github.io/blog/2013/06/08/backbone-tips-after-and-before-methods-for-router/
 //lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/
+//lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/
 var AppRouter = Backbone.Router.extend({
 	root: '/',
 	routes: {

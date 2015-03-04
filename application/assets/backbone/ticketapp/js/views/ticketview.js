@@ -41,7 +41,7 @@ var TicketDetailView = Backbone.View.extend({
 				  				'<div class="file-info">'+
 									'<div class="filename">{{name}}</div>'+
 									'{{showFilePreviewLink type @index}}'+
-									'<a href="http://edd.houston.com/api/tickets/file/{{ref}}">Download</a>'+
+									'<a data-bypass="true" href="http://' + window.location.hostname + '/api/tickets/file/{{ref}}">Download</a>'+
 								'</div>'+
 							'</div>'+
 						'</li>'+	

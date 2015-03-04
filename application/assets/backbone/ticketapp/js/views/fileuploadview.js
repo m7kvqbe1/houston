@@ -192,14 +192,14 @@ var PreviewWindow = Backbone.View.extend({
 								'</div>'+
 							'</div>'+
 							'<div class="img-wrap">'+
-								'<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://edd.houston.com/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
+								'<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://' + window.location.hostname + '/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
 							'</div>'+
 							'<div class="preview-img-bottom">'+
 								'<div class="preview-type">'+
 									'{{formatFileType attributes.type}}'+
 								'</div>'+
 								'<div class="preview-download">'+
-									'<a href="{{#if attributes.ref}}http://edd.houston.com/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}"><i class="icon-down-circled2"></i></a>'+
+									'<a data-bypass="true" href="{{#if attributes.ref}}http://' + window.location.hostname + '/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}"><i class="icon-down-circled2"></i></a>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
