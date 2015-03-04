@@ -84,7 +84,7 @@ var LoginView = Backbone.View.extend({
 				{
 				//http://stackoverflow.com/questions/11167698/backbone-js-binding-this-to-success-error-callbacks
 					success: function(model,response,options){
-						location.reload();
+						window.location.reload();
 					},
 					error: _.bind(function(model,response,options){
 						this.$el.find('.box-log h2').text('Oops!');

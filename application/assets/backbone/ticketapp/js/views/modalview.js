@@ -31,14 +31,28 @@ var ModalView = Backbone.View.extend({
 		this.unbind();
 	},
 
-	confirm: function(){
-		app.changed = false;
-		$('#modal-window').hide();
-		app.execute();
+	createLogOutModal: function(){
+		this.model.set({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true});
+		this.confirm = function(){
+			window.location.href = 'http://' + window.location.hostname + '/logout';
+		};
+		this.cancel = function(){
+			$('#modal-window').hide();
+		};
+		this.render();
 	},
 
-	cancel: function(){
-		$('#modal-window').hide();
-		app.navigate(app.changed, {trigger: false});
+	createUnsavedChangesModal: function(){
+		this.model.set({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true});
+		this.confirm = function(){
+			app.changed = false;
+			$('#modal-window').hide();
+			app.execute();
+		};
+		this.cancel = function(){
+			$('#modal-window').hide();
+			app.navigate(app.changed, {trigger: false});
+		};
+		this.render();
 	}
 });
