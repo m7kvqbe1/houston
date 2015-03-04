@@ -12,11 +12,13 @@ use Houston\Model\CompanyModel;
 class PeopleController {
 	protected $app;
 	
-	public function __construct(Application $app) {
+	public function __construct(Application $app) 
+	{
 		$this->app = $app;
 	}
 	
-	public function getCompaniesAction() {
+	public function getCompaniesAction() 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -34,7 +36,8 @@ class PeopleController {
 		}
 	}
 	
-	public function getClientsAction() {
+	public function getClientsAction() 
+	{
 		$clientModel = new ClientModel($this->app);
 		
 		if($clients = $clientModel->getClients()) {
@@ -44,7 +47,8 @@ class PeopleController {
 		}
 	}
 	
-	public function postClientAction() {
+	public function postClientAction() 
+	{
 		$data = json_decode(file_get_contents('php://input'));
 	
 		$clientModel = new ClientModel($this->app);
@@ -56,7 +60,8 @@ class PeopleController {
 		}
 	}
 	
-	public function postUserAction() {
+	public function postUserAction() 
+	{
 		$data = json_decode(file_get_contents('php://input'));
 	
 		$userModel = new UserModel($this->app);
@@ -68,7 +73,8 @@ class PeopleController {
 		}
 	}
 	
-	public function deleteClientAction($clientID) {
+	public function deleteClientAction($clientID) 
+	{
 		$clientModel = new ClientModel($this->app);
 		
 		if($clientModel->removeClient($clientID)) {
@@ -78,7 +84,8 @@ class PeopleController {
 		}
 	}
 	
-	public function postAgentAction() {
+	public function postAgentAction() 
+	{
 		$data = json_decode(file_get_contents('php://input'));
 	
 		$userModel = new UserModel($this->app);
