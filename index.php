@@ -88,7 +88,8 @@ $app->error(function(\Exception $e, $code) use ($app) {
 	
 	switch($code) {
 		case 404:
-			$message = 'The requested page could not be found.';
+			//$message = 'The requested page could not be found.';
+			return $app->redirect('/');	// Redirect to application entry point
 			break;
 		
 		default:
