@@ -169,8 +169,8 @@ class UserModel
 		$db = $db->houston;
 		
 		// Generate 'remember me' token
-		$token = $this::hashPassword(rand(0,999999));
-		$seriesID = $this::hashPassword(rand(0,999999));
+		$token = self::hashPassword(rand(0,999999));
+		$seriesID = self::hashPassword(rand(0,999999));
 		$remember = $username.'/'.$token.'/'.$seriesID;
 				
 		try {
@@ -189,7 +189,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;		
 		
-		$newPassword = $this::hashPassword($newPassword);
+		$newPassword = self::hashPassword($newPassword);
 		
 		try {
 			$collection = $db->users;						
@@ -202,15 +202,15 @@ class UserModel
 		}
 	}
 	
-	public function resetPasswordRequest($username) 
+	public function resetPasswordRequest($username)
 	{		
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		// Generate url friendly token
-		$token = $this::hashPassword(rand(0,999999));
-		$token = \Houston\Extra\Helper::urlFriendly($token);
+		$token = self::hashPassword(rand(0,999999));
+		$token = \Houston\Component\Helper::urlFriendly($token);
 		
 		try {
 			$collection = $db->users;						

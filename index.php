@@ -13,12 +13,6 @@ foreach($ini_array as $key => $val) {
 	define($key, $val);
 }
 
-// PHP error reporting
-if(ERROR_REPORTING === true) {
-	error_reporting(E_ALL);
-	ini_set("display_errors", 1);	
-}
-
 // Require Composer autoloader
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -30,13 +24,14 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
 use Merqlove\Silex\Provider\AirbrakeServiceProvider;
 use Houston\Core\System;
 
 // Instantiate Silex
 $app = new Application();
-$app['debug'] = true;
+$app['debug'] = DEBUG;
 $app['charset'] = 'UTF-8';
 
 // Register URL generator service provider
@@ -74,10 +69,34 @@ $app->register(new AirbrakeServiceProvider(), array(
 	)
 ));
 
+// Register Swiftmailer service provider
+$app->register(new SwiftmailerServiceProvider());
+$app['swiftmailer.options'] = array(
+	'host' => SMTP_HOST,
+	'port' => SMTP_PORT,
+	'username' => SMTP_USERNAME,
+	'password' => SMTP_PASSWORD,
+	'encryption' => null,
+	'auth_mode' => null
+);
+
 // Error handler
 $app->error(function(\Exception $e, $code) use ($app) {
 	$app['airbrake']->notifyOnException($e);
-	return new Response('Sorry, something went wrong.');	// Update this to custom error page
+	
+	if($app['debug']) return;
+	
+	switch($code) {
+		case 404:
+			$message = 'The requested page could not be found.';
+			break;
+		
+		default:
+			$message = 'Sorry, something went wrong.';
+			break;
+	}
+	
+	return new Response($message);	// Update this to custom error template
 });
 
 // Define security middleware
