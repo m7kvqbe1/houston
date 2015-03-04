@@ -135,11 +135,14 @@ var AppRouter = Backbone.Router.extend({
 		this.viewInit = true;
 	},
 	
-	onLoadRender: function(view) {
+	onLoadRender: function(view, ticketID) {
 		var _this = this;
 					
 		(function check() {
 			if(_this.viewInit) {
+				if(ticketID){//If an individual ticket
+					_this.ticketDetailModel.set(_this.tickets.get(ticketID).attributes);
+				}
 				$('#app').html(_this[view].render().el);
 				$('#preview-window').append(app.previewWindow.$el);
 				$('#modal-window').append(app.modalView.$el);
@@ -158,10 +161,12 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	ticketDetailsFrontController: function(ticket) {
-		var attributes = this.tickets.get(ticket).attributes;
-		this.ticketDetailView.model.set(attributes);
-		this.ticketDetailView.model.fetchMessages(ticket);
-		// app.onLoadRender('ticketDetailView');
+		// this.ticketDetailModel.fetchMessages(ticket);
+		this.ticketDetailModel.messagesCollection.url = '/api/tickets/reply/' + ticket;
+		$.when(this.ticketDetailModel.messagesCollection.fetch())
+		.done(function(){
+			app.onLoadRender('ticketDetailView', ticket);
+		});
 	},
 
 	ticketFormFrontController: function() {

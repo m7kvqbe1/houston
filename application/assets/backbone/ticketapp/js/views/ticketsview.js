@@ -4,7 +4,7 @@ var TicketView = Backbone.View.extend({
 			'<div class="box-app-fixed-inner">'+
 				'<div class="box-app-top">' +
 					'<h2>Open Tickets</h2>' +
-					'<a href="#/tickets/new" class="btn">New Ticket</a>' +
+					'<a href="/tickets/new" class="btn">New Ticket</a>' +
 				'</div>' +
 				
 				'<div class="box-app-nav">' +
