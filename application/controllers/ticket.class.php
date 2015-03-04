@@ -57,7 +57,8 @@ class TicketController
 		}
 	}
 	
-	public function putTicketAction() {
+	public function putTicketAction() 
+	{
 		$ticket = file_get_contents('php://input');
 		
 		$ticketModel = new TicketModel($this->app);
@@ -68,7 +69,8 @@ class TicketController
 		}
 	}
 	
-	public function postReplyAction($ticketID) {
+	public function postReplyAction($ticketID) 
+	{
 		$reply = json_decode(file_get_contents('php://input'));
 		
 		$reply->ticketID = $ticketID;
@@ -83,7 +85,8 @@ class TicketController
 		}
 	}
 	
-	public function getRepliesAction($ticketID) {
+	public function getRepliesAction($ticketID) 
+	{
 		$ticket = json_decode(file_get_contents('php://input'));
 		
 		$replyModel = new ReplyModel($this->app);
@@ -91,7 +94,8 @@ class TicketController
 		return json_encode($replyModel->getReplies($ticketID));
 	}
 	
-	public function getAttachmentMetaAction($fileID) {
+	public function getAttachmentMetaAction($fileID) 
+	{
 		$ticketModel = new TicketModel($this->app);
 		
 		if($meta = $ticketModel->getFileMeta($fileID)) {
@@ -101,7 +105,8 @@ class TicketController
 		}
 	}
 	
-	public function postAttachmentAction() {
+	public function postAttachmentAction() 
+	{
 		$ticket = json_decode(file_get_contents('php://input'));
 		
 		$ticketModel = new TicketModel($this->app);
@@ -113,7 +118,8 @@ class TicketController
 		}
 	}
 	
-	public function getAttachmentAction($fileID) {
+	public function getAttachmentAction($fileID) 
+	{
 		$ticketModel = new TicketModel($this->app);
 		$file = $ticketModel->downloadAttachment($fileID);
 		
@@ -134,7 +140,8 @@ class TicketController
 		return $response;
 	}
 	
-	public function deleteAttachmentAction($fileID) {
+	public function deleteAttachmentAction($fileID) 
+	{
 		$ticketModel = new TicketModel($this->app);
 		$response = $ticketModel->deleteAttachment($fileID);
 		

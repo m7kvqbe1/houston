@@ -49,7 +49,8 @@ class UserModel
 		}
 	}
 	
-	public function getAllUsers() {
+	public function getAllUsers() 
+	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
@@ -72,7 +73,8 @@ class UserModel
 		return $docs;
 	}
 	
-	public function getUsersByRole($role) {
+	public function getUsersByRole($role) 
+	{
 		$role = strtoupper($role);
 		if(!self::roleExists($role)) throw new \InvalidArgumentException('Invalid role type: '.$role);
 		
@@ -92,7 +94,8 @@ class UserModel
 		return $docs;
 	}
 	
-	public  static function roleExists($role) {		
+	public  static function roleExists($role) 
+	{		
 		if(!in_array($role, self::$validRoles)) return false;
 		return true;
 	}
