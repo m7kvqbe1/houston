@@ -14,6 +14,10 @@ var AnalyticsView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);	
 	},
+
+	onClose: function(){
+		this.stopListening();
+	},
 	
 	render: function() {
 		this.$el.html(this.template());

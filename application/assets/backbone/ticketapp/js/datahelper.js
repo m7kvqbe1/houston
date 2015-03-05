@@ -131,7 +131,7 @@ var handlebarsHelpers = {
 var events = {
 	bindEvents: function(){
 		
-		$(window).on("resize", app.ticketsView.pageResize).on("resize", app.previewWindow.imgMaxHeight);
+		// $(window).on("resize", app.ticketsView.pageResize).on("resize", app.previewWindow.imgMaxHeight);
 
 		//Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){

@@ -2,6 +2,14 @@ Backbone.View.prototype.markAsChanged = function () {
 	app.changed = Backbone.history.fragment;
 };
 
+Backbone.View.prototype.close = function(){
+  this.remove();
+  this.unbind();
+  if (this.onClose){
+    this.onClose();
+  }
+};
+
 var FormView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
@@ -31,6 +39,10 @@ var FormView = Backbone.View.extend({
 		//FILES VIEW
 		this.fileUploadView = new FileUploadView({collection: app.filesUploadCollection});
 		this.fileUploadView.parent = this;
+	},
+
+	onClose: function(){
+		this.fileUploadView.close();
 	},
 
 	render: function(){

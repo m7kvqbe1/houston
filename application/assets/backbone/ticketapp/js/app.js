@@ -82,29 +82,6 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	initViews: function() {
-		// TICKETS VIEW
-		this.ticketsView = new TicketView({collection: this.tickets.filtered});
-		
-		// TICKET VIEW
-		this.ticketDetailView = new TicketDetailView({model: this.ticketDetailModel});
-
-		// NEW TICKET VIEW
-		this.formView = new FormView({model: new TicketModel()});
-		
-		//----------------------------------------
-		
-		// PEOPLE VIEW
-		this.peopleView = new PeopleView({collection: this.agentsCollection});
-
-		// CLIENTS VIEW
-		this.clientsView = new ClientsView({collection: this.clients});
-		
-		// ANALYTICS VIEW
-		this.analyticsView = new AnalyticsView({model: this.user});
-		
-		// ACCOUNT VIEW
-		this.accountView = new AccountView({model: this.user});
-
 		// PREVIEW WINDOW
 		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
 
@@ -126,9 +103,22 @@ var AppRouter = Backbone.Router.extend({
 		$(function() { Backbone.history.start({ pushState: true, root: app.root })});
 	},
 
+	
+ 	currentView: false,
+	showView: function(view) {
+		if (this.currentView){
+		this.currentView.close();
+		}
+
+		this.currentView = view;
+
+		$("#app").html(this.currentView.render().el);
+	},
+
 	// Define controllers
 	indexFrontController: function() {
-		$('#app').html(this.ticketsView.render().el);
+		var ticketsView = new TicketsView({collection: this.tickets.filtered});
+		this.showView(ticketsView);
 	},
 
 	ticketDetailsFrontController: function(ticket) {
@@ -136,24 +126,29 @@ var AppRouter = Backbone.Router.extend({
 		this.ticketDetailModel.set(this.tickets.get(ticket).attributes);
 		$.when(this.ticketDetailModel.messagesCollection.fetch())
 		.done(function(){
-			$('#app').html(app.ticketDetailView.render().el);
+			var ticketDetailView = new TicketDetailView({model: app.ticketDetailModel});
+			app.showView(ticketDetailView);
 		});
 	},
 
 	ticketFormFrontController: function() {
-		$('#app').html(this.formView.render().el);
+		var formView = new FormView({model: new TicketModel()});
+		this.showView(formView);
 	},
 	
 	peopleOverviewFrontController: function() {
-		$('#app').html(this.peopleView.render().el);
+		var peopleView = new PeopleView({collection: this.agentsCollection});
+		this.showView(peopleView);
 	},
 	
 	accountMainFrontController: function() {
-		$('#app').html(this.accountView.render().el);
+		var accountView = new AccountView({model: this.user});
+		this.showView(accountView);
 	},
 	
 	analyticsMainFrontController: function() {
-		$('#app').html(this.analyticssView.render().el);
+		var analyticsView = new AnalyticsView({model: this.user});
+		this.showView(analyticsView);
 	},
 
 	// 	CUSTOM EXECUTE METHOD

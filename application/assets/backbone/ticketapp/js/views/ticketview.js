@@ -91,6 +91,11 @@ var TicketDetailView = Backbone.View.extend({
 			}
 		});
 	},
+
+	onClose: function(){
+		this.ticketHeaderView.close();
+		this.messagesView.close();
+	},
 	
 	render: function (){	
 		this.$el.html(this.template(this.model));
@@ -248,6 +253,11 @@ var TicketHeaderView = Backbone.View.extend({
 
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);
+	},
+
+	onClose: function(){
+		console.log('headerStop');
+		this.stopListening();
 	},
 
 	render: function (){

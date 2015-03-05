@@ -1,5 +1,5 @@
 var BufferClientUserModel = Backbone.Model.extend({
-	url: '/user',
+	url: '/api/user',
 	initialize: function(){
 		this.on("sync", function(){
 			// Fetch the users Collection, which resets the client's userCollections
@@ -9,7 +9,7 @@ var BufferClientUserModel = Backbone.Model.extend({
 });
 
 var ClientUserModel = Backbone.Model.extend({
-	url: '/user',
+	url: '/api/user',
 	initialize: function(){
 		// Create model's view as an attribute of itself
 		this.modelView = new UserView({model: this});

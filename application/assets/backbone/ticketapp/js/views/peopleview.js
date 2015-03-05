@@ -43,15 +43,18 @@ var PeopleView = Backbone.View.extend({
 	
 	initialize: function() {		
 		this.listenTo(this.collection, "add change remove", this.render);
-
 		this.collection.view = this;
+		this.clientsView = new ClientsView({collection: app.clients}); 
+	},
+
+	onClose: function(){
+		this.stopListening();
+		this.clientsView.close();
 	},
 		
 	render: function() {
 		this.$el.html(this.template(this.collection));	
-		this.$('#clients-wrap').append(app.clientsView.$el); 
-		app.clientsView.render();
-		
+		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({
 			'click .box-app-top .btn':'addToggle',
 			'click .add-agent .cancel-btn':'addToggle',
@@ -78,7 +81,5 @@ var PeopleView = Backbone.View.extend({
 				app.addAgentModel.clear();
 			}, this)
 		});
-
-	}
-			
+	}			
 });

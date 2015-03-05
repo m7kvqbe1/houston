@@ -1,4 +1,4 @@
-var TicketView = Backbone.View.extend({
+var TicketsView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
@@ -58,6 +58,10 @@ var TicketView = Backbone.View.extend({
 	initialize: function() {	
 		this.listenTo(this.collection, "reset add remove change sort sync", this.render);		
 	},
+
+	onClose: function(){
+		this.stopListening();
+	},
 		
 	render: function() {
 		this.$el.html(this.template(this.collection));	
@@ -75,9 +79,9 @@ var TicketView = Backbone.View.extend({
 		return this;		
 	},
 
-	pageResize: function(){
-		this.$('.box-app').css('min-height', houston.calculateBoxHeight());
-	},
+	// pageResize: function(){
+	// 	this.$('.box-app').css('min-height', houston.calculateBoxHeight());
+	// },
 	
 	all: function(){
 		this.collection.reset(app.tickets.allTickets());

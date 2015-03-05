@@ -25,6 +25,13 @@ var ClientsView = Backbone.View.extend({
 		_.bindAll(this, "renderClient");
 	},
 
+	onClose: function(){
+		this.stopListening();
+		this.collection.each(function(model){
+			model.modelView.close();
+		});
+	},
+
 	renderClient: function(model) {
 		var clientView = model.modelView;
 		clientView.parent = this;
@@ -86,15 +93,19 @@ var ClientView = Backbone.View.extend({
 		'</div>'
 	),	
 
-	initialize: function(){
-		this.listenTo(this.model, "sync", this.render);		
+	initialize: function(){	
+		this.listenTo(this.model, "sync", this.render);	//Listener only required when edit client functionality is added as changes to the collection above trigger a render
 		// Create usersView as a child of the client view, populate it with the model's usersCollection
 		this.usersView = new UsersView({ collection: this.model.usersCollection});
 		this.usersView.parent = this;
 	},
 
+	onClose: function(){
+		this.stopListening();
+		this.usersView.close();
+	},
+
 	render: function(){	
-		// console.log(this.model);
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
@@ -137,6 +148,10 @@ var UsersView = Backbone.View.extend({
 		_.bindAll(this, "renderUser");
 	},
 
+	onClose: function(){
+		this.stopListening();
+	},
+
 	renderUser: function(model) {
 		var userView = model.modelView;
 		userView.parent = this;
@@ -166,10 +181,6 @@ var UserView = Backbone.View.extend({
 				'<h4>Awaiting Verification</h4>'+
 			'{{/if}}'
 	),
-
-	initialize: function(){
-
-	},
 
 	render: function(){
 		this.$el.html(this.template(this.model));

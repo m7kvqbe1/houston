@@ -53,6 +53,10 @@ var FileUploadView = Backbone.View.extend({
 		this.listenTo(this.collection, 'add', this.markAsChanged);
 	},
 
+	onClose: function(){
+		this.stopListening();
+	},
+
 	render : function(){
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({

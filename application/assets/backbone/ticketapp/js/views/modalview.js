@@ -26,11 +26,6 @@ var ModalView = Backbone.View.extend({
 		$('#modal-window').show();
 	},
 
-	close: function(){
-		this.remove();
-		this.unbind();
-	},
-
 	createLogOutModal: function(){
 		this.model.set({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true});
 		this.confirm = function(){
