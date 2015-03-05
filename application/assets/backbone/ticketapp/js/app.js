@@ -81,7 +81,6 @@ var AppRouter = Backbone.Router.extend({
 		
 	},
 
-	viewInit: false,
 	initViews: function() {
 		// TICKETS VIEW
 		this.ticketsView = new TicketView({collection: this.tickets.filtered});
@@ -95,7 +94,7 @@ var AppRouter = Backbone.Router.extend({
 		//----------------------------------------
 		
 		// PEOPLE VIEW
-		this.peopleView = new PeopleView({collection: this.agentsCollection}); 
+		this.peopleView = new PeopleView({collection: this.agentsCollection});
 
 		// CLIENTS VIEW
 		this.clientsView = new ClientsView({collection: this.clients});
@@ -109,7 +108,7 @@ var AppRouter = Backbone.Router.extend({
 		// PREVIEW WINDOW
 		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
 
-		// UPDATE ALERT VIEW 
+		// UPDATE ALERT VIEW
 		this.updateAlertView = new UpdateAlertView({collection: this.tickets});
 
 		// MODAL WARNING VIEW
@@ -119,56 +118,42 @@ var AppRouter = Backbone.Router.extend({
 
 		events.bindEvents();
 
-		this.viewInit = true;
-	},
-	
-	onLoadRender: function(view, ticketID) {
-		var _this = this;
-					
-		(function check() {
-			if(_this.viewInit) {
-				if(ticketID){//If an individual ticket
-					_this.ticketDetailModel.set(_this.tickets.get(ticketID).attributes);
-				}
-				$('#app').html(_this[view].render().el);
-				$('#preview-window').append(app.previewWindow.$el);
-				$('#modal-window').append(app.modalView.$el);
-				$('#update-alert').append(app.updateAlertView.$el);
-				app.updateAlertView.render();
-				clearTimeout(timer);
-			} else {
-				var timer = setTimeout(check, 50);	
-			}
-		})();
+		$('#preview-window').append(app.previewWindow.$el);
+		$('#modal-window').append(app.modalView.$el);
+		$('#update-alert').append(app.updateAlertView.$el);
+		//this.updateAlertView.render();
+
+		$(function() { Backbone.history.start({ pushState: true, root: app.root })});
 	},
 
 	// Define controllers
 	indexFrontController: function() {
-		this.onLoadRender('ticketsView');
+		$('#app').html(this.ticketsView.render().el);
 	},
 
 	ticketDetailsFrontController: function(ticket) {
 		this.ticketDetailModel.messagesCollection.url = '/api/tickets/reply/' + ticket;
+		this.ticketDetailModel.set(this.tickets.get(ticket).attributes);
 		$.when(this.ticketDetailModel.messagesCollection.fetch())
 		.done(function(){
-			app.onLoadRender('ticketDetailView', ticket);
+			$('#app').html(app.ticketDetailView.render().el);
 		});
 	},
 
 	ticketFormFrontController: function() {
-		this.onLoadRender('formView');
+		$('#app').html(this.formView.render().el);
 	},
 	
 	peopleOverviewFrontController: function() {
-		this.onLoadRender('peopleView');
+		$('#app').html(this.peopleView.render().el);
 	},
 	
 	accountMainFrontController: function() {
-		this.onLoadRender('accountView');
+		$('#app').html(this.accountView.render().el);
 	},
 	
 	analyticsMainFrontController: function() {
-		this.onLoadRender('analyticsView');
+		$('#app').html(this.analyticssView.render().el);
 	},
 
 	// 	CUSTOM EXECUTE METHOD
@@ -198,5 +183,3 @@ var AppRouter = Backbone.Router.extend({
 });
 
 var app = new AppRouter();
-
-$(function() { Backbone.history.start({ pushState: true, root: app.root })});
