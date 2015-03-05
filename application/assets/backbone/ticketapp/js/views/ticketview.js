@@ -256,7 +256,6 @@ var TicketHeaderView = Backbone.View.extend({
 	},
 
 	onClose: function(){
-		console.log('headerStop');
 		this.stopListening();
 	},
 

@@ -78,10 +78,6 @@ var TicketsView = Backbone.View.extend({
 		// app.filesUploadCollection.reset();
 		return this;		
 	},
-
-	// pageResize: function(){
-	// 	this.$('.box-app').css('min-height', houston.calculateBoxHeight());
-	// },
 	
 	all: function(){
 		this.collection.reset(app.tickets.allTickets());

@@ -129,9 +129,17 @@ var handlebarsHelpers = {
 }
 
 var events = {
+	pageResize: function(){
+		$('.box-app').css('min-height', houston.calculateBoxHeight());
+	},
+
+	imgMaxHeight: function(){
+		this.$('.preview-img').css('max-height', houston.previewImageResize());
+	},
+
 	bindEvents: function(){
-		
-		// $(window).on("resize", app.ticketsView.pageResize).on("resize", app.previewWindow.imgMaxHeight);
+
+		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
 		//Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){

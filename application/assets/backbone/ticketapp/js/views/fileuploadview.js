@@ -45,7 +45,6 @@ var FileUploadView = Backbone.View.extend({
 			'{{/each}}'+
 			'</ul>' +	
 		'</div>'
-
 	),
 
 	initialize : function(){
@@ -215,10 +214,6 @@ var PreviewWindow = Backbone.View.extend({
 
 	initialize: function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
-	},
-
-	imgMaxHeight: function(){
-		this.$('.preview-img').css('max-height', houston.previewImageResize());
 	},
 
 	render: function(){
