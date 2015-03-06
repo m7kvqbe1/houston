@@ -2153,53 +2153,6 @@
         ]
     },
     {
-        "name": "merqlove/airbrake-silex-service-provider",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/merqlove/airbrake-silex-service-provider.git",
-            "reference": "030f906f950053aef2efc6f4d495c34c91d2ed07"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/merqlove/airbrake-silex-service-provider/zipball/030f906f950053aef2efc6f4d495c34c91d2ed07",
-            "reference": "030f906f950053aef2efc6f4d495c34c91d2ed07",
-            "shasum": ""
-        },
-        "require": {
-            "dbtlr/php-airbrake": "dev-master",
-            "php": ">=5.3.1"
-        },
-        "time": "2013-10-07 15:48:43",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Merqlove": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Alexander Merkulov",
-                "email": "sasha@merqlove.ru"
-            }
-        ],
-        "description": "This allows use php-airbrake module as a service in Silex.",
-        "homepage": "https://github.com/merqlove/airbrake-silex-service-provider",
-        "keywords": [
-            "airbrake",
-            "exceptions",
-            "logging",
-            "service provider",
-            "silex"
-        ]
-    },
-    {
         "name": "monolog/monolog",
         "version": "1.13.0",
         "version_normalized": "1.13.0.0",
@@ -2272,6 +2225,53 @@
             "log",
             "logging",
             "psr-3"
+        ]
+    },
+    {
+        "name": "merqlove/airbrake-silex-service-provider",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/merqlove/airbrake-silex-service-provider.git",
+            "reference": "030f906f950053aef2efc6f4d495c34c91d2ed07"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/merqlove/airbrake-silex-service-provider/zipball/030f906f950053aef2efc6f4d495c34c91d2ed07",
+            "reference": "030f906f950053aef2efc6f4d495c34c91d2ed07",
+            "shasum": ""
+        },
+        "require": {
+            "dbtlr/php-airbrake": "dev-master",
+            "php": ">=5.3.1"
+        },
+        "time": "2013-10-07 15:48:43",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Merqlove": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Alexander Merkulov",
+                "email": "sasha@merqlove.ru"
+            }
+        ],
+        "description": "This allows use php-airbrake module as a service in Silex.",
+        "homepage": "https://github.com/merqlove/airbrake-silex-service-provider",
+        "keywords": [
+            "airbrake",
+            "exceptions",
+            "logging",
+            "service provider",
+            "silex"
         ]
     }
 ]
