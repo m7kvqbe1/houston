@@ -3,11 +3,11 @@ Backbone.View.prototype.markAsChanged = function () {
 };
 
 Backbone.View.prototype.close = function(){
-  this.remove();
-  this.unbind();
-  if (this.onClose){
-    this.onClose();
-  }
+	this.remove();
+	this.unbind();
+	if (this.onClose){
+	this.onClose();
+	}
 };
 
 var FormView = Backbone.View.extend({

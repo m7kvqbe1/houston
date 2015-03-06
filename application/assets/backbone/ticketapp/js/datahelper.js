@@ -154,7 +154,11 @@ var events = {
 		});
 
 		$('.log-out').click(function(){
-			app.modalView.createLogOutModal();
+			modal.createModal({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true},
+		    	function(){
+					window.location.href = 'http://' + window.location.hostname + '/logout';
+				}
+		    );
 		});
 
 		//artsy.github.io/blog/2012/06/25/replacing-hashbang-routes-with-pushstate/

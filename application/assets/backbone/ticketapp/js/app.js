@@ -85,20 +85,11 @@ var AppRouter = Backbone.Router.extend({
 		// PREVIEW WINDOW
 		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
 
-		// UPDATE ALERT VIEW
-		this.updateAlertView = new UpdateAlertView({collection: this.tickets});
-
-		// MODAL WARNING VIEW
-		this.modalView = new ModalView({model: new Backbone.Model()});
-
 		handlebarsHelpers.bindHelpers();
 
 		events.bindEvents();
 
 		$('#preview-window').append(app.previewWindow.$el);
-		$('#modal-window').append(app.modalView.$el);
-		$('#update-alert').append(app.updateAlertView.$el);
-		//this.updateAlertView.render();
 
 		$(function() { Backbone.history.start({ pushState: true, root: app.root })});
 	},
@@ -162,14 +153,22 @@ var AppRouter = Backbone.Router.extend({
 		} else if (!this.changed && this.executeArguments){
 			this.executeArguments.callback.apply(this, this.executeArguments.args);
 	    	this.executeArguments = false;
-	    //If something has changed set the arguments to global variables to be use in the future 
+	    //If something has changed set the arguments to global variables to be use in the future and create modal
 	    } else {
 	    	this.executeArguments = {
 		    	callback: callback,
 		    	args: args,
 		    	name: name
 		    }
-		    app.modalView.createUnsavedChangesModal();
+	    	modal.createModal({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true},
+		    	function(){
+					app.changed = false;
+					app.execute();
+				},
+				function(){
+					app.navigate(app.changed, {trigger: false});
+				}
+		    );			    
 	    }
 	    //Always hide preview window when navigating
 	    $('#preview-window').hide();
@@ -178,3 +177,14 @@ var AppRouter = Backbone.Router.extend({
 });
 
 var app = new AppRouter();
+
+var modal = {
+
+	createModal: function(attributesObj, confirmCallback, cancelCallback){
+		var modalView = new ModalView({model: new Backbone.Model(attributesObj)});
+		if(confirmCallback) modalView.confirmBehaviour = confirmCallback;
+		if(cancelCallback) modalView.cancelBehaviour = cancelCallback;
+		$('#modal-window').append(modalView.$el); //Why does this only work with $ and seperate render?
+		modalView.render();
+	}
+}

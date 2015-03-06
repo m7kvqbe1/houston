@@ -26,28 +26,15 @@ var ModalView = Backbone.View.extend({
 		$('#modal-window').show();
 	},
 
-	createLogOutModal: function(){
-		this.model.set({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true});
-		this.confirm = function(){
-			window.location.href = 'http://' + window.location.hostname + '/logout';
-		};
-		this.cancel = function(){
-			$('#modal-window').hide();
-		};
-		this.render();
+	cancel: function(){
+		if(this.cancelBehaviour) this.cancelBehaviour();
+		this.close();
+		$('#modal-window').hide();
 	},
 
-	createUnsavedChangesModal: function(){
-		this.model.set({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true});
-		this.confirm = function(){
-			app.changed = false;
-			$('#modal-window').hide();
-			app.execute();
-		};
-		this.cancel = function(){
-			$('#modal-window').hide();
-			app.navigate(app.changed, {trigger: false});
-		};
-		this.render();
+	confirm: function(){
+		if(this.confirmBehaviour) this.confirmBehaviour();
+		this.close();
+		$('#modal-window').hide();
 	}
 });
