@@ -97,7 +97,7 @@ class PeopleController {
 			
 			$message = \Swift_Message::newInstance()
 				->setSubject('Welcome to Houston!')
-				->setFrom(array('noreply@houstonsupportdesk.com'))
+				->setFrom(array(DEFAULT_FROM))
 				->setTo(array($data->emailAddress))
 				->setBody($emailBody, 'text/html');
 			

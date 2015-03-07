@@ -24,8 +24,7 @@ class IndexController
 		$cookies = $request->cookies;		
 		$token = $cookies->get('r');
 		
-		$remember = (is_null($token)) ? false : $userModel->rememberMeLookup($token);
-		if($remember !== false) {
+		if($createSessionFlag = (is_null($token)) ? false : $userModel->rememberMeLookup($token)) {
 			// Load users company to get the database identifier
 			$companyModel = new CompanyModel($this->app);
 			$companyModel->loadCompanyByID($remember['companyID']);

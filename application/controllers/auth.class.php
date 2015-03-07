@@ -75,6 +75,7 @@ class AuthController
 	{
 		$json = json_decode(file_get_contents('php://input'));
 		
+		// Extract stipe information and clean up object
 		$stripeToken = $json->stripeToken; 
 		unset($json->stripeToken);
 		
@@ -111,7 +112,7 @@ class AuthController
 			$customer = $payment->createStripeCustomer($payment->token, $json->_id, $payment->plan['id']);
 		} catch(\Stripe_Error $e) {
 			$body = $e->getJsonBody();
-			return json_encode($body['error']);
+			return json_encode($body['error']);	// Update to handle this with relevant ApiResponses!
 		}
 		
 		// Send verification email
@@ -120,7 +121,7 @@ class AuthController
 		
 		$message = \Swift_Message::newInstance()
 			->setSubject('Welcome to Houston!')
-			->setFrom(array('noreply@houstonsupportdesk.com'))
+			->setFrom(array(DEFAULT_FROM))
 			->setTo(array($json->emailAddress))
 			->setBody($emailBody, 'text/html');
 		
@@ -165,7 +166,7 @@ class AuthController
 		
 		$message = \Swift_Message::newInstance()
 			->setSubject('Houston - Reset Password')
-			->setFrom(array('noreply@houstonsupportdesk.com'))
+			->setFrom(array(DEFAULT_FROM))
 			->setTo(array($data->emailAddress))
 			->setBody($emailBody, 'text/html');
 		

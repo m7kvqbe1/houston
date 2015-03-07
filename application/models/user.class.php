@@ -96,8 +96,7 @@ class UserModel
 	
 	public  static function roleExists($role) 
 	{		
-		if(!in_array($role, self::$validRoles)) return false;
-		return true;
+		return (in_array($role, self::$validRoles)) ? true : false;
 	}
 	
 	public function setProperty($userID, $property, $value) 
@@ -142,8 +141,7 @@ class UserModel
 	
 	private static function propertyExists($property) 
 	{
-		if(!in_array($property, self::$validProperties)) return false;		
-		return true;
+		return (in_array($property, self::$validProperties)) ? true : false;
 	}
 
 	public static function hashPassword($password) 

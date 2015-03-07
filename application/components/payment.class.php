@@ -61,7 +61,7 @@ class Payment
 	
 	public function createStripeCustomer($token, $userID, $plan = null) 
 	{		
-		// Load Houston user object
+		// Load user object
 		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($userID);
 		
@@ -77,7 +77,7 @@ class Payment
 			'plan' => $plan
 		));
 		
-		// Update Houston company with stripeCustomerID
+		// Update company with stripeCustomerID
 		$companyModel->setProperty($companyModel->company['_id'], 'stripeCustomerID', $this->customer->id);
 		
 		return $this->customer;
