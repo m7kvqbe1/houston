@@ -37,7 +37,7 @@ var FormView = Backbone.View.extend({
 
 	initialize: function() {
 		//FILES VIEW
-		this.fileUploadView = new FileUploadView({collection: app.filesUploadCollection});
+		this.fileUploadView = new FileUploadView({collection: app.files});
 		this.fileUploadView.parent = this;
 	},
 
@@ -46,7 +46,7 @@ var FormView = Backbone.View.extend({
 	},
 
 	render: function(){
-		app.filesUploadCollection.reset();
+		app.files.reset();
 
 		this.$el.html(this.template(this.model));	
 		this.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
@@ -74,7 +74,7 @@ var FormView = Backbone.View.extend({
 				success: _.bind(function(){		
 					app.changed = false;		
 					this.model = new TicketModel();
-					app.filesUploadCollection.reset();
+					app.files.reset();
 					app.navigate('', {trigger: true});
 				}, this)
 			}
@@ -88,7 +88,7 @@ var FormView = Backbone.View.extend({
 			authorID: app.user.attributes.id,
 			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id),
-			files: app.filesUploadCollection.createFilesArray()
+			files: app.files.createFilesArray()
 		});		
 	},
 

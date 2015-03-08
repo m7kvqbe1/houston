@@ -171,7 +171,10 @@ var FileUploadView = Backbone.View.extend({
 		var cid = button.data("cid");	
 		var fileToPreview = this.collection.get(cid);
 		fileToPreview.set({preview: true});
-		this.$el.closest('.app-wrap').find('#preview-window').show();
+		// this.$el.closest('.app-wrap').find('#preview-window').show();
+		var previewWindow = new PreviewWindow({collection: app.files.filesPreviewCollection});
+		previewWindow.render();
+		$('#modal-window').append(previewWindow.$el).show();
 	}
 
 });
@@ -216,6 +219,10 @@ var PreviewWindow = Backbone.View.extend({
 		this.listenTo(this.collection, 'reset add change remove', this.render);
 	},
 
+	onClose: function(){
+		this.stopListening();
+	},
+
 	render: function(){
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({
@@ -242,9 +249,10 @@ var PreviewWindow = Backbone.View.extend({
 	},
 
 	previewClose: function(){
-		this.$el.closest('.app-wrap').find('#preview-window').hide();
+		$('#modal-window').hide();
 		this.collection.forEach(function(model, index) {
 		    model.unset('preview',{silent: true});
 		});
+		this.close();
 	}
 });

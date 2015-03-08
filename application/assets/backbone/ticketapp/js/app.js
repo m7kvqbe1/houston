@@ -41,11 +41,8 @@ var AppRouter = Backbone.Router.extend({
 		// AGENTS COLLECTION
 		this.agentsCollection =  new Backbone.Collection();
 
-		//FILESUPLOAD COLLECTION
-		this.filesUploadCollection = new FilesUpload();
-
-		//FILEPREVIEW COLLECTION
-		this.filesPreviewCollection = new FilesPreview();
+		//FILES COLLECTION
+		this.files = new Files();
 		
 		// BUFFER CLIENT MODEL
 		this.addClientModel = new BufferClientModel();
@@ -62,7 +59,7 @@ var AppRouter = Backbone.Router.extend({
 		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
 		.done(function(){
 			app.setUpSocket();
-			app.initViews();
+			app.startHistory();
 		});
 
 	},
@@ -81,28 +78,17 @@ var AppRouter = Backbone.Router.extend({
 		
 	},
 
-	initViews: function() {
-		// PREVIEW WINDOW
-		this.previewWindow = new PreviewWindow({collection: app.filesPreviewCollection});
-
+	startHistory: function() {
 		handlebarsHelpers.bindHelpers();
-
 		events.bindEvents();
-
-		$('#preview-window').append(app.previewWindow.$el);
-
 		$(function() { Backbone.history.start({ pushState: true, root: app.root })});
 	},
 
 	
  	currentView: false,
 	showView: function(view) {
-		if (this.currentView){
-		this.currentView.close();
-		}
-
+		if (this.currentView) this.currentView.close();
 		this.currentView = view;
-
 		$("#app").html(this.currentView.render().el);
 	},
 
@@ -170,8 +156,8 @@ var AppRouter = Backbone.Router.extend({
 				}
 		    );			    
 	    }
-	    //Always hide preview window when navigating
-	    $('#preview-window').hide();
+	    //Always hide preview window when navigating 
+	    $('#modal-window').hide();
     }
 
 });

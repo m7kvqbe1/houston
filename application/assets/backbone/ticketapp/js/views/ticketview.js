@@ -100,7 +100,7 @@ var TicketDetailView = Backbone.View.extend({
 	render: function (){	
 		this.$el.html(this.template(this.model));
 
-		app.filesUploadCollection.reset();
+		app.files.reset();
 
 		this.$('.box-app-fixed-inner').append(this.ticketHeaderView.$el);
 		this.ticketHeaderView.render();
@@ -184,7 +184,7 @@ var TicketDetailView = Backbone.View.extend({
 			"authorID": app.user.id,
 			"date": new Date(),
 			"message": this.$el.find('textarea[name="new-textarea"]').val(),
-			"files": app.filesUploadCollection.createFilesArray()
+			"files": app.files.createFilesArray()
 		};
 
 		app.addMessageModel.url = '/api/tickets/reply/' + this.model.id;
@@ -211,13 +211,15 @@ var TicketDetailView = Backbone.View.extend({
 		var ul = button.closest('ul');
 		if (ul.data("reply")){
 			var messageRef = ul.data("reply");
-			app.filesPreviewCollection.createImagesCollection(this.model.messagesCollection.get(messageRef).attributes.files);
+			app.files.createImagesCollectionFromArray(this.model.messagesCollection.get(messageRef).attributes.files);
 		} else {
-			app.filesPreviewCollection.createImagesCollection(this.model.attributes.files);
+			app.files.createImagesCollectionFromArray(this.model.attributes.files);
 		}
 
-		app.filesPreviewCollection.models[index].set({preview:true});
-		this.$el.closest('.app-wrap').find('#preview-window').show();
+		app.files.filesPreviewCollection.models[index].set({preview:true});
+		var previewWindow = new PreviewWindow({collection: app.files.filesPreviewCollection});
+		previewWindow.render();
+		$('#modal-window').append(previewWindow.$el).show();
 
 	}
 	
