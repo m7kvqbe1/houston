@@ -20,6 +20,7 @@ require_once __DIR__.'/vendor/autoload.php';
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -37,9 +38,6 @@ $app['charset'] = 'UTF-8';
 // Register URL generator service provider
 $app->register(new UrlGeneratorServiceProvider());
 
-// Register session handling service provider
-$app->register(new SessionServiceProvider());
-
 // Register controller service provider
 $app->register(new ServiceControllerServiceProvider());
 
@@ -52,6 +50,12 @@ $app->register(new MongoServiceProvider, array(
         )
     ),
 ));
+
+// Register session handling service provider
+$app->register(new SessionServiceProvider());
+$app['session.storage.handler'] = $app->share(function ($app) {
+	return new MongoDbSessionHandler($app['mongo']['default'], array('database' => 'houston', 'collection' => 'sessions'));
+});
 
 // Register Monolog service provider for local logging
 $app->register(new MonologServiceProvider(), array(
