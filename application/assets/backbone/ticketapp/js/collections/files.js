@@ -1,11 +1,25 @@
-var FilesUpload = Backbone.Collection.extend({
+var Files = Backbone.Collection.extend({
 	model: FileUploadModel,	
 	url: '/api/tickets/file/add',
 
 	initialize: function(){
+		this.filesPreviewCollection = new Backbone.Collection();
+
 		this.on("reset add change delete", function(){		
-			app.filesPreviewCollection.reset(this.createImagesCollection());
+			this.filesPreviewCollection.reset(this.createImagesCollection());
 		});
+	},
+
+	createImagesCollectionFromArray: function(models){
+		var imagesArray = [];
+		models.filter(function(model){
+			if(model.type){
+				if(houston.isDisplayableImage(model.type)){
+					imagesArray.push(model);
+				}	
+			}		
+		});
+		this.filesPreviewCollection.reset(imagesArray);
 	},
 
 	createImagesCollection: function(){
@@ -32,22 +46,5 @@ var FilesUpload = Backbone.Collection.extend({
 			filesArray.push(fileData);
 		});
 		return filesArray;
-	}
-});
-
-
-var FilesPreview = Backbone.Collection.extend({
-	model: FileUploadModel,	
-
-	createImagesCollection: function(models){
-		var imagesArray = [];
-		models.filter(function(model){
-			if(model.type){
-				if(houston.isDisplayableImage(model.type)){
-					imagesArray.push(model);
-				}	
-			}		
-		});
-		this.reset(imagesArray);
 	}
 });
