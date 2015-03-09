@@ -81,15 +81,19 @@ var AppRouter = Backbone.Router.extend({
 	startHistory: function() {
 		handlebarsHelpers.bindHelpers();
 		events.bindEvents();
-		$(function() { Backbone.history.start({ pushState: true, root: app.root })});
-	},
+		this.modalWindow = $('#modal-window');
+		this.appElement = $("#app");
+		this.updateElem = $("update-alert");
+		this.tickets.countUpdated();
 
+		$(function() { Backbone.history.start({ pushState: true, root: app.root })});		
+	},
 	
  	currentView: false,
 	showView: function(view) {
 		if (this.currentView) this.currentView.close();
 		this.currentView = view;
-		$("#app").html(this.currentView.render().el);
+		this.appElement.html(this.currentView.render().el);
 	},
 
 	// Define controllers
@@ -135,6 +139,8 @@ var AppRouter = Backbone.Router.extend({
 	    //If nothing has been changed  and no arguments have been set then continue with execute as normal
 	    if(!this.changed && !this.executeArguments){
 	    	if (callback) callback.apply(this, args);
+	    	//Close modal view if exists
+	    	if (app.modal) app.modal.close();
 	    //If something has been changed and arguments have been previously set by an attempted execute use the arguments
 		} else if (!this.changed && this.executeArguments){
 			this.executeArguments.callback.apply(this, this.executeArguments.args);
@@ -146,7 +152,7 @@ var AppRouter = Backbone.Router.extend({
 		    	args: args,
 		    	name: name
 		    }
-	    	modal.createModal({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true},
+	    	houston.createModal({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true},
 		    	function(){
 					app.changed = false;
 					app.execute();
@@ -156,21 +162,19 @@ var AppRouter = Backbone.Router.extend({
 				}
 		    );			    
 	    }
-	    //Always hide preview window when navigating 
-	    $('#modal-window').hide();
     }
 
 });
 
 var app = new AppRouter();
 
-var modal = {
+// var modal = {
 
-	createModal: function(attributesObj, confirmCallback, cancelCallback){
-		var modalView = new ModalView({model: new Backbone.Model(attributesObj)});
-		if(confirmCallback) modalView.confirmBehaviour = confirmCallback;
-		if(cancelCallback) modalView.cancelBehaviour = cancelCallback;
-		$('#modal-window').append(modalView.$el); //Why does this only work with $ and seperate render?
-		modalView.render();
-	}
-}
+// 	createModal: function(attributesObj, confirmCallback, cancelCallback){
+// 		var modalView = new ModalView({model: new Backbone.Model(attributesObj)});
+// 		if(confirmCallback) modalView.confirmBehaviour = confirmCallback;
+// 		if(cancelCallback) modalView.cancelBehaviour = cancelCallback;
+// 		app.modalWindow.append(modalView.$el); //Why does this only work with $ and seperate render?
+// 		modalView.render();
+// 	}
+// }

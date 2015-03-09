@@ -6,7 +6,7 @@ var Tickets = Backbone.Collection.extend({
 		this.filtered = new Backbone.Collection(models);
 		this.on("reset add", function(){		
 			this.filtered.reset(this.allTickets());
-			// this.countUpdated();
+			this.countUpdated();
 		});
 	},
 	
@@ -58,24 +58,13 @@ var Tickets = Backbone.Collection.extend({
 		return filtered;
 	},
 
-	countUpdated: function(){
+	countUpdated: function(){	
+		if(!app.updateElem) return;
 		var updated = 0;
 		this.filter(function(model){
 			if(!houston.updateCheck(model.get('updated'))) updated++;
 		});
-		var updateCount = '';
-		if(updated > 99){
-			updateCount = '<div class="update-alert">99</div>';
-		} else if (updated > 9){
-			updateCount = '<div class="update-alert"><span>'+updated+'</span></div>'
-		} else if (updated !== 0){
-			updateCount = '<div class="update-alert">'+updated+'</div>';
-		} 
-		else {
-			updateCount = '<div class="update-alert">'+updated+'</div>';
-		}
-		$('#update-alert').html(updateCount);
-		//shouldnt have view code in the collection
+		houston.displayUpdates(updated);
 	},
 	
 	byDateOrder: 2,

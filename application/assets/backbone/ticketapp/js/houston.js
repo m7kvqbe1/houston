@@ -142,8 +142,9 @@ var houston = {
 		var updateSeen = false;
 		var i;
 		for (i = 0; i < arr.length; ++i) {
-			//could use app.user.id
-			if(arr[i] == app.user.attributes.id) {					
+			//did use app.user.attributes.id
+			// console.log(app.user.id);
+			if(arr[i] == app.user.id) {					
 				updateSeen = true;
 			}
 		}
@@ -290,6 +291,27 @@ var houston = {
 		var windowHeight = $(window).height();
 		var maxHeight = windowHeight - 190;
 		return maxHeight;
+	},
+
+	displayUpdates: function(updated){
+		if(updated == 0) {
+			return;
+		} else if (updated > 99){
+			var html = '<div class="update-alert">99</div>';
+		} else if (updated > 9){
+			var html = '<div class="update-alert"><span>'+updated+'</span></div>'
+		} else {
+			html = '<div class="update-alert">'+updated+'</div>';
+		}
+		$('#update-alert').html(html);
+	},
+
+	createModal: function(attributesObj, confirmCallback, cancelCallback){
+		app.modal = new ModalView({model: new Backbone.Model(attributesObj)});
+		if(confirmCallback) app.modal.confirmBehaviour = confirmCallback;
+		if(cancelCallback) app.modal.cancelBehaviour = cancelCallback;
+		app.modalWindow.append(app.modal.$el); //Why does this only work with $ and seperate render?
+		app.modal.render();
 	}
 
 }

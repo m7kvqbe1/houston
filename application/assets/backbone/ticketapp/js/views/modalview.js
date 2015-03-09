@@ -23,18 +23,21 @@ var ModalView = Backbone.View.extend({
 			'click .confirm': 'confirm',
 			'click .btn-can': 'cancel'
 		});
-		$('#modal-window').show();
+		app.modalWindow.show();
+	},
+
+	onClose: function(){
+		app.modalWindow.hide();
+		app.modal = false;
 	},
 
 	cancel: function(){
 		if(this.cancelBehaviour) this.cancelBehaviour();
-		this.close();
-		$('#modal-window').hide();
+		this.close();		
 	},
 
 	confirm: function(){
 		if(this.confirmBehaviour) this.confirmBehaviour();
 		this.close();
-		$('#modal-window').hide();
 	}
 });

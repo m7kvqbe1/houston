@@ -217,9 +217,9 @@ var TicketDetailView = Backbone.View.extend({
 		}
 
 		app.files.filesPreviewCollection.models[index].set({preview:true});
-		var previewWindow = new PreviewWindow({collection: app.files.filesPreviewCollection});
-		previewWindow.render();
-		$('#modal-window').append(previewWindow.$el).show();
+		app.modal = new PreviewWindow({collection: app.files.filesPreviewCollection});
+		app.modal.render();
+		app.modalWindow.append(app.modal.$el).show();
 
 	}
 	

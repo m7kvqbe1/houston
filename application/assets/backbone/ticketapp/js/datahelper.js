@@ -154,7 +154,7 @@ var events = {
 		});
 
 		$('.log-out').click(function(){
-			modal.createModal({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true},
+			houston.createModal({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true},
 		    	function(){
 					window.location.href = 'http://' + window.location.hostname + '/logout';
 				}
