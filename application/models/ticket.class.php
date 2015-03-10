@@ -10,8 +10,8 @@ class TicketModel
 	public $ticket;
 
 	public function __construct(Application $app) 
-	{
-		$this->app = $app;
+	{   
+        $this->app = $app;
 	}
 	
 	public function loadTicketByID($ticketID) 
@@ -163,7 +163,7 @@ class TicketModel
 		}
 	}
 	
-	public function downloadAttachment($fileID = null, $filename = null) 
+	public function downloadAttachment($fileID) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -199,7 +199,7 @@ class TicketModel
 		}
 	}
 	
-	public function getFileMeta($fileIDs = array()) 
+	public function getFileMeta(Array $fileIDs)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];

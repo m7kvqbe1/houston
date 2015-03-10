@@ -32,8 +32,12 @@ use Houston\Core\System;
 
 // Instantiate Silex
 $app = new Application();
-$app['debug'] = DEBUG;
 $app['charset'] = 'UTF-8';
+if(DEBUG) {
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+	$app['debug'] = true;
+}
 
 // Register URL generator service provider
 $app->register(new UrlGeneratorServiceProvider());
@@ -54,7 +58,10 @@ $app->register(new MongoServiceProvider, array(
 // Register session handling service provider
 $app->register(new SessionServiceProvider());
 $app['session.storage.handler'] = $app->share(function ($app) {
-	return new MongoDbSessionHandler($app['mongo']['default'], array('database' => 'houston', 'collection' => 'sessions'));
+	return new MongoDbSessionHandler(
+		$app['mongo']['default'], 
+		array('database' => 'houston', 'collection' => 'sessions')
+	);
 });
 
 // Register Monolog service provider for local logging

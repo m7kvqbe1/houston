@@ -26,3 +26,5 @@ $app->post('/api/tickets/file', 'ticket.controller:postAttachmentAction')->befor
 $app->get('/api/tickets/file/{fileID}', 'ticket.controller:getAttachmentAction')->before($secure);
 
 $app->delete('/api/tickets/file/{fileID}', 'ticket.controller:deleteAttachmentAction')->before($secure);
+
+$app->get('/api/tickets/file/zip', 'ticket.controller:getAttachmentsZipAction')->before($secure);

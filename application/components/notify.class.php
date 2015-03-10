@@ -3,7 +3,7 @@ namespace Houston\Component;
 	
 class Notify 
 {	
-	public static function sendRequest($url, $payload) 
+	private static function sendRequest($url, $payload) 
 	{
 		$payload = json_encode($payload);
 		
@@ -29,15 +29,15 @@ class Notify
 		return $output;
 	}
 	
+	private static function removeAttachments($payload) 
+	{
+		if(isset($payload->files)) unset($payload->files);
+		return $payload;
+	}
+	
 	public static function socketBroadcast($route, $payload, $socketNamespace = null) 
 	{
 		if(isset($socketNamespace)) $payload->socketNamespace = (string) $socketNamespace;
 		self::sendRequest(NODE_HOST.$route, self::removeAttachments($payload));
-	}
-	
-	public static function removeAttachments($payload) 
-	{
-		if(isset($payload->files)) unset($payload->files);
-		return $payload;
 	}
 }

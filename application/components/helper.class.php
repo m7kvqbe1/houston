@@ -35,4 +35,17 @@ class Helper
 		$dateTime = new \DateTime($timestamp);
 		return $dateTime->format(\DateTime::ISO8601);
 	}
+	
+	public static function createZipArchive(Array $files, $filename = null) {
+		$filename = (isset($filename)) ? self::urlFriendly($filename) : 'archive.zip';
+		
+		$zip = new \ZipArchive;
+		$zip->open($filename, \ZipArchive::CREATE);
+		foreach ($files as $file) {
+		  $zip->addFromString($file['fileName'], $file['data']);
+		}
+		$zip->close();
+		
+		return $zip;
+	}
 }
