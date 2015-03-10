@@ -67,6 +67,7 @@ var AppRouter = Backbone.Router.extend({
 	setUpSocket: function(){
 		// Connect to namespaced socket using company ID
 		var socket = io('http://houstonsupportdesk.com:3000/'+app.user.attributes.companyID);
+		
 		// On receiving a notify event display the notification popup
 		socket.on('notify', function(data) {	
 			$('#notice span').html(data);
@@ -75,7 +76,6 @@ var AppRouter = Backbone.Router.extend({
 
 			app.tickets.fetch({reset:true});
 		});
-		
 	},
 
 	startHistory: function() {

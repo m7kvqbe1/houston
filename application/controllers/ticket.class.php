@@ -51,7 +51,7 @@ class TicketController
 		$ticketModel = new TicketModel($this->app);
 		
 		if($ticketModel->add($ticket)) {
-			Notify::socketBroadcast('/new/ticket', $ticket, $this->app['session']->get('cid'));	
+			Notify::socketBroadcast('/new/ticket', $ticket, $this->app['session']->get('cid'));
 			return json_encode($ticket);
 		} else {
 			return ApiResponse::error('TICKET_ADD_FAIL');
