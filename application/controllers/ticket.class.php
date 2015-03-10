@@ -155,6 +155,8 @@ class TicketController
 			}
 		}
 		
+		if(empty($files)) return ApiResponse::error('FILE_NOT_FOUND');
+		
 		$archive = Helper::createZipArchive($files);
 		
 		$response = new Response();
