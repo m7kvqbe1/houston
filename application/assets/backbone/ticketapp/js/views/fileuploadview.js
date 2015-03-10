@@ -217,9 +217,13 @@ var PreviewWindow = Backbone.View.extend({
 
 	initialize: function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);
+		//stackoverflow.com/questions/6033010/how-to-capture-the-key-event-from-a-view
+		_.bindAll(this, 'keyEvent');
+		$(document).bind('keydown', this.keyEvent);
 	},
 
 	onClose: function(){
+		$(document).unbind('keydown', this.keyEvent);
 		app.modalWindow.hide();
 		this.stopListening();
 		app.modal = false;
@@ -229,22 +233,56 @@ var PreviewWindow = Backbone.View.extend({
 		this.$el.html(this.template(this.collection));
 		this.delegateEvents({
 			'click .preview-close': 'previewClose',
-			'click .prev': 'previous',
-			'click .next': 'next'
+			'click .prev': 'clickPrevious',
+			'click .next': 'clickNext',
+			'keydown': 'keyEvent'
 		});		
 	},
 
-	previous: function(e){
+	keyEvent: function(e){
+		var charCode = e.which;
+		if(charCode == 37){
+			this.keyMove('previous');
+		} else if (charCode == 39){
+			this.keyMove('next');
+		} else if (charCode == 27) {
+			this.previewClose();
+		}
+	//stackoverflow.com/questions/1402698/binding-arrow-keys-in-js-jquery
+	//stackoverflow.com/questions/5081015/arrow-key-events-with-jquery-not-working-in-anything-other-than-ff
+	},
+
+	keyMove: function(direction){
+		var current = this.collection.findWhere({preview: true});
+		var index = this.collection.indexOf(current);
+		if(direction == 'previous'){
+			if(index == 0) return;
+			this.previous(index);
+		} else if(direction == 'next'){
+			if(index + 1 == this.collection.length) return;
+			this.next(index);
+		}
+	},
+
+	clickPrevious: function(e){
 		var button = $(e.currentTarget);
 		var index = button.data("index");
+		this.previous(index);
+	},
+
+	clickNext: function(e){
+		var button = $(e.currentTarget);
+		var index = button.data("index");
+		this.next(index);
+	},
+
+	previous: function(index){
 		var prev = index - 1;
 		this.collection.models[index].set({preview:false});
 		this.collection.models[prev].set({preview:true})
 	},
 
-	next: function(e){
-		var button = $(e.currentTarget);
-		var index = button.data("index");
+	next: function(index){
 		var next = index + 1;
 		this.collection.models[index].set({preview:false});
 		this.collection.models[next].set({preview:true})
