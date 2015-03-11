@@ -1765,6 +1765,7 @@ input.inp-lst {
 	
 	.version {
 		float: right;
+		padding-right: 15px;
 		opacity: 1;
 	}
 	
