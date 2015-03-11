@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Houston\Component\MailboxExtended as Mailbox;
 use Houston\Model\TicketModel;
-use Houston\Model\ReplyModel;
-use Houston\Model\UserModel;
 
 class MailController {
 	protected $app;
@@ -19,28 +17,23 @@ class MailController {
 	
 	public function mailboxTestAction() 
 	{
-		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
+		$mailbox = new Mailbox($this->app, MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
 		$mailbox->getMail();
 	
 		return print_r($mailbox->emails, true);
 	}
 	
-	public function mailboxTestGenerateAction() 
-	{
-		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
-		$mailbox->getMail();
-	
-		return $mailbox->generateInfoHtml('t-2837982734982734', 'm-2837982734982734');	
-	}
-	
 	public function mailboxScanAction()
 	{
-		$mailbox = new Mailbox(MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
+		$mailbox = new Mailbox($this->app, MAILBOX_HOST, MAILBOX_USER, MAILBOX_PASSWORD);
 		$mailbox->getMail();
 		
-		// Lookup company database associated with this mailbox
+		// Lookup the company database associated with this mailbox
+		// Hardcoded for now until account admin area is created
+		// Mailboxes will be associated with companies
+		$database = 'db_e1fb6783e91bd863e16e26d5a84b1f26';
 		
-		// Tally import result
+		// Tally import status
 		$status = new \stdClass();
 		$status->newTickets = 0; 
 		$status->newReplies = 0;
@@ -49,55 +42,25 @@ class MailController {
 			$ticketID = $mailbox->getMessageMeta($email['messageBody'], 'ticket-id');
 			$messageID = $mailbox->getMessageMeta($email['messageBody'], 'message-id');
 			$message = $mailbox->extractMessage($email['messageBody']);
-			
-			if(isset($ticketID)) {
-				// Skip iteration if ticket doesn't exist
+						
+			if(isset($ticketID) && $ticketID !== false) {
 				$ticketModel = new TicketModel($this->app);
 				try {
-					$ticketModel->loadTicketByID($ticketID);	
+					$ticketModel->loadTicketByID($ticketID);
+					$mailbox->processReplyEmail($email, $ticketID, $messageID, $message);	
 				} catch(\Exception $e) {
+					// Skip this iteration if the seed ticket doesn't exist, user not found or other error processing reply
 					continue;
-				}
-				
-				// Generate reply
-				$replyModel = new ReplyModel($this->app);
-				try {
-					$replyModel->generateReply($ticketID, $message, null, $email['fromAddress']);
-				} catch(Exception $e) {
-					// User not found only registered users may reply to a ticket
-					return $e->getMessage();
-				}
-				
-				// Save reply to system
-				$replyModel->reply($replyModel->reply);
-				
-				// Send new reply email to all agents
-				$userModel = new UserModel($this->app);
-				$agents = $userModel->getUsersByRole('AGENT');
-				
-				foreach($agents as $agent) {
-					$mailbox->loadTemplate('reply');
-				}
-				
-				// Send new reply email to ticket sender
+				}			
 				
 				$status->newReplies++;
-			} else {			
-				// Generate new ticket and save it
-				$ticketModel = new TicketModel($this->app);
-				
-				$ticketModel->generateTicket($email['subject'], strip_tags($email['messageBody']), $email['date'], $email['fromAddress'], $email['firstName'], $email['lastName']);
-				$ticketModel->add($ticketModel->ticket);
-				
-				// Send new ticket emails to all agents
-				$userModel = new UserModel($this->app);
-				$agents = $userModel->getUsersByRole('AGENT');
-				
-				foreach($agents as $agent) {
-					$mailbox->loadTemplate('new');
+			} else {
+				try {
+					$mailbox->processNewTicketEmail($email);	
+				} catch(\Exception $e) {
+					// Skip this iteration if problem processing new ticket
+					continue;
 				}
-				
-				// Send new ticket email to ticket sender
 				
 				$status->newTickets++;
 			}

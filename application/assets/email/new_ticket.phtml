@@ -3,9 +3,34 @@
 	<head>		
 	</head>
 	
-	<body>		
-		{ticket_info}
-		
-		{ticket_info_hidden}
+	<body>	
+		<div>--- Please type your reply above this line ---</div>		
+		<!-- body -->
+		<table class="footer-wrap">
+			<tr>
+				<td></td>
+				<td class="container">
+					
+					<!-- content -->
+					<div class="content">
+						<table>
+							<tr>
+								<td align="left">
+									<div><strong>{ticket_subject}</strong></div>
+				
+									<div>{ticket_message}</div>
+				
+									<div>{ticket_info_hidden}</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<!-- /content -->
+					
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<!-- /body -->
 	</body>
 </html>

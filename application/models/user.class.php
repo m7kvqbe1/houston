@@ -73,17 +73,21 @@ class UserModel
 		return $docs;
 	}
 	
-	public function getUsersByRole($role) 
+	public function getUsersByRole($roles) 
 	{
-		$role = strtoupper($role);
-		if(!self::roleExists($role)) throw new \InvalidArgumentException('Invalid role type: '.$role);
+		if(!is_array($roles)) $roles[] = $roles;
+		
+		foreach($roles as &$role) {
+			$role = strtoupper($role);
+			if(!self::roleExists($role)) throw new \InvalidArgumentException('Invalid role type: '.$role);
+		}
 		
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 		
 		$collection = $db->users;
-		$result = $collection->find(array('role' => $role));
+		$result = $collection->find(array('role' => array('$all' => $roles)));
 		
 		$docs = array();
 		foreach($result as $doc) {

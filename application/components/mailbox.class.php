@@ -2,6 +2,10 @@
 namespace Houston\Component;
 
 use Silex\Application;
+use Houston\Component\Helper;
+use Houston\Model\TicketModel;
+use Houston\Model\ReplyModel;
+use Houston\Model\UserModel;
 
 abstract class Mailbox 
 {
@@ -29,8 +33,11 @@ abstract class Mailbox
 	
 	public function connect($host, $username, $password) 
 	{
-		if(!$this->inbox = imap_open($host, $username, $password)) throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
-		return $this->inbox;
+		if($this->inbox = imap_open($host, $username, $password)) {
+			return $this->inbox;
+		} else {
+			throw new \Exception('Could not connect to IMAP server: '.imap_last_error());
+		}		
 	}
 	
 	public function disconnect() 
@@ -56,7 +63,7 @@ abstract class Mailbox
 			$email['from'] = $overview[0]->from;	// Keep the unparsed from meta as a fall back
 			
 			$email['date'] = Helper::convertTimestamp($overview[0]->date);
-			$email['messageBody'] = imap_body($this->inbox, $num);	//($this->checkType($structure) ? imap_fetchbody($this->inbox, $num, 1) : $email['messageBody'] = imap_body($this->inbox, $num));
+			$email['messageBody'] = imap_body($this->inbox, $num);
 			$email['fromAddress'] = $header->from[0]->mailbox . '@' . $header->from[0]->host;
 			
 			$this->markRead($num);
@@ -69,8 +76,7 @@ abstract class Mailbox
 	
 	public function checkType($structure) 
 	{
-		if($structure->type == 1) return true;
-		return false;
+		return ($structure->type == 1) ? true : false;
 	}
 	
 	public function getHeader($header, $name) 
@@ -87,44 +93,34 @@ abstract class Mailbox
 	{
 		return imap_clearflag_full($this->inbox, $num, '\\Seen');
 	}
-	
-	public function sendEmail($to, $from, $body, $attachments = array(), $headers = array()) 
-	{
-		// Send new email using Swiftmailer library
-	}
 }
 
 // This class adds additional application specific methods (templating and ticket email parsing)
 class MailboxExtended extends Mailbox
 {
-	private $template;
+	protected $app;
 	private $templateDir = TEMPLATE_DIR;
+	public $template;
 	
-	public function __construct($host, $username, $password, $serverEncoding = 'utf-8', $templateName = null, $templateDir = null) 
+	public function __construct(Application $app, $host, $username, $password, $serverEncoding = 'utf-8', $templateName = null, $templateDir = null) 
 	{
-		parent::__construct($host, $username, $password, $serverEncoding);
+		$this->app = $app;
 		
 		if(isset($templateDir)) $this->templateDir = $templateDir;
 		if(isset($templateName)) $this->template = $this->loadTemplate($templateName);
-	}
-	
-	public function generateTemplate() 
-	{
-		$template = str_replace('{reply_chain}', $this->generateReplyHtml(), $this->template);
-		$template = str_replace('{ticket_info_hidden}', $this->generateInfoHtml(), $this->template);
 		
-		return $template;
+		parent::__construct($host, $username, $password, $serverEncoding);
 	}
 	
 	public function loadTemplate($templateName) 
 	{
 		switch($templateName) {
 			case 'reply':
-				$filename = 'reply.html';
+				$filename = 'reply.phtml';
 				break;
 			
 			case 'new':
-				$filename = 'new_ticket.html';
+				$filename = 'new_ticket.phtml';
 				break;
 				
 			default:
@@ -134,24 +130,15 @@ class MailboxExtended extends Mailbox
 		$this->template = file_get_contents(DOCUMENT_ROOT.$this->templateDir.$filename);
 	}
 	
-	private function generateReplyHtml($ticketID) 
+	public function generateInfoHtml($ticketID, $messageID) 
 	{
-		// Generate reply markup to inject into HTML email template
-	}
-	
-	private function generateNewTicketHtml($ticketID) {
-		// Generate new ticket markup to inject into HTML email template
-	}
-	
-	private function generateInfoHtml($ticketID, $messageID) 
-	{
-		// Generate hidden ticket info to inject into HTML email template
+		// Generate hidden ticket info to be inject into HTML email template
 		return '<span class="ticket-id" style="color: #fff;">'.$ticketID.'</span><span class="message-id" style="color: #fff;">'.$messageID.'</span>';
 	}
 	
 	public function getMessageMeta($message, $className) 
 	{			
-		libxml_use_internal_errors(true);	// Surpress PHP warnings because of malformed markup
+		libxml_use_internal_errors(true);	// Surpress PHP warnings because of malformed email markup
 		
 		$dom = new \DOMDocument();
 		$dom->loadHTML($message);	
@@ -165,5 +152,77 @@ class MailboxExtended extends Mailbox
 	{
 		$emailBody = trim(strip_tags($emailBody));
 		return current(explode("--- Please type your reply above this line ---", $emailBody));
+	}
+	
+	public function processNewTicketEmail($email) {
+		// Generate new ticket and save it
+		$ticketModel = new TicketModel($this->app);
+		$ticketModel->generateTicket($email['subject'], strip_tags($email['messageBody']), $email['date'], $email['fromAddress'], $email['firstName'], $email['lastName']);
+		$ticketModel->add($ticketModel->ticket);
+		
+		// Send new ticket emails to all agents
+		$userModel = new UserModel($this->app);
+		$agents = $userModel->getUsersByRole(array('AGENT', 'ADMIN'));
+		
+		foreach($agents as $agent) {
+			$this->loadTemplate('new');
+			$this->template = str_replace('{ticket_info_hidden}', $this->generateInfoHtml($ticketModel->ticket->_id->{'$id'}, null), $this->template);
+			$this->template = str_replace('{ticket_message}', $email['messageBody'], $this->template);
+			$this->template = str_replace('{ticket_subject}', $email['subject'], $this->template);
+			
+			$message = \Swift_Message::newInstance()
+				->setSubject('Houston - New Ticket - '.$email['subject'])
+				->setFrom(array(DEFAULT_FROM))
+				->setTo(array($agent['emailAddress']))
+				->setBody($this->template, 'text/html');
+			
+			$this->app['mailer']->send($message);
+		}
+		
+		// Send new ticket email to ticket sender
+		$message = \Swift_Message::newInstance()
+			->setSubject('Houston - New Ticket - '.$email['subject'])
+			->setFrom(array(DEFAULT_FROM))
+			->setReplyTo(MAILBOX_USER)	// This address should be pulled from company account mailbox settings
+			->setTo(array($email['fromAddress']))
+			->setBody($this->template, 'text/html');
+		
+		$this->app['mailer']->send($message);
+	}
+	
+	public function processReplyEmail($email, $ticketID, $messageID, $message) {
+		// Generate reply and save it
+		$replyModel = new ReplyModel($this->app);
+		$replyModel->generateReply($ticketID, $message, null, $email['fromAddress']);
+		$replyModel->reply($replyModel->reply);
+		
+		// Send new reply email to all agents
+		$userModel = new UserModel($this->app);
+		$agents = $userModel->getUsersByRole(array('AGENT', 'ADMIN'));
+		
+		foreach($agents as $agent) {
+			$this->loadTemplate('reply');
+			$this->template = str_replace('{ticket_info_hidden}', $this->generateInfoHtml($ticketModel->ticket->_id->{'$id'}, $replyModel->reply->_id->{'$id'}), $this->template);
+			$this->template = str_replace('{ticket_message}', $message, $this->template);
+			$this->template = str_replace('{ticket_subject}', $ticketModel->ticket['subject'], $this->template);
+			
+			$message = \Swift_Message::newInstance()
+				->setSubject('Houston - New Reply - '.$email['subject'])
+				->setFrom(array(DEFAULT_FROM))
+				->setTo(array($agent['emailAddress']))
+				->setBody($this->template, 'text/html');
+			
+			$this->app['mailer']->send($message);
+		}
+		
+		// Send new reply email to ticket sender
+		$message = \Swift_Message::newInstance()
+			->setSubject('Houston - New Reply - '.$email['subject'])
+			->setFrom(array(DEFAULT_FROM))
+			->setReplyTo(MAILBOX_USER)	// This address should be pulled from company account mailbox settings
+			->setTo(array($email['fromAddress']))
+			->setBody($this->template, 'text/html');
+		
+		$this->app['mailer']->send($message);
 	}
 }

@@ -9,6 +9,4 @@ $app['mail.controller'] = $app->share(function() use ($app) {
 
 $app->get('/mailbox/test', 'mail.controller:mailboxTestAction')->before($secure);
 
-$app->get('/mailbox/test/generate', 'mail.controller:mailboxTestGenerate')->before($secure);
-
 $app->get('/mailbox/scan', 'mail.controller:mailboxScanAction')->before($secure);
