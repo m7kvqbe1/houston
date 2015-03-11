@@ -11,8 +11,8 @@ class Notify
 		$ch = curl_init($url);
     	
     	// Use HTTP Header authentication for sending requests to Node.js server (non socket)
-    	//curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-    	//curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
+    	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+    	curl_setopt($ch, CURLOPT_USERPWD, NODE_USER.':'.NODE_PASSWORD);
 		
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
