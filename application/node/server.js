@@ -64,12 +64,18 @@ app.post('/new/ticket', secureRoute, function(req, res) {
 
 // Broadcast new reply notification event to the appropriate socket namespace
 app.post('/new/reply', secureRoute, function(req, res) {
-	console.log(req.body);
-	
 	var msg = req.body.message;
 	msg = helper.trimMessage(msg);
 	
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	
 	res.end();
+});
+
+// Broadcast status update notificaiton event to the appropriate socket namespace
+app.post('/status', secureRoute, function(req, res) {
+	// Get status
+	
+	// Broadcast status
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>Status Update: </strong>&nbsp;</a>');
 });
