@@ -24,13 +24,13 @@ class IndexController
 		$cookies = $request->cookies;		
 		$token = $cookies->get('r');
 		
-		if($createSessionFlag = (is_null($token)) ? false : $userModel->rememberMeLookup($token)) {
+		if($user = (is_null($token)) ? false : $userModel->rememberMeLookup($token)) {
 			// Load users company to get the database identifier
 			$companyModel = new CompanyModel($this->app);
-			$companyModel->loadCompanyByID($remember['companyID']);
+			$companyModel->loadCompanyByID($user['companyID']);
 			
 			// Authenticate session
-			System::setupSession($this->app, true, $companyModel->company['database'], (string) $remember['_id'], (string) $remember['companyID']);
+			System::setupSession($this->app, true, $companyModel->company['database'], (string) $user['_id'], (string) $user['companyID']);
 		}
 		
 		return System::generateAssets($request, $this->app);

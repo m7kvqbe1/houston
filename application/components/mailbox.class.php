@@ -160,7 +160,7 @@ class MailboxExtended extends Mailbox
 		$ticketModel->generateTicket($email['subject'], strip_tags($email['messageBody']), $email['date'], $email['fromAddress'], $email['firstName'], $email['lastName']);
 		$ticketModel->add($ticketModel->ticket);
 		
-		// Send new ticket emails to all agents
+		// Send new ticket email to all agents
 		$userModel = new UserModel($this->app);
 		$agents = $userModel->getUsersByRole(array('AGENT', 'ADMIN'));
 		
