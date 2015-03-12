@@ -15,6 +15,10 @@ $app->post('/api/tickets', 'ticket.controller:postTicketAction')->before($secure
 
 $app->put('/api/tickets/{ticketID}', 'ticket.controller:putTicketAction')->before($secure);
 
+$app->put('/api/tickets/update/status', 'ticket.controller:putTicketStatusUpdate')->before($secure);
+
+$app->put('/api/tickets/update/assignee', 'ticket.controller:putTicketAssigneeUpdate')->before($secure);
+
 $app->post('/api/tickets/reply/{ticketID}', 'ticket.controller:postReplyAction')->before($secure);
 
 $app->get('/api/tickets/reply/{ticketID}', 'ticket.controller:getRepliesAction')->before($secure);
@@ -22,6 +26,8 @@ $app->get('/api/tickets/reply/{ticketID}', 'ticket.controller:getRepliesAction')
 $app->get('/api/tickets/file/meta/{fileID}', 'ticket.controller:getAttachmentMetaAction')->before($secure);
 
 $app->post('/api/tickets/file', 'ticket.controller:postAttachmentAction')->before($secure);
+
+$app->post('/api/tickets/file/zip', 'ticket.controller:getAttachmentsZipAction')->before($secure);
 
 $app->get('/api/tickets/file/{fileID}', 'ticket.controller:getAttachmentAction')->before($secure);
 

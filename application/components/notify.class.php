@@ -3,7 +3,7 @@ namespace Houston\Component;
 	
 class Notify 
 {	
-	public static function sendRequest($url, $payload) 
+	private static function sendRequest($url, $payload) 
 	{
 		$payload = json_encode($payload);
 		
@@ -11,8 +11,8 @@ class Notify
 		$ch = curl_init($url);
     	
     	// Use HTTP Header authentication for sending requests to Node.js server (non socket)
-    	//curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-    	//curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
+    	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+    	curl_setopt($ch, CURLOPT_USERPWD, NODE_USER.':'.NODE_PASSWORD);
 		
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -29,15 +29,17 @@ class Notify
 		return $output;
 	}
 	
-	public static function socketBroadcast($route, $payload, $socketNamespace = null) 
-	{
-		if(isset($socketNamespace)) $payload->socketNamespace = (string) $socketNamespace;
-		self::sendRequest(NODE_HOST.$route, self::removeAttachments($payload));
-	}
-	
-	public static function removeAttachments($payload) 
+	private static function removeAttachments($payload) 
 	{
 		if(isset($payload->files)) unset($payload->files);
 		return $payload;
+	}
+	
+	public static function socketBroadcast($route, $payload, $socketNamespace = null) 
+	{
+		$obj = clone $payload;	// Clone object to prevent the web socket namespace being added to original
+		
+		if(isset($socketNamespace)) $obj->socketNamespace = (string) $socketNamespace;
+		self::sendRequest(NODE_HOST.$route, self::removeAttachments($obj));
 	}
 }

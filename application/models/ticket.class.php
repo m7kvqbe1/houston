@@ -10,8 +10,8 @@ class TicketModel
 	public $ticket;
 
 	public function __construct(Application $app) 
-	{
-		$this->app = $app;
+	{   
+        $this->app = $app;
 	}
 	
 	public function loadTicketByID($ticketID) 
@@ -102,17 +102,11 @@ class TicketModel
 		}
 	}
 	
-	public function edit($json) 
+	public function edit($ticket) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
-		
-		$json = str_replace('$', '', $json);
-		$ticket = json_decode($json);	
-		
-		// Remove MongoID
-		unset($ticket->_id);
 		
 		try {	
 			$id = new \MongoID($ticket->id);
@@ -163,7 +157,7 @@ class TicketModel
 		}
 	}
 	
-	public function downloadAttachment($fileID = null, $filename = null) 
+	public function downloadAttachment($fileID) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
@@ -199,7 +193,7 @@ class TicketModel
 		}
 	}
 	
-	public function getFileMeta($fileIDs = array()) 
+	public function getFileMeta(Array $fileIDs)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];

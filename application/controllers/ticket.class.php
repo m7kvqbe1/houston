@@ -8,6 +8,7 @@ use Silex\Application;
 
 use Houston\Component\ApiResponse;
 use Houston\Component\Notify;
+use Houston\Component\Helper;
 use Houston\Model\TicketModel;
 use Houston\Model\ReplyModel;
 
@@ -50,7 +51,7 @@ class TicketController
 		$ticketModel = new TicketModel($this->app);
 		
 		if($ticketModel->add($ticket)) {
-			Notify::socketBroadcast('/new/ticket', $ticket, $this->app['session']->get('cid'));	
+			Notify::socketBroadcast('/new/ticket', $ticket, $this->app['session']->get('cid'));
 			return json_encode($ticket);
 		} else {
 			return ApiResponse::error('TICKET_ADD_FAIL');
@@ -59,14 +60,39 @@ class TicketController
 	
 	public function putTicketAction() 
 	{
-		$ticket = file_get_contents('php://input');
+		$ticket = json_decode(file_get_contents('php://input'));
 		
 		$ticketModel = new TicketModel($this->app);
 		if($ticketModel->edit($ticket)) {
-			return json_encode($ticket);	
+			return json_encode($ticket);
 		} else {
 			return ApiResponse::error('TICKET_EDIT_FAIL');
 		}
+	}
+	
+	public function putTicketStatusUpdate() 
+	{
+		$ticket = json_decode(file_get_contents('php://input'));
+		
+		$ticketModel = new TicketModel($this->app);
+		if($ticketModel->edit($ticket)) {
+			Notify::socketBroadcast('/assignee/update', $ticket, $this->app['session']->get('cid'));
+			return json_encode($ticket);
+		} else {
+			return ApiResponse::error('TICKET_EDIT_FAIL');
+		}
+	}
+	
+	public function putTicketAssigneeUpdate() {
+		$ticket = json_decode(file_get_contents('php://input'));
+		
+		$ticketModel = new TicketModel($this->app);
+		if($ticketModel->edit($ticket)) {
+			Notify::socketBroadcast('/status/update', $ticket, $this->app['session']->get('cid'));
+			return json_encode($ticket);
+		} else {
+			return ApiResponse::error('TICKET_EDIT_FAIL');
+		}		
 	}
 	
 	public function postReplyAction($ticketID) 
@@ -134,6 +160,39 @@ class TicketController
 		$d = $response->headers->makeDisposition(
 			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
 			$file['fileName']
+		);
+		$response->headers->set('Content-Disposition', $d);
+		
+		return $response;
+	}
+	
+	public function getAttachmentsZipAction() {
+		$fileIDs = json_decode(file_get_contents('php://input'));
+		
+		$ticketModel = new TicketModel($this->app);
+		
+		$files = array();
+		foreach($filesIDs as $fileID) {
+			try {
+				array_push($files, $ticketModel->downloadAttachment($fileID));
+			} catch(\Exception $e) {
+				continue;
+			}
+		}
+		
+		if(empty($files)) return ApiResponse::error('FILE_NOT_FOUND');
+		
+		$archive = Helper::createZipArchive($files);
+		
+		$response = new Response();
+		$response->setContent($archive);
+		$response->headers->set('Content-Type', 'application/zip');
+		$response->headers->set('Content-Transfer-Encoding', 'binary');
+		$response->headers->set('Expires', '0');
+		
+		$d = $response->headers->makeDisposition(
+			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+			'houston-attachments-archive.zip'
 		);
 		$response->headers->set('Content-Disposition', $d);
 		

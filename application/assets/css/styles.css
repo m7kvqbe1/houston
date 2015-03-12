@@ -263,9 +263,15 @@ footer {
 	padding-top:  20px;
 }
 
+.version,
 .copy {
 	text-align: center;
 	color: #cfc3af;
+}
+
+.version {
+	text-align: center;
+	opacity: 0;
 }
 
 .get-houston {
@@ -1753,11 +1759,18 @@ input.inp-lst {
 		padding-top: 15px;
 	}
 	
+	.version,
 	.copy {
 		float: left;
 		margin: 0 15px;
 		padding-left: 15px;
 		text-align: left;
+	}
+	
+	.version {
+		float: right;
+		padding-right: 15px;
+		opacity: 1;
 	}
 	
 	.reg-form-wrap {
