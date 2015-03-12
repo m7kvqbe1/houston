@@ -54,28 +54,34 @@ db.getAllCompanyIds(function(err, companyIds) {
 
 // Broadcast new ticket notification event to the appropriate socket namespace
 app.post('/new/ticket', secureRoute, function(req, res) {	
-	var msg = req.body.message;
-	msg = helper.trimMessage(msg);
+	var msg = helper.trimMessage(req.body.message);
 	
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body._id.$id+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
-	
 	res.end();
 });
 
 // Broadcast new reply notification event to the appropriate socket namespace
 app.post('/new/reply', secureRoute, function(req, res) {
-	var msg = req.body.message;
-	msg = helper.trimMessage(msg);
+	var msg = helper.trimMessage(req.body.message);
 	
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
-	
 	res.end();
 });
 
 // Broadcast status update notificaiton event to the appropriate socket namespace
-app.post('/status', secureRoute, function(req, res) {
-	// Get status
+app.post('/update/status', secureRoute, function(req, res) {
+	var status = req.body.status;
+	var subject = helper.trimMessage(req.body.subject);
 	
-	// Broadcast status
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>Status Update: </strong>&nbsp;</a>');
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
+	res.end();
+});
+
+// Broadcast assignee update notificaiton event to the appropriate socket namespace
+app.post('/update/assignee', secureRoute, function(req, res) {
+	var status = req.body.status;
+	var subject = helper.trimMessage(req.body.subject);
+	
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
+	res.end();
 });

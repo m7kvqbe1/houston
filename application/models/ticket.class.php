@@ -102,17 +102,11 @@ class TicketModel
 		}
 	}
 	
-	public function edit($json) 
+	public function edit($ticket) 
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
-		
-		$json = str_replace('$', '', $json);
-		$ticket = json_decode($json);	
-		
-		// Remove MongoID
-		unset($ticket->_id);
 		
 		try {	
 			$id = new \MongoID($ticket->id);

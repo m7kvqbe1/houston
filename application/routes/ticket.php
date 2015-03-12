@@ -15,6 +15,10 @@ $app->post('/api/tickets', 'ticket.controller:postTicketAction')->before($secure
 
 $app->put('/api/tickets/{ticketID}', 'ticket.controller:putTicketAction')->before($secure);
 
+$app->put('/api/tickets/update/status', 'ticket.controller:putTicketStatusUpdate')->before($secure);
+
+$app->put('/api/tickets/update/assignee', 'ticket.controller:putTicketAssigneeUpdate')->before($secure);
+
 $app->post('/api/tickets/reply/{ticketID}', 'ticket.controller:postReplyAction')->before($secure);
 
 $app->get('/api/tickets/reply/{ticketID}', 'ticket.controller:getRepliesAction')->before($secure);
