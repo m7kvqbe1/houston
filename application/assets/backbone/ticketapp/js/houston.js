@@ -306,6 +306,20 @@ var houston = {
 		$('#update-alert').html(html);
 	},
 
+	// createModal: function(attributesObj, confirmCallback, cancelCallback){
+	// 	modal = new ModalView({model: new Backbone.Model(attributesObj)});
+	// 	if(confirmCallback) modal.confirmBehaviour = confirmCallback;
+	// 	if(cancelCallback) modal.cancelBehaviour = cancelCallback;
+	// 	app.modalWindow.html(modal.$el); //Why does this only work with $ and seperate render?
+	// 	modal.render();
+
+	// 	if(!app.modal){
+	// 		app.modal = modal;
+	// 	} else {
+	// 		app.modalB = modal;
+	// 	}
+	// }
+
 	createModal: function(attributesObj, confirmCallback, cancelCallback){
 		app.modal = new ModalView({model: new Backbone.Model(attributesObj)});
 		if(confirmCallback) app.modal.confirmBehaviour = confirmCallback;

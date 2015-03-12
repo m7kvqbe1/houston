@@ -240,12 +240,12 @@ var PreviewWindow = Backbone.View.extend({
 	},
 
 	keyEvent: function(e){
-		var charCode = e.which;
-		if(charCode == 37){
+		var keyCode = e.which;
+		if(keyCode == 37){
 			this.keyMove('previous');
-		} else if (charCode == 39){
+		} else if (keyCode == 39){
 			this.keyMove('next');
-		} else if (charCode == 27) {
+		} else if (keyCode == 27) {
 			this.previewClose();
 		}
 	//stackoverflow.com/questions/1402698/binding-arrow-keys-in-js-jquery

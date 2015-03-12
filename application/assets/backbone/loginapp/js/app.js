@@ -1,4 +1,14 @@
+Backbone.View.prototype.close = function(){
+	console.log('closing');
+	this.remove();
+	this.unbind();
+	if (this.onClose){
+	this.onClose();
+	}
+};
+
 var AppRouter = Backbone.Router.extend({
+	root: '/',
 	routes: {
 	//set up routes
 		"": "login",
@@ -8,38 +18,46 @@ var AppRouter = Backbone.Router.extend({
 	
 	initialize: function() {
 		
-		//instantiate the login model
-		this.loginModel = new LoginModel();
-		
-		//instantiate the ticket view and set it the login model
-		this.loginView = new LoginView({model: this.loginModel});
-		
-		//instantiate the register model
+		this.loginModel = new LoginModel();		
 		this.registerModel = new RegisterModel();
-		
-		//instantiate the register view and set it the register model
-		this.registerView = new RegisterView({model: this.registerModel});
-		
-		//instantiate the reset view and set it the login model
-		this.resetView = new ResetView({model: this.loginModel});
+
+		this.appElement = $("#app");
+		//doesnt work?
+	},
+
+	currentView: false,
+	showView: function(view) {
+		if (this.currentView) this.currentView.close();
+		this.currentView = view;
+		$("#app").html(this.currentView.render().el);
 	},
 	
 	login: function(){
-		$('#app').html(this.loginView.render().el);
+		var loginView = new LoginView({model: this.loginModel});
+		this.showView(loginView);
 	},
 
 	reset: function(token){
-		this.resetView.model.set('token', token);
-		$('#app').html(this.resetView.render().el);
+		var resetView = new ResetView({model: this.loginModel});
+		resetView.model.set('token', token);
+		this.showView(resetView);
 	},
 	
 	register: function(){
-		$('#app').html(this.registerView.render().el);
+		var registerView = new RegisterView({model: this.registerModel});
+		this.showView(registerView);
 	}
 });
 
 var app = new AppRouter();
 
-$(function() {
-	Backbone.history.start();
+$(function() { Backbone.history.start({ pushState: true, root: app.root })});
+
+$(document).on("click", "a[href]:not([data-bypass])", function(evt) {
+	var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
+	var root = location.protocol + "//" + location.host + app.root;
+	if (href.prop.slice(0, root.length) === root) {
+		evt.preventDefault();
+		Backbone.history.navigate(href.attr, true);
+	}
 });

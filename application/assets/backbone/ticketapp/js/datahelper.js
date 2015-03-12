@@ -95,6 +95,18 @@ var handlebarsHelpers = {
 
 		});
 
+		//TicketView Helpers
+		Handlebars.registerHelper("downloadTicketAttachments", function(attribute, id) {
+			console.log(attribute.length);
+			if(attribute.length > 1)return new Handlebars.SafeString('<a class="attachments-link" data-ref="'+id+'" data-type="ticket">Download All Attachments</a>');
+
+		});
+
+		Handlebars.registerHelper("downloadMessageAttachments", function(attribute, id) {
+			if(attribute.length > 1)return new Handlebars.SafeString('<a class="attachments-link" data-ref="'+id+'" data-type="message">Download All Attachments</a>');
+
+		});
+
 		//FileUploadView Helpers
 		Handlebars.registerHelper("showFileUploadPreviewLink", function(type, target, cid){ 
 			if(!target) return;
