@@ -172,7 +172,7 @@ class TicketController
 		$ticketModel = new TicketModel($this->app);
 		
 		$files = array();
-		foreach($filesIDs as $fileID) {
+		foreach($fileIDs as $fileID) {
 			try {
 				array_push($files, $ticketModel->downloadAttachment($fileID));
 			} catch(\Exception $e) {
