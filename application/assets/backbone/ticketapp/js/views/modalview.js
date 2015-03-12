@@ -21,14 +21,30 @@ var ModalView = Backbone.View.extend({
 		this.$el.html(this.template(this.model.attributes));
 		this.delegateEvents({
 			'click .confirm': 'confirm',
-			'click .btn-can': 'cancel'
+			'click .btn-can': 'cancel',
+			'keydown': 'keyEvent'
 		});
 		app.modalWindow.show();
 	},
 
+	initialize: function(){
+		_.bindAll(this, 'keyEvent');
+		$(document).bind('keydown', this.keyEvent);
+	},
+
 	onClose: function(){
+		$(document).unbind('keydown', this.keyEvent);
 		app.modalWindow.hide();
 		app.modal = false;
+	},
+
+	keyEvent: function(e){
+		var keyCode = e.which;
+		if(keyCode == 27){
+			this.cancel();
+		} else if (keyCode == 13){
+			this.confirm();
+		}
 	},
 
 	cancel: function(){

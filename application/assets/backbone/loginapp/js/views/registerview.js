@@ -13,8 +13,8 @@ var RegisterView = Backbone.View.extend({
 								'<div class="vld-cir vld-name">1</div>'+									
 							'</div>'+
 						'</div>'+
-						'<input type="text" name="reg-fn" placeholder="{{#if attributes.firstName}}{{attributes.firstName}}{{else}}First Name{{/if}}" class="vld-aa" data-vld="vld-a" val="{{attributes.firstName}}" autofocus />'+
-						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="{{#if attributes.lastName}}{{attributes.lastName}}{{else}}Last Name{{/if}}" data-vld="vld-b" val="{{attributes.lastName}}" />'+						
+						'<input type="text" name="reg-fn" placeholder="First Name" class="vld-aa" data-vld="vld-a" val="{{attributes.firstName}}" autofocus />'+
+						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="Last Name" data-vld="vld-b" val="{{attributes.lastName}}" />'+						
 					'</div>'+
 					'<div class="vld-wrap vld-pair-two">'+
 						'<div class="vld-box">'+
@@ -25,14 +25,14 @@ var RegisterView = Backbone.View.extend({
 							'</div>'+
 						'</div>'+
 						'<div class="reg-vrf">'+
-							'<input type="text" name="reg-e" placeholder="{{#if attributes.emailAddress}}{{attributes.emailAddress}}{{else}}Email Address{{/if}}" class="email vld-aa" data-vld="vld-a" val="{{attributes.emailAddress}}" />'+
+							'<input type="email" name="reg-e" placeholder="Email Address" class="email vld-aa" data-vld="vld-a" val="{{attributes.emailAddress}}" />'+
 							'<div class="vrf">'+
 								'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
 								'<div class="vrf-msg">Already<br />In Use</div>'+
 							'</div>'+
 						'</div>'+
 						'<div class="reg-vrf">'+
-							'<input class="inp-spa vld-bb company" type="text" name="reg-c" placeholder="{{#if attributes.company}}{{attributes.company}}{{else}}Company{{/if}}" data-vld="vld-b" val="{{attributes.company}}" />'+
+							'<input class="inp-spa vld-bb company" type="text" name="reg-c" placeholder="Company" data-vld="vld-b" val="{{attributes.company}}" />'+
 							'<div class="vrf">'+
 								'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
 								'<div class="vrf-msg">Already<br />In Use</div>'+
@@ -64,7 +64,7 @@ var RegisterView = Backbone.View.extend({
 					'</div>'+
 					'<button class="detailsConfirm" type="button">Confirm</button>'+
 					'<div class="beige or">or</div>'+
-					'<a class="btn-can" href="/#/">Cancel</a>'+
+					'<a class="btn-can" href="/">Cancel</a>'+
 				'</form>'+
 		'</div>'
 	),
@@ -89,7 +89,7 @@ var RegisterView = Backbone.View.extend({
 					'</div>'+			
 					'<button class="planConfirm" type="button">Confirm</button>'+
 					'<div class="beige or">or</div>'+
-					'<a class="btn-can" href="/#/">Cancel</a>'+
+					'<a class="btn-can" href="/">Cancel</a>'+
 				'</form>'+
 		'</div>'
 	),
@@ -123,7 +123,7 @@ var RegisterView = Backbone.View.extend({
 					'</div>'+		
 					'<button class="paymentConfirm" type="button">Confirm</button>'+
 					'<div class="beige or">or</div>'+
-					'<a class="btn-can" href="/#/">Cancel</a>'+
+					'<a class="btn-can" href="/">Cancel</a>'+
 				'</form>'+
 		'</div>'
 	),
@@ -139,6 +139,15 @@ var RegisterView = Backbone.View.extend({
 		'</div>'
 	),
 
+	initialize: function(){
+		_.bindAll(this, 'keyEvent');
+		$(document).bind('keydown', this.keyEvent);
+	},
+
+	onClose: function(){
+		$(document).unbind('keydown', this.keyEvent);
+	},
+
 	render: function (){	
 		this.model.set({password: ''});
 		this.$el.html(this.template(this.model));
@@ -146,37 +155,39 @@ var RegisterView = Backbone.View.extend({
 			'click .detailsConfirm': 'detailsConfirm',
 			'blur input': 'validate',
 			'focus .reg-p': 'showCount',
-			'blur .reg-p': 'hideCount',
 			'input .reg-p': 'passCount',
 			'input .inp-lst': 'passMatch',
-			'focus .email': 'hideInUse'
+			'focus .email': 'hideAlert',
+			'focus .company': 'hideAlert',
+			'keydown': 'keyEvent'
 		});
 		return this;
 	},
-	
-	hideInUse: function(e){
-		login.registerHideInUse(e.currentTarget)
+
+	keyEvent: function(e){
+		var keyCode = e.which;
+		if(keyCode == 27){
+			window.location.href = 'http://' + window.location.hostname;
+		} else if (keyCode == 13){
+			this.$el.find('form').focus();
+			this.detailsConfirm();
+		}
 	},
 	
 	passMatch: function(e){
-		login.registerPassMatch(e.currentTarget);
+		login.registerPasswordMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
-		login.registerPassCount(e.currentTarget, this.$el);
-
+		login.registerPasswordCount(e.currentTarget, this.$el);
 	},
 	
 	showCount: function(e) {	
-		login.registerShowCount(e.currentTarget);
-	},
-	
-	hideCount: function(e) {	
-		login.registerHideVrf(e.currentTarget);
+		login.registerPasswordShowCount(e.currentTarget);
 	},
 	
 	validate: function(e){
-		login.registerValidate(e.currentTarget);
+		login.inputValidation(e.currentTarget);
 	},
 	
 	detailsConfirm: function(){
@@ -204,7 +215,7 @@ var RegisterView = Backbone.View.extend({
 			// 	}
 			// );
 
-			this.$el.html(app.registerView.paymentPlanTemplate(this.model));
+			this.$el.html(this.paymentPlanTemplate(this.model));
 			this.delegateEvents({
 				'click .planConfirm': 'planConfirm'
 			});		
@@ -215,7 +226,7 @@ var RegisterView = Backbone.View.extend({
 		this.model.set({
 			plan: this.$el.find('input[type="radio"]:checked').val()
 		});
-		this.$el.html(app.registerView.paymentTemplate(this.model));
+		this.$el.html(this.paymentTemplate(this.model));
 		this.delegateEvents({
 			'click .paymentConfirm': 'paymentConfirm'
 		});

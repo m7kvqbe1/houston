@@ -3,253 +3,201 @@ String.prototype.capitalize = function() {
 };
 
 var login = {
-	loginValidate: function(input){
-		var input = $(input);
-		var form = input.closest('form');
-		var email = form.find('input[name="log-e"]');
-		var pass = form.find('input[name="log-p"]');
+
+	validateForm: function(form){
+		var valid = true;
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-		var eflag = true;
-		var pflag = true;
-		
-		if(re.test(email.val())){
-			email.removeClass('error');
-			eflag = true;
-		} else {			
-			email.addClass('error');
-			eflag = false;
-		}
-		
-		if(pass.val().length < 1){
-			pass.addClass('error');
-			pflag = false;
-		} else {
-			pass.removeClass('error');
-			pflag = true;
-		}
-		
-		if (!eflag || !pflag){
-			return false;
-		} else {
-			return true;
-		}
+		var form = $(form);
+		var inputs = form.find('.required');
+		inputs.each(function(){
+			var input = $(this);
+			if(input.val() == ''){
+				input.addClass('error');
+				valid = false;
+			} else {
+				input.removeClass('error')
+			}
+
+			if(input.is('input[type=email]')){
+				address = input.val();
+				if(!re.test(address)){
+					valid = false;
+					input.addClass('error');		
+				} else {
+					input.removeClass('error');
+				}
+			}
+		});
+		return valid;
 	},
 
-	// validateCompany: function(company){
-	// 	var request = $.ajax({
-	// 		url: "/check/company",
-	// 		type: "POST",
-	// 		data: { company : company},
-	// 		dataType: "json"
-	// 	});
-
-	// 	request.done(function( msg ) {
-	// 	  alert('Done');
-	// 	});
-		 
-	// 	request.fail(function( jqXHR, textStatus ) {
-	// 	  alert( "Request failed: " + textStatus );
-	// 	});
-	// },
-
-	registerValidate: function(input){
-		//set up flags
-		var lFlag = true;
-		var eFlag = true;
-		var iFlag = true;
-		var pFlag = true;
-		var qflag = true;
-		var cflag = true;
-		
-		//get elements
+	inputValidation: function(input){
+		var valid = true;
 		var input = $(input);
-		var length = input.val().length;
+		var value = input.val();
+		var length = value.length;
 		var css = input.data('vld');
 		var wrapper = input.closest('.vld-wrap');
-		
-		//check if field has been filled
-		if(!length) {
-			eFlag = false;
+
+		if(!value) valid = false;
+
+		if(valid){
+			if(input.is('input[type=email]')) valid = this.emailValidation(input, value, wrapper, css);
+
+			if(input.hasClass('company')) this.companyValidation(input, value, wrapper, css);
+
+			if(input.hasClass('reg-p')) valid = this.passwordValidation(value, length);
+
+			if(input.hasClass('inp-lst')) valid = this.repeatPasswordValidation(value);
 		}
 
-		if(input.hasClass('company')){
-			var request = $.ajax({
-				url: "/check/company",
-				type: "POST",
-				data: { company : input.val()},
-				dataType: "json"
-			});
-
-			request.done(function( msg ) {
-				console.log('company-ok');
-				cFlag = true;
-				input.removeClass('in-use');
-				input.closest('.reg-vrf').find('.vrf').fadeOut();
-			});
-			 
-			request.fail(function( jqXHR, textStatus ) {
-				console.log('companyinuse')
-				cFlag = false;
-
-				input.addClass('in-use');
-				input.closest('.reg-vrf').find('.vrf').fadeIn();
-			});
-		}
-		
-		//check if valid email
-		if(input.hasClass('email')){
-			var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-			address = input.val();
-			if(!re.test(address)){
-				eFlag = false;
-				input.addClass('error');			
-			} else {
-				eFlag = true;
-				input.removeClass('error');
-			}
-
-			var request = $.ajax({
-				url: "/check/email",
-				type: "POST",
-				data: { email : address },
-				dataType: "json"
-			});
-			
-			request.done(function( msg ) {
-				console.log('emailok');
-				iFlag = true;
-				input.removeClass('in-use');
-				input.closest('.reg-vrf').find('.vrf').fadeOut();
-			});
-			 
-			request.fail(function( jqXHR, textStatus ) {
-				iFlag = false;
-				login.emailVal = address;
-				//add ellipsis if mobile view
-				//refactor to not use jquery selector, maybe use width of a div not the window?
-				//use css ellipsis? when a class is added to the input?
-				if($(window).width() < 768){
-					var abbr = address.substr(0,13)+'...';
-					input.val(abbr);
-				}
-				input.addClass('in-use');
-				input.closest('.reg-vrf').find('.vrf').fadeIn();	
-			});
-
-		}
-		
-		//check password count of first password input
-		if(input.hasClass('reg-p')){
-			pFlag = login.regPassFlag;
-			//if repeat password has already been verified, check if password has changed and now doesnt match, display error on repeat password
-			if(login.regMatchFlag == true && input.val() != $('.inp-lst').val()){
-				login.regMatchFlag = false;
-				$('.inp-lst').closest('.vld-wrap').removeClass('vld-b');				
-				$('.inp-lst').val('');
-				$('.inp-lst').prop('disabled', true);
-			}
-		}
-		
-		//check passwords match
-		if(input.hasClass('inp-lst')){
-			var regVrf = input.closest('.reg-vrf');
-			var vrf = regVrf.find('.vrf');
-			var vrfCir = vrf.find('.vrf-cir');
-			var vrfMsg = vrf.find('.vrf-msg');
-			if(!login.regMatchFlag){
-				qflag = false;	
-				input.addClass('error');
-				vrfCir.removeClass('ok').html('<i class="icon-cancel"></i>');
-				vrfMsg.html('No<br />Match');
-				vrf.fadeIn();				
-			} else {
-				input.removeClass('error');
-				vrf.fadeOut();
-			}
-		}
-				
-		//check if any flags are false
-		if(lFlag && eFlag && iFlag && pFlag && qflag) {
+		if(valid) {
 			wrapper.addClass(css);
 		} else {
 			wrapper.removeClass(css);
 		}
 
+		if(input.hasClass('reg-p') || input.hasClass('inp-lst')){
+			this.registerHideAlert(input);
+		}
 	},
-	
-	
-	regMatchFlag: false,
-	registerPassMatch: function(input){
+
+	emailValidation: function(input, address, wrapper, css){
+
+		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
+		if(!re.test(address)){
+			input.addClass('error'); 
+			wrapper.removeClass(css);
+			return false;			
+		} 
+
+		input.removeClass('error');
+
+		var request = $.ajax({
+			url: "/api/check/email",
+			type: "POST",
+			data: {email : address},
+			dataType: "json"
+		});
+		
+		request.done(function(msg) {
+			login.successfulAjaxValidation(input, wrapper, css);
+		});
+		 
+		request.fail(function(jqXHR, textStatus) {
+			login.failedAjaxValidation(input, wrapper, css);
+		});
+	},
+
+	companyValidation: function(input, companyName, wrapper, css){
+
+		var request = $.ajax({
+			url: "/api/check/company",
+			type: "POST",
+			data: {company : companyName},
+			dataType: "json"
+		});
+
+		request.done(function(msg) {
+			login.successfulAjaxValidation(input, wrapper, css);
+		});
+		 
+		request.fail(function(jqXHR, textStatus) {
+			login.failedAjaxValidation(input, wrapper, css);
+		});
+	},
+
+	successfulAjaxValidation: function(input, wrapper, css){
+		input.removeClass('in-use');
+		input.closest('.reg-vrf').find('.vrf').fadeOut();
+		wrapper.addClass(css);
+	},
+
+	failedAjaxValidation: function(input, wrapper, css){
+		input.addClass('in-use');
+		input.closest('.reg-vrf').find('.vrf').fadeIn();	
+		wrapper.removeClass(css);
+	},
+
+	validatedPassword: false,
+	passwordValidation: function(value, length){
+		if(length >= 8){
+			this.validatedPassword = value;
+			return true;
+		} 
+		return false;
+	},
+
+	registerHideAlert: function(input){	
+		$(input).closest('.reg-vrf').find('.vrf').fadeOut();
+	},
+
+	repeatPasswordValidation: function(value){
+		if(value == this.validatedPassword) return true;
+		return false;
+	},
+
+	//////////////////////////////////////////////////////////
+
+	registerPasswordShowCount: function(input) {	
 		var input = $(input);
-		var regVrf = input.closest('.reg-vrf');
-		var first = $('.reg-p').val();
-			if(input.val() != first || input.val() == ''){			
-				login.regMatchFlag = false;	
-				regVrf.find('.vrf').fadeOut();				
-			} else {
-				login.regMatchFlag = true;
-				var vrf = regVrf.find('.vrf');
-				var vrfCir = vrf.find('.vrf-cir');
-				var vrfMsg = vrf.find('.vrf-msg');
-				vrfCir.addClass('ok').html('<i class="icon-ok-1"></i>');
-				vrfMsg.html('');
-				vrf.fadeIn();
-			}	
-	},
-	
-	regPassFlag: true,	
-	registerPassCount: function(input, view){
+		if(login.validatedPassword !== input.val()){
+			input.closest('.reg-vrf').find('.vrf').fadeIn();
+		}
+	},	
+
+	registerPasswordCount: function(input, view){
 		var input = $(input);
 		var length = input.val().length;
-		var counter = input.closest('.reg-vrf').find('.vrf-count');
+		var regVrf = input.closest('.reg-vrf');
+		var counter = regVrf.find('.vrf-count');
 		var counterValue = 8;
+		var inpLst = view.find('.inp-lst');
 		if(length < 8){
 			counter.text(counterValue - length);
 			counter.removeClass('ok');
-			login.regPassFlag = false;
-			login.regShowVal = 1;
-			//fade counter back in if pass field edited under 8 characters
-			input.closest('.reg-vrf').find('.vrf').fadeIn();
-			//disable repeat password input if password input not valid
-			view.find(".inp-lst").prop('disabled', true);
+			this.validatedPassword = false;
+			regVrf.find('.vrf').fadeIn();
+
+			inpLst.val('');
+			inpLst.prop('disabled', true);
+			inpLst.closest('.reg-vrf').find('.vrf').fadeOut();
+			inpLst.closest('.vld-wrap').removeClass('vld-a vld-b');
 		} else {
-			login.regShowVal = input.val();
-			login.regPassFlag = true;
 			counter.html('<i class="icon-ok-1"></i>');
 			counter.addClass('ok');
-			//enable repeat password input
-			view.find(".inp-lst").prop('disabled', false);
+			inpLst.prop('disabled', false);
 		}
 	},
-	
-	emailVal: 1,	
-	registerHideInUse: function(input){	
-		if(login.emailVal != 1){
-			$(input).val(login.emailVal);
-		}
-		login.registerHideVrf(input);
-		login.emailVal = 1;
-	},
-	
-	regShowVal: 1,
-	registerShowCount: function(input) {	
+
+	registerPasswordMatch: function(input){
 		var input = $(input);
-		if(login.regShowVal !== input.val()){
-			input.closest('.reg-vrf').find('.vrf').fadeIn();
-		}
+		var value = input.val();
+		var regVrf = input.closest('.reg-vrf');
+		var vrf = regVrf.find('.vrf');
+		var css = input.data('vld');
+		var wrapper = input.closest('.vld-wrap');
+		if (value == this.validatedPassword){			
+			var vrfCir = vrf.find('.vrf-cir');
+			var vrfMsg = vrf.find('.vrf-msg');
+			vrfCir.addClass('ok').html('<i class="icon-ok-1"></i>');
+			vrfMsg.html('');
+			vrf.fadeIn();
+			wrapper.addClass(css);
+		} else {
+			vrf.fadeOut();
+			wrapper.removeClass(css); //added to give effect
+		}	
 	},
-	
-	registerHideVrf: function(input){
-		var input = $(input);
-		input.closest('.reg-vrf').find('.vrf').fadeOut();
-	},
-	
+
 	registerCreateValidate: function(view){
 		if(view.find('div.vld-a').length == 3 && view.find('div.vld-b').length  == 3){
 			return true;
 		} else {
+
 			return false;
 		}
 	}
-			
+
 }

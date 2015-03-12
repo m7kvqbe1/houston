@@ -491,6 +491,7 @@ textarea:focus {
 }
 
 input[type="text"].in-use,
+input[type="email"].in-use,
 input[type="text"].error,
 input[type="email"].error,
 input[type="password"].error,
@@ -544,7 +545,7 @@ input.inp-lst {
 
 #form-pass h3{
 	margin: 0 auto 16px;
-	width: 276px;
+	width: 258px;
 }
 
 .reg-form-wrap {
@@ -1349,6 +1350,11 @@ input.inp-lst {
 	background-size: 26px;
 }
 
+.attachments-link {
+	display: inline-block;
+	margin-top: 10px;
+}
+
 #msg-stream {
 	overflow: hidden;
 	padding-bottom: 15px;
@@ -1471,8 +1477,6 @@ input.inp-lst {
 .msg-text {
 	margin-bottom: 24px;
 }
-
-
 
 /*MODAL WINDOW*/
 #modal-window {
@@ -2105,6 +2109,10 @@ input.inp-lst {
 		padding: 0 24px 0 76px;
 	}
 
+	.attachments-link {
+		margin-top: 20px;
+	}
+
 	#drop_zone {
 		display: block;
 		box-sizing: border-box;
@@ -2185,6 +2193,7 @@ input.inp-lst {
 	}
 
 	#form-reg input[type="text"],
+	#form-reg input[type="email"],
 	#form-reg input[type="password"] {
 		margin-left: 0;
 	}

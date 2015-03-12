@@ -38,6 +38,7 @@ var MessagesView = Backbone.View.extend({
 						'</li>'+	
 					'{{/each}}'+
 					'</ul>'+
+					'{{downloadMessageAttachments attributes.files id}}'+
 				'{{#if $last}}'+						
 					'<a class="btn reply-btn">Reply</a>'+
 				'</div>'+
