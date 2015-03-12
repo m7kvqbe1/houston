@@ -82,6 +82,6 @@ app.post('/update/assignee', secureRoute, function(req, res) {
 	var status = req.body.status;
 	var subject = helper.trimMessage(req.body.subject);
 	
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
+	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>New Assignee: </strong>&nbsp;'+subject+'</a>');
 	res.end();
 });
