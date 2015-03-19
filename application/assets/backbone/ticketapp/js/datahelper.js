@@ -68,6 +68,11 @@ var handlebarsHelpers = {
 			return houston.convertToDate(attribute);
 		});
 
+// if(!type.indexOf('pdf') == -1) 
+		Handlebars.registerHelper("isPDF", function(type, data) {
+			return new Handlebars.SafeString('<object data="/api/tickets/file/inline/'+ data +'" type="application/pdf" width="100%" height="100%" frameborder="0"> alt : <a href="/api/tickets/file/'+ data +'">test.pdf</a> </object>');
+		});
+
 		//TicketsView Helpers
 		Handlebars.registerHelper("updateCheck", function(arr) { 
 			return new Handlebars.SafeString(houston.updateCheck(arr));			

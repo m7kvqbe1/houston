@@ -230,7 +230,7 @@ var houston = {
 	},
 
 	isDisplayableImage: function(type){
-		if(type.indexOf('jpeg') == -1 && type.indexOf('png') == -1){
+		if(type.indexOf('jpeg') == -1 && type.indexOf('png') == -1 && type.indexOf('pdf') == -1){
 			return false;
 		}
 		return true;
@@ -278,6 +278,9 @@ var houston = {
 					break;
 				case 'psd':
 					fileType = 'PSD';
+					break;
+					case 'pdf':
+					fileType = 'PDF';
 					break;
 				case 'plain':
 					fileType = 'TXT';

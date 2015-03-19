@@ -198,7 +198,8 @@ var PreviewWindow = Backbone.View.extend({
 								'</div>'+
 							'</div>'+
 							'<div class="img-wrap">'+
-								'<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://' + window.location.hostname + '/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
+								'{{isPDF attributes.type attributes.ref}}'+
+								// '<img class="preview-img" style="{{maxHeightImg}}" src="{{#if attributes.ref}}http://' + window.location.hostname + '/api/tickets/file/{{attributes.ref}}{{else}}{{attributes.target}}{{/if}}" />'+	
 							'</div>'+
 							'<div class="preview-img-bottom">'+
 								'<div class="preview-type">'+
