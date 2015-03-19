@@ -172,9 +172,9 @@ var FileUploadView = Backbone.View.extend({
 		var fileToPreview = this.collection.get(cid);
 		fileToPreview.set({preview: true});
 
-		app.modal = new PreviewWindow({collection: app.files.filesPreviewCollection});
-		app.modal.render();
-		app.modalWindow.append(app.modal.$el).show();
+		app.preview = new PreviewWindow({collection: app.files.filesPreviewCollection});
+		app.preview.render();
+		app.modalWindow.append(app.preview.$el);
 	}
 
 });
@@ -226,7 +226,7 @@ var PreviewWindow = Backbone.View.extend({
 		$(document).unbind('keydown', this.keyEvent);
 		app.modalWindow.hide();
 		this.stopListening();
-		app.modal = false;
+		app.preview = false;
 	},
 
 	render: function(){
@@ -236,7 +236,8 @@ var PreviewWindow = Backbone.View.extend({
 			'click .prev': 'clickPrevious',
 			'click .next': 'clickNext',
 			'keydown': 'keyEvent'
-		});		
+		});	
+		app.modalWindow.show();	
 	},
 
 	keyEvent: function(e){

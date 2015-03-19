@@ -1346,7 +1346,7 @@ input.inp-lst {
 	margin-bottom: 15px;
 }
 
-.loader {
+/*.loader {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -1354,6 +1354,26 @@ input.inp-lst {
 	height: 26px;
 	background: url(../img/loader.gif) no-repeat;
 	background-size: 26px;
+}*/
+
+/*.loader {
+	position: absolute;
+	left: -12px;
+	top: 0;
+	width: 64px;
+	height: 19px;
+	background: url(../img/ajax-loader.gif) no-repeat;
+	
+}*/
+
+.loader {
+	position: absolute;
+	left: 0px;
+	top: 0;
+	width: 56px;
+	height: 20px;
+	background: url(../img/tax_loader.gif) no-repeat;
+	
 }
 
 .attachments-link {
@@ -2075,7 +2095,8 @@ input.inp-lst {
 
 	.file:first-child,
 	.file:nth-child(2) {
-		padding-top: 10px;
+		/*padding-top: 10px;*/
+		padding-top: 20px;
 	}
 	
 	.thumb-wrap {

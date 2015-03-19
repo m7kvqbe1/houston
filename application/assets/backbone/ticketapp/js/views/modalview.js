@@ -49,11 +49,22 @@ var ModalView = Backbone.View.extend({
 
 	cancel: function(){
 		if(this.cancelBehaviour) this.cancelBehaviour();
-		this.close();		
+		this.close();	
+
+		//Render preview window if exists
+		if(app.preview){
+			app.modalWindow.html(app.preview.$el); //Why does this only work with $ and seperate render?
+			app.preview.render();
+		}	
 	},
 
 	confirm: function(){
 		if(this.confirmBehaviour) this.confirmBehaviour();
 		this.close();
+
+		//Close preview window if exists
+		if(app.preview){
+			app.preview.close();
+		}	
 	}
 });

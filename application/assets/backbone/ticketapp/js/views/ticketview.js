@@ -132,25 +132,33 @@ var TicketDetailView = Backbone.View.extend({
 		var link = $(e.currentTarget);
 		var id = link.data('ref');
 		var type = link.data('type');
+		var filesArray = [];
+
 		if(type == 'ticket'){
 			var files = this.model.get('files');
 		} else if (type == 'message'){
 			var files = this.model.messagesCollection.get(id).attributes.files;
 		}
 
+		files.forEach(function(file) {
+		    filesArray.push(file.ref);
+		});
+
+		console.log(filesArray);
+
 		var request = $.ajax({
 			url: "/api/tickets/file/zip",
 			method: "POST",
-			data: files,
+			data: filesArray,
 			dataType: "json"
 		});
 
 		request.done(function( msg ) {
-			console.log( msg );
+			console.log(msg);
 		});
 
 		request.fail(function( jqXHR, textStatus ) {
-			console.log( "Request failed: " + textStatus );
+			console.log("Request failed: " + textStatus);
 		});
 
 	},
@@ -246,9 +254,9 @@ var TicketDetailView = Backbone.View.extend({
 		}
 
 		app.files.filesPreviewCollection.models[index].set({preview:true});
-		app.modal = new PreviewWindow({collection: app.files.filesPreviewCollection});
-		app.modal.render();
-		app.modalWindow.append(app.modal.$el).show();
+		app.preview = new PreviewWindow({collection: app.files.filesPreviewCollection});
+		app.preview.render();
+		app.modalWindow.html(app.preview.$el);
 
 	}
 	
