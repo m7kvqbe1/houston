@@ -161,7 +161,23 @@ class TicketController
 			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
 			$file['fileName']
 		);
-		$response->headers->set('Content-Disposition', $d);
+		$response->headers->set('Content-Disposition', $d);		
+		
+		return $response;
+	}
+	
+	public function getAttachmentInlineAction($fileID) 
+	{
+		$ticketModel = new TicketModel($this->app);
+		$file = $ticketModel->downloadAttachment($fileID);
+		
+		if(!$file) return ApiResponse::error('FILE_NOT_FOUND');
+		
+		$response = new Response();
+		$response->setContent($file['data']);
+		$response->headers->set('Content-Type', $file['contentType']);
+		$response->headers->set('Content-Transfer-Encoding', 'binary');
+		$response->headers->set('Expires', '0');
 		
 		return $response;
 	}

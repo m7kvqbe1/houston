@@ -37,7 +37,7 @@ class Notify
 	
 	public static function socketBroadcast($route, $payload, $socketNamespace = null) 
 	{
-		$obj = clone $payload;	// Clone object to prevent the web socket namespace being added to original
+		$obj = clone $payload;	// Clone object to prevent the web socket namespace property being added to original
 		
 		if(isset($socketNamespace)) $obj->socketNamespace = (string) $socketNamespace;
 		self::sendRequest(NODE_HOST.$route, self::removeAttachments($obj));

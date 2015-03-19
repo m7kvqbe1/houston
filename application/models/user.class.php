@@ -79,7 +79,7 @@ class UserModel
 		
 		foreach($roles as &$role) {
 			$role = strtoupper($role);
-			if(!self::roleExists($role)) throw new \InvalidArgumentException('Invalid role type: '.$role);
+			if(!self::roleExists($role)) throw new \InvalidArgumentException('Invalid role: '.$role);
 		}
 		
 		$connections = $this->app['mongo'];
@@ -109,7 +109,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 		
-		if(!self::propertyExists($property)) throw new \InvalidArgumentException('Invalid property');
+		if(!self::propertyExists($property)) throw new \InvalidArgumentException('Invalid property: '.$property);
 		
 		$userID = new \MongoID($userID);
 		
@@ -129,7 +129,7 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 				
-		if(!self::propertyExists($property)) throw new \Exception('Invalid property');
+		if(!self::propertyExists($property)) throw new \InvalidArgumentException('Invalid property: '.$property);
 		
 		$userID = new \MongoID($userID);
 		
