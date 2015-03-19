@@ -132,8 +132,10 @@ var AppRouter = Backbone.Router.extend({
 		this.showView(analyticsView);
 	},
 
-	// modal: false,
+	modal: false,
+	// popup: false,
 	// modalB: false,
+	preview: false,
 
 	// 	CUSTOM EXECUTE METHOD
 	changed: false,

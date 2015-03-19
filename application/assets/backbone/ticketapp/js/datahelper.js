@@ -97,7 +97,6 @@ var handlebarsHelpers = {
 
 		//TicketView Helpers
 		Handlebars.registerHelper("downloadTicketAttachments", function(attribute, id) {
-			console.log(attribute.length);
 			if(attribute.length > 1)return new Handlebars.SafeString('<a class="attachments-link" data-ref="'+id+'" data-type="ticket">Download All Attachments</a>');
 
 		});

@@ -324,7 +324,7 @@ var houston = {
 		app.modal = new ModalView({model: new Backbone.Model(attributesObj)});
 		if(confirmCallback) app.modal.confirmBehaviour = confirmCallback;
 		if(cancelCallback) app.modal.cancelBehaviour = cancelCallback;
-		app.modalWindow.append(app.modal.$el); //Why does this only work with $ and seperate render?
+		app.modalWindow.html(app.modal.$el); //Why does this only work with $ and seperate render?
 		app.modal.render();
 	}
 
