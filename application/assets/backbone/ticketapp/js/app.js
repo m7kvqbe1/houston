@@ -175,14 +175,3 @@ var AppRouter = Backbone.Router.extend({
 });
 
 var app = new AppRouter();
-
-// var modal = {
-
-// 	createModal: function(attributesObj, confirmCallback, cancelCallback){
-// 		var modalView = new ModalView({model: new Backbone.Model(attributesObj)});
-// 		if(confirmCallback) modalView.confirmBehaviour = confirmCallback;
-// 		if(cancelCallback) modalView.cancelBehaviour = cancelCallback;
-// 		app.modalWindow.append(modalView.$el); //Why does this only work with $ and seperate render?
-// 		modalView.render();
-// 	}
-// }

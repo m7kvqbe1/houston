@@ -39,13 +39,20 @@ var dataHelper = {
 
 var handlebarsHelpers = {
 	bindHelpers: function(){
-		
-		Handlebars.registerHelper("fullHeightPage", function() {
-			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
+		//stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional
+		Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+		if(v1 === v2) {
+			return options.fn(this);
+		}
+			return options.inverse(this);
 		});
 
 		Handlebars.registerHelper("forEach",function(arr,options) {
 			return houston.forEach(arr, options);
+		});		
+		
+		Handlebars.registerHelper("fullHeightPage", function() {
+			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
 		});
 
 		Handlebars.registerHelper("getUserName", function(authorID) {
