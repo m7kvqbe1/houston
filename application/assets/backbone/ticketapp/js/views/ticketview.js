@@ -121,7 +121,6 @@ var TicketDetailView = Backbone.View.extend({
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage',
 			'click .file-preview': 'filePreview',
-			'input input': 'markAsChanged',
 			'input textarea': 'markAsChanged',
 			'click .attachments-link': 'downloadAttachments'
 		});
@@ -228,6 +227,7 @@ var TicketDetailView = Backbone.View.extend({
 		app.addMessageModel.save(attributes,{
 			success: _.bind(function(model){
 				app.addMessageModel.clear();
+				app.changed = false;
 			}, this)
 		});
 
