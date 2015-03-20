@@ -108,14 +108,15 @@ var handlebarsHelpers = {
 		});
 
 		//TicketView Helpers
-		Handlebars.registerHelper("downloadTicketAttachments", function(attribute, id) {
-			if(attribute.length > 1)return new Handlebars.SafeString('<a class="attachments-link" data-ref="'+id+'" data-type="ticket">Download All Attachments</a>');
-
-		});
-
-		Handlebars.registerHelper("downloadMessageAttachments", function(attribute, id) {
-			if(attribute.length > 1)return new Handlebars.SafeString('<a class="attachments-link" data-ref="'+id+'" data-type="message">Download All Attachments</a>');
-
+		Handlebars.registerHelper("downloadTicketAttachments", function(attribute) {
+			if(attribute.length > 1) {
+				var params = "";
+				attribute.forEach(function(file) {
+					params += "id[]="+file.ref+"&";
+				});
+				params = params.substring(0, params.length -1);
+				return new Handlebars.SafeString('<a class="attachments-link" data-bypass="true" href="http://edd.houston.com/api/tickets/file/zip?'+params+'">Download All Attachments</a>');
+			}
 		});
 
 		//FileUploadView Helpers

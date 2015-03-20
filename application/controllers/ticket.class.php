@@ -154,7 +154,8 @@ class TicketController
 		$response = new Response();
 		$response->setContent($file['data']);
 		$response->headers->set('Content-Type', $file['contentType']);
-		$response->headers->set('Content-Transfer-Encoding', 'binary');
+		$response->headers->set('Content-Transfer-Encoding', 'Binary');
+		$response->headers->set('Content-Length', strlen($file['data']));
 		$response->headers->set('Expires', '0');
 		
 		$d = $response->headers->makeDisposition(
@@ -176,14 +177,15 @@ class TicketController
 		$response = new Response();
 		$response->setContent($file['data']);
 		$response->headers->set('Content-Type', $file['contentType']);
-		$response->headers->set('Content-Transfer-Encoding', 'binary');
-		$response->headers->set('Expires', '0');
+		$response->headers->set('Content-Transfer-Encoding', 'Binary');
+		$response->headers->set('Content-Length', strlen($file['data']));
+		$response->headers->set('Expires', '0');		
 		
 		return $response;
 	}
 	
-	public function getAttachmentsZipAction() {
-		$fileIDs = json_decode(file_get_contents('php://input'));
+	public function getAttachmentsZipAction(Request $request) {
+		$fileIDs = $request->query->get('id');
 		
 		$ticketModel = new TicketModel($this->app);
 		
@@ -197,13 +199,15 @@ class TicketController
 		}
 		
 		if(empty($files)) return ApiResponse::error('FILE_NOT_FOUND');
-		
-		$archive = Helper::createZipArchive($files);
+				
+		$filename = Helper::createZipArchive($files);
+		$data = file_get_contents($filename);
 		
 		$response = new Response();
-		$response->setContent($archive);
+		$response->setContent($data);
 		$response->headers->set('Content-Type', 'application/zip');
-		$response->headers->set('Content-Transfer-Encoding', 'binary');
+		$response->headers->set('Content-Transfer-Encoding', 'Binary');
+		$response->headers->set('Content-Length', filesize($filename));
 		$response->headers->set('Expires', '0');
 		
 		$d = $response->headers->makeDisposition(
@@ -211,6 +215,9 @@ class TicketController
 			'houston-attachments-archive.zip'
 		);
 		$response->headers->set('Content-Disposition', $d);
+		
+		// Remove temporary archive from filesystem
+		unlink($filename);
 		
 		return $response;
 	}

@@ -27,10 +27,11 @@ $app->get('/api/tickets/file/meta/{fileID}', 'ticket.controller:getAttachmentMet
 
 $app->post('/api/tickets/file', 'ticket.controller:postAttachmentAction')->before($secure);
 
-$app->post('/api/tickets/file/zip', 'ticket.controller:getAttachmentsZipAction')->before($secure);
+$app->get('/api/tickets/file/zip', 'ticket.controller:getAttachmentsZipAction')->before($secure);
 
 $app->get('/api/tickets/file/{fileID}', 'ticket.controller:getAttachmentAction')->before($secure);
 
 $app->get('/api/tickets/file/inline/{fileID}', 'ticket.controller:getAttachmentInlineAction')->before($secure);
 
 $app->delete('/api/tickets/file/{fileID}', 'ticket.controller:deleteAttachmentAction')->before($secure);
+

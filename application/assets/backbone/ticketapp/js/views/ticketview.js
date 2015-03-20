@@ -47,7 +47,7 @@ var TicketDetailView = Backbone.View.extend({
 						'</li>'+	
 					'{{/each}}'+
 					'</ul>'+
-					'{{downloadTicketAttachments attributes.files id}}'+
+					'{{downloadTicketAttachments attributes.files}}'+
 				'{{#if attributes.hasMessages}}'+
 					'</div>'+											
 				'{{else}}'+
@@ -121,45 +121,9 @@ var TicketDetailView = Backbone.View.extend({
 			'click .cancel-btn': 'replyToggle',
 			'click .add-message': 'addMessage',
 			'click .file-preview': 'filePreview',
-			'input textarea': 'markAsChanged',
-			'click .attachments-link': 'downloadAttachments'
+			'input textarea': 'markAsChanged'
 		});
 		return this;
-	},
-
-	downloadAttachments: function(e){
-		var link = $(e.currentTarget);
-		var id = link.data('ref');
-		var type = link.data('type');
-		var filesArray = [];
-
-		if(type == 'ticket'){
-			var files = this.model.get('files');
-		} else if (type == 'message'){
-			var files = this.model.messagesCollection.get(id).attributes.files;
-		}
-
-		files.forEach(function(file) {
-		    filesArray.push(file.ref);
-		});
-
-		console.log(filesArray);
-
-		var request = $.ajax({
-			url: "/api/tickets/file/zip",
-			method: "POST",
-			data: filesArray,
-			dataType: "json"
-		});
-
-		request.done(function( msg ) {
-			console.log(msg);
-		});
-
-		request.fail(function( jqXHR, textStatus ) {
-			console.log("Request failed: " + textStatus);
-		});
-
 	},
 		
 	dropSelect: function(e){

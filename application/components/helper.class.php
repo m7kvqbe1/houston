@@ -37,15 +37,19 @@ class Helper
 	}
 	
 	public static function createZipArchive(Array $files, $filename = null) {
-		$filename = (isset($filename)) ? self::urlFriendly($filename) : 'archive.zip';
+		// Generate unique hash from timestamp for temporary archive
+		$filename = (isset($filename)) ? self::urlFriendly($filename) : md5(time()).'.zip';	
 		
 		$zip = new \ZipArchive;
-		$zip->open($filename, \ZipArchive::CREATE);
+		$zip->open('tmp/zip/'.$filename, \ZipArchive::CREATE);
 		foreach ($files as $file) {
-		  $zip->addFromString($file['fileName'], $file['data']);
+			$zip->addFromString($file['fileName'], $file['data']);
 		}
+		
+		$filename = $zip->filename;
+		
 		$zip->close();
 		
-		return $zip;
+		return $filename;
 	}
 }
