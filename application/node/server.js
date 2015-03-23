@@ -21,7 +21,7 @@ var secureRoute = function(req, res, next) {
     if (req.headers.authorization) {
       auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
     }
-    
+
     if (!auth || auth[0] !== 'cd8aec6611227907a7260e280fc87361' || auth[1] !== '0ec138408802d5aca30112cbd48478c6') {
         res.statusCode = 401;
         res.setHeader('WWW-Authenticate', 'Basic realm="Houston Support Desk"');
@@ -41,9 +41,9 @@ io.on('connection', function(socket){
 	});
 });
 
-// Get all company IDs from MongoDB and create a new namespaced socket for each one
+// Get all company IDs from MongoDB and create a new namespaced web socket for each one
 var namespaces = {};
-db.getAllCompanyIds(function(err, companyIds) {	
+db.getAllCompanyIds(function(err, companyIds) {
 	companyIds.forEach(function(val) {
 		namespaces[val] = io.of('/'+val);
 		namespaces[val].on('connection', function(socket) {
@@ -53,9 +53,9 @@ db.getAllCompanyIds(function(err, companyIds) {
 });
 
 // Broadcast new ticket notification event to the appropriate socket namespace
-app.post('/new/ticket', secureRoute, function(req, res) {	
+app.post('/new/ticket', secureRoute, function(req, res) {
 	var msg = helper.trimMessage(req.body.message);
-	
+
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body._id.$id+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
 	res.end();
 });
@@ -63,7 +63,7 @@ app.post('/new/ticket', secureRoute, function(req, res) {
 // Broadcast new reply notification event to the appropriate socket namespace
 app.post('/new/reply', secureRoute, function(req, res) {
 	var msg = helper.trimMessage(req.body.message);
-	
+
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	res.end();
 });
@@ -72,7 +72,7 @@ app.post('/new/reply', secureRoute, function(req, res) {
 app.post('/update/status', secureRoute, function(req, res) {
 	var status = req.body.status;
 	var subject = helper.trimMessage(req.body.subject);
-	
+
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
 	res.end();
 });
@@ -81,7 +81,7 @@ app.post('/update/status', secureRoute, function(req, res) {
 app.post('/update/assignee', secureRoute, function(req, res) {
 	var status = req.body.status;
 	var subject = helper.trimMessage(req.body.subject);
-	
+
 	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>New Assignee: </strong>&nbsp;'+subject+'</a>');
 	res.end();
 });
