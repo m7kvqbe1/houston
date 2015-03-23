@@ -133,6 +133,8 @@ class TicketController
 	
 	public function postAttachmentAction() 
 	{
+		set_time_limit(0);
+		
 		$ticket = json_decode(file_get_contents('php://input'));
 		
 		$ticketModel = new TicketModel($this->app);
