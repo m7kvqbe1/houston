@@ -86,7 +86,6 @@ var FormView = Backbone.View.extend({
 			subject: this.$el.find('input[name="new-sub"]').val(),
 			message: this.$el.find('textarea[name="new-textarea"]').val(),
 			authorID: app.user.attributes.id,
-			date: new Date(),
 			updated: this.model.get('updated').concat(app.user.attributes.id),
 			files: app.files.createFilesArray()
 		});		

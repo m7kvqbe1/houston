@@ -13,6 +13,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	initialize: function() {
+		$.ajaxSetup({timeout:720000000});
 		// Add dataTransfer to jquery events
 		jQuery.event.props.push("dataTransfer");
 

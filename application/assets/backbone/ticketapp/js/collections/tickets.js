@@ -4,19 +4,18 @@ var Tickets = Backbone.Collection.extend({
 	
 	initialize: function(models){
 		this.filtered = new Backbone.Collection(models);
+		this.filtered.comparator = function(a,b) {
+			if(a.get('date') > b.get('date')) {
+				return -1;	
+			} else if(b.get('date') > a.get('date')){
+				return 1;
+			}
+			return 0;
+		}
 		this.on("reset add", function(){		
 			this.filtered.reset(this.allTickets());
 			this.countUpdated();
 		});
-	},
-	
-	comparator: function(a,b) {
-		if(a.get('date') < b.get('date')) {
-			return 1;	
-		} else if(b.get('date') > a.get('date')){
-			return -1;
-		}
-		return 0;
 	},
 	
 	allTickets: function(){
@@ -74,10 +73,10 @@ var Tickets = Backbone.Collection.extend({
 		if(this.byDateOrder === 1 || !this.byDateOrder){
 			this.byDateOrder = 2;
 			this.filtered.comparator = function(a, b) {
-				if(a.get('date') < b.get('date')) {
-					return 1;	
+				if(a.get('date') > b.get('date')) {
+					return -1;	
 				} else if(b.get('date') > a.get('date')){
-					return -1;
+					return 1;
 				}
 				return 0;
 			};
@@ -98,7 +97,6 @@ var Tickets = Backbone.Collection.extend({
 		if(this.byCompanyOrder === 1 || !this.byCompanyOrder){
 			this.byCompanyOrder = 2;
 			this.filtered.comparator = function(model) {
-				// return model.get('company');
 				return dataHelper.getCompanyName(model.get('authorID'));
 			}
 		} else if(this.byCompanyOrder === 2) {

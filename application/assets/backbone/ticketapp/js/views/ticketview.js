@@ -182,7 +182,6 @@ var TicketDetailView = Backbone.View.extend({
 		
 		var attributes = {
 			"authorID": app.user.id,
-			"date": new Date(),
 			"message": this.$el.find('textarea[name="new-textarea"]').val(),
 			"files": app.files.createFilesArray()
 		};

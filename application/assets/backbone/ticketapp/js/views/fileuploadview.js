@@ -85,6 +85,18 @@ var FileUploadView = Backbone.View.extend({
 
 	addFiles: function(files){
 		for (var i = 0, f; f = files[i]; i++) {
+			//Skip file if over maximum file size
+			if(f.size > 100000000) {
+				var name = f.name;
+				if(name.length > 30){
+					var type = name.substr(name.indexOf('.') + 1);
+					name = name.substr(0,27) + '...[' + type + ']';
+				}
+				houston.createModal({type: 'File Error', message: "The file '" + name + "' is over the 100mb limit?"}
+			    );	
+			    continue;
+			}
+
 			//Create model as property of the file
 			f.model = new FileUploadModel();
 			//Create a fileReader object
@@ -98,6 +110,7 @@ var FileUploadView = Backbone.View.extend({
 	        })(f), this);
 
 			reader.onloadend = (function(theFile) {
+				console.log('start');
 		        return function(e) {
 		        	var attributes = {
 						status: 'loading',
@@ -111,9 +124,12 @@ var FileUploadView = Backbone.View.extend({
 						request: theFile.model.save(attributes,{
 							success: function(model){
 								model.set({status: false});
+							}, error: function(model,response,options){
+								console.log(response);
 							}
 						})
 					});
+					console.log('end');
 		        };
 	        })(f);
 
@@ -123,6 +139,7 @@ var FileUploadView = Backbone.View.extend({
 	},
 
 	fileErrorHandler: function(evt){
+		console.log(evt);
 		switch(evt.target.error.code) {
 			case 1:
 				alert('File Not Found!');
