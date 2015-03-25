@@ -12,13 +12,13 @@ class Notify
 
     	// Use HTTP Header authentication for sending requests to Node.js server (non socket)
 		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-    curl_setopt($ch, CURLOPT_USERPWD, NODE_USER.':'.NODE_PASSWORD);
+    	curl_setopt($ch, CURLOPT_USERPWD, NODE_USER.':'.NODE_PASSWORD);
 
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    	curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+    	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     	'Content-Type: application/json',
     	'Content-Length: '.strlen($payload))
     );

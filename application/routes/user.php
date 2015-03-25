@@ -17,6 +17,6 @@ $app->put('/api/user/update/{userID}/{property}', 'user.controller:putUserProper
 
 $app->delete('/api/user/delete/{userID}/{property}', 'user.controller:deleteUserPropertyAction')->before($secure);
 
-$app->post('/api/check/email', 'user.controller:checkExistsEmailAction');
+$app->get('/api/check/email', 'user.controller:checkExistsEmailAction');
 
-$app->post('/api/check/company', 'user.controller:checkExistsCompanyNameAction');
+$app->get('/api/check/company', 'user.controller:checkExistsCompanyNameAction');
