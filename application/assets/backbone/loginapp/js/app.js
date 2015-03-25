@@ -1,5 +1,4 @@
 Backbone.View.prototype.close = function(){
-	console.log('closing');
 	this.remove();
 	this.unbind();
 	if (this.onClose){

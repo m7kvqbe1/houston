@@ -74,12 +74,7 @@ var login = {
 
 		input.removeClass('error');
 
-		var request = $.ajax({
-			url: "/api/check/email",
-			type: "POST",
-			data: {email : address},
-			dataType: "json"
-		});
+		var request = $.get("/api/check/email?email=" + address);
 		
 		request.done(function(msg) {
 			login.successfulAjaxValidation(input, wrapper, css);
@@ -92,12 +87,7 @@ var login = {
 
 	companyValidation: function(input, companyName, wrapper, css){
 
-		var request = $.ajax({
-			url: "/api/check/company",
-			type: "POST",
-			data: {company : companyName},
-			dataType: "json"
-		});
+		var request = $.get("/api/check/company?company=" + companyName);
 
 		request.done(function(msg) {
 			login.successfulAjaxValidation(input, wrapper, css);
