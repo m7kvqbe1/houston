@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\Validator\\' => array($vendorDir . '/symfony/validator'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'Symfony\\Component\\Serializer\\' => array($vendorDir . '/symfony/serializer'),
@@ -27,6 +26,5 @@ return array(
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'Mongo\\Silex' => array($vendorDir . '/moriony/silex-mongo-provider/src'),
     'Merqlove' => array($vendorDir . '/merqlove/airbrake-silex-service-provider/src'),
-    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
     'Airbrake\\' => array($vendorDir . '/dbtlr/php-airbrake/src'),
 );

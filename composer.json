@@ -1,9 +1,9 @@
 {
 	"name": "houston",
 	"description": "Houston Support Desk",
-	
+
 	"homepage": "http://houstonsupportdesk.com",
-	
+
 	"authors": [
 		{
 			"name": "Tom Humphris",
@@ -11,10 +11,10 @@
 		},
 		{
 			"name": "Edd Neal",
-			"email": "eddneal@hotmail.com"	
-		}		
+			"email": "eddneal@hotmail.com"
+		}
 	],
-	
+
     "require": {
         "silex/silex": "~1.1",
         "symfony/console": "~2.3",
@@ -31,9 +31,5 @@
         "stripe/stripe-php": "1.*",
         "dbtlr/php-airbrake": "dev-master",
         "merqlove/airbrake-silex-service-provider": "dev-master"
-    },
-    
-    "require-dev": {
-		"phpunit/phpunit":	"4.4.*"	    
     }
 }
