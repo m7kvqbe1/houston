@@ -146,8 +146,12 @@ var handlebarsHelpers = {
 		});
 
 		Handlebars.registerHelper("maxHeightImg", function() {
-			return new Handlebars.SafeString('max-height:' + houston.previewImageResize() +'px;');
-		});		
+			return new Handlebars.SafeString(houston.previewImageResize());
+		});	
+
+		Handlebars.registerHelper("maxWidthImg", function() {
+			return new Handlebars.SafeString(houston.previewImageResizeWidth());	
+		});
 
 	}
 }
@@ -161,9 +165,14 @@ var events = {
 		this.$('.preview-img').css('max-height', houston.previewImageResize());
 	},
 
+	pdfSize: function(){
+		this.$('.img-wrap').css('height', houston.previewImageResize());
+		this.$('.img-wrap').css('width', houston.previewImageResizeWidth());
+	},
+
 	bindEvents: function(){
 
-		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
+		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight).on("resize", events.pdfSize);
 
 		//Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){
