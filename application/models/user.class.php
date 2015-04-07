@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserModel
 {
 	protected static $validRoles = array('ADMIN', 'AGENT', 'USER');
-	protected static $validProperties = array('_id', 'emailAddress', 'emailAddressTmp', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName');
+	protected static $validProperties = array('_id', 'emailAddress', 'emailAddressTmp', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName', 'avatar');
 
 	protected $app;
 	public $user;

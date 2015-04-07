@@ -50,9 +50,8 @@ class UserController
 		$userModel->setProperty('lastName', $data->lastName);
 
 		// Email Address
-		$userModel->setProperty('emailAddressTmp', $data->emailAddress);
-
 		if($data->emailAddress === $userModel->user['emailAddress']) return ApiResponse::error('DEFAULT_RESPONSE_SUCCESS');
+		$userModel->setProperty('emailAddressTmp', $data->emailAddress);
 
 		// Generate and set new verification code
 		$token = generateVerificationToken($data->emailAddress);
@@ -103,7 +102,7 @@ class UserController
 
 		$userModel = new UserModel($this->app);
 
-		if($userModel->setProperty($userID, $property, $data)) {
+		if($userModel->setProperty($userID, $property, $data->value)) {
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_PROPERTY_SET_FAIL');
