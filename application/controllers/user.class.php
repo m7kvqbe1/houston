@@ -145,7 +145,6 @@ class UserController
 		$password = $request->query->get('password');
 
 		$userModel = new UserModel($this->app);
-
 		$userModel->loadUserByID($this->app['session']->get('uid'));
 
 		if($userModel::hashPassword($password) === $userModel->user['password']) {
@@ -173,11 +172,10 @@ class UserController
 		$data = json_decode(file_get_contents('php://input'));
 		
 		$userModel = new UserModel($this->app);
-		
 		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
 		$currentPassword = $userModel::hashPassword($data->currentPassword);
-		$newPassword = $userModel::hashPassword($newPassword);
+		$newPassword = $userModel::hashPassword($data->newPassword);
 		
 		if($currentPassword === $userModel->user['password']) {
 			$userModel->setProperty(null, 'password', $newPassword);
