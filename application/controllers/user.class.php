@@ -146,16 +146,12 @@ class UserController
 
 		$userModel = new UserModel($this->app);
 
-		try {
-			$userModel->loadUserByID($this->app['session']->get('uid'));
+		$userModel->loadUserByID($this->app['session']->get('uid'));
 
-			if($userModel::hashPassword($password) === $userModel->user['password']) {
-				return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
-			} else {
-				return ApiResponse::error('PASSWORD_INVALID');
-			}
-		} catch(\Exception $e) {
-			return ApiResponse::error('USER_NOT_FOUND');
+		if($userModel::hashPassword($password) === $userModel->user['password']) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('PASSWORD_INVALID');
 		}
 	}
 
