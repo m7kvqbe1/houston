@@ -44,18 +44,18 @@ class UserController
 		if(!isset($userModel->user)) return ApiResponse::error('USER_NOT_FOUND');
 
 		// First Name
-		$userModel->setProperty('firstName', $data->firstName);
+		$userModel->setProperty(null, 'firstName', $data->firstName);
 
 		// Last Name
-		$userModel->setProperty('lastName', $data->lastName);
+		$userModel->setProperty(null, 'lastName', $data->lastName);
 
 		// Email Address
 		if($data->emailAddress === $userModel->user['emailAddress']) return ApiResponse::error('DEFAULT_RESPONSE_SUCCESS');
-		$userModel->setProperty('emailAddressTmp', $data->emailAddress);
+		$userModel->setProperty(null, 'emailAddressTmp', $data->emailAddress);
 
 		// Generate and set new verification code
 		$token = generateVerificationToken($data->emailAddress);
-		$userModel->setProperty('verify', $token);
+		$userModel->setProperty(null, 'verify', $token);
 
 		// Send verification email
 		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/emailchange.phtml');
