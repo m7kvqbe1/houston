@@ -8,11 +8,24 @@ class System
 {
 	public static function generateAssets(Request $request, Application $app)
 	{
+		switch(APP_ENV) {
+			case 'DEVELOPMENT':
+				$env = '.dev';
+				break;
+			
+			case 'PRODUCTION':
+				$env = '';
+				break;
+			
+			default:
+				$env = '';
+		}
+		
 		// If session not authenticated serve login screen initial assets
 		if(!$app['session']->get('isAuthenticated')) {
-			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/backbone/loginapp/index.html');
+			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/backbone/loginapp/index'.$env.'.html');
 		} else {
-			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/backbone/ticketapp/index.html');
+			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/backbone/ticketapp/index'.$env.'.html');
 		}
 
 		return $template;

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="cleartype" content="on">
+    
+    <title>Houston Support Desk</title>
+    <meta name="description" content="Better customer service comes from positive interaction and better customer relationships. Hoot have thought support could be so good.">
+    
+    <!--
+	 _   _                 _              
+	| | | |               | |             
+	| |_| | ___  _   _ ___| |_ ___  _ __  
+	|  _  |/ _ \| | | / __| __/ _ \| '_ \ 
+	| | | | (_) | |_| \__ \ || (_) | | | |
+	\_| |_/\___/ \__,_|___/\__\___/|_| |_|
+                                                                                                                  
+	-->
+    
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="application/assets/css/normalize.css">
+    <link rel="stylesheet" href="application/assets/css/styles.css">
+    
+    <link rel="icon" type="image/x-icon" href="application/assets/favicon.ico" />
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/lib/underscore-min.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/lib/backbone-min.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/lib/handlebars.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/houston.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/datahelper.js"></script>
+
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/usermodel.js"></script>	
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/clientmodel.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/ticketmodel.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/fileuploadmodel.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/messagemodel.js"></script>	
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/ticketdetailmodel.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/agentmodel.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/models/clientusermodel.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/collections/clients.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/collections/tickets.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/collections/files.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/collections/messages.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/collections/agents.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/collections/users.js"></script>
+	
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/ticketview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/ticketsview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/formview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/peopleview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/fileuploadview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/messagesview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/clientsview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/accountview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/analyticsview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/modalview.js"></script>
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/views/profileview.js"></script>
+	
+	<script type="text/javascript" src="application/assets/backbone/ticketapp/js/app.js"></script>
+</head>
+<body class="ticket-body">
+<div class="mob-menu">
+	<div class="mob-menu-top">
+		<img class="logo" src="application/assets/img/logo@2x.png" />
+		<div class="nav-icon">
+			<div></div>
+		</div>	
+	</div>
+	<ul>
+		<li><a href="/"><i class="icon-comment"></i>All Tickets</a></li>
+		<li><a href="/people"><i class="icon-user"></i>People</a></li>
+		<li><a href="/profile"><i class="icon-cog"></i>Profile</a></li>
+		<li><a href="/analytics"><i class="icon-cog"></i>Analytics</a></li>
+		<li><a href="/account"><i class="icon-cog"></i>Account</a></li>
+		<li><a class="log-out"><i class="icon-logout"></i>Log Out</a></li>
+	</ul>
+	<div class="mob-peek">
+	</div>
+</div>
+<div class="outer-wrap">
+    <div class="app-wrap">
+		<header>
+			<img class="logo" src="application/assets/img/logo@2x.png" />
+			<div class="nav-icon">
+				<div></div>
+			</div>				
+			<nav>
+				<a href="/">Tickets</a>
+				<a href="/people">People</a>
+				<a href="/profile">Profile</a>
+				<a href="/analytics">Analytics</a>
+				<a href="/account">Account</a>
+				<a class="log-out">Log Out</a>
+			</nav>
+			<div id="update-alert"></div>
+		</header>		
+		<div id="app" class="box-app-wrap"></div>
+
+		<footer>
+			<div class="copy">
+				&copy;Copyright 2015 Houston Support Desk
+			</div>
+			
+			<div class="version">
+				Version: 0.0.1
+			</div>
+		</footer>
+		<div id="modal-window"></div>
+		<div id="preview-window"></div>
+	</div>
+</div>
+<div href="" id="notice"><span></span><i class="close"><i class="icon-cancel-circled"></i></i></div>
+</body>
+</html>
