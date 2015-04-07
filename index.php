@@ -3,7 +3,7 @@ mb_internal_encoding('UTF-8');
 mb_detect_order(array('UTF-8', 'ASCII'));
 mb_http_output('UTF-8');
 date_default_timezone_set('UTC');
-	
+
 define('PHP_START', microtime(true));
 define('DOCUMENT_ROOT', __DIR__);
 
@@ -59,7 +59,7 @@ $app->register(new MongoServiceProvider, array(
 $app->register(new SessionServiceProvider());
 $app['session.storage.handler'] = $app->share(function ($app) {
 	return new MongoDbSessionHandler(
-		$app['mongo']['default'], 
+		$app['mongo']['default'],
 		array('database' => 'houston', 'collection' => 'sessions')
 	);
 });
@@ -75,7 +75,7 @@ $app->register(new MonologServiceProvider(), array(
 $app->register(new AirbrakeServiceProvider(), array(
     'airbrake.api_key' => AIRBRAKE_API_KEY,
 	'airbrake.options' => array(
-		'secure' => false, 
+		'secure' => false,
 		'environmentName' => APP_ENV
 	)
 ));
@@ -94,20 +94,20 @@ $app['swiftmailer.options'] = array(
 // Error handler
 $app->error(function(\Exception $e, $code) use ($app) {
 	$app['airbrake']->notifyOnException($e);
-	
+
 	if($app['debug']) return;
-	
+
 	switch($code) {
 		case 404:
 			//$message = 'The requested page could not be found.';
 			return $app->redirect('/');	// Redirect to application entry point
 			break;
-		
+
 		default:
 			$message = 'Sorry, something went wrong.';
 			break;
 	}
-	
+
 	return new Response($message);	// Update this to custom error template
 });
 
@@ -118,7 +118,7 @@ $secure = function(Request $request, Application $app) {
 		System::validateApiKey($app, $request->get('apikey'));
 	} catch(\Exception $e) {
 		if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
-	}	
+	}
 };
 
 // Autoload only required classes (PSR-4) - MAKE THIS WORK!

@@ -9,6 +9,8 @@ $app['user.controller'] = $app->share(function() use ($app) {
 
 $app->get('/api/user/self', 'user.controller:getUserSelfAction')->before($secure);
 
+$app->put('/api/user/self', 'user.controller:putUserSelfAction')->before($secure);
+
 $app->get('/api/users', 'user.controller:getUsersAction')->before($secure);
 
 $app->delete('/api/user/{userID}', 'user.controller:deleteUserAction')->before($secure);
