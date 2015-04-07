@@ -174,8 +174,8 @@ class UserController
 		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
-		$currentPassword = $userModel::hashPassword($data->currentPassword);
-		$newPassword = $userModel::hashPassword($data->newPassword);
+		$currentPassword = $userModel::hashPassword($request->query->get('currentPassword'));
+		$newPassword = $userModel::hashPassword($request->query->get('newPassword'));
 		
 		if($currentPassword === $userModel->user['password']) {
 			$userModel->setProperty(null, 'password', $newPassword);
