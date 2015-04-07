@@ -1,26 +1,32 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
-		uglify: {			
+		uglify: {
 			options: {
 				banner: '/* Houston Compiled, built <%=  grunt.template.today() %> */'
 			},
-			
+
 			lib: {
-				src: '../assets/backbone/lib/*.js',
+				src: [
+					'../assets/backbone/lib/underscore-min.js',
+					'../assets/backbone/lib/backbone-min.js',
+					'../assets/backbone/lib/handlebars-min.js',
+					'../assets/backbone/lib/*.js'
+				],
+				
 				dest: '../../public/js/lib.compiled.js'
 			},
-			
+
 			loginapp: {
 				src: [
-					'../assets/backbone/loginapp/js/models/*.js', 
-					'../assets/backbone/loginapp/js/views/*.js', 
+					'../assets/backbone/loginapp/js/models/*.js',
+					'../assets/backbone/loginapp/js/views/*.js',
 					'../assets/backbone/loginapp/js/app.js',
 					'../assets/backbone/loginapp/js/login.js'
 				],
-				
+
 				dest: '../../public/js/loginapp.compiled.js'
 			},
-			
+
 			ticketapp: {
 				src: [
 					'../assets/backbone/ticketapp/js/houston.js',
@@ -30,15 +36,15 @@ module.exports = function(grunt) {
 					'../assets/backbone/ticketapp/js/views/*.js',
 					'../assets/backbone/ticketapp/js/app.js'
 				],
-				
+
 				dest: '../../public/js/ticketapp.compiled.js'
 			}
 		}
 	});
-	
-	// Load the plugin that prvidesthe "uglify" task.
+
+	// Load the plugin that prvides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	
+
 	// Default task(s).
 	grunt.registerTask('default', ['uglify']);
 }
