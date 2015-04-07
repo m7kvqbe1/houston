@@ -140,6 +140,25 @@ class UserController
 		}
 	}
 
+	public function checkPassword(Request $request)
+	{
+		$password = $request->query->get('password');
+
+		$userModel = new UserModel($this->app);
+
+		try {
+			$userModel->loadUserByID($this->app['session']->get('uid'));
+
+			if($userModel::hashPassword($password) === $userModel->user['password']) {
+				return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+			} else {
+				return ApiResponse::error('PASSWORD_INVALID');
+			}
+		} catch(\Exception $e) {
+			return ApiResponse::error('USER_NOT_FOUND');
+		}
+	}
+
 	public function checkExistsCompanyNameAction(Request $request)
 	{
 		$company = $request->query->get('company');

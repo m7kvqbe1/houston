@@ -22,3 +22,5 @@ $app->delete('/api/user/delete/{userID}/{property}', 'user.controller:deleteUser
 $app->get('/api/check/email', 'user.controller:checkExistsEmailAction');
 
 $app->get('/api/check/company', 'user.controller:checkExistsCompanyNameAction');
+
+$app->get('/api/check/password', 'user.controller:checkPassword');
