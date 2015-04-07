@@ -176,6 +176,8 @@ class UserController
 	{
 		$data = json_decode(file_get_contents('php://input'));
 		
+		$userModel = new UserModel($this->app);
+		
 		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
 		$currentPassword = $userModel::hashPassword($data->currentPassword);
