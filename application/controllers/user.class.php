@@ -49,8 +49,11 @@ class UserController
 		// Last Name
 		$userModel->setProperty(null, 'lastName', $data->lastName);
 
+		// Avatar
+		$userModel->setProperty(null, 'avatar', $data->avatar);
+
 		// Email Address
-		if($data->emailAddress === $userModel->user['emailAddress']) return ApiResponse::error('DEFAULT_RESPONSE_SUCCESS');
+		if($data->emailAddress === $userModel->user['emailAddress']) return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		$userModel->setProperty(null, 'emailAddressTmp', $data->emailAddress);
 
 		// Generate and set new verification code
