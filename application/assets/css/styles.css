@@ -1809,10 +1809,15 @@ input.inp-lst {
 
 .profile form div {
 	position: relative;
-
+	overflow: hidden;
 }
 
-.profile input[type="email"] {
+.profile form .or {
+	overflow: visible;
+}
+
+.profile input[type="email"],
+.profile input[type="password"] {
 	float: left;
 }
 
@@ -1987,6 +1992,19 @@ input.inp-lst {
 
 #form-profile-details h3 {
 	padding-bottom: 5px;
+}
+
+.profile .validated-marker {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 5%;
+	height: 46px;
+}
+
+.profile .validated-password input[type="password"] {
+	width: 95%;
 }
 
 /* Crop View */
