@@ -22,7 +22,7 @@ var ProfileView = Backbone.View.extend({
 				'<div>'+
 					'<label>Email Address</label>'+
 					'<input name="emailAddress" type="email" placeholder="{{attributes.emailAddress}}" />'+
-					'<h4 class="profile-tooltip">A validation link will be sent to your email address for verification</h4>'+
+					'<h4 class="profile-tooltip">A validation link will be sent to your email address for verification.</h4>'+
                     '<div class="in-use-marker">'+
                         '<div class="vrf-cir">'+
                             '<i class="icon-cancel"></i>'+
@@ -53,7 +53,7 @@ var ProfileView = Backbone.View.extend({
                 '<div id="avatar-drop">'+
                     '<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
                 '</div>'+
-                '<h4 class="profile-avatar-prompt">Drag and drop image onto area above to update</h4>'+ 
+                '<h4 class="profile-avatar-prompt">Drag and drop image onto area above to update.</h4>'+ 
                 '<a class="update-avatar-link">Add image from file</a>'+
                 '<input type="file" id="filesInput" name="files" />'+
                 '<div id="canvas-wrap"></div>'+
@@ -89,7 +89,7 @@ var ProfileView = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "sync add change", this.render);	
+		this.listenTo(this.model, "add change", this.render);	
 
         _.bindAll(this, 'keyEvent');
         $(document).bind('keydown', this.keyEvent);
@@ -160,16 +160,12 @@ var ProfileView = Backbone.View.extend({
                 updated = true;
             }
         });
-        console.log('1');
         if(updated){
-            console.log('2');
-            this.model.save({
+            this.model.save(this.model.attributes,{
                 success: _.bind(function(){
+                    console.log(this);
                     this.$el.find('#form-profile-details .response').addClass('text-animate');
-                }, this),
-                error: function(){
-
-                }
+                }, this)
             });
         }
     },
@@ -296,8 +292,6 @@ var ProfileView = Backbone.View.extend({
         var originalHeight = this.image.height;
         var maxWidth = $(window).width() - 40;
         console.log(maxWidth);
-
-        // this.image.width = 500;
 
         //If image too wide then resize RESIZE FOR TOO TALL ALSO 
         if(originalWidth > maxWidth) {
@@ -530,7 +524,8 @@ var ProfileView = Backbone.View.extend({
         if(this.grayscaleImage)this.makeGrayscale(temp_ctx);
         var vData = temp_canvas.toDataURL();
 
-        $('.avatar').attr('src', vData);
+        this.model.set('avatar', vData);
+        this.model.save();
         this.previewClose();
     }
 

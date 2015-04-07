@@ -1424,15 +1424,18 @@ input.inp-lst {
 	float: right;
 }
 
-.msg-avatar {
+.msg-dtl .avatar {
+/*.avatar {*/
 	float: left;
-	width: 66px;
-	height: 66px;
+/*	width: 66px;
+	height: 66px;*/
 	margin-right: 14px;
+/*	-webkit-border-radius: 50%;
+	border-radius: 50%;*/
 }
 
-.from-AGENT .msg-avatar,
-.from-ADMIN .msg-avatar {
+.from-AGENT .avatar,
+.from-ADMIN .avatar {
 	float: right;
 	margin: 0 0 0 14px;
 }
@@ -1728,15 +1731,13 @@ input.inp-lst {
 	clear: both;
 }
 
-#avatar-drop .avatar {
+.avatar {
 	display: block;
 	width: 66px;
 	height: 66px;
 	margin: 0 auto;
 	-webkit-border-radius: 50%;
 	border-radius: 50%;
-	background-size: cover;
-	background-position: center;
 }
 
 .profile-avatar-prompt {
@@ -2340,7 +2341,8 @@ button.grayscale.gray .c {
 	}
 	
 	.person h3 {
-		margin-top: 23px;
+		/*margin-top: 23px;*/
+		margin-top: 13px;
 		line-height: 20px;
 		font-size: 18px;
 	}
@@ -2665,8 +2667,8 @@ button.grayscale.gray .c {
 		float: left;
 	}
 	
-	.from-AGENT .msg-avatar,
-	.from-ADMIN .msg-avatar {
+	.from-AGENT .avatar,
+	.from-ADMIN .avatar {
 		float: left;
 		margin: 0 14px 0 0;
 	}
