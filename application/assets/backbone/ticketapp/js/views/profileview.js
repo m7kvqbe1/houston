@@ -9,23 +9,32 @@ var ProfileView = Backbone.View.extend({
 			'</div>'+
 		'</div>'+
 		'<div class="box-app profile" style="{{fullHeightPage}}">' +
-			'<h3>Your Details</h3>'+
-			'<form id="form-profile-details">'+				
+			'<form id="form-profile-details">'+	
+                '<h3>Your Details</h3>'+			
 				'<div>'+
 					'<label>First Name</label>'+
-					'<input type="text" placeholder="{{attributes.firstName}}" />'+
+					'<input class="test" name="firstName" type="text" placeholder="{{attributes.firstName}}" />'+
 				'</div>'+
 				'<div>'+
 					'<label>Last Name</label>'+
-					'<input type="text" placeholder="{{attributes.lastName}}" />'+
+					'<input name="lastName" type="text" placeholder="{{attributes.lastName}}" />'+
 				'</div>'+
 				'<div>'+
 					'<label>Email Address</label>'+
-					'<input type="email" placeholder="{{attributes.emailAddress}}" />'+
+					'<input name="emailAddress" type="email" placeholder="{{attributes.emailAddress}}" />'+
+					'<h4 class="profile-tooltip">A validation link will be sent to your email address for verification</h4>'+
+                    '<div class="in-use-marker">'+
+                        '<div class="vrf-cir">'+
+                            '<i class="icon-cancel"></i>'+
+                        '</div>'+
+                    '</div>'+
 				'</div>'+
 				'<button type="button">Update</button>'+
 				'<div class="beige or">or</div>' +
 				'<a class="cancel-btn ib">Cancel</a>' +
+				'<div class="response">'+
+					'<h3>Your profile was succesfully updated</h3>'+
+				'</div>'+
 			'</form>'+
 			'<h3>Update Password</h3>'+
 			'<form id="form-profile-password">'+
@@ -35,6 +44,9 @@ var ProfileView = Backbone.View.extend({
 				'<button type="button">Update</button>'+
 				'<div class="beige or">or</div>' +
 				'<a class="cancel-btn ib">Cancel</a>' +
+				'<div class="response">'+
+					'<h3>Your password was succesfully updated</h3>'+
+				'</div>'+
 			'</form>'+
             '<div class="profile-avatar">'+
                 '<h3>Avatar</h3>'+                    
@@ -79,6 +91,8 @@ var ProfileView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, "sync add change", this.render);	
 
+        _.bindAll(this, 'keyEvent');
+        $(document).bind('keydown', this.keyEvent);
 
         this.selection.prototype.draw = function(view){
             view.ctx.strokeStyle = '#000';
@@ -97,10 +111,10 @@ var ProfileView = Backbone.View.extend({
             view.ctx.fillRect(this.x + this.w - this.iCSize[2], this.y + this.h - this.iCSize[2], this.iCSize[2] * 2, this.iCSize[2] * 2);
             view.ctx.fillRect(this.x - this.iCSize[3], this.y + this.h - this.iCSize[3], this.iCSize[3] * 2, this.iCSize[3] * 2);
         };
-
 	},
 
 	onClose: function(){
+        $(document).unbind('keydown', this.keyEvent);
 		this.stopListening();
 	},
 	
@@ -113,15 +127,88 @@ var ProfileView = Backbone.View.extend({
 			'dragleave #avatar-drop': 'handleDragLeave',
 			'drop #avatar-drop': 'handleDragFileSelect',
 			'click .toggle-button-outer': 'toggleEmails',
-
+            'click .preview-close': 'previewClose',
+            'keydown': 'keyEvent',
             'mousemove #panel': 'canvasMousemove',
             'mousedown #panel': 'canvasMousedown',
             'mouseup #panel': 'canvasMouseup',
-            'click .crop': 'getResults'
-        });
+            'click .crop': 'getResults',
+            'click .grayscale': 'grayscaleHandler',
 
+            'click #form-profile-details button': 'updateDetails',
+            'click #form-profile-details .cancel-btn': 'cancelUpdateDetails',
+            'keyup input[type=email]': 'validateEmail'
+
+        });
 		return this;
 	},
+
+    animate: function(){
+        this.$el.find('.in-use-marker').toggleClass('icon-animate');
+    },
+
+    updateDetails: function(evt){
+        var updated = false;
+        var form = $(evt.currentTarget).closest('form');
+        var inputs = form.find('input');        
+        inputs.each(function(){
+            var input = $(this);
+            var value = input.val();
+            if(!input.hasClass('error') && value){
+                var name = input.attr('name');
+                app.user.set(name, value);
+                updated = true;
+            }
+        });
+        console.log('1');
+        if(updated){
+            console.log('2');
+            this.model.save({
+                success: _.bind(function(){
+                    this.$el.find('#form-profile-details .response').addClass('text-animate');
+                }, this),
+                error: function(){
+
+                }
+            });
+        }
+    },
+
+    cancelUpdateDetails: function(evt){
+        var form = $(evt.currentTarget).closest('form');
+        form.find('.in-use').removeClass('in-use');
+        form.find('.in-use-marker').removeClass('icon-animate');
+        var inputs = form.find('input');        
+        inputs.each(function(){
+            var input = $(this);
+            input.val('');
+            input.removeClass('error');
+        });
+    },
+
+    validateEmail: function(evt){
+        var input = $(evt.currentTarget);
+        houston.validateAndApproveEmail(input,this.validateEmailSuccess, this.validateEmailFail);
+    },
+
+    validateEmailSuccess: function(input){
+        input.closest('div').removeClass('in-use').find('.in-use-marker').removeClass('icon-animate');
+    },
+
+    validateEmailFail: function(input){
+        console.log('fail');
+        var div = input.closest('div');
+        div.addClass('in-use');
+        window.setTimeout(function(){div.find('.in-use-marker').addClass('icon-animate')}, 500);
+        
+    },
+
+    keyEvent: function(e){
+        var keyCode = e.which;
+        if (keyCode == 27) {
+            this.previewClose();
+        }
+    },
 
 	fileDialogTrigger: function(){
 		this.$el.find('#filesInput').trigger('click');
@@ -151,21 +238,49 @@ var ProfileView = Backbone.View.extend({
 	    $(evt.currentTarget).removeClass('drop-highlight');
 	},
 
+    toggleEmails: function(evt){
+        $(evt.currentTarget).toggleClass('on');
+    },   
+
+    previewClose: function(){
+        $('#canvas-wrap').html('').removeClass('active');
+    }, 
+
 	addAvatar: function(file){
 		var reader = new FileReader();
-
 	    reader.onloadend = _.bind((function(theFile) {
 	        return function(e) {
                 this.addImageToCanvas(e.target.result);
 	        };
         })(file), this);
-
         reader.readAsDataURL(file);
 	}, 
 
-	toggleEmails: function(evt){
-		$(evt.currentTarget).toggleClass('on');
-	},
+    grayscaleImage: false,
+    grayscaleHandler: function(evt){
+        $(evt.currentTarget).toggleClass('gray');
+        if(!this.grayscaleImage){
+            this.grayscaleImage = true;
+        } else {
+            this.grayscaleImage = false;
+        }
+        this.drawScene();
+    },
+
+    makeGrayscale: function(canvasContext) {
+        var imgData = canvasContext.getImageData(0, 0, this.canvas.width, this.canvas.height);
+            var pixels  = imgData.data;
+            for (var i = 0, n = pixels.length; i < n; i += 4) {
+            var grayscale = pixels[i] * .3 + pixels[i+1] * .59 + pixels[i+2] * .11;
+            pixels[i  ] = grayscale;        // red
+            pixels[i+1] = grayscale;        // green
+            pixels[i+2] = grayscale;        // blue
+            //pixels[i+3]              is alpha
+        }
+
+        //redraw the image in black & white
+        canvasContext.putImageData(imgData, 0, 0);
+    },    
 
 	canvas: null, 
 	image: null,
@@ -179,13 +294,23 @@ var ProfileView = Backbone.View.extend({
         this.image.src = imgSrc;
         var originalWidth = this.image.width;
         var originalHeight = this.image.height;
+        var maxWidth = $(window).width() - 40;
+        console.log(maxWidth);
 
-        //If image too wide then resize RESIZE FOR TOO TALL ALSO
-        if(originalWidth > 880) {
-            var imageWidth = 880;
+        // this.image.width = 500;
+
+        //If image too wide then resize RESIZE FOR TOO TALL ALSO 
+        if(originalWidth > maxWidth) {
+            console.log('resizing');
+
+            var imageWidth = maxWidth;
             var widthDifference = originalWidth - imageWidth;
             var percentageDecrease = widthDifference / (originalWidth / 100);
             var imageHeight = originalHeight - ((originalHeight / 100) * percentageDecrease);
+
+            this.image.width = imageWidth;
+            this.image.height = imageHeight;
+
 
             //Draw resized image onto temporary canvas and set that to this.image
             var temp_ctx, temp_canvas;
@@ -193,9 +318,9 @@ var ProfileView = Backbone.View.extend({
             temp_ctx = temp_canvas.getContext('2d');
             temp_canvas.width = imageWidth;
             temp_canvas.height = imageHeight;
-            temp_ctx.drawImage(this.image, 0, 0, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
+            temp_ctx.drawImage(this.image, 0, 0, originalWidth, originalHeight, 0, 0, imageWidth, imageHeight);
             this.image.src = temp_canvas.toDataURL();
-            console.log('resizing');
+            
         } 
 
         this.canvas = document.createElement('canvas');
@@ -203,9 +328,25 @@ var ProfileView = Backbone.View.extend({
 
         $(this.canvas).attr({'width': this.image.width, 'height': this.image.height, id: 'panel'});
 
-        $('#canvas-wrap').html('<div class="canvas-wrap-inner"></div><button class="crop" type="button">Crop and Save</button>');
-        $('.canvas-wrap-inner').html(this.canvas)
+        $('#canvas-wrap').html(
+            '<div class="preview-window-inner">'+
+                '<div class="preview-wrap">'+
+                    '<div class="preview-img-wrap">'+
+                        '<i class="preview-close icon-cancel-circled"></i>'+
+                        '<div class="preview-img-box">'+
+                            '<div class="canvas">'+
+                            '</div>'+
+                        '<button class="crop">Crop and Save</button>'+
+                        '<button class="grayscale"><span class="g">Grayscale</span><span class="c">Colour</span></button>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'
+        );
+        $('.canvas').html(this.canvas)
         $('#canvas-wrap').addClass('active');
+
+        //www.htmlgoodies.com/html5/javascript/display-images-in-black-and-white-using-the-html5-canvas.html#fbid=vq-yqyDCNdi
 
         // create initial selection
         this.theSelection = new this.selection(200, 200, 200, 200);
@@ -244,6 +385,9 @@ var ProfileView = Backbone.View.extend({
 
         // draw selection
         this.theSelection.draw(this);
+
+        // add greyscale effect if selected
+        if(this.grayscaleImage) this.makeGrayscale(this.ctx);
     },
 
     canvasMousemove: function(e) { // binding mouse move event
@@ -368,7 +512,6 @@ var ProfileView = Backbone.View.extend({
 
     canvasMouseup: function(e) { // binding mouseup event
         this.theSelection.bDragAll = false;
-
         for (i = 0; i < 4; i++) {
             this.theSelection.bDrag[i] = false;
         }
@@ -383,10 +526,68 @@ var ProfileView = Backbone.View.extend({
         temp_canvas.width = this.theSelection.w;
         temp_canvas.height = this.theSelection.h;
         temp_ctx.drawImage(this.image, this.theSelection.x, this.theSelection.y, this.theSelection.w, this.theSelection.h, 0, 0, this.theSelection.w, this.theSelection.h);
+        //add grayscale effect if selected 
+        if(this.grayscaleImage)this.makeGrayscale(temp_ctx);
         var vData = temp_canvas.toDataURL();
 
         $('.avatar').attr('src', vData);
-        $('#canvas-wrap').html('').removeClass('active');
+        this.previewClose();
     }
 
 });
+
+    // addImageToCanvas: function(imgSrc){
+    //     //Create Image object and pass it uploaded data
+    //     this.image = new Image();
+    //     this.image.src = imgSrc;
+    //     var originalWidth = this.image.width;
+    //     var originalHeight = this.image.height;
+
+    //     //If image too wide then resize RESIZE FOR TOO TALL ALSO var maxWidth = $(window).width() - 40;
+    //     if(originalWidth > 500) {
+    //         var imageWidth = 500;
+    //         var widthDifference = originalWidth - imageWidth;
+    //         var percentageDecrease = widthDifference / (originalWidth / 100);
+    //         var imageHeight = originalHeight - ((originalHeight / 100) * percentageDecrease);
+
+    //         //Draw resized image onto temporary canvas and set that to this.image
+    //         var temp_ctx, temp_canvas;
+    //         temp_canvas = document.createElement('canvas');
+    //         temp_ctx = temp_canvas.getContext('2d');
+    //         temp_canvas.width = imageWidth;
+    //         temp_canvas.height = imageHeight;
+    //         temp_ctx.drawImage(this.image, 0, 0, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
+    //         this.image.src = temp_canvas.toDataURL();
+    //         console.log('resizing');
+    //     } 
+
+    //     this.canvas = document.createElement('canvas');
+    //     this.ctx = this.canvas.getContext('2d');
+
+    //     $(this.canvas).attr({'width': this.image.width, 'height': this.image.height, id: 'panel'});
+
+    //     $('#canvas-wrap').html(
+    //         '<div class="preview-window-inner">'+
+    //             '<div class="preview-wrap">'+
+    //                 '<div class="preview-img-wrap">'+
+    //                     '<i class="preview-close icon-cancel-circled"></i>'+
+    //                     '<div class="preview-img-box">'+
+    //                         '<div class="canvas">'+
+    //                         '</div>'+
+    //                     '<button class="crop">Crop and Save</button>'+
+    //                     '<button class="grayscale"><span class="g">Grayscale</span><span class="c">Colour</span></button>'+
+    //                     '</div>'+
+    //                 '</div>'+
+    //             '</div>'+
+    //         '</div>'
+    //     );
+    //     $('.canvas').html(this.canvas)
+    //     $('#canvas-wrap').addClass('active');
+
+    //     //www.htmlgoodies.com/html5/javascript/display-images-in-black-and-white-using-the-html5-canvas.html#fbid=vq-yqyDCNdi
+
+    //     // create initial selection
+    //     this.theSelection = new this.selection(200, 200, 200, 200);
+
+    //     this.drawScene();
+    // },    

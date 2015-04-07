@@ -165,14 +165,14 @@ var events = {
 		this.$('.preview-img').css('max-height', houston.previewImageResize());
 	},
 
-	pdfSize: function(){
-		this.$('.img-wrap').css('height', houston.previewImageResize());
-		this.$('.img-wrap').css('width', houston.previewImageResizeWidth());
-	},
+	// pdfSize: function(){
+	// 	this.$('.img-wrap').css('height', houston.previewImageResize());
+	// 	this.$('.img-wrap').css('width', houston.previewImageResizeWidth());
+	// },
 
 	bindEvents: function(){
 
-		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight).on("resize", events.pdfSize);
+		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
 		//Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){
