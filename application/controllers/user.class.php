@@ -179,9 +179,10 @@ class UserController
 		$userModel->loadUserByID($this->app['session']->get('uid'));
 		
 		$currentPassword = $userModel::hashPassword($data->currentPassword);
+		$newPassword = $userModel::hashPassword($newPassword);
 		
 		if($currentPassword === $userModel->user['password']) {
-			$userModel->setProperty(null, 'password', $currentPassword);
+			$userModel->setProperty(null, 'password', $newPassword);
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('PASSWORD_INVALID');
