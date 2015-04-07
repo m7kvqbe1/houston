@@ -34,6 +34,46 @@ class UserController
 		return json_encode($userModel->user);
 	}
 
+	public function putUserSelfAction()
+	{
+		$data = json_decode(file_get_contents('php://input'));
+
+		$userModel = new UserModel($this->app);
+		$userModel->loadUserByID($this->app['session']->get('uid'));
+
+		if(!isset($userModel->user)) return ApiResponse::error('USER_NOT_FOUND');
+
+		// First Name
+		$userModel->setProperty('firstName', $data->firstName);
+
+		// Last Name
+		$userModel->setProperty('lastName', $data->lastName);
+
+		// Email Address
+		$userModel->setProperty('emailAddressTmp', $data->emailAddress);
+
+		if($data->emailAddress === $userModel->user['emailAddress']) return ApiResponse::error('DEFAULT_RESPONSE_SUCCESS');
+
+		// Generate and set new verification code
+		$token = generateVerificationToken($data->emailAddress);
+		$userModel->setProperty('verify', $token);
+
+		// Send verification email
+		$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/emailchange.phtml');
+		$emailBody = str_replace('{button_url}', DOMAIN."/api/verify/".$token, $template);
+
+		$message = \Swift_Message::newInstance()
+			->setSubject('Email Change Request')
+			->setFrom(array(DEFAULT_FROM))
+			->setTo(array($data->emailAddress))
+			->setBody($emailBody, 'text/html');
+
+		$this->app['mailer']->send($message);
+
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+	}
+
+
 	public function getUsersAction()
 	{
 		$userModel = new UserModel($this->app);
