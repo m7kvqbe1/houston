@@ -23,7 +23,7 @@ var PeopleView = Backbone.View.extend({
 				'{{#each models}}'+
 					'<li class="person">'+
 						'{{#if attributes.firstName}}'+					
-							'<img class="avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />'+
+							'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
 							'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
 							'<h4>Support Agent</h4>'+
 						'{{else}}'+

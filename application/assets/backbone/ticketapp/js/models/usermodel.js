@@ -5,7 +5,7 @@ var UserModel = Backbone.Model.extend({
 			response.id = response._id['$id'];
 			delete response._id;
 		} 
-		if(response.companyID.$id){
+		if(response.companyID && response.companyID.$id){
 			response.companyID = response.companyID['$id'];
 		}
 		return response;

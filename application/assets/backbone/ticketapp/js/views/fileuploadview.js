@@ -214,7 +214,8 @@ var PreviewWindow = Backbone.View.extend({
 									'{{generateFileNextLink @index collection.length}}'+
 								'</div>'+
 							'</div>'+
-							'<div class="img-wrap" style="height:{{maxHeightImg}}px; width:{{maxWidthImg}}px;">'+					
+							// '<div class="img-wrap" style="height:{{maxHeightImg}}px; width:{{maxWidthImg}}px;">'+
+							'<div class="img-wrap">'+					
 								'{{#ifCond attributes.type "application/pdf"}}'+
 								    '<object data="/api/tickets/file/inline/{{attributes.ref}}" type="application/pdf" width="100%" height="100%" frameborder="0"> alt : <a href="/api/tickets/file/{{attributes.ref}}">test.pdf</a> </object>'+
 								'{{else}}'+

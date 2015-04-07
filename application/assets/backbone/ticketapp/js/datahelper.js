@@ -33,6 +33,15 @@ var dataHelper = {
 			var userRole = user.attributes.role;
 		} 
 		return userRole;
+	},
+
+	getUserAvatar: function(userID){
+		var user = app.users.get(userID);
+		var avatar = '/application/assets/img/avatar.png';
+		if(typeof user !== "undefined"){
+			if(user.attributes.avatar) avatar = user.attributes.avatar;
+		} 
+		return avatar;
 	}
 
 }
@@ -65,6 +74,10 @@ var handlebarsHelpers = {
 
 		Handlebars.registerHelper("getCompanyName", function(authorID) {
 			return new Handlebars.SafeString(dataHelper.getCompanyName(authorID));
+		});
+
+		Handlebars.registerHelper("getUserAvatar", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserAvatar(authorID));
 		});
 
 		Handlebars.registerHelper("convertToClass", function(attribute) {
@@ -165,14 +178,14 @@ var events = {
 		this.$('.preview-img').css('max-height', houston.previewImageResize());
 	},
 
-	pdfSize: function(){
-		this.$('.img-wrap').css('height', houston.previewImageResize());
-		this.$('.img-wrap').css('width', houston.previewImageResizeWidth());
-	},
+	// pdfSize: function(){
+	// 	this.$('.img-wrap').css('height', houston.previewImageResize());
+	// 	this.$('.img-wrap').css('width', houston.previewImageResizeWidth());
+	// },
 
 	bindEvents: function(){
 
-		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight).on("resize", events.pdfSize);
+		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
 		//Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){

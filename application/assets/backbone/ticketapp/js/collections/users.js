@@ -21,6 +21,7 @@ var Users = Backbone.Collection.extend({
 		});
 		return filtered;
 	},
+	
 	agentUsers: function(){
 		filtered = this.filter(function(data){
 			return data.get('role') !== 'USER';

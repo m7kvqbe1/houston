@@ -252,7 +252,8 @@ var houston = {
 
 			if(input.is('input[type=email]')){
 				address = input.val();
-				if(!re.test(address)){
+				// if(!re.test(address)){
+				if(!houston.validateEmail(address)){
 					valid = false;
 					input.addClass('error');		
 				} else {
@@ -261,6 +262,40 @@ var houston = {
 			}
 		});
 		return valid;
+	},
+
+	validateEmail: function(address){
+		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+		if(re.test(address)){
+			return true;
+		} else {
+			return false;
+		}
+	},
+
+	validateAndApproveEmail: function(input, successCallback, errorCallback){
+		var address = input.val();
+		if(!this.validateEmail(address)){
+			input.addClass('error');
+			return
+		} else {
+			input.removeClass('error');
+		}
+
+		var request = $.get("/api/check/email?email=" + address);
+        
+        request.done(function(msg) {
+            console.log('good');
+            successCallback(input);
+            // input.closest('div').removeClass('in-use').find('.in-use-marker').removeClass('bigEntrance');
+        });
+         
+        request.fail(function(jqXHR, textStatus) {
+            console.log('bad');
+            errorCallback(input);
+            // input.closest('div').addClass('in-use').find('.in-use-marker').delay(500)addClass('bigEntrance');
+        });
+	    
 	},
 
 	formatFileType: function(type){
