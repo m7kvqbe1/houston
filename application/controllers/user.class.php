@@ -171,4 +171,20 @@ class UserController
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		}
 	}
+	
+	public function userUpdatePassword()
+	{
+		$data = json_decode(file_get_contents('php://input'));
+		
+		$userModel->loadUserByID($this->app['session']->get('uid'));
+		
+		$currentPassword = $userModel::hashPassword($data->currentPassword);
+		
+		if($currentPassword === $userModel->user['password']) {
+			$userModel->setProperty(null, 'password', $currentPassword);
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('PASSWORD_INVALID');
+		}
+	}
 }

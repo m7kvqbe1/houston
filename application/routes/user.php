@@ -24,3 +24,5 @@ $app->get('/api/check/email', 'user.controller:checkExistsEmailAction');
 $app->get('/api/check/company', 'user.controller:checkExistsCompanyNameAction');
 
 $app->get('/api/check/password', 'user.controller:checkPassword');
+
+$app->post('/api/user/update/password', 'user.controller:userUpdatePassword');
