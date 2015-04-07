@@ -167,15 +167,13 @@ class UserController
 		}
 	}
 	
-	public function userUpdatePassword()
-	{
-		$data = json_decode(file_get_contents('php://input'));
+	public function userUpdatePassword(Request $request)
+	{		
+		$currentPassword = $userModel::hashPassword($request->query->get('currentPassword'));
+		$newPassword = $userModel::hashPassword($request->query->get('newPassword'));
 		
 		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('uid'));
-		
-		$currentPassword = $userModel::hashPassword($request->query->get('currentPassword'));
-		$newPassword = $userModel::hashPassword($request->query->get('newPassword'));
 		
 		if($currentPassword === $userModel->user['password']) {
 			$userModel->setProperty(null, 'password', $newPassword);
