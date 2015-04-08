@@ -1707,12 +1707,22 @@ input.inp-lst {
 
 .profile h3 {
 	padding: 30px 0 20px;
+	border-top: 1px solid #cfc3af;
 	font-size: 15px;
 }
 
+.profile form h3 {
+	border: none;
+}
+
+#form-profile-details h3 {
+	padding-bottom: 5px;
+}
+
 .profile form {
+	width: 258px;
+	margin: 0 auto;
 	padding-bottom: 20px;
-	border-bottom: 1px solid #cfc3af;
 }
 
 .profile label {
@@ -1722,13 +1732,28 @@ input.inp-lst {
 	color: #9b8d75;
 }
 
+.profile input[type="text"],
+.profile input[type="email"],
+.profile input[type="password"]{
+	float: left;	
+}
+
+.profile .profile-input-resize input {
+	width: 192px;
+}
+
 .profile-avatar {
 	padding-bottom: 20px;
-	border-bottom: 1px solid #cfc3af;
 }
 
 .profile-tooltip {
 	clear: both;
+	margin: 0 auto 15px;
+}
+
+.profile .response {
+	display: none;
+	visibility: hidden;
 }
 
 .avatar {
@@ -1749,8 +1774,11 @@ input.inp-lst {
 	margin: 5px 0 15px;
 }
 
+
 .toggle-button-wrap {
+	width: 258px;
 	height: 46px;
+	margin: 0 auto;	
 }
 
 .toggle-button-outer {
@@ -1807,32 +1835,119 @@ input.inp-lst {
 	line-height: 36px;
 }
 
-.profile form div {
+.profile-input-wrap {
 	position: relative;
 	overflow: hidden;
 }
 
-.profile form .or {
-	overflow: visible;
-}
-
-.profile input[type="email"],
-.profile input[type="password"] {
-	float: left;
-}
-
-.profile .in-use input {
-	border-color: #ff6e3e;
-	width: 95%!important;
+.profile .cancel-btn {
+	display: block;
 }
 
 .profile .in-use-marker {
 	visibility: hidden;
 	position: absolute;
-	top: 46px;
+	top: 26px;
 	right: 0;
-	width: 5%;
 	height: 46px;
+}
+
+.profile .response h3 {
+	padding: 5px 0;
+}
+
+.profile .validated-marker {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 46px;
+}
+
+.profile-input-resize .in-use-marker,
+.profile-input-resize .validated-marker {
+	animation-name: delayed-icon-animate;
+	-webkit-animation-name: delayed-icon-animate;	
+
+	animation-duration: 1.3s;	
+	-webkit-animation-duration: 1.3s;
+
+	animation-timing-function: ease-out;	
+	-webkit-animation-timing-function: ease-out;	
+
+	visibility: visible !important;	
+}
+
+@keyframes delayed-icon-animate {
+	0% {
+		transform: scale(0) rotate(0deg);
+		opacity: 0;
+	}
+
+	40% {
+		transform: scale(0.3) rotate(2deg);
+		opacity: 0.2;
+	}
+	58% {
+		transform: scale(1.03) rotate(-2deg);		
+		opacity: 1;
+	}
+	67% {
+		transform: scale(0.98) rotate(1deg);
+		opacity: 1;
+	}
+	76% {
+		transform: scale(1.01) rotate(-1deg);		
+		opacity: 1;
+	}	
+	85% {
+		transform: scale(0.99) rotate(1deg);
+		opacity: 1;
+	}
+	94% {
+		transform: scale(1.01) rotate(0deg);		
+		opacity: 1;
+	}	
+	100% {
+		transform: scale(1) rotate(0deg);
+		opacity: 1;
+	}		
+}
+
+@-webkit-keyframes delayed-icon-animate {
+	0% {
+		transform: scale(0) rotate(0deg);
+		opacity: 0;
+	}
+
+	40% {
+		transform: scale(0.3) rotate(2deg);
+		opacity: 0.2;
+	}
+	58% {
+		transform: scale(1.03) rotate(-2deg);		
+		opacity: 1;
+	}
+	67% {
+		transform: scale(0.98) rotate(1deg);
+		opacity: 1;
+	}
+	76% {
+		transform: scale(1.01) rotate(-1deg);		
+		opacity: 1;
+	}	
+	85% {
+		transform: scale(0.99) rotate(1deg);
+		opacity: 1;
+	}
+	94% {
+		transform: scale(1.01) rotate(0deg);		
+		opacity: 1;
+	}	
+	100% {
+		transform: scale(1) rotate(0deg);
+		opacity: 1;
+	}		
 }
 
 .icon-animate{
@@ -1920,7 +2035,8 @@ input.inp-lst {
 	animation-timing-function: ease-out;	
 	-webkit-animation-timing-function: ease-out;	
 
-	visibility: visible !important;	
+	visibility: visible !important;
+	display: block!important;	
 }
 
 @keyframes text-animate {
@@ -1985,27 +2101,6 @@ input.inp-lst {
 	}				
 }
 
-.response {
-	visibility: hidden;
-	float: right;
-}
-
-#form-profile-details h3 {
-	padding-bottom: 5px;
-}
-
-.profile .validated-marker {
-	visibility: hidden;
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 5%;
-	height: 46px;
-}
-
-.profile .validated-password input[type="password"] {
-	width: 95%;
-}
 
 /* Crop View */
 
@@ -2359,7 +2454,6 @@ button.grayscale.gray .c {
 	}
 	
 	.person h3 {
-		/*margin-top: 23px;*/
 		margin-top: 13px;
 		line-height: 20px;
 		font-size: 18px;
@@ -2446,15 +2540,11 @@ button.grayscale.gray .c {
 	.file {
 		float: left;
 		width: 50%;
-/*		height: 70px;
-		height: 140px;
-		height: inherit;*/
 		padding-top: 30px;
 	}
 
 	.file:first-child,
 	.file:nth-child(2) {
-		/*padding-top: 10px;*/
 		padding-top: 20px;
 	}
 	
@@ -2600,13 +2690,21 @@ button.grayscale.gray .c {
 		display: block;
 	}
 
-	/* Profile */
-	
+	/* Profile */	
 	.profile {
 		text-align: left;
 	}
 
+	.profile .cancel-btn {
+		display: inline-block;
+	}
+
+	.profile-tooltip {
+		margin-bottom: 0;
+	}
+
 	.profile form {
+		width: 100%;
 		padding-bottom: 30px;
 	}
 
@@ -2614,6 +2712,10 @@ button.grayscale.gray .c {
 		line-height: 20px;
   		font-size: 18px;
 	}	
+
+	.profile .response h3 {
+		padding: 30px 0 5px;
+	}
 
 	.profile label {
 		margin-bottom: 0;
@@ -2625,12 +2727,24 @@ button.grayscale.gray .c {
 	.profile input[type="email"],
 	.profile input[type="password"]{
 		box-sizing: border-box;
-		width: 100%;		
+		width: 100%;	
 	}
 
 	#form-profile-details input[type="text"],
 	#form-profile-details input[type="email"]{
 		margin-bottom: 10px;
+	}
+
+	.profile .profile-input-resize input {
+		width: 95%!important;
+	}
+
+	.profile .in-use-marker {
+		top: 46px;
+	}
+
+	.profile .response {
+		float: right;
 	}
 
 	.profile form button {
@@ -2670,6 +2784,11 @@ button.grayscale.gray .c {
 		clear: both;
 		padding-top: 10px;
 	}
+
+	.toggle-button-wrap {
+		width: 100%;
+	}
+
 }
 	
 @media only screen and (min-width: 1000px) { 

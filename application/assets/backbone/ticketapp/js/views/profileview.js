@@ -11,15 +11,15 @@ var ProfileView = Backbone.View.extend({
 		'<div class="box-app profile" style="{{fullHeightPage}}">' +
 			'<form id="form-profile-details">'+	
                 '<h3>Your Details</h3>'+			
-				'<div>'+
+				'<div class="profile-input-wrap">'+
 					'<label>First Name</label>'+
 					'<input class="test" name="firstName" type="text" placeholder="{{attributes.firstName}}" />'+
 				'</div>'+
-				'<div>'+
+				'<div class="profile-input-wrap">'+
 					'<label>Last Name</label>'+
 					'<input name="lastName" type="text" placeholder="{{attributes.lastName}}" />'+
 				'</div>'+
-				'<div>'+
+				'<div class="profile-input-wrap">'+
 					'<label>Email Address</label>'+
 					'<input name="emailAddress" type="email" placeholder="{{attributes.emailAddress}}" />'+
 					'<h4 class="profile-tooltip">A validation link will be sent to your email address for verification.</h4>'+
@@ -31,14 +31,14 @@ var ProfileView = Backbone.View.extend({
 				'</div>'+
 				'<button type="button">Update</button>'+
 				'<div class="beige or">or</div>' +
-				'<a class="cancel-btn ib">Cancel</a>' +
+				'<a class="cancel-btn">Cancel</a>' +
 				'<div class="response">'+
 					'<h3>Your profile was succesfully updated</h3>'+
 				'</div>'+
 			'</form>'+
 			'<h3>Update Password</h3>'+
 			'<form id="form-profile-password">'+
-                '<div>'+
+                '<div class="profile-input-wrap">'+
     				'<input class="current-password" type="password" placeholder="Current Password" />'+
                     '<div class="validated-marker">'+
                         '<div class="vrf-cir ok">'+
@@ -46,13 +46,13 @@ var ProfileView = Backbone.View.extend({
                         '</div>'+
                     '</div>'+
                 '</div>'+    
-                '<div>'+
+                '<div class="profile-input-wrap">'+
 				    '<input class="new-password" type="password" placeholder="New Password" disabled />'+
                     '<div class="validated-marker">'+
                         '<div class="vrf-cir vrf-count">8</div>'+
                     '</div>'+
                 '</div>'+
-                '<div>'+
+                '<div class="profile-input-wrap">'+
 				    '<input class="repeat-password" type="password" placeholder="Repeat Password" disabled />'+
                     '<div class="validated-marker">'+
                         '<div class="vrf-cir ok">'+
@@ -62,9 +62,9 @@ var ProfileView = Backbone.View.extend({
                 '</div>'+
 				'<button type="button">Update</button>'+
 				'<div class="beige or">or</div>' +
-				'<a class="cancel-btn ib">Cancel</a>' +
+				'<a class="cancel-btn">Cancel</a>' +
 				'<div class="response">'+
-					'<h3>Your password was succesfully updated</h3>'+
+					'<h3>Your password has been updated</h3>'+
 				'</div>'+
 			'</form>'+
             '<div class="profile-avatar">'+
@@ -160,32 +160,63 @@ var ProfileView = Backbone.View.extend({
 
             'input .current-password': 'validatePassword',
             'focus .new-password': 'passwordCounterReveal',
+            'blur .new-password': 'passwordCounterHide',
             'input .new-password': 'newPasswordCount',
             'input .repeat-password': 'confirmPassword',
-            'click #form-profile-password button': 'updatePassword'
+            'click #form-profile-password button': 'updatePassword',
+            'click #form-profile-password .cancel-btn': 'cancelUpdatePassword'
 
         });
 		return this;
 	},
 
+    cancelUpdatePassword: function(){
+        var inputs = this.$el.find('#form-profile-password input');
+        inputs.each(function(){
+            var input = $(this);
+            input.val('');
+            input.closest('div').removeClass('profile-input-resize');
+
+            if(input.hasClass('current-password')){
+                input.attr('disabled', false);
+            } else {
+                input.attr('disabled', true);
+            }
+        });
+
+
+    },
+
     updatePassword: function(evt){
-        var request = $.ajax({
-            url: "/api/user/update/password",
-            method: "POST",
-            data: { 
-                currentPassword: this.$el.find('.current-password').val(),
-                newPassword: this.$el.find('.repeat-password').val()   
-            },
-            dataType: "json"
-        });
+        var currentPassword = this.$el.find('.current-password').val();
+        var newPassword =  this.$el.find('.new-password').val();
+        var repeatPassword = this.$el.find('.repeat-password').val();
 
-        request.done(function( msg ) {
-            this.$el.find('#form-profile-password .response').addClass('text-animate');
-        });
+        if(!currentPassword || !newPassword || !repeatPassword){
+            return;
+        } else if(currentPassword && newPassword === repeatPassword){
+            var request = $.ajax({
+                url: "/api/user/update/password",
+                method: "POST",
+                data: { 
+                    currentPassword: currentPassword,
+                    newPassword: newPassword   
+                },
+                dataType: "json"
+            });
 
-        request.fail(function( jqXHR, textStatus ) {
-            alert( "Request failed: " + textStatus );
-        });
+            request.done(function( msg ) {
+                this.$el.find('#form-profile-password .response').addClass('text-animate').find('h3').text('Your password has been updated');
+            });
+
+            request.fail(function( jqXHR, textStatus ) {
+                alert( "Request failed: " + textStatus );
+            });
+
+        } else {
+            this.cancelUpdatePassword();
+            this.$el.find('#form-profile-password .response').addClass('text-animate').find('h3').text('Submission failed, please try again');
+        }
     },
 
     confirmPassword: function(evt){
@@ -194,26 +225,39 @@ var ProfileView = Backbone.View.extend({
         var firstValue = this.$el.find('.new-password').val();
         var div = input.closest('div');
         if(value == firstValue){
-            div.addClass('validated-password')
-            window.setTimeout(function(){div.find('.validated-marker').addClass('icon-animate')}, 500);
+            div.addClass('profile-input-resize')
         } else {
-            div.removeClass('validated-password').find('.validated-marker').removeClass('icon-animate');
+            div.removeClass('profile-input-resize');
         }
     },
 
     passwordCounterReveal: function(evt){
         var div = $(evt.currentTarget).closest('div');
-        div.addClass('validated-password')
-        window.setTimeout(function(){div.find('.validated-marker').addClass('icon-animate')}, 500);
+        div.addClass('profile-input-resize');
+    },
+
+    passwordCounterHide: function(evt){
+        var input = $(evt.currentTarget);
+        var div = input.closest('div');
+        if(!div.find('.vrf-cir').hasClass('ok')){
+            div.removeClass('profile-input-resize');
+        }
     },
 
     newPasswordCount: function(evt){
         var input = $(evt.currentTarget);
-        var length = input.val().length;
+        var value = input.val();
+        var length = value.length;
         var regVrf = input.closest('div');
         var counter = regVrf.find('.vrf-cir');
         var counterValue = 8;
         var nextInput = this.$el.find('.repeat-password');
+
+        //Remove repeat passwords validation if new password is altered
+        if(value !== nextInput.val()){
+            nextInput.closest('div').removeClass('profile-input-resize');
+            nextInput.attr('disabled', true);
+        }
 
         if(length < 8){
             counter.text(counterValue - length);
@@ -234,19 +278,19 @@ var ProfileView = Backbone.View.extend({
         var value = input.val();
 
         if(value.length <= 7) {
-            input.closest('div').removeClass('validated-password').find('.validated-marker').removeClass('icon-animate');
+            input.closest('div').removeClass('profile-input-resize');
         } else if (value.length > 7){
             var request = $.get("/api/check/password?password=" + value);
             
             request.done(function(msg) {
                 var div = input.closest('div');
-                div.addClass('validated-password');
-                window.setTimeout(function(){div.find('.validated-marker').addClass('icon-animate')}, 500);
+                div.addClass('profile-input-resize');
+                input.attr('disabled', true);
                 div.closest('form').find('.new-password').attr('disabled', false);
             });
              
             request.fail(function(jqXHR, textStatus) {
-                input.closest('div').removeClass('validated-password').find('.validated-marker').removeClass('icon-animate');
+                input.closest('div').removeClass('profile-input-resize');
             });
         }
     },
@@ -275,8 +319,7 @@ var ProfileView = Backbone.View.extend({
 
     cancelUpdateDetails: function(evt){
         var form = $(evt.currentTarget).closest('form');
-        form.find('.in-use').removeClass('in-use');
-        form.find('.in-use-marker').removeClass('icon-animate');
+        form.find('.profile-input-resize').removeClass('profile-input-resize');
         var inputs = form.find('input');        
         inputs.each(function(){
             var input = $(this);
@@ -291,15 +334,13 @@ var ProfileView = Backbone.View.extend({
     },
 
     validateEmailSuccess: function(input){
-        input.closest('div').removeClass('in-use').find('.in-use-marker').removeClass('icon-animate');
+        input.closest('div').removeClass('profile-input-resize');
     },
 
     validateEmailFail: function(input){
         console.log('fail');
         var div = input.closest('div');
-        div.addClass('in-use');
-        window.setTimeout(function(){div.find('.in-use-marker').addClass('icon-animate')}, 500);
-        
+        div.addClass('profile-input-resize');      
     },
 
     keyEvent: function(e){
@@ -537,6 +578,7 @@ var ProfileView = Backbone.View.extend({
             var iFY = this.iMouseY - this.theSelection.py;
             iFW = this.theSelection.w + this.theSelection.x - iFX;
             iFH = this.theSelection.h + this.theSelection.y - iFY;
+            // iFH = this.theSelection.h + this.theSelection.x - iFX;
         }
         if (this.theSelection.bDrag[1]) {
             var iFX = this.theSelection.x;
@@ -578,18 +620,22 @@ var ProfileView = Backbone.View.extend({
         this.theSelection.py = this.iMouseY - this.theSelection.y;
 
         if (this.theSelection.bHow[0]) {
+            console.log('0');
             this.theSelection.px = this.iMouseX - this.theSelection.x;
             this.theSelection.py = this.iMouseY - this.theSelection.y;
         }
         if (this.theSelection.bHow[1]) {
+            console.log('1');
             this.theSelection.px = this.iMouseX - this.theSelection.x - this.theSelection.w;
             this.theSelection.py = this.iMouseY - this.theSelection.y;
         }
         if (this.theSelection.bHow[2]) {
+            console.log('2');
             this.theSelection.px = this.iMouseX - this.theSelection.x - this.theSelection.w;
             this.theSelection.py = this.iMouseY - this.theSelection.y - this.theSelection.h;
         }
         if (this.theSelection.bHow[3]) {
+            console.log('3');
             this.theSelection.px = this.iMouseX - this.theSelection.x;
             this.theSelection.py = this.iMouseY - this.theSelection.y - this.theSelection.h;
         }
