@@ -12,16 +12,16 @@ var ProfileView = Backbone.View.extend({
 			'<form id="form-profile-details">'+	
                 '<h3>Your Details</h3>'+			
 				'<div class="profile-input-wrap">'+
-					'<label>First Name</label>'+
-					'<input class="test" name="firstName" type="text" placeholder="{{attributes.firstName}}" />'+
+					'<label for="first-name">First Name</label>'+
+					'<input id="first-name" type="text" placeholder="{{attributes.firstName}}" />'+
 				'</div>'+
 				'<div class="profile-input-wrap">'+
-					'<label>Last Name</label>'+
-					'<input name="lastName" type="text" placeholder="{{attributes.lastName}}" />'+
+					'<label for="last-name">Last Name</label>'+
+					'<input id="last-name" type="text" placeholder="{{attributes.lastName}}" />'+
 				'</div>'+
 				'<div class="profile-input-wrap">'+
-					'<label>Email Address</label>'+
-					'<input name="emailAddress" type="email" placeholder="{{attributes.emailAddress}}" />'+
+					'<label for="email-address">Email Address</label>'+
+					'<input id="email-address" type="email" placeholder="{{attributes.emailAddress}}" />'+
 					'<h4 class="profile-tooltip">A validation link will be sent to your email address for verification.</h4>'+
                     '<div class="in-use-marker">'+
                         '<div class="vrf-cir">'+
@@ -140,6 +140,7 @@ var ProfileView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template(this.model));
 		this.delegateEvents({
+            'input input': 'markAsChanged',
 			'click .update-avatar-link': 'fileDialogTrigger',
 			'change #filesInput': 'handleFileSelect',
 			'dragover #avatar-drop': 'handleDragOver',
@@ -175,7 +176,7 @@ var ProfileView = Backbone.View.extend({
         inputs.each(function(){
             var input = $(this);
             input.val('');
-            input.closest('div').removeClass('profile-input-resize');
+            input.closest('div').removeClass('validated-input-resize');
 
             if(input.hasClass('current-password')){
                 input.attr('disabled', false);
@@ -225,22 +226,22 @@ var ProfileView = Backbone.View.extend({
         var firstValue = this.$el.find('.new-password').val();
         var div = input.closest('div');
         if(value == firstValue){
-            div.addClass('profile-input-resize')
+            div.addClass('validated-input-resize')
         } else {
-            div.removeClass('profile-input-resize');
+            div.removeClass('validated-input-resize');
         }
     },
 
     passwordCounterReveal: function(evt){
         var div = $(evt.currentTarget).closest('div');
-        div.addClass('profile-input-resize');
+        div.addClass('validated-input-resize');
     },
 
     passwordCounterHide: function(evt){
         var input = $(evt.currentTarget);
         var div = input.closest('div');
         if(!div.find('.vrf-cir').hasClass('ok')){
-            div.removeClass('profile-input-resize');
+            div.removeClass('validated-input-resize');
         }
     },
 
@@ -255,7 +256,7 @@ var ProfileView = Backbone.View.extend({
 
         //Remove repeat passwords validation if new password is altered
         if(value !== nextInput.val()){
-            nextInput.closest('div').removeClass('profile-input-resize');
+            nextInput.closest('div').removeClass('validated-input-resize');
             nextInput.attr('disabled', true);
         }
 
@@ -278,19 +279,19 @@ var ProfileView = Backbone.View.extend({
         var value = input.val();
 
         if(value.length <= 7) {
-            input.closest('div').removeClass('profile-input-resize');
+            input.closest('div').removeClass('validated-input-resize');
         } else if (value.length > 7){
             var request = $.get("/api/check/password?password=" + value);
             
             request.done(function(msg) {
                 var div = input.closest('div');
-                div.addClass('profile-input-resize');
+                div.addClass('validated-input-resize');
                 input.attr('disabled', true);
                 div.closest('form').find('.new-password').attr('disabled', false);
             });
              
             request.fail(function(jqXHR, textStatus) {
-                input.closest('div').removeClass('profile-input-resize');
+                input.closest('div').removeClass('validated-input-resize');
             });
         }
     },
@@ -319,7 +320,7 @@ var ProfileView = Backbone.View.extend({
 
     cancelUpdateDetails: function(evt){
         var form = $(evt.currentTarget).closest('form');
-        form.find('.profile-input-resize').removeClass('profile-input-resize');
+        form.find('.validated-input-resize').removeClass('validated-input-resize');
         var inputs = form.find('input');        
         inputs.each(function(){
             var input = $(this);
@@ -334,13 +335,12 @@ var ProfileView = Backbone.View.extend({
     },
 
     validateEmailSuccess: function(input){
-        input.closest('div').removeClass('profile-input-resize');
+        input.closest('div').removeClass('validated-input-resize');
     },
 
     validateEmailFail: function(input){
-        console.log('fail');
         var div = input.closest('div');
-        div.addClass('profile-input-resize');      
+        div.addClass('validated-input-resize');      
     },
 
     keyEvent: function(e){
@@ -383,7 +383,7 @@ var ProfileView = Backbone.View.extend({
     },   
 
     previewClose: function(){
-        $('#canvas-wrap').html('').removeClass('active');
+        $('#canvas-wrap').html('').removeClass('active, max-height-canvas-image');
     }, 
 
 	addAvatar: function(file){
@@ -435,11 +435,10 @@ var ProfileView = Backbone.View.extend({
         var originalWidth = this.image.width;
         var originalHeight = this.image.height;
         var maxWidth = $(window).width() - 40;
-        console.log(maxWidth);
+        var maxHeight = $(window).height() - 70;
 
-        //If image too wide then resize RESIZE FOR TOO TALL ALSO 
+        //If image too wide then resize
         if(originalWidth > maxWidth) {
-            console.log('resizing');
 
             var imageWidth = maxWidth;
             var widthDifference = originalWidth - imageWidth;
@@ -467,7 +466,8 @@ var ProfileView = Backbone.View.extend({
         $(this.canvas).attr({'width': this.image.width, 'height': this.image.height, id: 'panel'});
 
         $('#canvas-wrap').html(
-            '<div class="preview-window-inner">'+
+            '<div class="canvas-blackout-bg"></div>'+
+            '<div class="canvas-window-inner">'+
                 '<div class="preview-wrap">'+
                     '<div class="preview-img-wrap">'+
                         '<i class="preview-close icon-cancel-circled"></i>'+
@@ -482,6 +482,12 @@ var ProfileView = Backbone.View.extend({
             '</div>'
         );
         $('.canvas').html(this.canvas)
+
+        //If image taller than screen height add style to compensate
+        if(this.image.height > maxHeight) {
+            $('#canvas-wrap').addClass('max-height-canvas-image');
+        }
+
         $('#canvas-wrap').addClass('active');
 
         //www.htmlgoodies.com/html5/javascript/display-images-in-black-and-white-using-the-html5-canvas.html#fbid=vq-yqyDCNdi

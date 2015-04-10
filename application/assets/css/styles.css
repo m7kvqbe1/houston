@@ -1141,23 +1141,44 @@ input.inp-lst {
 	margin: 0 10px 0 0;
 }
 
-.add-person {
-	display: none;
+/*.add-person {
 	overflow: hidden;
 	margin-bottom: 30px;
 	text-align: center;
-}
+}*/
 
-.add-person h4 {
+/*.add-person h4 {
 	margin-bottom: 15px;
 }
-
+*/
 #company-stream {
 	padding-top: 30px;
 }
 
 #clients-stream > li {
 	clear: both;
+}
+
+.client-has-no-users h4 {
+	padding-bottom: 30px;
+	font-size: 16px;
+	text-align: center;
+}
+
+/* Modal Form */
+#modal-form {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 100;
+	background:rgb(0,0,0);
+    background: transparent\9;
+    background:rgba(0,0,0,0.8);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000,endColorstr=#cc000000);
+    zoom: 1;
 }
 
 /* Single Ticket */
@@ -1567,6 +1588,10 @@ input.inp-lst {
 	margin-bottom: 20px;
 }
 
+.modal-buttons {
+	position: relative;
+}
+
 .modal-buttons .btn-can {
 	display: inline-block;
 }
@@ -1580,16 +1605,20 @@ input.inp-lst {
 	left: 20px;
 }
 
-.preview-window-inner i {
+/*.preview-window-inner i {
 	color: #f6f0e6;
 	font-size: 30px;
 	cursor: pointer;
-}
+}*/
 
 .preview-close {
 	position: absolute;
 	top: 0;
 	right: 5px;
+
+	color: #f6f0e6;
+	font-size: 30px;
+	cursor: pointer;
 }
 
 .preview-wrap {
@@ -1738,7 +1767,7 @@ input.inp-lst {
 	float: left;	
 }
 
-.profile .profile-input-resize input {
+.profile .validated-input-resize input {
 	width: 192px;
 }
 
@@ -1856,7 +1885,7 @@ input.inp-lst {
 	padding: 5px 0;
 }
 
-.profile .validated-marker {
+.validated-marker {
 	visibility: hidden;
 	position: absolute;
 	top: 0;
@@ -1864,8 +1893,8 @@ input.inp-lst {
 	height: 46px;
 }
 
-.profile-input-resize .in-use-marker,
-.profile-input-resize .validated-marker {
+.validated-input-resize .in-use-marker,
+.validated-input-resize .validated-marker {
 	animation-name: delayed-icon-animate;
 	-webkit-animation-name: delayed-icon-animate;	
 
@@ -2104,7 +2133,7 @@ input.inp-lst {
 
 /* Crop View */
 
-#canvas-wrap.active {
+#canvas-wrap.active .canvas-blackout-bg {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -2116,6 +2145,20 @@ input.inp-lst {
     background:rgba(0,0,0,0.8);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000,endColorstr=#cc000000);
     zoom: 1;
+}
+
+#canvas-wrap .canvas-window-inner {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	bottom: 50px;
+	left: 20px;
+	z-index: 101;
+}
+
+#canvas-wrap.max-height-canvas-image .canvas-window-inner {
+	bottom: auto;
+	margin-bottom: 50px;
 }
 
 #canvas-wrap canvas {
@@ -2148,6 +2191,12 @@ button.grayscale.gray .c {
 	display: inline;
 }
 
+/* Modal Form */
+
+#modal-form .validated-input-resize input[type="text"] {
+	float: left;
+	width: 194px;
+}
 
 @media only screen and (min-width: 321px) {
 	
@@ -2480,26 +2529,30 @@ button.grayscale.gray .c {
 		margin: 4px 10px 0 0;
 	}
 
-	.add-person {
+	/*.add-person {
 		margin-bottom: 15px;
 		text-align: left;
-	}
+	}*/
 
-	.add-person h4 {
+	/*.add-person h4 {
 		margin-left: 30px;
 		font-size: 16px;
-	}
+	}*/
 
 
-	.add-person input[type="text"],
+/*	.add-person input[type="text"],
 	.add-person input[type="email"]{
 		float: left;
 		width: 64%;
 		margin: 0 15px 15px 30px;	
-	}
+	}*/
 
-	.add-person button {
+/*	.add-person button {
 		margin-top: 5px;
+	}*/
+
+	.client-has-no-users h4 {
+		height: 66px;
 	}
 	
 	/* Create Ticket */
@@ -2735,7 +2788,7 @@ button.grayscale.gray .c {
 		margin-bottom: 10px;
 	}
 
-	.profile .profile-input-resize input {
+	.profile .validated-input-resize input {
 		width: 95%!important;
 	}
 
@@ -2787,6 +2840,20 @@ button.grayscale.gray .c {
 
 	.toggle-button-wrap {
 		width: 100%;
+	}
+
+	/* Modal Form */
+
+	#modal-form .box {
+		width: 390px;
+	}
+
+	#modal-form input[type="text"] {
+		width: 368px;
+	}
+
+	#modal-form .validated-input-resize input[type="text"] {
+		width: 326px;
 	}
 
 }

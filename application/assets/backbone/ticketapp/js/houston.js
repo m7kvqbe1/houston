@@ -285,15 +285,11 @@ var houston = {
 		var request = $.get("/api/check/email?email=" + address);
         
         request.done(function(msg) {
-            console.log('good');
-            successCallback(input);
-            // input.closest('div').removeClass('in-use').find('.in-use-marker').removeClass('bigEntrance');
+            if(successCallback) successCallback(input);
         });
          
         request.fail(function(jqXHR, textStatus) {
-            console.log('bad');
-            errorCallback(input);
-            // input.closest('div').addClass('in-use').find('.in-use-marker').delay(500)addClass('bigEntrance');
+            if(errorCallback) errorCallback(input);
         });
 	    
 	},
