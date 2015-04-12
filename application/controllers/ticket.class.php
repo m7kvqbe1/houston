@@ -34,11 +34,9 @@ class TicketController
 
 	public function getTicketAction($ticketID)
 	{
-		$ticketModel = new TicketModel($this->app);
-
 		try {
-			$ticket = $ticketModel->loadTicketByID($ticketID);
-			return json_encode($ticket);
+			$ticketModel = new TicketModel($this->app, $ticketID);
+			return json_encode($ticketModel->ticket);
 		} catch(\Exception $e) {
 			return ApiResponse::error('TICKET_NOT_FOUND');
 		}

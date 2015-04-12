@@ -12,9 +12,11 @@ class UserModel
 	protected $app;
 	public $user;
 
-	public function __construct(Application $app)
+	public function __construct(Application $app $userID = null)
 	{
 		$this->app = $app;
+
+		if(isset($userID)) $this->loadUserByID($userID);
 	}
 
 	public function loadUser($username)
@@ -32,13 +34,13 @@ class UserModel
 		}
 	}
 
-	public function loadUserByID($id)
+	public function loadUserByID($userID)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 
-		$id = new \MongoID($id);
+		$id = new \MongoID($userID);
 
 		$criteria = array('_id' => $id);
 		$this->user = $db->users->findOne($criteria);

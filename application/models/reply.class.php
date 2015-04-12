@@ -11,9 +11,11 @@ class ReplyModel
 	protected $app;
 	public $reply;
 
-	public function __construct(Application $app)
+	public function __construct(Application $app, $replyID = null)
 	{
 		$this->app = $app;
+
+		if(isset($replyID)) $this->loadReplyByID($replyID);
 	}
 
 	public function loadReplyByID($replyID)
