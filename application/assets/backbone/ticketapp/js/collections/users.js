@@ -6,7 +6,7 @@ var Users = Backbone.Collection.extend({
 		this.on("sync", function() {
 			app.agentsCollection.set(this.agentUsers());
 
-			var theModel
+			var theModel;
 			for(var i=0; i<app.clients.length; i++) {
 			  theModel = app.clients.models[i];
 			  theModel.usersCollection.set(this.usersByClient(theModel.id));

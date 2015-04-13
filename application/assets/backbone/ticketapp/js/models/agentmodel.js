@@ -4,7 +4,7 @@ var BufferAgentModel = Backbone.Model.extend({
 	initialize: function() {
 		this.on("sync", function() {
 			// On save of app.addAgentModel fetch users which resets the agents collection
-			app.users.fetch();
+			app.users.fetch({reset:true});
 		});
 	},
 	

@@ -10,15 +10,6 @@ var PeopleView = Backbone.View.extend({
 		'</div>'+
 		'<div class="box-app box-people" style="{{fullHeightPage}}">'+
 			'<div id="agent-stream">'+
-				// '<div class="add-person add-agent">'+
-				// 	'<form id="form-add-agent">'+
-				// 		'<h4>To add a new agent, simply input their email address and Houston will do the rest. Simple!</h4>'+
-				// 		'<input class="required" type="email" placeholder="New Agent\'s Email Address" />'+
-				// 		'<button type="button">Submit</button>' +
-				// 		'<div class="beige or">or</div>' +
-				// 		'<a class="cancel-btn ib">Cancel</a>' +
-				// 	'</form>'+
-				// '</div>'+
 				'<ul>'+
 				'{{#each models}}'+
 					'<li class="person">'+
@@ -47,17 +38,18 @@ var PeopleView = Backbone.View.extend({
 		this.collection.view = this;
 		this.clientsView = new ClientsView({collection: app.clients}); 
 
-        _.bindAll(this, 'keyEvent');
-        $(document).bind('keydown', this.keyEvent);
+        // _.bindAll(this, 'keyEvent');
+        // $(document).bind('keydown', this.keyEvent);
 	},
 
 	onClose: function(){
-		$(document).unbind('keydown', this.keyEvent);
+		// $(document).unbind('keydown', this.keyEvent);
 		this.stopListening();
 		this.clientsView.close();
 	},
 		
 	render: function() {
+		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({
@@ -73,15 +65,28 @@ var PeopleView = Backbone.View.extend({
 		return this;		
 	},
 
-    keyEvent: function(e){
-    	if(!this.$el.find('#modal-form').css('display', 'block')) return;
-        var keyCode = e.which;
-		if(keyCode == 13){
-			this.keyFormHandler();
-		} else if (keyCode == 27){
-			this.cancelForm();
+  //   keyEvent: function(e){
+  //   	if(this.$el.find('#modal-form').css('display', 'none')) return;
+  //       var keyCode = e.which;
+		// if(keyCode == 13){
+		// 	this.keyFormHandler();
+		// } else if (keyCode == 27){
+		// 	this.cancelForm();
+		// }
+  //   },
+
+	keyFormHandler: function(){
+		var button = this.$el.find('.confirm');
+		var input = this.$el.find('form input');
+		if(button.hasClass('user-button')){
+			this.addUser(input);
+		} else if (button.hasClass('agent-button')) {
+			this.addAgent(input);
+		} else if (button.hasClass('client-button')) {
+			this.addClient(input);
 		}
-    },
+
+	},    
 
 	formData: [
 		['Add New Agent','To add a new agent, simply input their email address and Houston will do the rest. Simple!', 'Email Address', 'agent-button'],
@@ -121,19 +126,6 @@ var PeopleView = Backbone.View.extend({
 		var form = this.$el.find('#modal-form');
 		form.find('.modal-buttons').removeClass('validated-input-resize');
 		form.hide().find('input').val('');
-	},
-
-	keyFormHandler: function(){
-		var button = this.$el.find('.confirm');
-		var input = this.$el.find('form input');
-		if(button.hasClass('user-button')){
-			this.addUser(input);
-		} else if (button.hasClass('agent-button')) {
-			this.addAgent(input);
-		} else if (button.hasClass('client-button')) {
-			this.addClient(input);
-		}
-
 	},
 
 	addClient: function(e) {
@@ -185,12 +177,13 @@ var PeopleView = Backbone.View.extend({
 			};
 
 			console.log(attributes);
-		// app.addAgentModel.save(attributes,{
-		// 	success: _.bind(function(model){
-		// 		app.addAgentModel.clear();
-		//      app.changed = false;
-		// 	}, this)
-		// });
+		app.addAgentModel.save(attributes,{
+			success: _.bind(function(model){
+				console.log(model);
+				app.addAgentModel.clear();
+		    	app.changed = false;
+			}, this)
+		});
 	},
 
 	addUser: function(input) {
@@ -203,6 +196,7 @@ var PeopleView = Backbone.View.extend({
 
 		app.addClientUserModel.save(attributes,{
 			success: _.bind(function(model){
+				console.log(model);
 				app.addClientUserModel.clear();
 				app.changed = false;
 			}, this)

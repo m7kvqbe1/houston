@@ -29,16 +29,6 @@ var ClientsView = Backbone.View.extend({
 						'</div>'+
 					'</div>'+
 	            '</div>'+		
-
-			// 	'<div class="add-person add-client">'+
-			// 		'<form id="form-add-client">'+
-			// 			'<h4>To add a new client, simply add the client\'s name below.</h4>'+
-			// 			'<input class="required" type="text" placeholder="Clients Name" />'+
-			// 			'<button type="button">Submit</button>' +
-			// 			'<div class="beige or">or</div>' +
-			// 			'<a class="cancel-btn ib">Cancel</a>' +
-			// 		'</form>'+
-			// 	'</div>'+
 			'</div>'+
 			'<ul id="clients-stream">'+
 	
@@ -68,29 +58,8 @@ var ClientsView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
-		this.delegateEvents({
-			// 'click .box-companies-header .btn':'addToggle',
-			// 'click .add-client .cancel-btn':'addToggle',
-			// 'click #form-add-client button': 'addClient'
-		});
 		return this;
-	},
-
-	// addToggle: function() {
-	// 	this.$el.find('.add-client').slideToggle().find('input[type="text"]').focus();
-	// },
-
-	// addClient: function(e) {
-	// 	if(!houston.validateForm(e.currentTarget)) return;
-	// 	var name = this.$el.find('#form-add-client input[type="text"]').val();
-	// 	var attributes = { "name": name };
-
-	// 	app.addClientModel.save(attributes,{
-	// 		success: _.bind(function(model){
-	// 			app.addClientModel.clear();
-	// 		}, this)
-	// 	});
-	// }
+	}
 
 });
 
@@ -104,15 +73,6 @@ var ClientView = Backbone.View.extend({
 			'<a class="new-client-user" data-form="2" data-model="{{attributes.id}}">New User</a>'+
 		'</div>'+
 		'<div class="client-stream">'+
-			// '<div class="add-person add-client-user">'+
-			// 	'<form class="form-add-client-user">'+
-			// 		'<h4>To add a new user, simply input their email address and Houston will do the rest. Simple!</h4>'+
-			// 		'<input class="required" type="email" placeholder="Email Address" />'+
-			// 		'<button type="button">Submit</button>' +
-			// 		'<div class="beige or">or</div>' +
-			// 		'<a class="cancel-btn ib">Cancel</a>' +
-			// 	'</form>'+
-			// '</div>'+
 			'<ul class="client-user-stream">'+
 
 			'</ul>'+
@@ -135,36 +95,7 @@ var ClientView = Backbone.View.extend({
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
-		// this.delegateEvents({
-		// 	'click .new-client-user':'addToggle',
-		// 	'click .add-client-user .cancel-btn':'addToggle',			
-		// 	'click .form-add-client-user button': 'addClientUser'
-		// });
 	}
-
-	// addToggle: function() {
-	// 	this.$el.find('.add-client-user').slideToggle().find('input[type="email"]').focus();
-	// },
-
-	// addClientUser: function(e) {
-	// 	if(!houston.validateForm(e.currentTarget)) return;
-	// 	var emailAddress = this.$el.find('.form-add-client-user input[type="email"]').val();
-	// 	var clientID = this.model.id;
-	// 	var attributes = 
-	// 		{
-	// 			"emailAddress": emailAddress,
-	// 			"clientID": clientID
-	// 		};
-
-	// 	app.addClientUserModel.save(attributes,{
-	// 		success: _.bind(function(model){
-	// 			//Hide form with render
-	// 			this.render();
-	// 			app.addClientUserModel.clear();
-	// 		}, this)
-	// 	});
-	// }
-
 });
 
 var UsersView = Backbone.View.extend({
