@@ -2389,6 +2389,10 @@ button.grayscale.gray .c {
 	.box-app-top .btn {
 		margin: 0;
 	}
+
+	.box-app-top .new-client {
+		margin-left: 15px;
+	}
 	
 	.box-app-wrap {
 		-webkit-border-radius: 3px;
@@ -2484,6 +2488,7 @@ button.grayscale.gray .c {
 	
 	/* People */
 	#agent-stream {
+		overflow: hidden;
 		padding-top: 30px;
 	}
 
@@ -2491,6 +2496,19 @@ button.grayscale.gray .c {
 		padding: 180px 0 30px;
 		border-radius: 0;
 	}
+
+	.box-people h2 {
+		margin: 0 30px 30px;
+		padding-bottom: 30px;
+		border-bottom: 1px solid #cfc3af;
+		color: #635748;
+	}
+
+	.box-people h2.people-clients-header {
+		margin: 10px 30px 0;
+		padding-top: 30px;
+		border-top: 1px solid #cfc3af;
+	} 
 	
 	.box-companies {
 		padding: 40px 0 0;

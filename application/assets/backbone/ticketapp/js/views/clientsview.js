@@ -1,9 +1,9 @@
 var ClientsView = Backbone.View.extend({
 	template: Handlebars.compile(
-		'<div class="box-companies-header">'+
-			'<h2>Clients</h2>'+
-			'<a class="btn" data-form="1">New Client</a>'+
-		'</div>'+
+		// '<div class="box-companies-header">'+
+		// 	'<h2>Clients</h2>'+
+		// 	'<a class="btn" data-form="1">New Client</a>'+
+		// '</div>'+
 		'<div id="company-stream">'+
 			'<div id="modal-form" class="active">'+
 				'<div class="modal-window-inner">'+

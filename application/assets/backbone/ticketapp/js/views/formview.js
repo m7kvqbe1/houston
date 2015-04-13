@@ -16,7 +16,6 @@ var FormView = Backbone.View.extend({
 			'<div class="box-app-fixed-inner">'+
 				'<div class="box-app-top">' +
 					'<h2>Create Ticket</h2>' +
-					'<a class="btn">New Ticket</a>' +
 				'</div>' +
 			'</div>'+
 		'</div>'+
@@ -39,9 +38,13 @@ var FormView = Backbone.View.extend({
 		//FILES VIEW
 		this.fileUploadView = new FileUploadView({collection: app.files});
 		this.fileUploadView.parent = this;
+
+        _.bindAll(this, 'keyEvent');
+        $(document).bind('keydown', this.keyEvent);
 	},
 
 	onClose: function(){
+		$(document).unbind('keydown', this.keyEvent);
 		this.fileUploadView.close();
 	},
 
@@ -58,16 +61,28 @@ var FormView = Backbone.View.extend({
 			'click .cancel-btn': 'cancelTicket',
 			'input input': 'markAsChanged',
 			'input textarea': 'markAsChanged'
+			// 'keydown': 'keyEvent'
 		});
 		return this;
 	},
+
+    keyEvent: function(e){
+    	console.log('key');
+        var keyCode = e.which;
+		if(keyCode == 13){
+			e.preventDefault();
+			this.saveModel();
+		} else if (keyCode == 27){
+			this.cancelTicket();
+		}
+    },
 
 	subjectCharCount: function(){
 		return houston.subjectCharCount(this.$el);
 	},
 	
-	saveModel: function(e){
-		if(!houston.validateForm(e.currentTarget)) return;
+	saveModel: function(){
+		if(!houston.validateForm(this.$el.find('.save'))) return;
 		this.setModelData();		
 		this.model.save(this.model.attributes,
 			{
@@ -91,7 +106,7 @@ var FormView = Backbone.View.extend({
 		});		
 	},
 
-	cancelTicket: function(){
+	cancelTicket: function(){ //Change to empty the form
 		app.navigate('', {trigger: true});		
 	}
 

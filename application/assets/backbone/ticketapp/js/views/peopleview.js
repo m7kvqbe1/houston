@@ -3,13 +3,15 @@ var PeopleView = Backbone.View.extend({
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
 				'<div class="box-app-top">'+
-					'<h2>Support Agents</h2>'+
+					'<h2>People</h2>'+
+					'<a class="btn new-client" data-form="1">New Client</a>'+
 					'<a class="btn" data-form="0">New Agent</a>'+
 				'</div>'+
 			'</div>'+
 		'</div>'+
 		'<div class="box-app box-people" style="{{fullHeightPage}}">'+
 			'<div id="agent-stream">'+
+			'<h2>Support Agents</h2>'+
 				'<ul>'+
 				'{{#each models}}'+
 					'<li class="person">'+
@@ -26,6 +28,7 @@ var PeopleView = Backbone.View.extend({
 				'{{/each}}'+
 				'</ul>'+
 			'</div>'+
+			'<h2 class="people-clients-header">Clients</h2>'+
 			'<div id="clients-wrap">'+	
 
 			'</div>'+
@@ -102,18 +105,22 @@ var PeopleView = Backbone.View.extend({
 		var modelData = input.data('model');
 		var form = this.$el.find('#modal-form');
 		
-		//Add client name to form 
+		//Add client name to formData if adding a User
 		if(modelData) {
 			var clientName = app.clients.get(modelData).attributes.name;
-			this.formData[formData][0] = this.formData[formData][0].replace('%ClientName%', clientName);
-			this.formData[formData][1] = this.formData[formData][1].replace('%ClientName%', clientName);
+			var formHeader = this.formData[formData][0].replace('%ClientName%', clientName);
+			var formMessage = this.formData[formData][1].replace('%ClientName%', clientName);
+			
+			form.find('h3').text(formHeader);
+			form.find('h4').text(formMessage);
 
 			form.find('input').attr('data-model', modelData);
+
+		} else {
+			form.find('h3').text(this.formData[formData][0]);
+			form.find('h4').text(this.formData[formData][1]);
 		}
 
-		
-		form.find('h3').text(this.formData[formData][0]);
-		form.find('h4').text(this.formData[formData][1]);
 		form.find('input').attr('placeholder', this.formData[formData][2]);
 		form.find('.confirm').addClass(this.formData[formData][3]);
 
