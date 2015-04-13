@@ -37,11 +37,12 @@ class ClientModel
 			array_push($docs, $doc);
 		}
 
-		if(isset($docs[0]['clients'])) $this->client = $docs[0]['clients'];
-
-		if(empty($docs)) return false;
-
-		return $this->client;
+		if(isset($docs[0]['clients'])) {
+			$this->client = $docs[0]['clients'];
+			return $this->client;
+		} else {
+			return array();
+		}
 	}
 
 	public function addClient($client)

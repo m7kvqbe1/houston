@@ -40,11 +40,9 @@ class PeopleController {
 	{
 		$clientModel = new ClientModel($this->app);
 
-		if($clients = $clientModel->getClients()) {
-			return json_encode($clients);
-		} else {
-			return ApiResponse::error('CLIENT_NOT_FOUND');
-		}
+		$clients = $clientModel->getClients();
+
+		return json_encode($clients);
 	}
 
 	public function postClientAction()

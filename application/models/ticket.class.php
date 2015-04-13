@@ -48,11 +48,7 @@ class TicketModel
 		    array_push($docs, $doc);
 		}
 
-		if(empty($docs)) {
-			return false;
-		} else {
-			return $docs;
-		}
+		return $docs;
 	}
 
 	public function generateTicket($subject, $message, $date = null, $email, $firstName = null, $lastName = null)
