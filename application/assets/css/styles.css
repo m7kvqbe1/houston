@@ -1197,7 +1197,11 @@ input.inp-lst {
 
 #form-reply label {
 	display: block;
+<<<<<<< HEAD
 	margin: 30px 0 20px;
+=======
+	margin: 20px 0 30px 0;
+>>>>>>> 2efe1288d4c0c1a3b02dde506ac29686a9c226f9
 	line-height: 14px;
 }
 

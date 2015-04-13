@@ -10,9 +10,11 @@ class TicketModel
 	protected $app;
 	public $ticket;
 
-	public function __construct(Application $app)
+	public function __construct(Application $app, $ticketID = null)
 	{
         $this->app = $app;
+
+		if(isset($ticketID)) $this->loadTicketByID($ticketID);
 	}
 
 	public function loadTicketByID($ticketID)
