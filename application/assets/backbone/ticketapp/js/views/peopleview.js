@@ -38,12 +38,12 @@ var PeopleView = Backbone.View.extend({
 		this.collection.view = this;
 		this.clientsView = new ClientsView({collection: app.clients}); 
 
-        // _.bindAll(this, 'keyEvent');
-        // $(document).bind('keydown', this.keyEvent);
+        _.bindAll(this, 'keyEvent');
+        $(document).bind('keydown', this.keyEvent);
 	},
 
 	onClose: function(){
-		// $(document).unbind('keydown', this.keyEvent);
+		$(document).unbind('keydown', this.keyEvent);
 		this.stopListening();
 		this.clientsView.close();
 	},
@@ -65,25 +65,27 @@ var PeopleView = Backbone.View.extend({
 		return this;		
 	},
 
-  //   keyEvent: function(e){
-  //   	if(this.$el.find('#modal-form').css('display', 'none')) return;
-  //       var keyCode = e.which;
-		// if(keyCode == 13){
-		// 	this.keyFormHandler();
-		// } else if (keyCode == 27){
-		// 	this.cancelForm();
-		// }
-  //   },
+    keyEvent: function(e){
+    	console.log('key');
+    	if(!this.formActive) return;
+        var keyCode = e.which;
+		if(keyCode == 13){
+			e.preventDefault();
+			this.keyFormHandler();
+		} else if (keyCode == 27){
+			this.cancelForm();
+		}
+    },
 
 	keyFormHandler: function(){
 		var button = this.$el.find('.confirm');
 		var input = this.$el.find('form input');
 		if(button.hasClass('user-button')){
-			this.addUser(input);
+			this.validateUser(input);
 		} else if (button.hasClass('agent-button')) {
-			this.addAgent(input);
+			this.validateAgent(input);
 		} else if (button.hasClass('client-button')) {
-			this.addClient(input);
+			this.validateClient(input);
 		}
 
 	},    
@@ -118,14 +120,18 @@ var PeopleView = Backbone.View.extend({
 		this.showForm();
 	},
 
+	formActive: false,
+
 	showForm: function(){
 		this.$el.find('#modal-form').show();
+		this.formActive = true;
 	},
 
 	cancelForm: function(){
 		var form = this.$el.find('#modal-form');
 		form.find('.modal-buttons').removeClass('validated-input-resize');
 		form.hide().find('input').val('');
+		this.formActive = false;
 	},
 
 	addClient: function(e) {
@@ -176,10 +182,9 @@ var PeopleView = Backbone.View.extend({
 				"verify": false
 			};
 
-			console.log(attributes);
 		app.addAgentModel.save(attributes,{
 			success: _.bind(function(model){
-				console.log(model);
+
 				app.addAgentModel.clear();
 		    	app.changed = false;
 			}, this)
@@ -196,7 +201,6 @@ var PeopleView = Backbone.View.extend({
 
 		app.addClientUserModel.save(attributes,{
 			success: _.bind(function(model){
-				console.log(model);
 				app.addClientUserModel.clear();
 				app.changed = false;
 			}, this)
