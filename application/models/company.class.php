@@ -37,7 +37,7 @@ class CompanyModel
 
 	private static function propertyExists($property)
 	{
-		return (!in_array($property, self::$validProperties)) ? true : false;
+		return (in_array($property, self::$validProperties)) ? true : false;
 	}
 
 	public function setProperty($companyID, $property, $value)
