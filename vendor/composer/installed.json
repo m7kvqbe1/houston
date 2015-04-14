@@ -90,90 +90,6 @@
         ]
     },
     {
-        "name": "silex/silex",
-        "version": "v1.2.3",
-        "version_normalized": "1.2.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/silexphp/Silex.git",
-            "reference": "57c98ea0cb47664096094912920951fde1f4631a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/silexphp/Silex/zipball/57c98ea0cb47664096094912920951fde1f4631a",
-            "reference": "57c98ea0cb47664096094912920951fde1f4631a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3",
-            "pimple/pimple": "~1.0",
-            "symfony/event-dispatcher": "~2.3,<3.0",
-            "symfony/http-foundation": "~2.3,<3.0",
-            "symfony/http-kernel": "~2.3,<3.0",
-            "symfony/routing": "~2.3,<3.0"
-        },
-        "require-dev": {
-            "doctrine/dbal": "~2.2",
-            "monolog/monolog": "~1.4,>=1.4.1",
-            "swiftmailer/swiftmailer": "5.*",
-            "symfony/browser-kit": "~2.3,<3.0",
-            "symfony/config": "~2.3,<3.0",
-            "symfony/css-selector": "~2.3,<3.0",
-            "symfony/debug": "~2.3,<3.0",
-            "symfony/dom-crawler": "~2.3,<3.0",
-            "symfony/finder": "~2.3,<3.0",
-            "symfony/form": "~2.3,<3.0",
-            "symfony/locale": "~2.3,<3.0",
-            "symfony/monolog-bridge": "~2.3,<3.0",
-            "symfony/options-resolver": "~2.3,<3.0",
-            "symfony/process": "~2.3,<3.0",
-            "symfony/security": "~2.3,<3.0",
-            "symfony/serializer": "~2.3,<3.0",
-            "symfony/translation": "~2.3,<3.0",
-            "symfony/twig-bridge": "~2.3,<3.0",
-            "symfony/validator": "~2.3,<3.0",
-            "twig/twig": ">=1.8.0,<2.0-dev"
-        },
-        "suggest": {
-            "symfony/browser-kit": "~2.3",
-            "symfony/css-selector": "~2.3",
-            "symfony/dom-crawler": "~2.3",
-            "symfony/form": "~2.3"
-        },
-        "time": "2015-01-20 16:45:58",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Silex": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Igor Wiedler",
-                "email": "igor@wiedler.ch"
-            }
-        ],
-        "description": "The PHP micro-framework based on the Symfony2 Components",
-        "homepage": "http://silex.sensiolabs.org",
-        "keywords": [
-            "microframework"
-        ]
-    },
-    {
         "name": "moriony/silex-mongo-provider",
         "version": "1.2.2",
         "version_normalized": "1.2.2.0",
@@ -1422,6 +1338,90 @@
             "errors",
             "exceptions",
             "logging"
+        ]
+    },
+    {
+        "name": "silex/silex",
+        "version": "v1.2.4",
+        "version_normalized": "1.2.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silexphp/Silex.git",
+            "reference": "417deb440eecf776df868d8760d0b7d8e2c4e6d1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/silexphp/Silex/zipball/417deb440eecf776df868d8760d0b7d8e2c4e6d1",
+            "reference": "417deb440eecf776df868d8760d0b7d8e2c4e6d1",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "pimple/pimple": "~1.0",
+            "symfony/event-dispatcher": "~2.3,<2.7",
+            "symfony/http-foundation": "~2.3,<2.7",
+            "symfony/http-kernel": "~2.3,<2.7",
+            "symfony/routing": "~2.3,<2.7"
+        },
+        "require-dev": {
+            "doctrine/dbal": "~2.2",
+            "monolog/monolog": "~1.4,>=1.4.1",
+            "swiftmailer/swiftmailer": "5.*",
+            "symfony/browser-kit": "~2.3,<2.7",
+            "symfony/config": "~2.3,<2.7",
+            "symfony/css-selector": "~2.3,<2.7",
+            "symfony/debug": "~2.3,<2.7",
+            "symfony/dom-crawler": "~2.3,<2.7",
+            "symfony/finder": "~2.3,<2.7",
+            "symfony/form": "~2.3,<2.7",
+            "symfony/locale": "~2.3,<2.7",
+            "symfony/monolog-bridge": "~2.3,<2.7",
+            "symfony/options-resolver": "~2.3,<2.7",
+            "symfony/process": "~2.3,<2.7",
+            "symfony/security": "~2.3,<2.7",
+            "symfony/serializer": "~2.3,<2.7",
+            "symfony/translation": "~2.3,<2.7",
+            "symfony/twig-bridge": "~2.3,<2.7",
+            "symfony/validator": "~2.3,<2.7",
+            "twig/twig": ">=1.8.0,<2.0-dev"
+        },
+        "suggest": {
+            "symfony/browser-kit": "~2.3",
+            "symfony/css-selector": "~2.3",
+            "symfony/dom-crawler": "~2.3",
+            "symfony/form": "~2.3"
+        },
+        "time": "2015-04-11 12:43:27",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Silex": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Igor Wiedler",
+                "email": "igor@wiedler.ch"
+            }
+        ],
+        "description": "The PHP micro-framework based on the Symfony2 Components",
+        "homepage": "http://silex.sensiolabs.org",
+        "keywords": [
+            "microframework"
         ]
     }
 ]

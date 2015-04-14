@@ -92,13 +92,13 @@ class TicketModel
 		// Add date to ticket at point of save
 		if(!isset($ticket->date)) $ticket->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
 
-		// Increment and set ticket reference
+		// Increment and get/set ticket reference
 		$companyModel = new CompanyModel($this->app, $this->app['session']->get('cid'));
 
 		$ticket->reference = (isset($companyModel->company['ticketCount'])) ? $companyModel->company['ticketCount'] : 0;
 		$ticket->reference++;
 
-		// Update company ticketCount property
+		// Update company ticketCount tally property
 		$companyModel->setProperty(null, 'ticketCount', $ticket->reference);
 
 		// Make sure author ID is MongoID object
