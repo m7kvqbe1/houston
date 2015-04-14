@@ -338,18 +338,18 @@ class UserModel
 		return $this->saveUser($user);
 	}
 
-	public function removeUser($id)
+	public function removeUser($userID)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 
-		$id = new \MongoID($id);
+		$userID = new \MongoID($userID);
 
 		try {
 			$collection = $db->users;
 			$collection->remove(
-				array('_id' => $id),
+				array('_id' => $userID),
 				array('justOne' => true)
 			);
 

@@ -78,8 +78,7 @@ class ClientModel
 		$db = $db->houston;
 
 		// Load user to get authenticated users company ID
-		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('uid'));
+		$userModel = new UserModel($this->app, $this->app['session']->get('uid'));
 
 		// Ensure that Client ID is a MongoID object
 		$clientID = new \MongoId($clientID);
@@ -98,24 +97,24 @@ class ClientModel
 		}
 	}
 
-	public function removeClient($id)
+	public function removeClient($clientID)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 
 		// Load user to get authenticated users company ID
-		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('uid'));
+		$userModel = new UserModel($this->app, $this->app['session']->get('uid'));
 
-		$id = new \MongoId($id);
+		// Ensure that Client ID is a MongoID object
+		$clientID = new \MongoId($clientID);
 
 		// Remove client
 		try {
 			$collection = $db->companies;
 			$collection->update(
 				array('_id' => $userModel->user['companyID']),
-				array('$pull' => array('clients' => array('_id' => $id)))
+				array('$pull' => array('clients' => array('_id' => $clientID)))
 			);
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -126,7 +125,7 @@ class ClientModel
 		try {
 			$collection = $db->users;
 			$collection->remove(
-				array('clientID' => $id)
+				array('clientID' => $clientID)
 			);
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);

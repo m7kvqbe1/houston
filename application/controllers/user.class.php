@@ -166,15 +166,15 @@ class UserController
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		}
 	}
-	
+
 	public function userUpdatePassword(Request $request)
-	{		
+	{
 		$userModel = new UserModel($this->app);
 		$userModel->loadUserByID($this->app['session']->get('uid'));
-		
+
 		$currentPassword = $userModel::hashPassword($request->query->get('currentPassword'));
 		$newPassword = $userModel::hashPassword($request->query->get('newPassword'));
-		
+
 		if($currentPassword === $userModel->user['password']) {
 			$userModel->setProperty(null, 'password', $newPassword);
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
