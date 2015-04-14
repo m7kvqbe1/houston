@@ -59,12 +59,24 @@ var AppRouter = Backbone.Router.extend({
 		//BUFFER MESSAGE MODEL
 		this.addMessageModel = new BufferMessageModel();
 
-		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
-		.done(function(){
-			app.setUpSocket();
-			app.startHistory();
-		});
+		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
+		// .done(function(){
+		// 	app.setUpSocket();
+		// 	app.startHistory();
+		// });
 
+		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch({error: this.clients.errorHandler}))
+		.then(this.initializeSuccess, this.initializeError);
+
+	},
+
+	initializeSuccess: function(){
+		app.setUpSocket();
+		app.startHistory();
+	},
+
+	initializeError: function(a,b,c){
+		console.log(a);
 	},
 
 	setUpSocket: function(){

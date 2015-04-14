@@ -52,16 +52,18 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log(this.collection);
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({
 			'click .btn':'setupForm',
 			'click .new-client-user': 'setupForm',
+			'click .edit-client': 'setupForm',
 			'click button.btn-can': 'cancelForm',
 			'click .agent-button': 'validateAgent',
 			'click .client-button': 'addClient',
 			'click .user-button': 'validateUser',
+			'click .edit-client-button': 'editClient',
+			'click .delete-user': 'deleteUser',
 			'input input': 'markAsChanged',
 			'keydown': 'keyEvent'
 		});
@@ -69,7 +71,6 @@ var PeopleView = Backbone.View.extend({
 	},
 
     keyEvent: function(e){
-    	console.log('key');
     	if(!this.formActive) return;
         var keyCode = e.which;
 		if(keyCode == 13){
@@ -96,7 +97,8 @@ var PeopleView = Backbone.View.extend({
 	formData: [
 		['Add New Agent','To add a new agent, simply input their email address and Houston will do the rest. Simple!', 'Email Address', 'agent-button'],
 		['Add New Client', 'To add a new client, simply add the client\'s name below.', 'Client Name', 'client-button'],
-		['Add New %ClientName% User', 'To add a new user to %ClientName%, simply input their email address and Houston will do the rest. Simple!', 'Email Address', 'user-button']
+		['Add New %ClientName% User', 'To add a new user to %ClientName%, simply input their email address and Houston will do the rest. Simple!', 'Email Address', 'user-button'],
+		['Edit %ClientName%\'s name', 'To edit %ClientName%\'s name simply enter the amended name below.', 'New Name', 'edit-client-button']
 	],
 
 	setupForm: function(e){
@@ -110,7 +112,7 @@ var PeopleView = Backbone.View.extend({
 			var clientName = app.clients.get(modelData).attributes.name;
 			var formHeader = this.formData[formData][0].replace('%ClientName%', clientName);
 			var formMessage = this.formData[formData][1].replace('%ClientName%', clientName);
-			
+
 			form.find('h3').text(formHeader);
 			form.find('h4').text(formMessage);
 
@@ -137,15 +139,18 @@ var PeopleView = Backbone.View.extend({
 	cancelForm: function(){
 		var form = this.$el.find('#modal-form');
 		form.find('.modal-buttons').removeClass('validated-input-resize');
+		form.find('.confirm').removeClass('agent-button client-button user-button edit-client-button');
 		form.hide().find('input').val('');
 		this.formActive = false;
 	},
 
-	addClient: function(e) {
-		if(!houston.validateForm(e.currentTarget)) return;
+	validateClient: function(){
+		// if(!houston.validateForm(e.currentTarget)) return;
 		var input = this.$el.find('form input');
 		var name = input.val();
 		var nameInUse = false;
+
+		if(!name) return; 
 
 		app.clients.each(function(model){
 			if(name.toLowerCase() == model.attributes.name.toLowerCase()){
@@ -155,16 +160,43 @@ var PeopleView = Backbone.View.extend({
 
 		if(nameInUse) {
 			this.validateFail(input);
+			return false;
 		} else {
-			var attributes = { "name": name };
+			return input;
+		}	
+	},
 
-			app.addClientModel.save(attributes,{
-				success: _.bind(function(model){
-					app.addClientModel.clear();
-					app.changed = false;
-				}, this)
-			});
-		}
+	addClient: function(e) {
+		var input = $(this.validateClient());
+		var name = input.val();
+		if(!name) return;
+
+		var attributes = { "name": name };
+
+		app.addClientModel.save(attributes,{
+			success: _.bind(function(model){
+				app.addClientModel.clear();
+				app.changed = false;
+			}, this)
+		});
+
+	},	
+
+	editClient: function(e) {
+		var input = $(this.validateClient());
+		var name = input.val();
+		if(!name) return;
+
+		var clientID = input.data('model');
+		var client = app.clients.get(clientID);
+		var attributes = { "name": name };
+
+		client.save(attributes,{
+			success: _.bind(function(model){
+				app.changed = false;
+			}, this)
+		});
+
 	},	
 
 	validateAgent: function(){
@@ -212,6 +244,22 @@ var PeopleView = Backbone.View.extend({
 				app.changed = false;
 			}, this)
 		});
+	},
+
+	deleteUser: function(e){
+		var input = $(e.currentTarget);
+		var userID = input.data('model');	
+		var user = app.users.get(userID);
+
+		// houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ?', cancel: true},
+	 //    	function(){
+		// 		app.changed = false;
+		// 		app.execute();
+		// 	},
+		// 	function(){
+		// 		app.navigate(app.changed, {trigger: false});
+		// 	}
+	 //    );		
 	}
 	
 });

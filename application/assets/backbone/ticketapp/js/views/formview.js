@@ -67,7 +67,6 @@ var FormView = Backbone.View.extend({
 	},
 
     keyEvent: function(e){
-    	console.log('key');
         var keyCode = e.which;
 		if(keyCode == 13){
 			e.preventDefault();

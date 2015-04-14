@@ -287,6 +287,7 @@ footer {
 .wrapper.login {
 	position: relative;
 	top: 50%;
+	-webkit-transform: translateY(-54%);
 	transform: translateY(-54%);
 }
 
@@ -916,8 +917,7 @@ input.inp-lst {
 }
 
 
-.box-app-top h2,
-.box-companies-header h2 {
+.box-app-top h2 {
 	float: left;	
 	margin: 7px 0 8px 15px;
 	text-shadow: 1px 1px 2px #ffffff;
@@ -1061,6 +1061,13 @@ input.inp-lst {
 	background: #01d48f;
 }
 
+h4.no-tickets {
+	padding-top: 30px;
+	position: relative;
+	font-size: 16px;
+	text-align: center;
+}
+
 .btn.completed {
 	background: #cfc3ae;
 }
@@ -1097,6 +1104,22 @@ input.inp-lst {
 	padding: 105px 15px 0;
 }
 
+.box-people h2 {	
+	margin-bottom: 30px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #cfc3af;
+	color: #635748;
+}
+
+.box-people h2.people-clients-header {
+	margin-bottom: 0;
+}
+
+.client-user-stream {
+	overflow: hidden;
+	border-bottom: 1px solid #cfc3af;
+}
+
 .person {
 	text-align: center;
 	padding-bottom: 30px;
@@ -1106,29 +1129,14 @@ input.inp-lst {
 	overflow: hidden;
 }
 
-.box-companies-header {
-	overflow: hidden;
-	clear: both;
-	padding: 16px 15px;
-	background: #f3f0ea;
-	
-}
-
-.box-companies-header .btn {
-	float: right;
-	width: 116px;
-	height: 36px;
-	line-height: 38px;
-}
-
 .company-info {
 	margin-bottom: 30px;
 	padding-top: 30px;
-	border-top: 1px solid #cfc3af;
+	/*border-top: 1px solid #cfc3af;*/
 }
 
 .client:first-child .company-info {
-	border-top: none;
+	/*border-top: none;*/
 	padding-top: 0;
 }
 
@@ -1159,7 +1167,7 @@ input.inp-lst {
 	clear: both;
 }
 
-.client-has-no-users h4 {
+h4.client-has-no-users {
 	padding-bottom: 30px;
 	font-size: 16px;
 	text-align: center;
@@ -2381,8 +2389,7 @@ button.grayscale.gray .c {
 		border-radius: 3px 3px 0 0;
 	}
 	
-	.box-app-top h2,
-	.box-companies-header h2	{
+	.box-app-top h2 {
 		margin: 7px 0;
 	}
 	
@@ -2492,6 +2499,10 @@ button.grayscale.gray .c {
 		padding-top: 30px;
 	}
 
+	#agent-stream ul {
+		padding: 0 30px;
+	}
+
 	.box-people {
 		padding: 180px 0 30px;
 		border-radius: 0;
@@ -2500,8 +2511,6 @@ button.grayscale.gray .c {
 	.box-people h2 {
 		margin: 0 30px 30px;
 		padding-bottom: 30px;
-		border-bottom: 1px solid #cfc3af;
-		color: #635748;
 	}
 
 	.box-people h2.people-clients-header {
@@ -2513,11 +2522,11 @@ button.grayscale.gray .c {
 	.box-companies {
 		padding: 40px 0 0;
 	}
-	
-	.box-companies-header {
-		padding: 20px 30px;
+
+	.client-user-stream {
+		margin: 0 30px;
 	}
-	
+		
 	.person {
 		float: left;
 		width: 50%;
@@ -2526,7 +2535,8 @@ button.grayscale.gray .c {
 	
 	.person .avatar {
 		float: left;
-		margin: 0 24px 0 30px;
+		/*margin: 0 24px 0 30px;*/
+		margin: 0 24px 0 0;
 	}
 	
 	.person h3 {
@@ -2578,7 +2588,7 @@ button.grayscale.gray .c {
 		margin-top: 5px;
 	}*/
 
-	.client-has-no-users h4 {
+	h4.client-has-no-users  {
 		height: 66px;
 	}
 	

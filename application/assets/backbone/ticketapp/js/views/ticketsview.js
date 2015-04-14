@@ -28,6 +28,7 @@ var TicketsView = Backbone.View.extend({
 		'</div>'+
 		'<div class="box-app tickets-box-app" style="{{fullHeightPage}}">' +
 			'<ul id="ticket-stream">' +
+			'{{#if models}}'+
 			'{{#each models}}'+
 				'<li class="ticket">' +
 					'<a href="/tickets/{{attributes.id}}">'+
@@ -50,7 +51,10 @@ var TicketsView = Backbone.View.extend({
 						'</div>' +
 					'</a>'+
 				'</li>'+
-			'{{/each}}'+					
+			'{{/each}}'+
+			'{{else}}'+
+			'<h4 class="no-tickets">There are currently no tickets</h4>'+
+			'{{/if}}'+					
 			'</ul>' +
 		'</div>' 
 	),

@@ -13,15 +13,15 @@ var ProfileView = Backbone.View.extend({
                 '<h3>Your Details</h3>'+			
 				'<div class="profile-input-wrap">'+
 					'<label for="first-name">First Name</label>'+
-					'<input id="first-name" type="text" placeholder="{{attributes.firstName}}" />'+
+					'<input id="first-name" name="firstName" type="text" placeholder="{{attributes.firstName}}" />'+
 				'</div>'+
 				'<div class="profile-input-wrap">'+
 					'<label for="last-name">Last Name</label>'+
-					'<input id="last-name" type="text" placeholder="{{attributes.lastName}}" />'+
+					'<input id="last-name" name="lastName" type="text" placeholder="{{attributes.lastName}}" />'+
 				'</div>'+
 				'<div class="profile-input-wrap">'+
 					'<label for="email-address">Email Address</label>'+
-					'<input id="email-address" type="email" placeholder="{{attributes.emailAddress}}" />'+
+					'<input id="email-address" name="emailAddress" type="email" placeholder="{{attributes.emailAddress}}" />'+
 					'<h4 class="profile-tooltip">A validation link will be sent to your email address for verification.</h4>'+
                     '<div class="in-use-marker">'+
                         '<div class="vrf-cir">'+
@@ -166,8 +166,8 @@ var ProfileView = Backbone.View.extend({
             'input .repeat-password': 'confirmPassword',
             'click #form-profile-password button': 'updatePassword',
             'click #form-profile-password .cancel-btn': 'cancelUpdatePassword'
-
         });
+
 		return this;
 	},
 
@@ -184,7 +184,6 @@ var ProfileView = Backbone.View.extend({
                 input.attr('disabled', true);
             }
         });
-
 
     },
 
@@ -307,12 +306,15 @@ var ProfileView = Backbone.View.extend({
                 var name = input.attr('name');
                 app.user.set(name, value);
                 updated = true;
+                console.log(name);
             }
         });
         if(updated){
             this.model.save(this.model.attributes,{
-                success: _.bind(function(){
+                success: _.bind(function(model){
+                    console.log(model);
                     this.$el.find('#form-profile-details .response').addClass('text-animate');
+                    app.changed = false;
                 }, this)
             });
         }
@@ -680,64 +682,14 @@ var ProfileView = Backbone.View.extend({
         var vData = temp_canvas.toDataURL();
 
         this.model.set('avatar', vData);
-        this.model.save();
+        this.model.save(this.model.attributes,{
+            success: function(){
+                //Fetch users to update people view
+                // console.log('success');
+                // app.users.fetch({reset: true});
+            }
+        });
         this.previewClose();
     }
 
 });
-
-    // addImageToCanvas: function(imgSrc){
-    //     //Create Image object and pass it uploaded data
-    //     this.image = new Image();
-    //     this.image.src = imgSrc;
-    //     var originalWidth = this.image.width;
-    //     var originalHeight = this.image.height;
-
-    //     //If image too wide then resize RESIZE FOR TOO TALL ALSO var maxWidth = $(window).width() - 40;
-    //     if(originalWidth > 500) {
-    //         var imageWidth = 500;
-    //         var widthDifference = originalWidth - imageWidth;
-    //         var percentageDecrease = widthDifference / (originalWidth / 100);
-    //         var imageHeight = originalHeight - ((originalHeight / 100) * percentageDecrease);
-
-    //         //Draw resized image onto temporary canvas and set that to this.image
-    //         var temp_ctx, temp_canvas;
-    //         temp_canvas = document.createElement('canvas');
-    //         temp_ctx = temp_canvas.getContext('2d');
-    //         temp_canvas.width = imageWidth;
-    //         temp_canvas.height = imageHeight;
-    //         temp_ctx.drawImage(this.image, 0, 0, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
-    //         this.image.src = temp_canvas.toDataURL();
-    //         console.log('resizing');
-    //     } 
-
-    //     this.canvas = document.createElement('canvas');
-    //     this.ctx = this.canvas.getContext('2d');
-
-    //     $(this.canvas).attr({'width': this.image.width, 'height': this.image.height, id: 'panel'});
-
-    //     $('#canvas-wrap').html(
-    //         '<div class="preview-window-inner">'+
-    //             '<div class="preview-wrap">'+
-    //                 '<div class="preview-img-wrap">'+
-    //                     '<i class="preview-close icon-cancel-circled"></i>'+
-    //                     '<div class="preview-img-box">'+
-    //                         '<div class="canvas">'+
-    //                         '</div>'+
-    //                     '<button class="crop">Crop and Save</button>'+
-    //                     '<button class="grayscale"><span class="g">Grayscale</span><span class="c">Colour</span></button>'+
-    //                     '</div>'+
-    //                 '</div>'+
-    //             '</div>'+
-    //         '</div>'
-    //     );
-    //     $('.canvas').html(this.canvas)
-    //     $('#canvas-wrap').addClass('active');
-
-    //     //www.htmlgoodies.com/html5/javascript/display-images-in-black-and-white-using-the-html5-canvas.html#fbid=vq-yqyDCNdi
-
-    //     // create initial selection
-    //     this.theSelection = new this.selection(200, 200, 200, 200);
-
-    //     this.drawScene();
-    // },    

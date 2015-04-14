@@ -1,5 +1,5 @@
 var ClientModel = Backbone.Model.extend({
-	url: '/api/clients',
+	// url: '/api/clients', Removed so edit name functionality uses default url that includes id
 	initialize: function(){
 		// Create userCollection within model, give it model specific url and fetch data
 		this.usersCollection = new Backbone.Collection(app.users.usersByClient(this.id));

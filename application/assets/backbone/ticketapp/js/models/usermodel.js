@@ -9,5 +9,12 @@ var UserModel = Backbone.Model.extend({
 			response.companyID = response.companyID['$id'];
 		}
 		return response;
+	},
+	initialize: function(){
+		this.on('sync', function(){ 
+			if(app.currentView) {
+				app.users.fetch({reset:true});
+			}
+		});
 	}
 });

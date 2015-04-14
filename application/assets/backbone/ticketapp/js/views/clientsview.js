@@ -1,9 +1,5 @@
 var ClientsView = Backbone.View.extend({
 	template: Handlebars.compile(
-		// '<div class="box-companies-header">'+
-		// 	'<h2>Clients</h2>'+
-		// 	'<a class="btn" data-form="1">New Client</a>'+
-		// '</div>'+
 		'<div id="company-stream">'+
 			'<div id="modal-form" class="active">'+
 				'<div class="modal-window-inner">'+
@@ -69,7 +65,7 @@ var ClientView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="company-info">'+
 			'<h3>{{attributes.name}}</h3>'+
-			'<a>Edit</a>'+
+			'<a class="edit-client" data-form="3" data-model="{{attributes.id}}">Edit</a>'+
 			'<a class="new-client-user" data-form="2" data-model="{{attributes.id}}">New User</a>'+
 		'</div>'+
 		'<div class="client-stream">'+
@@ -101,9 +97,7 @@ var ClientView = Backbone.View.extend({
 var UsersView = Backbone.View.extend({
 
 	template: Handlebars.compile(
-		'<div class="client-has-no-users">'+
-			'<h4>This client currently has no users</h4>'+
-		'</div>'
+		'<h4 class="client-has-no-users">This client currently has no users</h4>'
 	),
 
 	initialize: function(){
@@ -145,7 +139,8 @@ var UserView = Backbone.View.extend({
 			'{{else}}'+
 				'<h3>{{attributes.emailAddress}}</h3>'+
 				'<h4>Awaiting Verification</h4>'+
-			'{{/if}}'
+			'{{/if}}'+
+			'<a class="delete-user" data-model="{{attributes.id}}">Delete</a>'
 	),
 
 	render: function(){
