@@ -23,11 +23,7 @@ class PeopleController {
 		$db = $connections['default'];
 		$db = $db->houston;
 
-		$userModel = new UserModel($this->app);
-		$userModel->loadUserByID($this->app['session']->get('u'));
-
-		$companyModel = new CompanyModel($this->app);
-		$companyModel->loadCompanyByID($userModel->user['companyID']);
+		$companyModel = new CompanyModel($this->app, $this->app['session']->get('cid'));
 
 		if(isset($companyModel->company)) {
 			return json_encode($companyModel->company);

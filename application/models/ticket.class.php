@@ -89,11 +89,23 @@ class TicketModel
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
 
-		$ticket->authorID = new \MongoID($ticket->authorID);
-
+		// Add date to ticket at point of save
 		if(!isset($ticket->date)) $ticket->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
 
+		// Increment and set ticket reference
+		$companyModel = new CompanyModel($this->app, $this->app['session']->get('cid'));
+
+		$ticket->reference = (isset($companyModel->company['ticketCount'])) ? $companyModel->company['ticketCount'] : 0;
+		$ticket->reference++;
+
+		// Update company ticketCount property
+		$companyModel->setProperty(null, 'ticketCount', $ticket->reference);
+
+		// Make sure author ID is MongoID object
+		$ticket->authorID = new \MongoID($ticket->authorID);
+
 		try {
+			// Save ticket to database
 			$tickets = $db->tickets;
 			$tickets->save($ticket);
 			return true;

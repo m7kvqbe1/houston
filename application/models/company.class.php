@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyModel
 {
-	protected static $validProperties = array('_id', 'companyName', 'database', 'stripeCustomerID');
+	protected static $validProperties = array('_id', 'companyName', 'database', 'stripeCustomerID', 'ticketCount');
 
 	protected $app;
 	public $company;
@@ -40,13 +40,15 @@ class CompanyModel
 		return (in_array($property, self::$validProperties)) ? true : false;
 	}
 
-	public function setProperty($companyID, $property, $value)
+	public function setProperty($companyID = null, $property, $value)
 	{
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
 
 		if(!self::propertyExists($property)) throw new \InvalidArgumentException('Invalid property');
+
+		if(!isset($companyID)) $companyID = $this->company['_id'];
 
 		$companyID = new \MongoID($companyID);
 
@@ -97,7 +99,7 @@ class CompanyModel
 		$db = $db->houston;
 
 		// Create company
-		$companyJSON = '{"companyName": ""}';
+		$companyJSON = '{"companyName": "", "ticketCount": 0}';
 		$company = json_decode($companyJSON);
 
 		$company->companyName = $json->company;
