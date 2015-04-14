@@ -83,7 +83,7 @@ class ReplyModel
 		$reply->ticketID = new \MongoID($reply->ticketID);
 		$reply->authorID = new \MongoID($reply->authorID);
 
-		if(!isset($ticket->date)) $ticket->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
+		if(!isset($reply->date)) $reply->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
 
 		try {
 			$collection = $db->replies;
