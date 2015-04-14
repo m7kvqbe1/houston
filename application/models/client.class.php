@@ -71,6 +71,33 @@ class ClientModel
 		}
 	}
 
+	public function updateClientName($clientID, $name)
+	{
+		$connections = $this->app['mongo'];
+		$db = $connections['default'];
+		$db = $db->houston;
+
+		// Load user to get authenticated users company ID
+		$userModel = new UserModel($this->app);
+		$userModel->loadUserByID($this->app['session']->get('uid'));
+
+		// Ensure that Client ID is a MongoID object
+		$clientID = new \MongoId($clientID);
+
+		try {
+			$collection = $db->companies;
+			$collection->update(
+				array('_id' => $userModel->user['companyID'], 'clients._id' => $clientID),
+				array('$set' => array('clients.$.name' => $name))
+			);
+
+			return true;
+		} catch(\MongoException $e) {
+			$this->app['airbrake']->notifyOnException($e);
+			return false;
+		}
+	}
+
 	public function removeClient($id)
 	{
 		$connections = $this->app['mongo'];

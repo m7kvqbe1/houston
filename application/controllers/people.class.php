@@ -82,6 +82,19 @@ class PeopleController {
 		}
 	}
 
+	public function putClientAction($clientID)
+	{
+		$data = json_decode(file_get_contents('php://input'));
+
+		$clientModel = new ClientModel($this->app);
+
+		if($clientModel->updateClientName($clientID, $data->name)) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('CLIENT_EDIT_FAIL');
+		}
+	}
+
 	public function postAgentAction()
 	{
 		$data = json_decode(file_get_contents('php://input'));
