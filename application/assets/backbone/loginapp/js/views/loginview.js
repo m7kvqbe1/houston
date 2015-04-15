@@ -116,8 +116,8 @@ var LoginView = Backbone.View.extend({
 				},
 				error: _.bind(function(model,response,options){
 					console.log(this.model);
-					this.$el.find('.box-log h2').text('Oops!');
-					this.$el.find('.box-log h3.log-tag').text('Please try again');					
+					this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
+					this.$el.find('.box-log h3.log-tag').hide().text('Please try again').addClass('text-animate');					
 				}, this)
 			}
 		);

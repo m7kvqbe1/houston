@@ -21,7 +21,6 @@ var TicketModel = Backbone.Model.extend({
 		status: 'New',
 		agent: false,
 		files: [],
-		hasMessages: false,
 		updated: []		
 	}
 });

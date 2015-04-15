@@ -63,7 +63,6 @@ var PeopleView = Backbone.View.extend({
 			'click .client-button': 'addClient',
 			'click .user-button': 'validateUser',
 			'click .edit-client-button': 'editClient',
-			'click .delete-user': 'deleteUser',
 			'input input': 'markAsChanged',
 			'keydown': 'keyEvent'
 		});
@@ -145,7 +144,6 @@ var PeopleView = Backbone.View.extend({
 	},
 
 	validateClient: function(){
-		// if(!houston.validateForm(e.currentTarget)) return;
 		var input = this.$el.find('form input');
 		var name = input.val();
 		var nameInUse = false;
@@ -194,6 +192,7 @@ var PeopleView = Backbone.View.extend({
 		client.save(attributes,{
 			success: _.bind(function(model){
 				app.changed = false;
+				app.clients.sort();
 			}, this)
 		});
 
@@ -244,23 +243,6 @@ var PeopleView = Backbone.View.extend({
 				app.changed = false;
 			}, this)
 		});
-	},
-
-	deleteUser: function(e){
-		var input = $(e.currentTarget);
-		var userID = input.data('model');	
-		var user = app.users.get(userID);
-
-		// houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ?', cancel: true},
-	 //    	function(){
-		// 		app.changed = false;
-		// 		app.execute();
-		// 	},
-		// 	function(){
-		// 		app.navigate(app.changed, {trigger: false});
-		// 	}
-	 //    );		
 	}
 	
 });
-

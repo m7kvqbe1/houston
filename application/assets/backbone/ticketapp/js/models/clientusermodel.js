@@ -9,7 +9,7 @@ var BufferClientUserModel = Backbone.Model.extend({
 });
 
 var ClientUserModel = Backbone.Model.extend({
-	url: '/api/user',
+	// url: '/api/user', Removed for delete user method of people view
 	initialize: function(){
 		// Create model's view as an attribute of itself
 		this.modelView = new UserView({model: this});

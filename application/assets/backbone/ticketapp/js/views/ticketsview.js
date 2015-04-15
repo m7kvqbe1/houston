@@ -53,7 +53,7 @@ var TicketsView = Backbone.View.extend({
 				'</li>'+
 			'{{/each}}'+
 			'{{else}}'+
-			'<h4 class="no-tickets">There are currently no tickets</h4>'+
+			'<h4 class="no-tickets">No tickets to display</h4>'+
 			'{{/if}}'+					
 			'</ul>' +
 		'</div>' 

@@ -19,9 +19,9 @@ var FileUploadView = Backbone.View.extend({
 			'{{#each models}}'+
 				'<li class="file">'+
 					//If still uploading show loader
-					'{{#if attributes.status}}'+
-					'<div class="loader"></div>'+					
-					'{{/if}}'+
+					// '{{#if attributes.status}}'+
+					// '<div class="loader"></div>'+					
+					// '{{/if}}'+
 					'<div class="file-text">'+
 		  				'<div class="file-icon">'+
 		  					'<span>'+
@@ -34,11 +34,14 @@ var FileUploadView = Backbone.View.extend({
 		  				'</div>'+
 		  				'<div class="file-info">'+
 							'<div class="filename">{{attributes.name}}</div>'+
+							'<div class="loader">Loading...</div>'+
 							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
+
 							//If a displayable image add preview button
 							'{{#unless attributes.status}}'+
 							'{{showFileUploadPreviewLink attributes.type attributes.target cid}}'+
-							'{{/unless}}'+				
+							'{{/unless}}'+	
+
 						'</div>'+
 					'</div>'+					
 				'</li>'+

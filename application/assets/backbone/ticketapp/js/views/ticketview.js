@@ -8,7 +8,6 @@ var TicketDetailView = Backbone.View.extend({
 		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+
 			'<li class="msg from-{{getUserRole attributes.authorID}}">'+
 				'<div class="msg-dtl">'+
-					// '<img class="msg-avatar" src="{{#if attributes.avatar}}{{avatar}}{{else}}/application/assets/img/avatar.png{{/if}}" alt="{{author}}"/>'+
 					'<img class="avatar" src="{{getUserAvatar attributes.authorID}}" alt="{{getUserName attributes.authorID}}"/>'+
 					'<div class="msg-dtl-inr">'+
 						'<h3 class="msg-agent">{{getUserName attributes.authorID}}</h3>'+
@@ -19,11 +18,11 @@ var TicketDetailView = Backbone.View.extend({
 				'</div>'+
 				'<div class="msg-body">'+
 					'<h5>Ticket Subject</h5>'+
-					'<div class="msg-text">'+
+					'<div class="msg-subject">'+
 						'{{attributes.subject}}'+							
 					'</div>'+
 					'<h5>Ticket Message</h5>'+
-					'<div class="msg-text">'+
+					'<div>'+
 						'{{attributes.message}}'+							
 					'</div>'+						
 					'<ul class="files">'+
@@ -49,7 +48,7 @@ var TicketDetailView = Backbone.View.extend({
 					'{{/each}}'+
 					'</ul>'+
 					'{{downloadTicketAttachments attributes.files}}'+
-				'{{#if attributes.hasMessages}}'+
+				'{{#if messagesCollection.length}}'+
 					'</div>'+											
 				'{{else}}'+
 				'<a class="btn reply-btn">Reply</a>'+
@@ -60,13 +59,13 @@ var TicketDetailView = Backbone.View.extend({
 						'<div id="file-upload-view-wrap">'+	
 
 						'</div>'+
-						'<label>'+
-							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
-							'Mark ticket as completed'+
-						'</label>'+
-						'<button class="add-message" type="button">Submit</button>' +
-						'<div class="beige or">or</div>' +
-						'<a class="cancel-btn ib">Cancel</a>' +
+						'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+							
+						'<label>Mark ticket as completed</label>'+
+						'<div class="reply-submit-buttons">'+
+							'<button class="add-message" type="button">Submit</button>' +
+							'<div class="beige or">or</div>' +
+							'<a class="cancel-btn ib">Cancel</a>' +
+						'</div>'+
 					'</form>' +
 				'</div>'+					
 				'{{/if}}'+						
@@ -78,6 +77,8 @@ var TicketDetailView = Backbone.View.extend({
 	),
 	
 	initialize: function() {
+		this.listenTo(this.model.messagesCollection, "sync", this.render);
+
 		//TICKET HEADER VIEW
 		this.ticketHeaderView = new TicketHeaderView({model: this.model});
 		this.ticketHeaderView.parent = this;
@@ -94,12 +95,17 @@ var TicketDetailView = Backbone.View.extend({
 		});
 	},
 
+	logSomething: function(){
+		console.log('log');
+	},
+
 	onClose: function(){
 		this.ticketHeaderView.close();
 		this.messagesView.close();
 	},
 	
 	render: function (){	
+		console.log(this.model);
 		this.$el.html(this.template(this.model));
 
 		app.files.reset();
@@ -195,14 +201,7 @@ var TicketDetailView = Backbone.View.extend({
 			}, this)
 		});
 
-		//If a first reply render the view to remove the form
-		if(!this.model.attributes.hasMessages){
-			this.model.set({hasMessages: true});
-			this.render();
-		} 
-
 		this.saveModel();
-
 	},
 
 	filePreview: function(e){

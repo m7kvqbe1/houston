@@ -120,7 +120,7 @@ var AppRouter = Backbone.Router.extend({
 	ticketDetailsFrontController: function(ticket) {
 		this.ticketDetailModel.messagesCollection.url = '/api/tickets/reply/' + ticket;
 		this.ticketDetailModel.set(this.tickets.get(ticket).attributes);
-		$.when(this.ticketDetailModel.messagesCollection.fetch())
+		$.when(this.ticketDetailModel.messagesCollection.fetch({reset: true}))
 		.done(function(){
 			var ticketDetailView = new TicketDetailView({model: app.ticketDetailModel});
 			app.showView(ticketDetailView);

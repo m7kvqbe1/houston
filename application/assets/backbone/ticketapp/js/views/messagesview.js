@@ -13,7 +13,7 @@ var MessagesView = Backbone.View.extend({
 					'<div class="msg-tri"></div>'+
 				'</div>'+
 				'<div class="msg-body">'+
-					'<div class="msg-text">'+
+					'<div>'+
 						'{{attributes.message}}'+							
 					'</div>'+						
 					'<ul class="files" data-reply="{{id}}">'+
@@ -47,14 +47,14 @@ var MessagesView = Backbone.View.extend({
 						'<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
 						'<div id="file-upload-view-wrap">'+	
 
-						'</div>'+
-						'<label>'+
-							'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
-							'Mark ticket as completed'+
-						'</label>'+
-						'<button class="add-message" type="button">Submit</button>' +
-						'<div class="beige or">or</div>' +
-						'<a class="cancel-btn ib">Cancel</a>' +
+						'</div>'+						
+						'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+							
+						'<label>Mark ticket as completed</label>'+
+						'<div class="reply-submit-buttons">'+
+							'<button class="add-message" type="button">Submit</button>' +
+							'<div class="beige or">or</div>' +
+							'<a class="cancel-btn ib">Cancel</a>' +
+						'</div>'+	
 					'</form>' +
 				'</div>'+
 				'{{else}}'+

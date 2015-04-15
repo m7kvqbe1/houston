@@ -10,7 +10,7 @@ var ClientsView = Backbone.View.extend({
 									'<h3>Text</h3>'+
 									'<h4>Text</h4>'+
 									'<div class="modal-buttons">'+
-										'<input class="required" type="text" />'+
+										'<input type="text" />'+
 										'<div class="validated-marker">'+
 					                        '<div class="vrf-cir">'+
 					                            '<i class="icon-cancel"></i>'+
@@ -33,7 +33,7 @@ var ClientsView = Backbone.View.extend({
 	),
 
 	initialize: function() {	
-		this.listenTo(this.collection, 'sync', this.render);		
+		this.listenTo(this.collection, 'sync sort', this.render);		
 		_.bindAll(this, "renderClient");
 	},
 
@@ -65,7 +65,8 @@ var ClientView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="company-info">'+
 			'<h3>{{attributes.name}}</h3>'+
-			'<a class="edit-client" data-form="3" data-model="{{attributes.id}}">Edit</a>'+
+			'<a class="edit-client" data-form="3" data-model="{{attributes.id}}">Rename</a>'+
+			'<a class="delete-client">Delete</a>'+
 			'<a class="new-client-user" data-form="2" data-model="{{attributes.id}}">New User</a>'+
 		'</div>'+
 		'<div class="client-stream">'+
@@ -76,7 +77,7 @@ var ClientView = Backbone.View.extend({
 	),	
 
 	initialize: function(){	
-		this.listenTo(this.model, "sync", this.render);	//Listener only required when edit client functionality is added as changes to the collection above trigger a render
+		this.listenTo(this.model, "sync", this.render);	
 		// Create usersView as a child of the client view, populate it with the model's usersCollection
 		this.usersView = new UsersView({ collection: this.model.usersCollection});
 		this.usersView.parent = this;
@@ -91,7 +92,21 @@ var ClientView = Backbone.View.extend({
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
+
+		this.delegateEvents({
+			'click .delete-client': 'deleteClient'
+		});
+	},
+
+	deleteClient: function(){
+		var theModel = this.model
+		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + theModel.attributes.name +' and all of its users?', cancel: true},
+	    	function(){
+	    		theModel.destroy({ wait:true });			
+			}
+	    );		
 	}
+
 });
 
 var UsersView = Backbone.View.extend({
@@ -140,11 +155,31 @@ var UserView = Backbone.View.extend({
 				'<h3>{{attributes.emailAddress}}</h3>'+
 				'<h4>Awaiting Verification</h4>'+
 			'{{/if}}'+
-			'<a class="delete-user" data-model="{{attributes.id}}">Delete</a>'
+			'<a class="delete-user">Delete</a>'
 	),
 
 	render: function(){
 		this.$el.html(this.template(this.model));
+
+		this.delegateEvents({
+			'click .delete-user': 'deleteUser'
+		});
+	},
+
+	deleteUser: function(e){
+		var theModel = this.model
+		var attributes = theModel.attributes;
+		var name;
+		if(attributes.firstName){
+			name = attributes.firstName + ' ' + attributes.lastName;
+		} else {
+			name = attributes.emailAddress;
+		}
+		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + name +'?', cancel: true},
+	    	function(){
+	    		theModel.destroy({ wait:true });			
+			}
+	    );		
 	}
 
 });
