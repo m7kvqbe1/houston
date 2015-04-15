@@ -16,12 +16,11 @@ var TicketDetailView = Backbone.View.extend({
 					'</div>'+
 					'<div class="msg-tri"></div>'+
 				'</div>'+
-				'<div class="msg-body">'+
-					'<h5>Ticket Subject</h5>'+
+				'<div class="msg-body">'+					
 					'<div class="msg-subject">'+
-						'{{attributes.subject}}'+							
+						'<h5>{{attributes.subject}}</h5>'+	
+						'<span>Ticket #{{attributes.reference}}</span>'+						
 					'</div>'+
-					'<h5>Ticket Message</h5>'+
 					'<div>'+
 						'{{attributes.message}}'+							
 					'</div>'+						
@@ -228,8 +227,8 @@ var TicketDetailView = Backbone.View.extend({
 var TicketHeaderView = Backbone.View.extend({
 	className: 'box-app-top msg-top',
 	template: Handlebars.compile(
+		'<h2>Ticket #{{attributes.reference}}</h2>'+
 		'{{#if attributes.agent}}'+
-			'<h2><a href="#">< All Tickets</a></h2>'+
 			'{{generateDropSwitch attributes.status}}'+					
 			'<div class="dropdown droplist">'+
 				'<div class="drop-top rounded">'+
@@ -240,7 +239,6 @@ var TicketHeaderView = Backbone.View.extend({
 				'</ul>'+
 			'</div>'+
 		'{{else}}'+
-			'<h2><a href="#">< All Tickets</a></h2>'+
 			'<div class="btn new">New</div>'+
 			'<div class="dropdown droplist">'+
 				'<div class="drop-top rounded">'+

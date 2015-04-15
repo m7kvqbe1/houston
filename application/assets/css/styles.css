@@ -1609,7 +1609,7 @@ h4.client-has-no-users {
 }
 
 .msg-subject {
-	margin-bottom: 24px;
+	margin-bottom: 15px;
 }
 
 /*MODAL WINDOW*/
@@ -2791,6 +2791,10 @@ button.grayscale.gray .c {
 		overflow: hidden;
 		width: 680px;
 		width: 664px;
+	}
+
+	.msg-subject span {
+		display: none;
 	}
 	
 	.from-AGENT,
