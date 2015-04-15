@@ -18,11 +18,8 @@ var FileUploadView = Backbone.View.extend({
 			'<ul id="files" class="files">'+
 			'{{#each models}}'+
 				'<li class="file">'+
-					//If still uploading show loader
-					// '{{#if attributes.status}}'+
-					// '<div class="loader"></div>'+					
-					// '{{/if}}'+
-					'<div class="file-text">'+
+					'<div class="file-text {{attributes.status}}">'+		
+						'<img class="svg-loader" src="/application/assets/img/oval.svg" width="52" alt="Loading">'+
 		  				'<div class="file-icon">'+
 		  					'<span>'+
 		  					'{{#if attributes.type}}'+
@@ -34,14 +31,11 @@ var FileUploadView = Backbone.View.extend({
 		  				'</div>'+
 		  				'<div class="file-info">'+
 							'<div class="filename">{{attributes.name}}</div>'+
-							'<div class="loader">Loading...</div>'+
 							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-
 							//If a displayable image add preview button
 							'{{#unless attributes.status}}'+
 							'{{showFileUploadPreviewLink attributes.type attributes.target cid}}'+
 							'{{/unless}}'+	
-
 						'</div>'+
 					'</div>'+					
 				'</li>'+
@@ -113,7 +107,6 @@ var FileUploadView = Backbone.View.extend({
 	        })(f), this);
 
 			reader.onloadend = (function(theFile) {
-				console.log('start');
 		        return function(e) {
 		        	var attributes = {
 						status: 'loading',
@@ -132,7 +125,6 @@ var FileUploadView = Backbone.View.extend({
 							}
 						})
 					});
-					console.log('end');
 		        };
 	        })(f);
 

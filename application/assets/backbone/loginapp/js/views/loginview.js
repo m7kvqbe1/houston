@@ -102,6 +102,10 @@ var LoginView = Backbone.View.extend({
 	
 	login: function() {
 		if(!login.validateForm(this.$el.find('#form-log'))) return;
+
+		this.$el.find('.box-log h2').show().removeClass('text-animate');
+		this.$el.find('.box-log h3.log-tag').show().removeClass('text-animate');
+
 		this.model.url = '/api/auth/login';
 		this.model.set({
 			user: this.$el.find('input[name="log-e"]').val(),

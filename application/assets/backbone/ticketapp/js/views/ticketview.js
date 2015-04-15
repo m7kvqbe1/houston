@@ -5,7 +5,7 @@ var TicketDetailView = Backbone.View.extend({
 
 			'</div>'+
 		'</div>'+			
-		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+
+		'<ul id="msg-stream" class="box-app" style="{{fullHeightPage}}">'+		
 			'<li class="msg from-{{getUserRole attributes.authorID}}">'+
 				'<div class="msg-dtl">'+
 					'<img class="avatar" src="{{getUserAvatar attributes.authorID}}" alt="{{getUserName attributes.authorID}}"/>'+

@@ -56,6 +56,9 @@ var TicketsView = Backbone.View.extend({
 			'<h4 class="no-tickets">No tickets to display</h4>'+
 			'{{/if}}'+					
 			'</ul>' +
+			'<div class="loader">'+
+			'<div class="otloader"></div>'+
+			'</div>'+
 		'</div>' 
 	),
 	
