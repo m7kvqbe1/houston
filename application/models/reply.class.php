@@ -24,7 +24,9 @@ class ReplyModel
 		$db = $connections['default'];
 		$db = $db->{$this->app['session']->get('database')};
 
-		$this->reply = $db->replies->findOne(array('_id' => new \MongoID($id)));
+		$this->reply = $db->replies->findOne(
+			array('_id' => new \MongoID($id))
+		);
 
 		if(!empty($this->reply)) {
 			return $this->reply;
@@ -42,7 +44,10 @@ class ReplyModel
 		$ticketID = new \MongoID($ticketID);
 
 		$collection = $db->replies;
-		$result = $collection->find(array('ticketID' => $ticketID));
+
+		$result = $collection->find(
+			array('ticketID' => $ticketID)
+		);
 
 		$docs = array();
 		foreach($result as $doc) {
@@ -81,13 +86,16 @@ class ReplyModel
 		$db = $db->{$this->app['session']->get('database')};
 
 		$reply->ticketID = new \MongoID($reply->ticketID);
+
 		$reply->authorID = new \MongoID($reply->authorID);
 
 		if(!isset($reply->date)) $reply->date = Helper::convertTimestamp(date('Y-m-d H:i:s'));
 
 		try {
 			$collection = $db->replies;
+
 			$collection->save($reply);
+
 			return $reply;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);

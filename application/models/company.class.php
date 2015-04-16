@@ -6,7 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyModel
 {
-	protected static $validProperties = array('_id', 'companyName', 'database', 'stripeCustomerID', 'ticketCount');
+	protected static $validProperties = array(
+		'_id',
+		'companyName',
+		'database',
+		'stripeCustomerID',
+		'ticketCount'
+	);
 
 	protected $app;
 	public $company;
@@ -26,7 +32,9 @@ class CompanyModel
 
 		$companyID = new \MongoID($companyID);
 
-		$this->company = $db->companies->findOne(array('_id' => $companyID));
+		$this->company = $db->companies->findOne(
+			array('_id' => $companyID)
+		);
 
 		if(!empty($this->company)) {
 			return $this->company;
@@ -54,7 +62,12 @@ class CompanyModel
 
 		try {
 			$collection = $db->companies;
-			$collection->findAndModify(array('_id' => $companyID), array('$set' => array($property => $value)));
+
+			$collection->findAndModify(
+				array('_id' => $companyID),
+				array('$set' => array($property => $value))
+			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -72,7 +85,12 @@ class CompanyModel
 
 		try {
 			$collection = $db->companies;
-			$collection->findAndModify(array('_id' => $companyID), array('$set' => array('database' => $identifier)));
+
+			$collection->findAndModify(
+				array('_id' => $companyID),
+				array('$set' => array('database' => $identifier))
+			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -86,8 +104,9 @@ class CompanyModel
 		$db = $connections['default'];
 		$db = $db->houston;
 
-		$criteria = array('companyName' => $companyName);
-		$company = $db->companies->findOne($criteria);
+		$company = $db->companies->findOne(
+			array('companyName' => $companyName)
+		);
 
 		return (!empty($company)) ? true : false;
 	}

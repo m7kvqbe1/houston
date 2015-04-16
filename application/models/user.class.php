@@ -6,8 +6,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserModel
 {
-	protected static $validRoles = array('ADMIN', 'AGENT', 'USER');
-	protected static $validProperties = array('_id', 'emailAddress', 'emailAddressTmp', 'companyID', 'password', 'verify', 'role', 'firstName', 'lastName', 'avatar');
+	protected static $validRoles = array(
+		'ADMIN',
+		'AGENT',
+		'USER'
+	);
+
+	protected static $validProperties = array(
+		'_id',
+		'emailAddress',
+		'emailAddressTmp',
+		'companyID',
+		'password',
+		'verify',
+		'role',
+		'firstName',
+		'lastName',
+		'avatar'
+	);
 
 	protected $app;
 	public $user;
@@ -25,8 +41,10 @@ class UserModel
 		$db = $connections['default'];
 		$db = $db->houston;
 
-		$criteria = array('emailAddress' => $username);
-		$this->user = $db->users->findOne($criteria);
+		$this->user = $db->users->findOne(
+			array('emailAddress' => $username)
+		);
+
 		if(!empty($this->user)) {
 			return $this->user;
 		} else {
@@ -42,8 +60,10 @@ class UserModel
 
 		$id = new \MongoID($userID);
 
-		$criteria = array('_id' => $id);
-		$this->user = $db->users->findOne($criteria);
+		$this->user = $db->users->findOne(
+			array('_id' => $id)
+		);
+
 		if(!empty($this->user)) {
 			return $this->user;
 		} else {
@@ -89,7 +109,10 @@ class UserModel
 		$db = $db->houston;
 
 		$collection = $db->users;
-		$result = $collection->find(array('role' => array('$all' => $roles)));
+
+		$result = $collection->find(
+			array('role' => array('$all' => $roles))
+		);
 
 		$docs = array();
 		foreach($result as $doc) {
@@ -119,7 +142,12 @@ class UserModel
 
 		try {
 			$collection = $db->users;
-			$collection->findAndModify(array('_id' => $userID), array('$set' => array($property => $value)));
+
+			$collection->findAndModify(
+				array('_id' => $userID),
+				array('$set' => array($property => $value))
+			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -139,7 +167,12 @@ class UserModel
 
 		try {
 			$collection = $db->users;
-			$collection->findAndModify(array('_id' => $userID), array('$unset' => array($property => 1)));
+
+			$collection->findAndModify(
+				array('_id' => $userID),
+				array('$unset' => array($property => 1))
+			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -184,7 +217,12 @@ class UserModel
 
 		try {
 			$collection = $db->users;
-			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('remember' => $remember)));
+
+			$collection->findAndModify(
+				array('emailAddress' => $username),
+				array('$set' => array('remember' => $remember))
+			);
+
 			return $remember;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -202,7 +240,12 @@ class UserModel
 
 		try {
 			$collection = $db->users;
-			$doc = $collection->findAndModify(array('reset' => $token), array('$set' => array('password' => $newPassword, 'reset' => '')));
+
+			$doc = $collection->findAndModify(
+				array('reset' => $token),
+				array('$set' => array('password' => $newPassword, 'reset' => ''))
+			);
+
 			$this->loadUser($doc['emailAddress']);	// Refactor this call out into relevant places in controllers
 			return true;
 		} catch(\MongoException $e) {
@@ -223,7 +266,12 @@ class UserModel
 
 		try {
 			$collection = $db->users;
-			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('reset' => $token)));
+
+			$collection->findAndModify(
+				array('emailAddress' => $username),
+				array('$set' => array('reset' => $token))
+			);
+
 			return $token;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -265,7 +313,12 @@ class UserModel
 
 		try {
 			$collection = $db->users;
-			$collection->findAndModify(array('emailAddress' => $username), array('$set' => array('verify' => true)));
+
+			$collection->findAndModify(
+				array('emailAddress' => $username),
+				array('$set' => array('verify' => true))
+			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
