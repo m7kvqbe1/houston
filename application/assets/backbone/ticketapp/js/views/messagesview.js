@@ -14,8 +14,8 @@ var MessagesView = Backbone.View.extend({
 				'</div>'+
 				'<div class="msg-body">'+
 					'<div>'+
-						'{{attributes.message}}'+							
-					'</div>'+						
+						'{{attributes.message}}'+
+					'</div>'+
 					'<ul class="files" data-reply="{{id}}">'+
 					'{{#each attributes.files}}'+
 						'<li class="file">'+
@@ -35,31 +35,31 @@ var MessagesView = Backbone.View.extend({
 									'<a data-bypass="true" href="http://' + window.location.hostname + '/api/tickets/file/{{ref}}">Download</a>'+
 								'</div>'+
 							'</div>'+
-						'</li>'+	
+						'</li>'+
 					'{{/each}}'+
 					'</ul>'+
 					'{{downloadTicketAttachments attributes.files}}'+
-				'{{#if $last}}'+						
+				'{{#if $last}}'+
 					'<a class="btn reply-btn">Reply</a>'+
 				'</div>'+
 				'<div class="reply">'+
 					'<form id="form-reply">' +
-						'<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
-						'<div id="file-upload-view-wrap">'+	
+						'<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>' +
+						'<div id="file-upload-view-wrap">'+
 
-						'</div>'+						
-						'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+							
-						'<label>Mark ticket as completed</label>'+
+						'</div>'+
+						'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+
+						'<label for="completed">Mark ticket as completed</label>'+
 						'<div class="reply-submit-buttons">'+
 							'<button class="add-message" type="button">Submit</button>' +
 							'<div class="beige or">or</div>' +
 							'<a class="cancel-btn ib">Cancel</a>' +
-						'</div>'+	
+						'</div>'+
 					'</form>' +
 				'</div>'+
 				'{{else}}'+
 				'</div>'+
-				'{{/if}}'+					
+				'{{/if}}'+
 			'</li>'+
 		'{{/forEach}}'
 	),
@@ -79,7 +79,7 @@ var MessagesView = Backbone.View.extend({
 
 	render: function(){
 		this.$el.html(this.template(this.collection));
-		app.files.reset();		
+		app.files.reset();
 		this.parent.$('#file-upload-view-wrap').append(this.fileUploadView.$el);
 		this.fileUploadView.render();
 	}
