@@ -1293,54 +1293,6 @@
         ]
     },
     {
-        "name": "dbtlr/php-airbrake",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/dbtlr/php-airbrake.git",
-            "reference": "73452c77fbfe2fd632f71b00beb06d5b885e5acb"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/dbtlr/php-airbrake/zipball/73452c77fbfe2fd632f71b00beb06d5b885e5acb",
-            "reference": "73452c77fbfe2fd632f71b00beb06d5b885e5acb",
-            "shasum": ""
-        },
-        "require-dev": {
-            "php": ">=5.3.3",
-            "phpunit/phpunit": "*",
-            "squizlabs/php_codesniffer": "*"
-        },
-        "time": "2015-04-08 00:15:57",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Airbrake\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Drew Butler",
-                "email": "hi@dbtlr.com",
-                "homepage": "http://dbtlr.com"
-            }
-        ],
-        "description": "A PHP 5.3 library for sending errors to the Airbrake.io service.",
-        "homepage": "https://github.com/dbtlr/php-airbrake",
-        "keywords": [
-            "airbrake",
-            "errors",
-            "exceptions",
-            "logging"
-        ]
-    },
-    {
         "name": "silex/silex",
         "version": "v1.2.4",
         "version_normalized": "1.2.4.0",
@@ -1422,6 +1374,54 @@
         "homepage": "http://silex.sensiolabs.org",
         "keywords": [
             "microframework"
+        ]
+    },
+    {
+        "name": "dbtlr/php-airbrake",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dbtlr/php-airbrake.git",
+            "reference": "5d6db500edb11c42d3a06f7e3557b312d9ec8e50"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dbtlr/php-airbrake/zipball/5d6db500edb11c42d3a06f7e3557b312d9ec8e50",
+            "reference": "5d6db500edb11c42d3a06f7e3557b312d9ec8e50",
+            "shasum": ""
+        },
+        "require-dev": {
+            "php": ">=5.3.3",
+            "phpunit/phpunit": "*",
+            "squizlabs/php_codesniffer": "*"
+        },
+        "time": "2015-04-20 11:18:27",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Airbrake\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Drew Butler",
+                "email": "hi@dbtlr.com",
+                "homepage": "http://dbtlr.com"
+            }
+        ],
+        "description": "A PHP 5.3 library for sending errors to the Airbrake.io service.",
+        "homepage": "https://github.com/dbtlr/php-airbrake",
+        "keywords": [
+            "airbrake",
+            "errors",
+            "exceptions",
+            "logging"
         ]
     }
 ]

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dbtlr/php-airbrake.git",
-                "reference": "73452c77fbfe2fd632f71b00beb06d5b885e5acb"
+                "reference": "5d6db500edb11c42d3a06f7e3557b312d9ec8e50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dbtlr/php-airbrake/zipball/73452c77fbfe2fd632f71b00beb06d5b885e5acb",
-                "reference": "73452c77fbfe2fd632f71b00beb06d5b885e5acb",
+                "url": "https://api.github.com/repos/dbtlr/php-airbrake/zipball/5d6db500edb11c42d3a06f7e3557b312d9ec8e50",
+                "reference": "5d6db500edb11c42d3a06f7e3557b312d9ec8e50",
                 "shasum": ""
             },
             "require-dev": {
@@ -50,7 +50,7 @@
                 "exceptions",
                 "logging"
             ],
-            "time": "2015-04-08 00:15:57"
+            "time": "2015-04-20 11:18:27"
         },
         {
             "name": "merqlove/airbrake-silex-service-provider",
