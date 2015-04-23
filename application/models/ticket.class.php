@@ -25,7 +25,9 @@ class TicketModel
 
 		$ticketID = new \MongoID($ticketID);
 
-		$this->ticket = $db->tickets->findOne(array('_id' => $ticketID));
+		$this->ticket = $db->tickets->findOne(
+			array('_id' => $ticketID)
+		);
 
 		if(!empty($this->ticket)) {
 			return $this->ticket;
@@ -41,6 +43,7 @@ class TicketModel
 		$db = $db->{$this->app['session']->get('database')};
 
 		$tickets = $db->tickets;
+
 		$result = $tickets->find();
 
 		$docs = array();
@@ -107,7 +110,9 @@ class TicketModel
 		try {
 			// Save ticket to database
 			$tickets = $db->tickets;
+
 			$tickets->save($ticket);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -125,7 +130,12 @@ class TicketModel
 			$id = new \MongoID($ticket->id);
 
 			$tickets = $db->tickets;
-			$tickets->update(array('_id' => $id), $ticket);
+
+			$tickets->update(
+				array('_id' => $id),
+				$ticket
+			);
+
 			return $ticket;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -143,7 +153,11 @@ class TicketModel
 
 		try {
 			$collection = $db->tickets;
-			$collection->remove(array('_id' => $ticketID));
+
+			$collection->remove(
+				array('_id' => $ticketID)
+			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -163,7 +177,11 @@ class TicketModel
 
 		try {
 			$gridfs = $db->getGridFS();
-			return $gridfs->storeBytes(base64_decode($data), array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate));
+
+			return $gridfs->storeBytes(
+				base64_decode($data),
+				array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate)
+			);
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
@@ -177,7 +195,10 @@ class TicketModel
 		$db = $db->{$this->app['session']->get('database')};
 
 		$gridfs = $db->getGridFS();
-		$file = $gridfs->findOne(array('_id' => new \MongoID($fileID)));
+
+		$file = $gridfs->findOne(
+			array('_id' => new \MongoID($fileID))
+		);
 
 		if(!isset($file)) return false;
 
@@ -199,7 +220,10 @@ class TicketModel
 
 		try {
 			$gridfs = $db->getGridFS();
-			return $gridfs->remove(array('_id' => new \MongoID($fileID)));
+
+			return $gridfs->remove(
+				array('_id' => new \MongoID($fileID))
+			);
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
 			return false;
@@ -215,7 +239,10 @@ class TicketModel
 		$fileArr = array();
 		foreach($fileIDs as $fileID) {
 			$gridfs = $db->getGridFS();
-			$file = $gridfs->findOne(array('_id' => new \MongoID($fileID)));
+
+			$file = $gridfs->findOne(
+				array('_id' => new \MongoID($fileID))
+			);
 
 			$meta = array(
 				'_id' => $fileID,

@@ -12,15 +12,16 @@ class System
 			case 'DEVELOPMENT':
 				$env = '.dev';
 				break;
-			
+
 			case 'PRODUCTION':
 				$env = '';
 				break;
-			
+
 			default:
 				$env = '';
+				break;
 		}
-		
+
 		// If session not authenticated serve login screen initial assets
 		if(!$app['session']->get('isAuthenticated')) {
 			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/backbone/loginapp/index'.$env.'.html');

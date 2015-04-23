@@ -27,6 +27,7 @@ class ClientModel
 		$userModel->loadUserByID($this->app['session']->get('uid'));
 
 		$collection = $db->companies;
+
 		$result = $collection->find(
 			array('_id' => $userModel->user['companyID']),
 			array('clients' => 1, '_id' => 0)
@@ -60,10 +61,12 @@ class ClientModel
 
 		try {
 			$collection = $db->companies;
+
 			$collection->update(
 				array('_id' => $userModel->user['companyID']),
 				array('$push' => array('clients' => $client))
 			);
+
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -85,6 +88,7 @@ class ClientModel
 
 		try {
 			$collection = $db->companies;
+
 			$collection->update(
 				array('_id' => $userModel->user['companyID'], 'clients._id' => $clientID),
 				array('$set' => array('clients.$.name' => $name))
@@ -112,6 +116,7 @@ class ClientModel
 		// Remove client
 		try {
 			$collection = $db->companies;
+
 			$collection->update(
 				array('_id' => $userModel->user['companyID']),
 				array('$pull' => array('clients' => array('_id' => $clientID)))
@@ -124,6 +129,7 @@ class ClientModel
 		// Remove all users linked to client
 		try {
 			$collection = $db->users;
+
 			$collection->remove(
 				array('clientID' => $clientID)
 			);

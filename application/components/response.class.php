@@ -19,7 +19,10 @@ class ApiResponse extends Response
 	private static function responseFactory($code, $status, $customMessage = null)
 	{
 		$response = self::create();
-		$response->setContent(self::generateResponseBody($code, $status, $customMessage));
+
+		$content = self::generateResponseBody($code, $status, $customMessage);
+		$response->setContent($content);
+
 		self::setResponseStatusCode($response, $code);
 
 		return $response;
@@ -28,6 +31,7 @@ class ApiResponse extends Response
 	private static function generateResponseBody($code, $status, $customMessage = null)
 	{
 		$message = (isset($customMessage)) ? $customMessage : self::fetchErrorMessage($code);
+
 		return self::encodeResponse(array('code' => $code, 'status' => $status, 'message' => $message));
 	}
 

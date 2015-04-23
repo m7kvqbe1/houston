@@ -34,7 +34,7 @@ var secureRoute = function(req, res, next) {
 // Listening for http on port 3000
 http.listen(3000, function(){ console.log('listening on *:3000'); });
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
 	socket.on('response', function(data) {
 		// Output response from client server side
 		console.log(data);
