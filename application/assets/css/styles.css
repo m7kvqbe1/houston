@@ -316,11 +316,11 @@ footer {
 }
 
 .box-log {
+	margin: 25px 15px;
 	padding: 24px 0 18px;
 }
 
 .box-try {
-	display: none;
 	padding: 24px 0px 18px;
 }
 
@@ -342,6 +342,7 @@ footer {
 }
 
 .box-reg {
+	margin-top: 25px;
 	padding: 24px 0 18px;
 }
 
@@ -364,6 +365,11 @@ h3  {
 	font-size: 14px;
 	font-weight: 900;
 	color: #ff6e3e;
+}
+
+h2 span,
+h3 span {
+	font-weight: 900;
 }
 
 h4 {
@@ -555,7 +561,8 @@ input.inp-lst {
 	width: 258px;
 }
 
-.reg-form-wrap {
+.reg-form-wrap,
+.payment-form-wrap {
 	width: 258px;
 	margin: 24px auto 0;
 	overflow: hidden;
@@ -578,8 +585,14 @@ input.inp-lst {
 	padding: 0 8px;
 }
 
-#form-reg .btn-can {
+.box-reg .btn-can {
 	display: inline-block;
+}
+
+.vld-wrap .password-resize,
+.vld-wrap .in-use {
+	width: 192px;
+	margin-right: 44px;
 }
 
 .vld-box {
@@ -731,6 +744,69 @@ input.inp-lst {
 	margin: 0 auto;
 }
 
+.box-plan {
+	width: 256px;
+	margin: 0 auto;
+}
+
+.pricing-plan {
+	margin-top: 30px;
+}
+
+.pricing-plan .vld-cir {
+	position: relative;
+	margin: 0 auto;
+}
+
+.pricing-plan h3 {
+	margin: 10px 0;
+}
+
+.pricing-plan p {
+	margin: 0 0 10px;
+}
+
+.price {
+	margin: 20px 0;
+	font-size: 36px;
+}
+
+/* Card Details */
+
+#form-payment label {
+	display: block;
+	padding-bottom: 5px;
+}
+
+.expiration-date input[type="text"] {
+	float: left;
+	width: 99px;
+}
+
+#expiration-month {
+	margin-right: 15px;
+}
+
+#cvc {
+	margin-bottom: 5px;
+}
+
+.card-back .form-row div {
+	margin-bottom: 15px;
+}
+
+.payment-confirm {
+	margin-top: 5px;
+}
+
+.powered-by-stripe {
+	width: 119px;
+	height: 26px;
+	margin: 15px auto 0;
+	background: url(../img/stripe@2x.png);
+	background-size: 119px 26px;
+}
+
 /* Ticket View */
 .app-wrap {
 	overflow: hidden;
@@ -795,8 +871,6 @@ input.inp-lst {
 .box-app.tickets-box-app {
 	padding: 126px 15px 15px;
 }
-
-
 
 .box-app-top {
 	height: 36px;
@@ -1906,6 +1980,7 @@ h4.client-has-no-users {
 	height: 46px;
 }
 
+.delayed-icon-animate,
 .validated-input-resize .in-use-marker,
 .validated-input-resize .validated-marker {
 	animation-name: delayed-icon-animate;
@@ -2081,6 +2156,20 @@ h4.client-has-no-users {
 	display: block!important;	
 }
 
+.text-animate-ib{
+	animation-name: text-animate;
+	-webkit-animation-name: text-animate;	
+
+	animation-duration: 0.8s;	
+	-webkit-animation-duration: 0.8s;
+
+	animation-timing-function: ease-out;	
+	-webkit-animation-timing-function: ease-out;	
+
+	visibility: visible !important;
+	display: inline-block!important;	
+}
+
 @keyframes text-animate {
 	0% {
 		transform: scale(0.3);
@@ -2170,11 +2259,6 @@ h4.client-has-no-users {
 	z-index: 101;
 }
 
-#canvas-wrap.max-height-canvas-image .canvas-window-inner {
-	bottom: auto;
-	margin-bottom: 50px;
-}
-
 #canvas-wrap canvas {
 	display: block;
 	margin: 0 auto 5px;
@@ -2250,7 +2334,7 @@ button.grayscale.gray .c {
 	.box-pass {
 		float: left;
 		width: 300px;
-		margin-bottom: 25px;
+		margin-top: 0;
 	}
 	
 	.box-try {
@@ -2259,9 +2343,13 @@ button.grayscale.gray .c {
 	}
 	
 	.box-reg {
+		margin-top: 0;
 		padding: 24px 28px 18px;
-		background: #fff url(../img/register.png) no-repeat 100% 29px;
 		text-align: left;		
+	}
+
+	.box-reg-form {
+		background: #fff url(../img/register.png) no-repeat 100% 29px;
 	}
 	
 	.box-suc {
@@ -2321,6 +2409,27 @@ button.grayscale.gray .c {
 	
 	.got-wrap {
 		margin: 160px 0 0 56px;
+	}
+
+	/* Pricing Plan */
+
+
+
+	.box-plan {
+		width: 100%;
+	}
+
+	.pricing-plan {
+		float: left;
+		width: 50%;
+/*		height: 175px;
+		height: 374px;*/
+		margin: 95px 0;
+		text-align: center;
+	}
+
+	.pricing-plan p {
+		margin: 0 34px 15px;
 	}
 
 	/* Ticket View */
@@ -2780,6 +2889,130 @@ button.grayscale.gray .c {
 	
 	.vrf-msg {
 		display: block;
+	}
+
+	.password-resize,
+	.vld-wrap .in-use {
+		width: 236px; 
+		margin-right: auto;
+	}
+
+	/* Payment */
+
+	.payment-form-wrap {
+		position: relative;
+		width: 630px;
+		width: 100%;
+		margin-top: 0;
+		padding-top: 47px;
+		position: relative;
+	}
+
+	.payment-buttons {
+		display: inline-block;
+	}
+
+	.payment-houston {
+		position: absolute;
+		top: 9px;
+		right: 62px;
+		width: 67px;
+		height: 73px;
+		background-image: url(../img/payment.png);
+		background-size: 67px 73px;
+	}
+
+	.payment-form-wrap input[type="text"]{
+		margin: 0;
+	}
+
+	#form-payment {
+		overflow: hidden;
+	}
+
+	#card-number {
+		width: 266px;
+		width: 306px;
+	}
+
+	#cardholder-name {
+		width: 408px;
+	}
+
+	#expiration-month {
+	  margin-right: 16px;
+	}
+
+	.expiration-date {
+		overflow: hidden;
+		margin: 14px 0;
+	}
+
+	.expiration-date input[type="text"]{
+		width: 114px;
+		width: 134px;
+	}
+
+	.card-front {
+		position: relative;
+		width: 430px;
+		margin-left: 26px;
+		padding: 26px 30px;
+		-webkit-border-radius: 16px;
+		border-radius: 16px;
+		background: #f1f1f1 url(../img/cards-flat-big@2x.png) no-repeat 388px 52px;
+		background-size: 72px 132px;
+		-webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.1);
+		box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.1);
+
+	}
+
+	.card-back {
+		float: right;
+		width: 490px;
+		height: 296px;
+		margin: -262px 26px 0 140px;
+		-webkit-border-radius: 16px;
+		border-radius: 16px;
+		background: #d9d9d9;
+	}
+
+	.card-back .form-row {
+		margin-top: 36px;
+		padding-left: 368px;
+		border-top: 65px solid #000;
+	}
+
+	#form-payment .card-back label {
+		padding-top: 10px;
+	}
+
+	#cvc {
+		width: 66px;
+		margin-bottom: 10px;
+	}
+
+	.card-back .form-row div {
+		display: inline-block;
+		font-size: 12px;
+		line-height: 14px;
+	}
+
+	.card-back .form-row div span {
+		display: block;
+	}
+
+	.payment-buttons {
+		float: left;
+	}
+
+	.payment-confirm {
+	  margin-top: 45px;
+	}
+
+	.powered-by-stripe {
+		float: right;
+		margin: 54px 0 0;
 	}
 
 	/* Profile */	

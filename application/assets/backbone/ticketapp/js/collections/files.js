@@ -46,5 +46,21 @@ var Files = Backbone.Collection.extend({
 			filesArray.push(fileData);
 		});
 		return filesArray;
+	},
+
+	deleteFile: function(fileToDelete){
+		if(fileToDelete.isNew()){
+			fileToDelete.attributes.request.abort();
+			fileToDelete.destroy();
+		} else {
+			fileToDelete.url = '/api/tickets/file/'+fileToDelete.id;
+			fileToDelete.destroy();
+		}
+	},
+
+	emptyCollection: function(){
+		this.each(function(model){
+			app.files.deleteFile(model);
+		});
 	}
 });

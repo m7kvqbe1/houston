@@ -439,9 +439,14 @@ var ProfileView = Backbone.View.extend({
         var maxWidth = $(window).width() - 40;
         var maxHeight = $(window).height() - 70;
 
+        //If image too tall give modal warning
+        if(originalHeight > maxHeight) {
+            houston.createModal({type: 'Error', message: 'The image you are attempting to add is of an unusable ratio.'});
+            return;
+        } 
+
         //If image too wide then resize
         if(originalWidth > maxWidth) {
-
             var imageWidth = maxWidth;
             var widthDifference = originalWidth - imageWidth;
             var percentageDecrease = widthDifference / (originalWidth / 100);
@@ -484,11 +489,6 @@ var ProfileView = Backbone.View.extend({
             '</div>'
         );
         $('.canvas').html(this.canvas)
-
-        //If image taller than screen height add style to compensate
-        if(this.image.height > maxHeight) {
-            $('#canvas-wrap').addClass('max-height-canvas-image');
-        }
 
         $('#canvas-wrap').addClass('active');
 

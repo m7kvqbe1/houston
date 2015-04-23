@@ -51,6 +51,10 @@ var FileUploadView = Backbone.View.extend({
 
 	onClose: function(){
 		this.stopListening();
+		//Delete files from unsaved tickets / replies
+		if(app.files.length) {
+			app.files.emptyCollection();
+		}
 	},
 
 	render : function(){
@@ -61,23 +65,17 @@ var FileUploadView = Backbone.View.extend({
 			'dragleave #drop_zone': 'handleDragLeave',
 			'drop #drop_zone': 'handleDragFileSelect',
 			'change #filesInput': 'handleFileSelect',
-			'click .file-del': 'deleteFile',
+			'click .file-del': 'deleteFileHandler',
 			'click .file-preview': 'previewFile',
 			'click .preview-close': 'previewClose'
 		});
 	},
 
-	deleteFile: function(e){
+	deleteFileHandler: function(e){
 		var button = $(e.currentTarget);
 		var cid = button.data("cid");	
 		var fileToDelete = this.collection.get(cid);
-		if(fileToDelete.isNew()){
-			fileToDelete.attributes.request.abort();
-			fileToDelete.destroy();
-		} else {
-			fileToDelete.url = '/api/tickets/file/'+fileToDelete.id;
-			fileToDelete.destroy();
-		}
+		this.collection.deleteFile(fileToDelete);
 	},
 
 	addFiles: function(files){

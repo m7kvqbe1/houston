@@ -63,7 +63,6 @@ var login = {
 	},
 
 	emailValidation: function(input, address, wrapper, css){
-
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
 		if(!re.test(address)){
@@ -106,7 +105,7 @@ var login = {
 
 	failedAjaxValidation: function(input, wrapper, css){
 		input.addClass('in-use');
-		input.closest('.reg-vrf').find('.vrf').fadeIn();	
+		input.closest('.reg-vrf').find('.vrf').show().addClass('delayed-icon-animate');	
 		wrapper.removeClass(css);
 	},
 
@@ -120,7 +119,7 @@ var login = {
 	},
 
 	registerHideAlert: function(input){	
-		$(input).closest('.reg-vrf').find('.vrf').fadeOut();
+		$(input).removeClass('password-resize').closest('.reg-vrf').find('.vrf').fadeOut();
 	},
 
 	repeatPasswordValidation: function(value){
@@ -133,7 +132,8 @@ var login = {
 	registerPasswordShowCount: function(input) {	
 		var input = $(input);
 		if(login.validatedPassword !== input.val()){
-			input.closest('.reg-vrf').find('.vrf').fadeIn();
+			input.addClass('password-resize');
+			input.closest('.reg-vrf').find('.vrf').show().addClass('delayed-icon-animate');
 		}
 	},	
 
@@ -148,7 +148,7 @@ var login = {
 			counter.text(counterValue - length);
 			counter.removeClass('ok');
 			this.validatedPassword = false;
-			regVrf.find('.vrf').fadeIn();
+			regVrf.find('.vrf').show().addClass('delayed-icon-animate');
 
 			inpLst.val('');
 			inpLst.prop('disabled', true);
@@ -173,7 +173,7 @@ var login = {
 			var vrfMsg = vrf.find('.vrf-msg');
 			vrfCir.addClass('ok').html('<i class="icon-ok-1"></i>');
 			vrfMsg.html('');
-			vrf.fadeIn();
+			vrf.show().addClass('delayed-icon-animate');
 			wrapper.addClass(css);
 		} else {
 			vrf.fadeOut();

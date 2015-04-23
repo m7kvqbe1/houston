@@ -106,7 +106,8 @@ var FormView = Backbone.View.extend({
 	},
 
 	cancelTicket: function(){ //Change to empty the form
-		app.navigate('', {trigger: true});		
+		this.$el.find('input[type="text"], textarea').val('');	
+		app.files.emptyCollection();	
 	}
 
 });

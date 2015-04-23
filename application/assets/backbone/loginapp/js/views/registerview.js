@@ -1,6 +1,6 @@
 var RegisterView = Backbone.View.extend({
 	template: Handlebars.compile(
-		'<div class="box box-reg">'+
+		'<div class="box box-reg box-reg-form">'+
 			'<h2>Create an Account</h2>'+
 			'<h3>Just this one easy form and you\'re done!</h3>'+
 			'<div class="reg-form-wrap">'+
@@ -62,7 +62,7 @@ var RegisterView = Backbone.View.extend({
 								'</div>'+
 							'</div>'+
 					'</div>'+
-					'<button class="detailsConfirm" type="button">Confirm</button>'+
+					'<button class="details-confirm" type="button">Confirm</button>'+
 					'<div class="beige or">or</div>'+
 					'<a class="btn-can" href="/">Cancel</a>'+
 				'</form>'+
@@ -71,60 +71,93 @@ var RegisterView = Backbone.View.extend({
 
 	paymentPlanTemplate: Handlebars.compile(
 		'<div class="box box-reg">'+
-			'<h2>Choose a Pricing Plan</h2>'+
-			'<h3>How much Houston do you want {{attributes.firstName}}?</h3>'+
-			'<div class="reg-form-wrap">'+
-				'<form id="form-payment-plan" action="">'+	
-					'<div class="form-row">'+
-						'<label>'+
-							'<span>Houston Plan 1 - Unlimited Access - Monthly</span>'+
-							'<input class="radio1" type="radio" name="plan" value="1" />'+
-						'</label>'+
-					'</div>'+				
-					'<div class="form-row">'+
-						'<label>'+
-							'<span>Houston Plan 2 - Unlimited Access - Annually</span>'+
-							'<input class="radio2" type="radio" name="plan" value="2" />'+
-						'</label>'+
-					'</div>'+			
-					'<button class="planConfirm" type="button">Confirm</button>'+
-					'<div class="beige or">or</div>'+
-					'<a class="btn-can" href="/">Cancel</a>'+
-				'</form>'+
+			'<div class="box-plan">'+
+				'<h2>Choose a Pricing Plan</h2>'+
+				'<h3>After your 60 day free trial which pricing plan suits you best Edd?</h3>'+
+
+				'<div class="pricing-plan">'+
+					'<div class="vld-cir">1</div>'+
+					'<div class="price">£99.99</div>'+
+					'<h3>Unlimited Access<br />Annually</h3>'+
+					'<p>Lorem ipsum dolor sit amet, consectetur adipisicing. Eume repellat tempore laudantium cumque dolorem.</p>'+
+					'<button class="plan-confirm" type="button" data-plan="1">Confirm</button>'+
+				'</div>'+
+				'<div class="pricing-plan">'+
+					'<div class="vld-cir">2</div>'+
+					'<div class="price">£9.99</div>'+
+					'<h3>Unlimited Access<br />Monthly</h3>'+
+					'<p>Lorem ipsum dolor sit amet, consectetur adipisicing. Eume repellat tempore laudantium cumque dolorem.</p>'+
+					'<button class="plan-confirm" type="button" data-plan="2">Confirm</button>'+
+				'</div>'+
+			'</div>'+
 		'</div>'
 	),
 
+	// '<div class="reg-form-wrap">'+
+	// 	'<form id="form-payment-plan" action="">'+	
+	// 		'<div class="form-row">'+
+	// 			'<label>'+
+	// 				'<span>Houston Plan 1 - Unlimited Access - Monthly</span>'+
+	// 				'<input class="radio1" type="radio" name="plan" value="1" />'+
+	// 			'</label>'+
+	// 		'</div>'+				
+	// 		'<div class="form-row">'+
+	// 			'<label>'+
+	// 				'<span>Houston Plan 2 - Unlimited Access - Annually</span>'+
+	// 				'<input class="radio2" type="radio" name="plan" value="2" />'+
+	// 			'</label>'+
+	// 		'</div>'+			
+	// 		'<button class="planConfirm" type="button">Confirm</button>'+
+	// 		'<div class="beige or">or</div>'+
+	// 		'<a class="btn-can" href="/">Cancel</a>'+
+	// 	'</form>'+
+	// '</div>'+	
+
 	paymentTemplate: Handlebars.compile(
 		'<div class="box box-reg">'+
-			'<h2>Enter Your Payment Details</h2>'+
-			'<h3>Almost got your Houston account!</h3>'+
-			'<div class="reg-form-wrap">'+
+			'<div class="payment-header">'+
+				'<h2><span>Enter Your Payment Details</span></h2>'+
+				'<h3><span>Almost got your Houston account!</span></h3>'+
+			'</div>'+
+			'<div class="payment-form-wrap">'+
+			'<div class="payment-houston"></div>'+
 				'<form id="form-payment" action="">'+	
 					'<span class="payment-errors"></span>'+
-					'<div class="form-row">'+
-						'<label>'+
-							'<span>Card Number</span>'+
-							'<input type="text" size="20" data-stripe="number" />'+
-						'</label>'+
+					'<div class="card-front">'+
+						'<div class="form-row">'+
+							'<label for="card-number">Card Number</label>'+
+							'<input id="card-number" type="text" maxlength="20" data-stripe="number" />'+					
+						'</div>'+			
+						'<div class="form-row expiration-date">'+
+							'<label for="expiration-month">Expiration Date</label>'+
+							'<input id="expiration-month" type="text" maxlength="2" data-stripe="exp-month" placeholder="MM"/>'+					
+							'<input type="text" maxlength="4" data-stripe="exp-year" placeholder="YYYY"/>'+
+						'</div>'+	
+						'<div class="form-row">'+
+							'<label for="cardholder-name">Cardholder Name</label>'+
+							'<input id="cardholder-name" type="text" />'+					
+						'</div>'+	
 					'</div>'+
-					'<div class="form-row">'+
-						'<label>'+
-							'<span>CVC</span>'+
-							'<input type="text" size="4" data-stripe="cvc" />'+
-						'</label>'+
-					'</div>'+				
-					'<div class="form-row">'+
-						'<label>'+
-							'<span>Expiration (MM/YYYY)</span>'+
-							'<input type="text" size="2" data-stripe="exp-month" />'+
-						'</label>'+
-						'<span> / </span>'+
-						'<input type="text" size="4" data-stripe="exp-year" />'+
-					'</div>'+		
-					'<button class="paymentConfirm" type="button">Confirm</button>'+
-					'<div class="beige or">or</div>'+
-					'<a class="btn-can" href="/">Cancel</a>'+
+					'<div class="card-back">'+
+						'<div class="form-row">'+
+							'<label for="cvc">CVC/CVV</label>'+
+							'<input id="cvc" type="text" maxlength="4" data-stripe="cvc" />'+
+							'<div>'+
+								'<span>The last </span>'+
+								'<span>3 or 4 digits </span>'+
+								'<span>on back </span>'+
+								'<span>of the card</span>'+
+							'</div>'+					
+						'</div>'+	
+					'</div>'+
+					'<div class="payment-buttons">'+	
+						'<button class="payment-confirm" type="button">Confirm</button>'+
+						'<div class="beige or">or</div>'+
+						'<a class="btn-can">Cancel</a>'+
+					'</div>'+
+					'<div class="powered-by-stripe"></div>'+
 				'</form>'+
+			'</div>'+
 		'</div>'
 	),
 
@@ -149,18 +182,19 @@ var RegisterView = Backbone.View.extend({
 	},
 
 	render: function (){	
-		this.model.set({password: ''});
-		this.$el.html(this.template(this.model));
-		this.delegateEvents({
-			'click .detailsConfirm': 'detailsConfirm',
-			'blur input': 'validate',
-			'focus .reg-p': 'showCount',
-			'input .reg-p': 'passCount',
-			'input .inp-lst': 'passMatch',
-			'focus .email': 'hideAlert',
-			'focus .company': 'hideAlert',
-			'keydown': 'keyEvent'
-		});
+		this.planConfirm();
+		// this.model.set({password: ''});
+		// this.$el.html(this.template(this.model));
+		// this.delegateEvents({
+		// 	'click .details-confirm': 'detailsConfirm',
+		// 	'blur input': 'validate',
+		// 	'focus .reg-p': 'showCount',
+		// 	'input .reg-p': 'passCount',
+		// 	'input .inp-lst': 'passMatch',
+		// 	'focus .email': 'hideAlert',
+		// 	'focus .company': 'hideAlert',
+		// 	'keydown': 'keyEvent'
+		// });
 		return this;
 	},
 
@@ -217,37 +251,67 @@ var RegisterView = Backbone.View.extend({
 
 			this.$el.html(this.paymentPlanTemplate(this.model));
 			this.delegateEvents({
-				'click .planConfirm': 'planConfirm'
+				'click .plan-confirm': 'planConfirm'
 			});		
 		}
 	},
 
-	planConfirm: function(){
-		this.model.set({
-			plan: this.$el.find('input[type="radio"]:checked').val()
-		});
+	planConfirm: function(e){
+		// var plan = $(e.currentTarget).data('plan');
+		// this.model.set({
+		// 	plan: plan
+		// });
 		this.$el.html(this.paymentTemplate(this.model));
 		this.delegateEvents({
-			'click .paymentConfirm': 'paymentConfirm'
+			'click .payment-confirm': 'paymentConfirm',
+			'click .btn-can': 'cancelPaymentForm'
 		});
 	},
 
 	paymentConfirm: function(){
 		var form = this.$el.find('form');
 
+		//Reset error text
+		app.currentView.$el.find('h2 span').show().removeClass('text-animate-ib');
+		app.currentView.$el.find('h3 span').show().removeClass('text-animate-ib');
+
+		if(!this.paymentValidate(form)) return;
+
 		// Disable the submit button to prevent repeated clicks
-		//form.find('.paymentConfirm').prop('disabled', true);
+		form.find('.payment-confirm').prop('disabled', true);
 
 		// Get a token from Stripe API
 		Stripe.card.createToken(form, this.responseHandler);
 
 	},
 
+	paymentValidate: function(form) {
+		var valid = true;
+		var inputs = form.find('input[type="text"]');
+		inputs.each(function(){
+			var input = $(this);
+			if(!input.val()){
+				input.addClass('error');
+				valid = false;
+			} else {
+				input.removeClass('error');
+			}
+		});
+
+		return valid;
+	},
+
+	cancelPaymentForm: function() {
+		app.currentView.$el.find('h2 span').text('Enter Your Payment Details').show().removeClass('text-animate-ib');
+		app.currentView.$el.find('h3 span').text('Almost got your Houston account!').show().removeClass('text-animate-ib');		
+	},
+
 	responseHandler: function(status, response){
-		var form = $('#form-payment');
+
 		if(response.error){
-			form.find('.payment-errors').text(response.error.message);
-			//form.find('.paymentConfirm').prop('disabled', false);
+			app.currentView.$el.find('h2 span').hide().text('OOPS!').addClass('text-animate-ib');
+			app.currentView.$el.find('h3 span').hide().text('There was an error with your card details, please try again.').addClass('text-animate-ib');
+			app.currentView.$el.find('.payment-confirm').prop('disabled', false);
 		} else {
 			app.registerModel.set({
 				stripeToken: response.id
