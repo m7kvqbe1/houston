@@ -145,6 +145,7 @@ var login = {
 		var counterValue = 8;
 		var inpLst = view.find('.inp-lst');
 		if(length < 8){
+			input.addClass('password-resize');
 			counter.text(counterValue - length);
 			counter.removeClass('ok');
 			this.validatedPassword = false;
@@ -155,6 +156,7 @@ var login = {
 			inpLst.closest('.reg-vrf').find('.vrf').fadeOut();
 			inpLst.closest('.vld-wrap').removeClass('vld-a vld-b');
 		} else {
+			// input.removeClass('password-resize');
 			counter.html('<i class="icon-ok-1"></i>');
 			counter.addClass('ok');
 			inpLst.prop('disabled', false);
@@ -168,7 +170,8 @@ var login = {
 		var vrf = regVrf.find('.vrf');
 		var css = input.data('vld');
 		var wrapper = input.closest('.vld-wrap');
-		if (value == this.validatedPassword){			
+		if (value == this.validatedPassword){	
+			input.addClass('password-resize');		
 			var vrfCir = vrf.find('.vrf-cir');
 			var vrfMsg = vrf.find('.vrf-msg');
 			vrfCir.addClass('ok').html('<i class="icon-ok-1"></i>');

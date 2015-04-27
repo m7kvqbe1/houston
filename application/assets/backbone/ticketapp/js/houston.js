@@ -134,7 +134,8 @@ var houston = {
 	replyToggle: function(view){
 		view.find('.reply').slideToggle();
 		view.find('#form-reply textarea').focus();
-		var scroll = view.closest(document).scrollTop()+ 195;
+		var scroll = view.closest(document).scrollTop()+ 310;
+
 		view.closest("html, body").animate({ scrollTop: scroll });
 	},
 

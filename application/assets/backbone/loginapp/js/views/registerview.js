@@ -182,19 +182,18 @@ var RegisterView = Backbone.View.extend({
 	},
 
 	render: function (){	
-		this.planConfirm();
-		// this.model.set({password: ''});
-		// this.$el.html(this.template(this.model));
-		// this.delegateEvents({
-		// 	'click .details-confirm': 'detailsConfirm',
-		// 	'blur input': 'validate',
-		// 	'focus .reg-p': 'showCount',
-		// 	'input .reg-p': 'passCount',
-		// 	'input .inp-lst': 'passMatch',
-		// 	'focus .email': 'hideAlert',
-		// 	'focus .company': 'hideAlert',
-		// 	'keydown': 'keyEvent'
-		// });
+		this.model.set({password: ''});
+		this.$el.html(this.template(this.model));
+		this.delegateEvents({
+			'click .details-confirm': 'detailsConfirm',
+			'blur input': 'validate',
+			'focus .reg-p': 'showCount',
+			'input .reg-p': 'passCount',
+			'input .inp-lst': 'passMatch',
+			'focus .email': 'hideAlert',
+			'focus .company': 'hideAlert',
+			'keydown': 'keyEvent'
+		});
 		return this;
 	},
 
@@ -257,10 +256,10 @@ var RegisterView = Backbone.View.extend({
 	},
 
 	planConfirm: function(e){
-		// var plan = $(e.currentTarget).data('plan');
-		// this.model.set({
-		// 	plan: plan
-		// });
+		var plan = $(e.currentTarget).data('plan');
+		this.model.set({
+			plan: plan
+		});
 		this.$el.html(this.paymentTemplate(this.model));
 		this.delegateEvents({
 			'click .payment-confirm': 'paymentConfirm',

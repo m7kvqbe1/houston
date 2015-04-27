@@ -334,6 +334,7 @@ footer {
 }
 
 .box-pass {
+	margin-bottom: 25px;
 	padding: 24px 0 25px;
 }
 
@@ -552,13 +553,23 @@ input.inp-lst {
 	margin: 0px auto 16px;
 }
 
-#form-pass {
+#form-pass,
+#form-pass-confirm {
 	margin: 24px auto 0px;
 }
 
-#form-pass h3{
+#form-pass h3,
+#form-pass-confirm h3 {
 	margin: 0 auto 16px;
 	width: 258px;
+}
+
+#form-pass-confirm .reset {
+	margin-top: 14px;
+}
+
+#form-pass-confirm .btn-can {
+	margin-bottom: 11px;
 }
 
 .reg-form-wrap,
@@ -2401,6 +2412,12 @@ button.grayscale.gray .c {
 		width: 414px;
 		margin: 24px 0 0;
 	}
+
+	.vld-wrap .password-resize,
+	.vld-wrap .in-use {
+		width: 236px;
+		margin-right: 44px;
+	}
 	
 	.or {
 		display: inline-block;
@@ -2874,6 +2891,18 @@ button.grayscale.gray .c {
 	#form-reg,
 	.reg-vrf{
 		width: 408px;
+	}
+
+	.vld-pair-three .reg-vrf{
+		width: 356px;
+	}
+
+	.vld-pair-three .vrf{
+		width: 42px;
+	}
+
+	.vld-pair-three .vrf-msg {
+		display: none;
 	}
 
 	#form-reg input[type="text"],

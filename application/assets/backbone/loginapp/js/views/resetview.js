@@ -9,11 +9,13 @@ var ResetView = Backbone.View.extend({
 		'<div class="box box-log">'+
 			'<h2>Change Password</h2>'+
 			'<h3 class="log-tag">Please enter a new password below</h3>'+
-			'<form id="form-log">'+
+			'<form id="form-pass-confirm">'+
 				'<input type="password" name="pass" placeholder="Password" />'+
 				'<input type="password" name="pass-c" placeholder="Confirm Password" />'+			
 				'<button class="reset" type="button">Confirm</button>'+
-			'</form>'+
+				'<div class="beige">or</div>'+
+				'<a class="btn-can">Cancel</a>'+
+			'</form>'+			
 		'</div>'+
 		'<div class="box box-try">'+
 			'<h2>Try Houston</h2>'+
@@ -49,14 +51,12 @@ var ResetView = Backbone.View.extend({
 		});
 		this.model.save(this.model.attributes,
 			{
-			//http://stackoverflow.com/questions/11167698/backbone-js-binding-this-to-success-error-callbacks
-				success: _.bind(function(model,response,options){
-					if(response === 1){
-						window.location.href = '/';
-					} else {
-						this.$el.find('.box-log h2').text('Oops!');
-						this.$el.find('.box-log h3.log-tag').text('Something went wrong');
-					}
+				success: function(model,response,options){
+					window.location.href = '/';
+				},
+				error: _.bind(function(){
+					this.$el.find('.box-log h2').text('Oops!');
+					this.$el.find('.box-log h3.log-tag').text('Something went wrong');
 				}, this)
 			}
 		);	
