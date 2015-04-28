@@ -72,23 +72,26 @@ var RegisterView = Backbone.View.extend({
 	paymentPlanTemplate: Handlebars.compile(
 		'<div class="box box-reg">'+
 			'<div class="box-plan">'+
-				'<h2>Choose a Pricing Plan</h2>'+
-				'<h3>After your 60 day free trial which pricing plan suits you best Edd?</h3>'+
+				'<h2><span>Choose a Pricing Plan</span></h2>'+
+				'<h3><span>After your 60 day free trial which pricing plan suits you best Edd?</span></h3>'+
 
 				'<div class="pricing-plan">'+
 					'<div class="vld-cir">1</div>'+
 					'<div class="price">£99.99</div>'+
 					'<h3>Unlimited Access<br />Annually</h3>'+
 					'<p>Lorem ipsum dolor sit amet, consectetur adipisicing. Eume repellat tempore laudantium cumque dolorem.</p>'+
-					'<button class="plan-confirm" type="button" data-plan="1">Confirm</button>'+
+					'<button class="plan-select" type="button" data-plan="1">Select</button>'+
 				'</div>'+
 				'<div class="pricing-plan">'+
 					'<div class="vld-cir">2</div>'+
 					'<div class="price">£9.99</div>'+
 					'<h3>Unlimited Access<br />Monthly</h3>'+
 					'<p>Lorem ipsum dolor sit amet, consectetur adipisicing. Eume repellat tempore laudantium cumque dolorem.</p>'+
-					'<button class="plan-confirm" type="button" data-plan="2">Confirm</button>'+
+					'<button class="plan-select" type="button" data-plan="2">Select</button>'+
 				'</div>'+
+				'<button class="plan-confirm" type="button">Confirm</button>'+
+				'<div class="beige or">or</div>'+
+				'<a class="btn-can plan-back">Back</a>'+
 			'</div>'+
 		'</div>'
 	),
@@ -153,7 +156,7 @@ var RegisterView = Backbone.View.extend({
 					'<div class="payment-buttons">'+	
 						'<button class="payment-confirm" type="button">Confirm</button>'+
 						'<div class="beige or">or</div>'+
-						'<a class="btn-can">Cancel</a>'+
+						'<a class="btn-can payment-back">Back</a>'+
 					'</div>'+
 					'<div class="powered-by-stripe"></div>'+
 				'</form>'+
@@ -233,38 +236,37 @@ var RegisterView = Backbone.View.extend({
 				password: this.$el.find('input[name="reg-p"]').val()
 			});
 
-			// 	Kept for previous register method
-			// this.model.save(this.model.attributes,
-			// 	{
-			// 		success: _.bind(function(model,response,options){
-			// 		console.log(response);
-			// 			if(response === 1){
-			// 				this.$el.html(app.registerView.templateSuccess());
-			// 			}
-			// 		}, this),
-			// 		error: _.bind(function(model,response,options){
-			// 		console.log(response);
-			// 		}, this)
-			// 	}
-			// );
-
 			this.$el.html(this.paymentPlanTemplate(this.model));
 			this.delegateEvents({
-				'click .plan-confirm': 'planConfirm'
+				'click .plan-select': 'planSelect',
+				'click .plan-confirm': 'planConfirm',
+				'click .plan-back': 'planBack'
 			});		
 		}
 	},
 
-	planConfirm: function(e){
+	planBack: function(){
+		this.render();
+	},
+
+	planSelect: function(e){
 		var plan = $(e.currentTarget).data('plan');
 		this.model.set({
 			plan: plan
 		});
-		this.$el.html(this.paymentTemplate(this.model));
-		this.delegateEvents({
-			'click .payment-confirm': 'paymentConfirm',
-			'click .btn-can': 'cancelPaymentForm'
-		});
+	},
+
+	planConfirm: function(){
+		if(!this.model.get('plan')){
+			this.$el.find('h2 span').hide().text('OOPS!').addClass('text-animate-ib');
+			this.$el.find('h3 span').hide().text('Please choose a pricing plan to continue.').addClass('text-animate-ib');
+		} else {					
+			this.$el.html(this.paymentTemplate(this.model));
+			this.delegateEvents({
+				'click .payment-confirm': 'paymentConfirm',
+				'click .payment-back': 'paymentBack'
+			});
+		}
 	},
 
 	paymentConfirm: function(){
@@ -300,9 +302,17 @@ var RegisterView = Backbone.View.extend({
 		return valid;
 	},
 
-	cancelPaymentForm: function() {
-		app.currentView.$el.find('h2 span').text('Enter Your Payment Details').show().removeClass('text-animate-ib');
-		app.currentView.$el.find('h3 span').text('Almost got your Houston account!').show().removeClass('text-animate-ib');		
+	paymentBack: function() {
+		// app.currentView.$el.find('h2 span').text('Enter Your Payment Details').show().removeClass('text-animate-ib');
+		// app.currentView.$el.find('h3 span').text('Almost got your Houston account!').show().removeClass('text-animate-ib');	
+		// app.currentView.$el.find('input').val('');
+
+		this.$el.html(this.paymentPlanTemplate(this.model));
+		this.delegateEvents({
+			'click .plan-select': 'planSelect',
+			'click .plan-confirm': 'planConfirm',
+			'click .plan-back': 'planBack'
+		});		
 	},
 
 	responseHandler: function(status, response){

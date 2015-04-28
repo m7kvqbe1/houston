@@ -147,15 +147,15 @@ var UserView = Backbone.View.extend({
 	tagName: "li",
 	className: "person",
 	template: Handlebars.compile(
-			'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}"/>'+
-			'{{#if attributes.password}}'+									
-				'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
-				'<h4>Support Agent</h4>'+
-			'{{else}}'+
-				'<h3>{{attributes.emailAddress}}</h3>'+
-				'<h4>Awaiting Verification</h4>'+
-			'{{/if}}'+
-			'<a class="delete-user">Delete</a>'
+		'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}"/>'+
+		'{{#if attributes.password}}'+									
+			'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
+			'<h4>Support Agent</h4>'+
+		'{{else}}'+
+			'<h3>{{attributes.emailAddress}}</h3>'+
+			'<h4>Awaiting Verification</h4>'+
+		'{{/if}}'+
+		'<a class="delete-user">Delete</a>'
 	),
 
 	render: function(){

@@ -2,7 +2,7 @@ Backbone.View.prototype.close = function(){
 	this.remove();
 	this.unbind();
 	if (this.onClose){
-	this.onClose();
+		this.onClose();
 	}
 };
 
@@ -16,12 +16,8 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	initialize: function() {
-		
-		this.loginModel = new LoginModel();		
-		this.registerModel = new RegisterModel();
-
 		this.appElement = $("#app");
-		//doesnt work?
+		//Try to create a cached element to avoid re scannning the dom, but  doesnt work?
 	},
 
 	currentView: false,
@@ -32,12 +28,13 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	login: function(){
-		var loginView = new LoginView({model: this.loginModel});
+		var loginView = new LoginView();
 		this.showView(loginView);
 	},
 
 	reset: function(token){
-		var resetView = new ResetView({model: this.loginModel});
+		var resetModel = new Backbone.Model();
+		var resetView = new ResetView({model: resetModel});
 		resetView.model.set('token', token);
 		this.showView(resetView);
 	},

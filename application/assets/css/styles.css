@@ -2439,9 +2439,7 @@ button.grayscale.gray .c {
 	.pricing-plan {
 		float: left;
 		width: 50%;
-/*		height: 175px;
-		height: 374px;*/
-		margin: 95px 0;
+		margin: 74px 0 75px;
 		text-align: center;
 	}
 

@@ -10,8 +10,8 @@ var ResetView = Backbone.View.extend({
 			'<h2>Change Password</h2>'+
 			'<h3 class="log-tag">Please enter a new password below</h3>'+
 			'<form id="form-pass-confirm">'+
-				'<input type="password" name="pass" placeholder="Password" />'+
-				'<input type="password" name="pass-c" placeholder="Confirm Password" />'+			
+				'<input class="required" type="password" name="pass" placeholder="Password" />'+
+				'<input class="required" type="password" name="pass-c" placeholder="Confirm Password" />'+			
 				'<button class="reset" type="button">Confirm</button>'+
 				'<div class="beige">or</div>'+
 				'<a class="btn-can">Cancel</a>'+
@@ -23,25 +23,27 @@ var ResetView = Backbone.View.extend({
 			'<a class="btn" href="/#/register">Lets Go</a>'+
 		'</div>'
 	),
-	
-	initialize: function() {
-		
-	},
 
 	render: function (){	
 		this.$el.html(this.template());
 		this.delegateEvents({
-			'click .reset': 'reset'
+			'click .reset': 'reset',
+			'input input': 'resetErrorMessage'
 		});
 		return this;
 	},
+
+	resetErrorMessage: function(){
+		this.$el.find('h2').show().removeClass('text-animate');
+		this.$el.find('h3.log-tag').show().removeClass('text-animate');
+	},
 		
-	reset: function(e) {
-		// verification first needs to be performed on new password		
+	reset: function() {
+		if(!login.validateForm(this.$el.find('#form-pass-confirm'))) return;
+
 		if(this.$el.find('input[name=pass]').val() !== this.$el.find('input[name="pass-c"]').val()) {
-			this.$el.find('.box-log h2').text('Oops!');
-			this.$el.find('.box-log h3.log-tag').text('Please ensure passwords match');
-			
+			this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
+			this.$el.find('.box-log h3.log-tag').hide().text('Please ensure passwords match').addClass('text-animate');		
 			return;
 		}
 		
@@ -55,8 +57,8 @@ var ResetView = Backbone.View.extend({
 					window.location.href = '/';
 				},
 				error: _.bind(function(){
-					this.$el.find('.box-log h2').text('Oops!');
-					this.$el.find('.box-log h3.log-tag').text('Something went wrong');
+					this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
+					this.$el.find('.box-log h3.log-tag').hide().text('Something went wrong').addClass('text-animate');
 				}, this)
 			}
 		);	
