@@ -5,7 +5,7 @@ var RegisterView = Backbone.View.extend({
 			'<h3>Just this one easy form and you\'re done!</h3>'+
 			'<div class="reg-form-wrap">'+
 				'<form id="form-reg" action="">'+				
-					'<div class="vld-wrap vld-pair-one">'+
+					'<div class="vld-wrap vld-pair-one {{#if attributes.firstName}}vld-a{{/if}} {{#if attributes.lastName}}vld-b{{/if}}">'+
 						'<div class="vld-box">'+
 							'<div class="vld">'+
 								'<div class="vld-line"></div>'+
@@ -13,10 +13,10 @@ var RegisterView = Backbone.View.extend({
 								'<div class="vld-cir vld-name">1</div>'+									
 							'</div>'+
 						'</div>'+
-						'<input type="text" name="reg-fn" placeholder="First Name" class="vld-aa" data-vld="vld-a" val="{{attributes.firstName}}" autofocus />'+
-						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="Last Name" data-vld="vld-b" val="{{attributes.lastName}}" />'+						
+						'<input type="text" id="first-name" name="reg-fn" placeholder="First Name" class="vld-aa" data-vld="vld-a" value="{{attributes.firstName}}" autofocus />'+
+						'<input class="inp-spa vld-bb" type="text" name="reg-ln" placeholder="Last Name" data-vld="vld-b" value="{{attributes.lastName}}" />'+						
 					'</div>'+
-					'<div class="vld-wrap vld-pair-two">'+
+					'<div class="vld-wrap vld-pair-two {{#if attributes.emailAddress}}vld-a{{/if}} {{#if attributes.company}}vld-b{{/if}}">'+
 						'<div class="vld-box">'+
 							'<div class="vld">'+
 								'<div class="vld-line"></div>'+
@@ -25,14 +25,14 @@ var RegisterView = Backbone.View.extend({
 							'</div>'+
 						'</div>'+
 						'<div class="reg-vrf">'+
-							'<input type="email" name="reg-e" placeholder="Email Address" class="email vld-aa" data-vld="vld-a" val="{{attributes.emailAddress}}" />'+
+							'<input type="email" name="reg-e" placeholder="Email Address" class="email vld-aa" data-vld="vld-a" value="{{attributes.emailAddress}}" />'+
 							'<div class="vrf">'+
 								'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
 								'<div class="vrf-msg">Already<br />In Use</div>'+
 							'</div>'+
 						'</div>'+
 						'<div class="reg-vrf">'+
-							'<input class="inp-spa vld-bb company" type="text" name="reg-c" placeholder="Company" data-vld="vld-b" val="{{attributes.company}}" />'+
+							'<input class="inp-spa vld-bb company" type="text" name="reg-c" placeholder="Company" data-vld="vld-b" value="{{attributes.company}}" />'+
 							'<div class="vrf">'+
 								'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
 								'<div class="vrf-msg">Already<br />In Use</div>'+
@@ -69,12 +69,79 @@ var RegisterView = Backbone.View.extend({
 		'</div>'
 	),
 
-	paymentPlanTemplate: Handlebars.compile(
+	initialize: function(){
+		_.bindAll(this, 'keyEvent');
+		$(document).bind('keydown', this.keyEvent);
+	},
+
+	onClose: function(){
+		$(document).unbind('keydown', this.keyEvent);
+	},
+
+	render: function (){	
+		this.model.unset('password');
+		this.$el.html(this.template(this.model));
+		this.delegateEvents({
+			'click .details-confirm': 'detailsConfirm',
+			'blur input': 'validate',
+			'focus .reg-p': 'showCount',
+			'input .reg-p': 'passCount',
+			'input .inp-lst': 'passMatch',
+			'focus .email': 'hideAlert',
+			'focus .company': 'hideAlert'
+		});
+		return this;
+	},
+
+	keyEvent: function(e){
+		var keyCode = e.which;
+		if(keyCode == 27){
+			window.location.href = 'http://' + window.location.hostname;
+		} else if (keyCode == 13){
+			this.$el.find('form').focus();
+			this.detailsConfirm();
+		}
+	},
+	
+	passMatch: function(e){
+		login.registerPasswordMatch(e.currentTarget);
+	},
+	
+	passCount: function(e){
+		login.registerPasswordCount(e.currentTarget, this.$el);
+	},
+	
+	showCount: function(e) {	
+		login.registerPasswordShowCount(e.currentTarget);
+	},
+	
+	validate: function(e){
+		login.inputValidation(e.currentTarget);
+	},
+	
+	detailsConfirm: function(){
+		if(login.registerCreateValidate(this.$el)){
+			this.model.set({
+				firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
+				lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),
+				emailAddress: this.$el.find('input[name="reg-e"]').val(),
+				company: this.$el.find('input[name="reg-c"]').val(),
+				password: this.$el.find('input[name="reg-p"]').val()
+			});
+
+			var planView = new PlanView({model: this.model});
+			app.showView(planView);	
+		}
+	}
+
+});
+
+var PlanView = Backbone.View.extend({
+	template: Handlebars.compile(
 		'<div class="box box-reg">'+
 			'<div class="box-plan">'+
 				'<h2><span>Choose a Pricing Plan</span></h2>'+
-				'<h3><span>After your 60 day free trial which pricing plan suits you best Edd?</span></h3>'+
-
+				'<h3><span>After your 60 day free trial which pricing plan suits you best {{attributes.firstName}}?</span></h3>'+
 				'<div class="pricing-plan">'+
 					'<div class="vld-cir">1</div>'+
 					'<div class="price">£99.99</div>'+
@@ -96,27 +163,59 @@ var RegisterView = Backbone.View.extend({
 		'</div>'
 	),
 
-	// '<div class="reg-form-wrap">'+
-	// 	'<form id="form-payment-plan" action="">'+	
-	// 		'<div class="form-row">'+
-	// 			'<label>'+
-	// 				'<span>Houston Plan 1 - Unlimited Access - Monthly</span>'+
-	// 				'<input class="radio1" type="radio" name="plan" value="1" />'+
-	// 			'</label>'+
-	// 		'</div>'+				
-	// 		'<div class="form-row">'+
-	// 			'<label>'+
-	// 				'<span>Houston Plan 2 - Unlimited Access - Annually</span>'+
-	// 				'<input class="radio2" type="radio" name="plan" value="2" />'+
-	// 			'</label>'+
-	// 		'</div>'+			
-	// 		'<button class="planConfirm" type="button">Confirm</button>'+
-	// 		'<div class="beige or">or</div>'+
-	// 		'<a class="btn-can" href="/">Cancel</a>'+
-	// 	'</form>'+
-	// '</div>'+	
+	initialize: function(){
+		_.bindAll(this, 'keyEvent');
+		$(document).bind('keydown', this.keyEvent);
+	},
 
-	paymentTemplate: Handlebars.compile(
+	onClose: function(){
+		$(document).unbind('keydown', this.keyEvent);
+	},
+
+	render: function (){	
+		this.$el.html(this.template(this.model));
+		this.delegateEvents({
+			'click .plan-select': 'planSelect',
+			'click .plan-confirm': 'planConfirm',
+			'click .plan-back': 'planBack'
+		});
+		return this;
+	},
+
+	keyEvent: function(e){
+		var keyCode = e.which;
+		if(keyCode == 27){
+			this.planBack();
+		} else if (keyCode == 13){
+			this.planConfirm();
+		}
+	},	
+
+	planBack: function(){
+		var registerView = new RegisterView({model: this.model});
+		app.showView(registerView);	
+	},
+
+	planSelect: function(e){
+		var plan = $(e.currentTarget).data('plan');
+		this.model.set({
+			plan: plan
+		});
+	},
+
+	planConfirm: function(){
+		if(!this.model.get('plan')){
+			this.$el.find('h2 span').hide().text('OOPS!').addClass('text-animate-ib');
+			this.$el.find('h3 span').hide().text('Please choose a pricing plan to continue.').addClass('text-animate-ib');
+		} else {					
+			var paymentView = new PaymentView({model: this.model});
+			app.showView(paymentView);
+		}
+	}
+});
+
+var PaymentView = Backbone.View.extend({
+	template: Handlebars.compile(
 		'<div class="box box-reg">'+
 			'<div class="payment-header">'+
 				'<h2><span>Enter Your Payment Details</span></h2>'+
@@ -185,17 +284,10 @@ var RegisterView = Backbone.View.extend({
 	},
 
 	render: function (){	
-		this.model.set({password: ''});
 		this.$el.html(this.template(this.model));
 		this.delegateEvents({
-			'click .details-confirm': 'detailsConfirm',
-			'blur input': 'validate',
-			'focus .reg-p': 'showCount',
-			'input .reg-p': 'passCount',
-			'input .inp-lst': 'passMatch',
-			'focus .email': 'hideAlert',
-			'focus .company': 'hideAlert',
-			'keydown': 'keyEvent'
+			'click .payment-confirm': 'paymentConfirm',
+			'click .payment-back': 'paymentBack'
 		});
 		return this;
 	},
@@ -203,71 +295,11 @@ var RegisterView = Backbone.View.extend({
 	keyEvent: function(e){
 		var keyCode = e.which;
 		if(keyCode == 27){
-			window.location.href = 'http://' + window.location.hostname;
+			this.paymentBack();
 		} else if (keyCode == 13){
-			this.$el.find('form').focus();
-			this.detailsConfirm();
+			this.paymentConfirm();
 		}
-	},
-	
-	passMatch: function(e){
-		login.registerPasswordMatch(e.currentTarget);
-	},
-	
-	passCount: function(e){
-		login.registerPasswordCount(e.currentTarget, this.$el);
-	},
-	
-	showCount: function(e) {	
-		login.registerPasswordShowCount(e.currentTarget);
-	},
-	
-	validate: function(e){
-		login.inputValidation(e.currentTarget);
-	},
-	
-	detailsConfirm: function(){
-		if(login.registerCreateValidate(this.$el)){
-			this.model.set({
-				firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
-				lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),
-				emailAddress: this.$el.find('input[name="reg-e"]').val(),
-				company: this.$el.find('input[name="reg-c"]').val(),
-				password: this.$el.find('input[name="reg-p"]').val()
-			});
-
-			this.$el.html(this.paymentPlanTemplate(this.model));
-			this.delegateEvents({
-				'click .plan-select': 'planSelect',
-				'click .plan-confirm': 'planConfirm',
-				'click .plan-back': 'planBack'
-			});		
-		}
-	},
-
-	planBack: function(){
-		this.render();
-	},
-
-	planSelect: function(e){
-		var plan = $(e.currentTarget).data('plan');
-		this.model.set({
-			plan: plan
-		});
-	},
-
-	planConfirm: function(){
-		if(!this.model.get('plan')){
-			this.$el.find('h2 span').hide().text('OOPS!').addClass('text-animate-ib');
-			this.$el.find('h3 span').hide().text('Please choose a pricing plan to continue.').addClass('text-animate-ib');
-		} else {					
-			this.$el.html(this.paymentTemplate(this.model));
-			this.delegateEvents({
-				'click .payment-confirm': 'paymentConfirm',
-				'click .payment-back': 'paymentBack'
-			});
-		}
-	},
+	},		
 
 	paymentConfirm: function(){
 		var form = this.$el.find('form');
@@ -303,16 +335,8 @@ var RegisterView = Backbone.View.extend({
 	},
 
 	paymentBack: function() {
-		// app.currentView.$el.find('h2 span').text('Enter Your Payment Details').show().removeClass('text-animate-ib');
-		// app.currentView.$el.find('h3 span').text('Almost got your Houston account!').show().removeClass('text-animate-ib');	
-		// app.currentView.$el.find('input').val('');
-
-		this.$el.html(this.paymentPlanTemplate(this.model));
-		this.delegateEvents({
-			'click .plan-select': 'planSelect',
-			'click .plan-confirm': 'planConfirm',
-			'click .plan-back': 'planBack'
-		});		
+		var planView = new PlanView({model: this.model});
+		app.showView(planView);	
 	},
 
 	responseHandler: function(status, response){
@@ -340,28 +364,3 @@ var RegisterView = Backbone.View.extend({
 	},
 	
 });
-
-// templateSuccess: Handlebars.compile(
-// 	'<div class="box box-suc">'+
-// 		'<h2>You Have a Houston Account!</h2>'+
-// 		'<h3>Hoot have thought it would be so easy?</h3>'+
-// 		'<div class="got-wrap">'+
-// 			'<h2>You\'ve Got Mail!</h2>'+
-// 			'<h3>Please click the verification link in the email we just sent you to complete your account creation</h3>'+
-// 		'</div>'+
-// 	'</div>'
-// ),
-
-// this.model.save(this.model.attributes,
-// 	{
-// 		success: _.bind(function(model,response,options){
-// 		console.log(response);
-// 			if(response === 1){
-// 				this.$el.html(app.registerView.templateSuccess());
-// 			}
-// 		}, this),
-// 		error: _.bind(function(model,response,options){
-// 		console.log(response);
-// 		}, this)
-// 	}
-// );
