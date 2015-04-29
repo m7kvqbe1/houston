@@ -37,6 +37,7 @@ var login = {
 		var value = input.val();
 		var length = value.length;
 		var css = input.data('vld');
+		// var dataID = input.data('id');
 		var wrapper = input.closest('.vld-wrap');
 
 		if(!value) valid = false;
@@ -52,6 +53,8 @@ var login = {
 		}
 
 		if(valid) {
+			// console.log(dataID);
+			// console.log(app.currentView.model.attributes);
 			wrapper.addClass(css);
 		} else {
 			wrapper.removeClass(css);

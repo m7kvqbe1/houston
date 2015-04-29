@@ -554,17 +554,20 @@ input.inp-lst {
 }
 
 #form-pass,
-#form-pass-confirm {
+#form-pass-confirm,
+#form-verify {
 	margin: 24px auto 0px;
 }
 
 #form-pass h3,
-#form-pass-confirm h3 {
+#form-pass-confirm h3,
+#form-verify h3 {
 	margin: 0 auto 16px;
 	width: 258px;
 }
 
-#form-pass-confirm .reset {
+#form-pass-confirm .reset,
+#form-verify .reset {
 	margin-top: 14px;
 }
 
@@ -2881,10 +2884,6 @@ button.grayscale.gray .c {
 		margin-right: 0;
 	}
 
-/*	.reply-btn {
-		margin-top: 40px;
-	}*/
-
 /* Register */
 	#form-reg,
 	.reg-vrf{
@@ -2923,6 +2922,12 @@ button.grayscale.gray .c {
 		width: 236px; 
 		margin-right: auto;
 	}
+
+/* Set Password */
+	#form-verify .reset {
+		margin-bottom: 60px;
+	}
+
 
 	/* Payment */
 
