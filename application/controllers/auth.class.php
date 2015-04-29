@@ -140,6 +140,8 @@ class AuthController
 		// Set account as verified
 		$userModel->verifyAccount($userModel->user['emailAddress']);
 
+		// Update password
+
 		// Load users company to get the database identifier
 		$companyModel = new CompanyModel($this->app);
 		$companyModel->loadCompanyByID($userModel->user['companyID']);
@@ -147,7 +149,7 @@ class AuthController
 		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 
 		// Redirect to load authenticated assets
-		return $this->app->redirect('/');
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 
 	public function authResetAction()

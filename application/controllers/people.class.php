@@ -100,7 +100,7 @@ class PeopleController {
 		if($userModel->addAgent($data)) {
 			// Send verification email
 			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
-			$emailBody = str_replace('{button_url}', DOMAIN."/api/verify/".$data->verify, $template);
+			$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$data->verify, $template);
 
 			$message = \Swift_Message::newInstance()
 				->setSubject('Welcome to Houston!')
