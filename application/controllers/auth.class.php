@@ -149,7 +149,7 @@ class AuthController
 		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 
 		// Redirect to load authenticated assets
-		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		return $this->app->redirect('/');
 	}
 
 	public function authResetAction()
