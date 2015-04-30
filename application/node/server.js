@@ -56,7 +56,7 @@ db.getAllCompanyIds(function(err, companyIds) {
 app.post('/new/ticket', secureRoute, function(req, res) {
 	var msg = helper.trimMessage(req.body.message);
 
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body._id.$id+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
+	namespaces[req.body.socketNamespace].broadcast.emit('notify', '<a href="/tickets/'+req.body._id.$id+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
 	res.end();
 });
 
@@ -64,7 +64,7 @@ app.post('/new/ticket', secureRoute, function(req, res) {
 app.post('/new/reply', secureRoute, function(req, res) {
 	var msg = helper.trimMessage(req.body.message);
 
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
+	namespaces[req.body.socketNamespace].broadcast.emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
 	res.end();
 });
 
@@ -73,7 +73,7 @@ app.post('/update/status', secureRoute, function(req, res) {
 	var status = req.body.status;
 	var subject = helper.trimMessage(req.body.subject);
 
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
+	namespaces[req.body.socketNamespace].broadcast.emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
 	res.end();
 });
 
@@ -82,6 +82,6 @@ app.post('/update/assignee', secureRoute, function(req, res) {
 	var status = req.body.status;
 	var subject = helper.trimMessage(req.body.subject);
 
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>New Assignee: </strong>&nbsp;'+subject+'</a>');
+	namespaces[req.body.socketNamespace].broadcast.emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>New Assignee: </strong>&nbsp;'+subject+'</a>');
 	res.end();
 });
