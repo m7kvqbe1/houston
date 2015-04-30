@@ -253,7 +253,10 @@ var PaymentView = Backbone.View.extend({
 						'</div>'+	
 					'</div>'+
 					'<div class="payment-buttons">'+	
-						'<button class="payment-confirm" type="button">Confirm</button>'+
+						'<button class="payment-confirm" type="button">'+
+							'<span>Confirm</span>'+
+							'<img class="svg-dots" src="/application/assets/img/three-dots.svg" width="52" alt="Loading">'+
+						'</button>'+
 						'<div class="beige or">or</div>'+
 						'<a class="btn-can payment-back">Back</a>'+
 					'</div>'+
@@ -311,7 +314,7 @@ var PaymentView = Backbone.View.extend({
 		if(!this.paymentValidate(form)) return;
 
 		// Disable the submit button to prevent repeated clicks
-		form.find('.payment-confirm').prop('disabled', true);
+		form.find('.payment-confirm').prop('disabled', true).addClass('loading');
 
 		// Get a token from Stripe API
 		Stripe.card.createToken(form, this.responseHandler);
@@ -344,12 +347,12 @@ var PaymentView = Backbone.View.extend({
 		if(response.error){
 			app.currentView.$el.find('h2 span').hide().text('OOPS!').addClass('text-animate-ib');
 			app.currentView.$el.find('h3 span').hide().text('There was an error with your card details, please try again.').addClass('text-animate-ib');
-			app.currentView.$el.find('.payment-confirm').prop('disabled', false);
+			app.currentView.$el.find('.payment-confirm').prop('disabled', false).removeClass('loading');
 		} else {
-			app.registerModel.set({
+			app.currentView.model.set({
 				stripeToken: response.id
 			});
-			app.registerModel.save(app.registerModel.attributes,
+			app.currentView.model.save(app.currentView.model.attributes,
 				{
 					success: function(model, response, options){
 						console.log(response);

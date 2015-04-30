@@ -50,7 +50,10 @@ var LoginFormView = Backbone.View.extend({
 				'<input id="log-rem" type="checkbox" name="log-r" value="remember" />'+
 				'Remember me on this computer'+
 			'</label>'+
-			'<button class="login" type="button">Sign In</button>'+
+			'<button class="login" type="button">'+
+				'<span>Sign In</span>'+
+				'<img class="svg-dots" src="/application/assets/img/three-dots.svg" width="52" alt="Loading">'+
+			'</button>'+				
 		'</form>'+
 		'<h3 class="ib">Help!</h3>&nbsp;'+
 		'<a class="forgot">Ive forgotten my password</a>'
@@ -92,6 +95,7 @@ var LoginFormView = Backbone.View.extend({
 
 		this.$el.find('h2').show().removeClass('text-animate');
 		this.$el.find('h3.log-tag').show().removeClass('text-animate');
+		this.$el.find('.login').addClass('loading');
 
 		var data = {
 			user: this.$el.find('input[name="log-e"]').val(),
@@ -114,6 +118,7 @@ var LoginFormView = Backbone.View.extend({
 		request.fail(function( jqXHR, textStatus ) {
 			app.currentView.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
 			app.currentView.$el.find('.box-log h3.log-tag').hide().text('Please try again').addClass('text-animate');
+			app.currentView.$el.find('.login').removeClass('loading');
 		});
 	}
 });

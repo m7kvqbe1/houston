@@ -17,6 +17,8 @@ $app->post('/api/register', 'auth.controller:registerAction');
 
 $app->get('/api/verify/{token}', 'auth.controller:verifyAction');
 
+$app->post('/api/verify2/{token}', 'auth.controller:verifyPasswordAction');
+
 $app->post('/api/auth/reset', 'auth.controller:authResetAction');
 
 $app->post('/api/auth/reset/complete', 'auth.controller:authResetCompleteAction');

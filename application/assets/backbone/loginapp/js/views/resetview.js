@@ -120,9 +120,10 @@ var ValidateView = Backbone.View.extend({
 				success: function(model,response,options){
 					window.location.href = '/';
 				},
-				error: _.bind(function(){
+				error: _.bind(function(model, response){
+					console.log(response);
 					this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
-					this.$el.find('.box-log h3.log-tag').hide().text('Something went wrong').addClass('text-animate');
+					this.$el.find('.box-log h3.verify-tag').hide().text('Something went wrong').addClass('text-animate');
 				}, this)
 			}
 		);	

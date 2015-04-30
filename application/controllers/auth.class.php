@@ -129,6 +129,32 @@ class AuthController
 
 		return $customer->__toJSON();
 	}
+	
+	public function verifyPasswordAction($token)
+	{
+		$data = json_decode(file_get_contents('php://input'));
+		
+		$userModel = new UserModel($this->app);
+		$userModel->isVerified(null, $token);
+
+		if(!isset($userModel->user)) return ApiResponse::error('INVALID_VERIFICATION_CODE');
+
+		// Set account as verified
+		$userModel->verifyAccount($userModel->user['emailAddress']);
+
+		// Update password
+		//$password = $userModel::hashPassword($data->password);		
+		//$userModel->setProperty($userID = null, 'password', $password);
+
+		// Load users company to get the database identifier
+		$companyModel = new CompanyModel($this->app);
+		$companyModel->loadCompanyByID($userModel->user['companyID']);
+
+		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
+
+		// Redirect to load authenticated assets
+		return $this->app->redirect('/');
+	}
 
 	public function verifyAction($token)
 	{
@@ -139,8 +165,6 @@ class AuthController
 
 		// Set account as verified
 		$userModel->verifyAccount($userModel->user['emailAddress']);
-
-		// Update password
 
 		// Load users company to get the database identifier
 		$companyModel = new CompanyModel($this->app);

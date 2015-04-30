@@ -521,18 +521,34 @@ input[type="submit"] {
 	border: none;
 	-webkit-border-radius: 6px;
 	border-radius: 6px;
-	lin;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
 	line-height: 36px;
+	font-weight: 600;
 	background: #01d48f;
 	color: #fff;
+}
+
+button span,
+input[type="submit"] span {
+	font-weight: inherit;
 }
 
 .btn:hover,
 button:hover,
 input[type="submit"]:hover {
 	background: #1ac38c;
+}
+
+.svg-dots {
+	display: none;
+	margin-top: 11px;
+}
+
+.loading span {
+	display: none;
+}
+
+.loading .svg-dots {
+	display: inline-block;
 }
 
 input.inp-spa,

@@ -12,7 +12,7 @@ var AppRouter = Backbone.Router.extend({
 	//set up routes
 		"": "login",
 		"reset/:token": "reset",
-		"validate": "validate",		
+		"verify/:token": "validate",		
 		"register": "register"
 	},
 	
@@ -42,7 +42,7 @@ var AppRouter = Backbone.Router.extend({
 
 	validate: function(token){
 		var validateModel = new Backbone.Model();
-		validateModel.url = '/api/verify/' + token;
+		validateModel.url = '/api/verify2/' + token;
 		var validateView = new ValidateView({model: validateModel});	
 		this.showView(validateView);
 	},
