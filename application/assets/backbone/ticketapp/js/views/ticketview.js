@@ -58,8 +58,7 @@ var TicketDetailView = Backbone.View.extend({
 						'<div id="file-upload-view-wrap">'+	
 
 						'</div>'+
-						'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />'+							
-						'<label>Mark ticket as completed</label>'+
+						'{{outputMarkAsCompleted}}'+
 						'<div class="reply-submit-buttons">'+
 							'<button class="add-message" type="button">Submit</button>' +
 							'<div class="beige or">or</div>' +

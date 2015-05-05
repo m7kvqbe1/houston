@@ -117,7 +117,12 @@ var handlebarsHelpers = {
 		
 		Handlebars.registerHelper("generateDropSwitch", function(attribute) {
 			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
+		});
 
+		Handlebars.registerHelper("outputMarkAsCompleted", function(attribute) {
+			if(app.user.get('role') !== "USER"){
+				return new Handlebars.SafeString('<input id="completed" type="checkbox" name="ticket-completed" value="completed" /><label for="completed">Mark ticket as completed</label>');
+			}
 		});
 
 		//TicketView Helpers

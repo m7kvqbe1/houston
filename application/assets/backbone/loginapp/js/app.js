@@ -16,17 +16,15 @@ var AppRouter = Backbone.Router.extend({
 		"register": "register",
 		"*notFound": "login"
 	},
-	
-	initialize: function() {
-		this.appElement = $("#app");
-		//Try to create a cached element to avoid re scannning the dom, but  doesnt work?
-	},
 
 	currentView: false,
 	showView: function(view) {
+		//Create a cached element to avoid re scanning the dom
+		if(!this.appElement) this.appElement = $("#app");
+
 		if (this.currentView) this.currentView.close();
 		this.currentView = view;
-		$("#app").html(this.currentView.render().el);
+		this.appElement.html(this.currentView.render().el);
 	},
 	
 	login: function(){

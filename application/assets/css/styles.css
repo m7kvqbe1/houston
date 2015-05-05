@@ -1215,7 +1215,7 @@ h4.no-tickets {
 
 .box-app-top.msg-top .btn.ticketheader-agent {
 	max-width: 148px;
-	/*min-width: 92px;*/
+	min-width: 92px;
 	margin-right: 12px;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -1338,6 +1338,7 @@ h4.client-has-no-users {
 	margin: 30px 0 20px;
 	margin: 20px 0 30px 0;
 	margin: 20px 0;
+	margin: 20px 0 0;
 	line-height: 14px;
 }
 
@@ -1347,6 +1348,7 @@ h4.client-has-no-users {
 
 .reply-submit-buttons {
 	margin-top: 10px;
+	margin-top: 30px;
 }
 
 #form-new {
@@ -2494,8 +2496,7 @@ button.grayscale.gray .c {
 
 	/* Ticket View */
 	.app-wrap header nav,
-	.box-app-nav .sort,
-	.ticket-info .summary{
+	.box-app-nav .sort {
 		display: block;
 	}
 	
@@ -2637,17 +2638,32 @@ button.grayscale.gray .c {
 		font-weight: 900;
 		font-size: 16px;
 	}
+
+
+	/* Recent */
+	.ticket-info .summary {
+		display: block;
+		position: absolute;
+		overflow: hidden;
+		width: 40%;
+		text-overflow: ellipsis;
+		white-space: nowrap;	
+	}
 	
 	.ticket-status {
 		width: 255px;
 	}
 	
 	.ticket-status .ticket-agent {
+		overflow: hidden;
 		float: left;
+		max-width: 140px;
 		margin-top: 9px;
 		line-height: 20px;
 		font-weight: 900;
 		font-size: 14px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	
 	.ticket-status .btn {
