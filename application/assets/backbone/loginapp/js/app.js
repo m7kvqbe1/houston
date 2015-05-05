@@ -13,7 +13,8 @@ var AppRouter = Backbone.Router.extend({
 		"": "login",
 		"reset/:token": "reset",
 		"verify/:token": "validate",		
-		"register": "register"
+		"register": "register",
+		"*notFound": "login"
 	},
 	
 	initialize: function() {
@@ -35,14 +36,14 @@ var AppRouter = Backbone.Router.extend({
 
 	reset: function(token){
 		var resetModel = new Backbone.Model();
-		var resetView = new ResetView({model: resetModel});
-		resetView.model.set('token', token);
+		resetModel.set('token', token);
+		var resetView = new ResetView({model: resetModel});	
 		this.showView(resetView);
 	},
 
 	validate: function(token){
 		var validateModel = new Backbone.Model();
-		validateModel.url = '/api/verify2/' + token;
+		validateModel.set('token', token);
 		var validateView = new ValidateView({model: validateModel});	
 		this.showView(validateView);
 	},

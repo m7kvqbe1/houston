@@ -10,7 +10,8 @@ var AppRouter = Backbone.Router.extend({
 		"people": "peopleOverviewFrontController",
 		"profile": "profileFrontController",
 		"account": "accountMainFrontController",
-		"analytics": "analyticsMainFrontController"
+		"analytics": "analyticsMainFrontController",
+		"*notFound": "indexFrontController"
 	},
 
 

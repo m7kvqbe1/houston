@@ -79,7 +79,7 @@ var ValidateView = Backbone.View.extend({
 			'<form id="form-verify">'+
 				'<input class="required" type="password" name="pass" placeholder="Password" />'+
 				'<input class="required" type="password" name="pass-c" placeholder="Confirm Password" />'+			
-				'<button class="reset" type="button">Login</button>'+
+				'<button class="validate" type="button">Login</button>'+
 			'</form>'+			
 		'</div>'+
 		'<div class="box box-try">'+
@@ -92,7 +92,7 @@ var ValidateView = Backbone.View.extend({
 	render: function (){	
 		this.$el.html(this.template());
 		this.delegateEvents({
-			'click .reset': 'reset',
+			'click .validate': 'validate',
 			'input input': 'resetErrorMessage'
 		});
 		return this;
@@ -103,15 +103,16 @@ var ValidateView = Backbone.View.extend({
 		this.$el.find('h3.verify-tag').show().removeClass('text-animate');
 	},
 		
-	reset: function() {
-		if(!login.validateForm(this.$el.find('#form-pass-confirm'))) return;
+	validate: function() {
+		if(!login.validateForm(this.$el.find('#form-verify'))) return;
 
 		if(this.$el.find('input[name=pass]').val() !== this.$el.find('input[name="pass-c"]').val()) {
 			this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
 			this.$el.find('.box-log h3.verify-tag').hide().text('Please ensure passwords match').addClass('text-animate');		
 			return;
 		}
-		
+
+		this.model.url = '/api/verify/';
 		this.model.set({
 			password: this.$el.find('input[name="pass-c"]').val()
 		});

@@ -130,12 +130,12 @@ class AuthController
 		return $customer->__toJSON();
 	}
 	
-	public function verifyPasswordAction($token)
+	public function verifyPasswordAction()
 	{
 		$data = json_decode(file_get_contents('php://input'));
 		
 		$userModel = new UserModel($this->app);
-		$userModel->isVerified(null, $token);
+		$userModel->isVerified(null, $data->token);
 
 		if(!isset($userModel->user)) return ApiResponse::error('INVALID_VERIFICATION_CODE');
 

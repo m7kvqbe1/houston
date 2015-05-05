@@ -66,7 +66,7 @@ var houston = {
 		var item = $(button);
 		var css = item.data('class');
 		var val = item.text();
-		var text = val+'<i class="icon-down-dir-1"></i>';
+		var text = '<span>'+val+'</span><i class="icon-down-dir-1"></i>';
 		var dropdown = item.closest('.dropdown');
 			
 		dropdown.find('.drop-slct').removeClass('on-hold in-progress').addClass(css).html(text); //works without, used for visual
@@ -106,7 +106,7 @@ var houston = {
 			return '<div class="dropdown dropswitch">'+
 						'<div class="drop-inner">'+				
 							'<div class="drop-top on-hold rounded">'+
-								'<div class="btn in-progress drop-slct">In Progress<i class="icon-down-dir-1"></i></div>'+
+								'<div class="btn in-progress drop-slct"><span>In Progress</span><i class="icon-down-dir-1"></i></div>'+
 							'</div>'+
 							'<ul class="drop on-hold">'+
 								'<li class="slct" data-class="in-progress">In Progress</li>'+
@@ -118,7 +118,7 @@ var houston = {
 			return '<div class="dropdown dropswitch">'+
 						'<div class="drop-inner">'+				
 							'<div class="drop-top in-progress rounded">'+
-								'<div class="btn on-hold drop-slct">On Hold<i class="icon-down-dir-1"></i></div>'+
+								'<div class="btn on-hold drop-slct"><span>On Hold</span><i class="icon-down-dir-1"></i></div>'+
 							'</div>'+
 							'<ul class="drop in-progress">'+
 								'<li class="slct" data-class="on-hold">On Hold</li>'+
@@ -154,7 +154,8 @@ var houston = {
 
 	populateAgentDropdown: function(){
 		var arr = app.users.filter(function(data){
-			return data.get('role') !== 'USER' && data.get('verify') === true;
+			// return data.get('role') !== 'USER' && data.get('verify') === true;
+			return data.get('role') !== 'USER';
 		});
 		var i;
 		var str = '';

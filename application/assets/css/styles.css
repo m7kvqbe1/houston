@@ -989,9 +989,13 @@ input.inp-lst {
 }
 
 .dropdown li {
+	overflow: hidden;
+	max-width: 148px;
 	min-width: 90px;
 	padding: 0 10px;
 	line-height: 36px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	color: #fff;	
 	cursor: pointer;
 }
@@ -1020,6 +1024,14 @@ input.inp-lst {
 	background: #f8835e;
 }
 
+/**/
+.droplist .drop-slct span{
+	display: inline-block;
+	overflow: hidden;
+	max-width: 128px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
 .box-app-top h2 {
 	float: left;	
@@ -1199,6 +1211,20 @@ h4.no-tickets {
 	font-weight: 600;
 	font-size: 12px;
 	color: #ff6e3e;
+}
+
+.box-app-top.msg-top .btn.ticketheader-agent {
+	max-width: 148px;
+	/*min-width: 92px;*/
+	margin-right: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.box-app-top.msg-top .btn.ticketheader-agent:hover {
+	background: #01d48f;
 }
 
 /* People View */
@@ -2940,8 +2966,8 @@ button.grayscale.gray .c {
 	}
 
 /* Set Password */
-	#form-verify .reset {
-		margin-bottom: 60px;
+	#form-verify .validate {
+		margin: 14px 0 62px;
 	}
 
 
