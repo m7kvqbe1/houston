@@ -24,6 +24,7 @@ var PeopleView = Backbone.View.extend({
 							'<h3>{{attributes.emailAddress}}</h3>'+
 							'<h4>Awaiting Verification</h4>'+
 						'{{/ifCond}}'+
+						'<a class="delete-agent" data-id="{{id}}">Delete</a>'+
 					'</li>'+
 				'{{/each}}'+
 				'</ul>'+
@@ -240,6 +241,7 @@ var PeopleView = Backbone.View.extend({
 			success: _.bind(function(model){
 				app.addClientUserModel.clear();
 				app.changed = false;
+				console.log('user-added');
 			}, this)
 		});
 	}

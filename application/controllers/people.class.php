@@ -61,7 +61,19 @@ class PeopleController {
 		$userModel = new UserModel($this->app);
 
 		if($user = $userModel->addUser($data)) {
-			return json_encode($data);
+			// Send verification email
+			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
+			$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$data->verify, $template);
+
+			$message = \Swift_Message::newInstance()
+				->setSubject('Welcome to Houston!')
+				->setFrom(array(DEFAULT_FROM))
+				->setTo(array($data->emailAddress))
+				->setBody($emailBody, 'text/html');
+
+			$this->app['mailer']->send($message);
+
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_ADD_FAIL');
 		}

@@ -147,14 +147,21 @@ var UserView = Backbone.View.extend({
 	tagName: "li",
 	className: "person",
 	template: Handlebars.compile(
-		'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}"/>'+
-		'{{#if attributes.password}}'+									
-			'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
-			'<h4>Support Agent</h4>'+
+		// '<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}"/>'+
+		// '{{#ifCond attributes.verify true}}'+									
+		// 	'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
+		// 	'<h4>{{attributes.role}}</h4>'+
+		// '{{else}}'+
+		// 	'<h3>{{attributes.emailAddress}}</h3>'+
+		// 	'<h4>Awaiting Verification</h4>'+
+		// '{{/ifCond}}'+
+		'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
+		'<h3>{{#if attributes.firstName}}{{attributes.firstName}} {{attributes.lastName}}{{else}}{{attributes.emailAddress}}{{/if}}</h3>'+
+		'{{#ifCond attributes.verify true}}'+
+			'<h4>{{attributes.role}}</h4>'+
 		'{{else}}'+
-			'<h3>{{attributes.emailAddress}}</h3>'+
 			'<h4>Awaiting Verification</h4>'+
-		'{{/if}}'+
+		'{{/ifCond}}'+
 		'<a class="delete-user">Delete</a>'
 	),
 
