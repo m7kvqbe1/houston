@@ -306,13 +306,11 @@ var ProfileView = Backbone.View.extend({
                 var name = input.attr('name');
                 app.user.set(name, value);
                 updated = true;
-                console.log(name);
             }
         });
         if(updated){
             this.model.save(this.model.attributes,{
                 success: _.bind(function(model){
-                    console.log(model);
                     this.$el.find('#form-profile-details .response').addClass('text-animate');
                     app.changed = false;
                 }, this)

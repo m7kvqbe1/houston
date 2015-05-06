@@ -16,5 +16,10 @@ var UserModel = Backbone.Model.extend({
 				app.users.fetch({reset:true});
 			}
 		});
+	},
+	defaults: {
+		firstName: '',
+		lastName: '',
+		avatar: ''
 	}
 });

@@ -143,8 +143,8 @@ class AuthController
 		$userModel->verifyAccount($userModel->user['emailAddress']);
 
 		// Update password
-		//$password = $userModel::hashPassword($data->password);		
-		//$userModel->setProperty($userID = null, 'password', $password);
+		$password = $userModel::hashPassword($data->password);
+		$userModel->setProperty($userID = null, 'password', $password);
 
 		// Load users company to get the database identifier
 		$companyModel = new CompanyModel($this->app);
@@ -152,8 +152,7 @@ class AuthController
 
 		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 
-		// Redirect to load authenticated assets
-		return $this->app->redirect('/');
+		return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 	}
 
 	public function verifyAction($token)
@@ -173,7 +172,7 @@ class AuthController
 		System::setupSession($this->app, true, $companyModel->company['database'], (string) $userModel->user['_id'], (string) $userModel->user['companyID']);
 
 		// Redirect to load authenticated assets
-		return $this->app->redirect('/');
+		return $this->app->redirect('/profile');
 	}
 
 	public function authResetAction()

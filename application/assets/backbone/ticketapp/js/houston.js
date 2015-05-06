@@ -336,8 +336,8 @@ var houston = {
 	},
 
 	displayUpdates: function(updated){
-		if(updated == 0) {
-			return;
+		if(updated === 0) {
+			var html = '';
 		} else if (updated > 99){
 			var html = '<div class="update-alert">99</div>';
 		} else if (updated > 9){

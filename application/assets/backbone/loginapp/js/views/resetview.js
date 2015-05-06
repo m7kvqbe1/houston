@@ -112,14 +112,14 @@ var ValidateView = Backbone.View.extend({
 			return;
 		}
 
-		this.model.url = '/api/verify/';
+		this.model.url = '/api/verify';
 		this.model.set({
 			password: this.$el.find('input[name="pass-c"]').val()
 		});
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					window.location.href = '/';
+					window.location.href = '/profile';
 				},
 				error: _.bind(function(model, response){
 					console.log(response);

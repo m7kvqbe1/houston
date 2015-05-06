@@ -286,10 +286,12 @@ class UserModel
 
 	public function isVerified($username = null, $token = null)
 	{
+		unset($this->user);
+		
 		$connections = $this->app['mongo'];
 		$db = $connections['default'];
 		$db = $db->houston;
-
+		
 		if(isset($token)) {
 			$criteria = array('verify' => $token);
 			$this->user = $db->users->findOne($criteria);
@@ -299,9 +301,9 @@ class UserModel
 		if(!isset($username)) $username = $this->user['emailAddress'];
 
 		$criteria = array('emailAddress' => $username, 'verify' => true);
-		$user = $db->users->findOne($criteria);
+		$this->user = $db->users->findOne($criteria);
 
-		$verified = (empty($user)) ? false : true;
+		$verified = (empty($this->user)) ? false : true;
 		return $verified;
 	}
 

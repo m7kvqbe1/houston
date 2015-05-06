@@ -15,15 +15,15 @@ var PeopleView = Backbone.View.extend({
 				'<ul>'+
 				'{{#each models}}'+
 					'<li class="person">'+
-						'{{#if attributes.firstName}}'+					
+						'{{#ifCond attributes.verify true}}'+					
 							'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
-							'<h3>{{attributes.firstName}} {{attributes.lastName}}</h3>'+
-							'<h4>Support Agent</h4>'+
+							'<h3>{{#if attributes.firstName}}{{attributes.firstName}} {{attributes.lastName}}{{else}}{{attributes.emailAddress}}{{/if}}</h3>'+
+							'<h4>{{attributes.role}}</h4>'+
 						'{{else}}'+
 							'<img class="avatar" src="application/assets/img/avatar.png" />'+
 							'<h3>{{attributes.emailAddress}}</h3>'+
 							'<h4>Awaiting Verification</h4>'+
-						'{{/if}}'+
+						'{{/ifCond}}'+
 					'</li>'+
 				'{{/each}}'+
 				'</ul>'+
