@@ -21,8 +21,7 @@ var ModalView = Backbone.View.extend({
 		this.$el.html(this.template(this.model.attributes));
 		this.delegateEvents({
 			'click .confirm': 'confirm',
-			'click .btn-can': 'cancel',
-			'keydown': 'keyEvent'
+			'click .btn-can': 'cancel'
 		});
 		app.modalWindow.show();
 	},

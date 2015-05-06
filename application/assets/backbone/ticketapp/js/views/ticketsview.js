@@ -110,23 +110,3 @@ var TicketsView = Backbone.View.extend({
 		app.tickets.byCompany();
 	}		
 });
-
-// var UpdateAlertView = Backbone.View.extend({
-// 	className: 'update-alert-wrap',
-// 	template: Handlebars.compile(
-// 		'{{calculateUpdates}}'
-// 	),
-
-// 	initialize: function(){
-// 		this.listenTo(this.collection, "reset add remove change sync", this.render);
-
-// 		Handlebars.registerHelper("calculateUpdates", function() {
-// 			return new Handlebars.SafeString(app.tickets.countUpdated());
-// 		});		
-// 	},
-
-// 	render: function(){
-// 		this.$el.html(this.template(this.collection));
-// 		return this;
-// 	}
-// });

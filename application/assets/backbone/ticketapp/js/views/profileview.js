@@ -148,7 +148,6 @@ var ProfileView = Backbone.View.extend({
 			'drop #avatar-drop': 'handleDragFileSelect',
 			'click .toggle-button-outer': 'toggleEmails',
             'click .preview-close': 'previewClose',
-            'keydown': 'keyEvent',
             'mousemove #panel': 'canvasMousemove',
             'mousedown #panel': 'canvasMousedown',
             'mouseup #panel': 'canvasMouseup',

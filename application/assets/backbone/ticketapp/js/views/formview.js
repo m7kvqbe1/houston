@@ -61,7 +61,6 @@ var FormView = Backbone.View.extend({
 			'click .cancel-btn': 'cancelTicket',
 			'input input': 'markAsChanged',
 			'input textarea': 'markAsChanged'
-			// 'keydown': 'keyEvent'
 		});
 		return this;
 	},

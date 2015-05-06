@@ -63,8 +63,7 @@ var PeopleView = Backbone.View.extend({
 			'click .client-button': 'addClient',
 			'click .user-button': 'validateUser',
 			'click .edit-client-button': 'editClient',
-			'input input': 'markAsChanged',
-			'keydown': 'keyEvent'
+			'input input': 'markAsChanged'
 		});
 		return this;		
 	},

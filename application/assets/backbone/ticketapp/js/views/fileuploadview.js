@@ -249,8 +249,7 @@ var PreviewWindow = Backbone.View.extend({
 		this.delegateEvents({
 			'click .preview-close': 'previewClose',
 			'click .prev': 'clickPrevious',
-			'click .next': 'clickNext',
-			'keydown': 'keyEvent'
+			'click .next': 'clickNext'
 		});	
 		app.modalWindow.show();	
 	},
