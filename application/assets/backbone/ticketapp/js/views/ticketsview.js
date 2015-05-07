@@ -38,7 +38,7 @@ var TicketsView = Backbone.View.extend({
 							'<div class="ticket-info-inner">' +
 								'<div class="name">{{getUserName attributes.authorID}}</div>' +
 								'<div class="company-name">{{getCompanyName attributes.authorID}}</div>' +
-								'<div class="summary">{{attributes.subject}}</div>' +
+								'<div class="summary"><span>#{{attributes.reference}}</span> {{attributes.subject}}</div>' +
 							'</div>' +
 						'</div>' +
 						'<div class="ticket-status">' +
