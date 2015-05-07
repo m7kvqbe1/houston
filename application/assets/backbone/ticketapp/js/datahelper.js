@@ -49,7 +49,7 @@ var dataHelper = {
 var handlebarsHelpers = {
 	bindHelpers: function(){
 		//stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional
-		Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+		Handlebars.registerHelper("ifCond", function(v1, v2, options) {
 		if(v1 === v2) {
 			return options.fn(this);
 		}
