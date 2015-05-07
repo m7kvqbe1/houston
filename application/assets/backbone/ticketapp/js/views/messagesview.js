@@ -2,7 +2,7 @@ var MessagesView = Backbone.View.extend({
 	tagName: "ul",
 	template: Handlebars.compile(
 		'{{#forEach models}}'+
-			'<li class="msg from-{{getUserRole attributes.authorID}}">'+
+			'<li class="msg from-{{getUserRoleAsClass attributes.authorID}}">'+
 				'<div class="msg-dtl">'+
 					'<img class="avatar" src="{{getUserAvatar attributes.authorID}}" alt="{{getUserName attributes.authorID}}" />'+
 					'<div class="msg-dtl-inr">'+

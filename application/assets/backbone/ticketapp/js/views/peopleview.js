@@ -18,7 +18,7 @@ var PeopleView = Backbone.View.extend({
 						'{{#ifCond attributes.verify true}}'+					
 							'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
 							'<h3>{{#if attributes.firstName}}{{attributes.firstName}} {{attributes.lastName}}{{else}}{{attributes.emailAddress}}{{/if}}</h3>'+
-							'<h4>{{attributes.role}}</h4>'+
+							'<h4>{{convertUserRole attributes.role}}</h4>'+
 						'{{else}}'+
 							'<img class="avatar" src="application/assets/img/avatar.png" />'+
 							'<h3>{{attributes.emailAddress}}</h3>'+

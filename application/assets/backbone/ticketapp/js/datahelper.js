@@ -26,9 +26,9 @@ var dataHelper = {
 		return companyName;
 	},
 
-	getUserRole: function(userID){
+	getUserRoleAsClass: function(userID){
 		var user = app.users.get(userID);
-		var userRole = 'Unknown Role';
+		var userRole = 'Unknown';
 		if(typeof user !== "undefined"){
 			var userRole = user.attributes.role;
 		} 
@@ -68,8 +68,8 @@ var handlebarsHelpers = {
 			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
 		});
 
-		Handlebars.registerHelper("getUserRole", function(authorID) {
-			return new Handlebars.SafeString(dataHelper.getUserRole(authorID));
+		Handlebars.registerHelper("getUserRoleAsClass", function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserRoleAsClass(authorID));
 		});
 
 		Handlebars.registerHelper("getCompanyName", function(authorID) {
@@ -79,6 +79,10 @@ var handlebarsHelpers = {
 		Handlebars.registerHelper("getUserAvatar", function(authorID) {
 			return new Handlebars.SafeString(dataHelper.getUserAvatar(authorID));
 		});
+
+		Handlebars.registerHelper("convertUserRole", function(attribute) {
+			return new Handlebars.SafeString(houston.convertUserRole(attribute));
+		});		
 
 		Handlebars.registerHelper("convertToClass", function(attribute) {
 			return houston.convertToClass(attribute);

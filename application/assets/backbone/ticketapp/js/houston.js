@@ -47,6 +47,20 @@ var houston = {
 		var cssClass = attribute.toLowerCase().split(' ').join('-');
 		return cssClass;
 	},
+
+	convertUserRole: function(attribute){
+		var userRole = 'Unknown Role';
+		if(typeof attribute !== "undefined"){
+			if(attribute === "ADMIN"){
+				userRole = 'Administrator';
+			} else if(attribute === "AGENT"){
+				userRole = 'Support Agent';
+			} else if(attribute === "USER"){
+				userRole = 'User'
+			}
+		} 
+		return userRole;
+	},	
 		
 	dropSelect: function(button){
 		var button = $(button);
