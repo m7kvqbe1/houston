@@ -7,14 +7,14 @@ date_default_timezone_set('UTC');
 define('PHP_START', microtime(true));
 define('DOCUMENT_ROOT', __DIR__);
 
-// Require application config
-$ini_array = parse_ini_file(__DIR__.'/application/config.ini');
+// Import application config
+$ini_array = parse_ini_file(DOCUMENT_ROOT.'/application/config.ini');
 foreach($ini_array as $key => $val) {
 	define($key, $val);
 }
 
 // Require Composer autoloader
-require_once __DIR__.'/vendor/autoload.php';
+require_once DOCUMENT_ROOT.'/vendor/autoload.php';
 
 // Class importing / aliasing
 use Silex\Application;
@@ -29,6 +29,7 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
 use Merqlove\Silex\Provider\AirbrakeServiceProvider;
 use Houston\Core\System;
+use Houston\Component\ApiResponse;
 
 // Instantiate Silex
 $app = new Application();
@@ -66,7 +67,7 @@ $app['session.storage.handler'] = $app->share(function ($app) {
 
 // Register Monolog service provider for local logging
 $app->register(new MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.LOG_PATH,
+    'monolog.logfile' => DOCUMENT_ROOT.LOG_PATH,
 	'monolog.name' => 'Houston',
 	'monolog.level' => LOG_LEVEL
 ));
@@ -99,8 +100,7 @@ $app->error(function(\Exception $e, $code) use ($app) {
 
 	switch($code) {
 		case 404:
-			//$message = 'The requested page could not be found.';
-			return $app->redirect('/');	// Redirect to application entry point
+			return $app->redirect('/');
 			break;
 
 		default:
@@ -117,7 +117,13 @@ $secure = function(Request $request, Application $app) {
 	try {
 		System::validateApiKey($app, $request->get('apikey'));
 	} catch(\Exception $e) {
-		if(!$app['session']->get('isAuthenticated')) return $app->redirect('/');
+		if(!$app['session']->get('isAuthenticated')) {
+			if(strpos($request->get("_route"), 'api') !== false) {
+				return ApiResponse::error('SESSION_EXPIRED');
+			} else {
+				return $app->redirect('/');
+			}
+		}
 	}
 };
 
@@ -137,22 +143,22 @@ $secure = function(Request $request, Application $app) {
 });*/
 
 // Autoload houston components - MOVE THESE INTO SERVICE PROVIDERS!
-foreach(glob(__DIR__."/application/components/*.php") as $filename) {
+foreach(glob(DOCUMENT_ROOT."/application/components/*.php") as $filename) {
     require_once $filename;
 }
 
 // Autoload models
-foreach(glob(__DIR__."/application/models/*.php") as $filename) {
+foreach(glob(DOCUMENT_ROOT."/application/models/*.php") as $filename) {
     require_once $filename;
 }
 
 // Autoload controllers
-foreach(glob(__DIR__."/application/controllers/*.php") as $filename) {
+foreach(glob(DOCUMENT_ROOT."/application/controllers/*.php") as $filename) {
     require_once $filename;
 }
 
 // Autoload routes
-foreach(glob(__DIR__."/application/routes/*.php") as $filename) {
+foreach(glob(DOCUMENT_ROOT."/application/routes/*.php") as $filename) {
     require_once $filename;
 }
 

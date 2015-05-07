@@ -77,6 +77,7 @@ class ApiResponse extends Response
 				$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 				break;
 
+			case 'SESSION_EXPIRED':
 			case 'PASSWORD_INVALID':
 			case 'USER_UNVERIFIED':
 			case 'INVALID_VERIFICATION_CODE':
@@ -99,7 +100,9 @@ class ApiResponse extends Response
 
 class ErrorMessageDefinition
 {
-	const DEFAULT_RESPONSE_SUCCESS = 'DEFAULT_RESPONSE_SUCCESS';
+	const DEFAULT_RESPONSE_SUCCESS = 'The API action was succesfully completed.';
+
+	const SESSION_EXPIRED = 'Authenticated session required.';
 
 	const PASSWORD_INVALID = 'The password provided is incorrect.';
 	const USER_UNVERIFIED = 'This user account has not yet been verified.';
