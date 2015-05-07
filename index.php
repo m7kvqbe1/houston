@@ -1,10 +1,15 @@
 <?php
+define('PHP_START', microtime(true));
+
+// Character encoding
 mb_internal_encoding('UTF-8');
 mb_detect_order(array('UTF-8', 'ASCII'));
 mb_http_output('UTF-8');
+
+// Default timezone
 date_default_timezone_set('UTC');
 
-define('PHP_START', microtime(true));
+// Define document root
 define('DOCUMENT_ROOT', __DIR__);
 
 // Import application config
