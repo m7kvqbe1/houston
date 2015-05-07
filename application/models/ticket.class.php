@@ -12,7 +12,7 @@ class TicketModel
 
 	public function __construct(Application $app, $ticketID = null)
 	{
-        $this->app = $app;
+		$this->app = $app;
 
 		if(isset($ticketID)) $this->loadTicketByID($ticketID);
 	}

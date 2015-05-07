@@ -42,8 +42,8 @@ class System
 	{
 		$app['session']->set('isAuthenticated', $authenticated);
 		$app['session']->set('database', $database);
-	    $app['session']->set('uid', $uid);
-	    $app['session']->set('cid', $cid);
+		$app['session']->set('uid', $uid);
+		$app['session']->set('cid', $cid);
 	}
 
 	public static function destroySession(Application $app)
