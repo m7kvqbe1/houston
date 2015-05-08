@@ -43,22 +43,23 @@ var AppRouter = Backbone.Router.extend({
 		this.clients = new Clients();
 
 		// AGENTS COLLECTION
-		this.agentsCollection =  new Backbone.Collection();
+		// this.agentsCollection =  new Backbone.Collection();
+		this.agentsCollection =  new Agents();
 
 		//FILES COLLECTION
 		this.files = new Files();
 		
 		// BUFFER CLIENT MODEL
-		this.addClientModel = new BufferClientModel();
+		// this.addClientModel = new BufferClientModel();
 		
 		// BUFFER CLIENT USER MODEL
-		this.addClientUserModel = new BufferClientUserModel();
+		// this.addClientUserModel = new BufferClientUserModel();
 		
 		// BUFFER AGENT MODEL
-		this.addAgentModel = new BufferAgentModel();
+		// this.addAgentModel = new BufferAgentModel();
 
 		//BUFFER MESSAGE MODEL
-		this.addMessageModel = new BufferMessageModel();
+		// this.addMessageModel = new BufferMessageModel();
 
 		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch({error: this.clients.errorHandler}))
 		.then(this.initializeSuccess, this.initializeError);
@@ -85,6 +86,8 @@ var AppRouter = Backbone.Router.extend({
 			socket.emit('response', 'success');
 
 			app.tickets.fetch({reset:true});
+			app.users.fetch({reset:true});
+			app.clients.fetch({reset:true});
 		});
 	},
 

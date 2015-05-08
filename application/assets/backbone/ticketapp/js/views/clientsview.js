@@ -37,6 +37,10 @@ var ClientsView = Backbone.View.extend({
 		_.bindAll(this, "renderClient");
 	},
 
+	logSomething: function(){
+		console.log('log');
+	},
+
 	onClose: function(){
 		this.stopListening();
 		this.collection.each(function(model){
@@ -89,6 +93,7 @@ var ClientView = Backbone.View.extend({
 	},
 
 	render: function(){	
+		console.log('clientViewRender');
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
@@ -99,7 +104,7 @@ var ClientView = Backbone.View.extend({
 	},
 
 	deleteClient: function(){
-		var theModel = this.model
+		var theModel = this.model;
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + theModel.attributes.name +' and all of its users?', cancel: true},
 	    	function(){
 	    		theModel.destroy({ wait:true });			
@@ -132,6 +137,7 @@ var UsersView = Backbone.View.extend({
 	},
 
 	render: function(){
+		console.log('usersViewRender')
 		this.parent.$el.find('.client-user-stream').html(''); //clear out existing userViews
 		if(this.collection.length == 0){
 			this.parent.$el.find('.client-user-stream').html(this.template);
@@ -155,7 +161,8 @@ var UserView = Backbone.View.extend({
 		// 	'<h4>Awaiting Verification</h4>'+
 		// '{{/ifCond}}'+
 		'{{#if attributes.verify}}'+
-			'<h4>{{getCompanyName id}} {{convertUserRole attributes.role}}</h4>'+
+			'<h4>{{attributes.role}}</h4>'+
+			// {{getCompanyName id}} 
 		'{{else}}'+
 			'<h4>Awaiting Verification</h4>'+
 		'{{/if}}'+
@@ -163,9 +170,8 @@ var UserView = Backbone.View.extend({
 		'<a class="delete-user">Delete</a>'
 	),
 
-
-
 	render: function(){
+		// console.log('userViewRender');
 		this.$el.html(this.template(this.model));
 
 		this.delegateEvents({

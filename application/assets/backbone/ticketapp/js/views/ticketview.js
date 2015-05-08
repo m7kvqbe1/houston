@@ -190,13 +190,24 @@ var TicketDetailView = Backbone.View.extend({
 			"files": app.files.createFilesArray()
 		};
 
-		app.addMessageModel.url = '/api/tickets/reply/' + this.model.id;
-		app.addMessageModel.save(attributes,{
-			success: _.bind(function(model){
-				app.addMessageModel.clear();
-				app.changed = false;
-			}, this)
-		});
+		this.model.messagesCollection.create(
+			attributes, 
+			{
+				wait:true,
+				success: function(){
+					app.changed = false;
+					console.log('success');
+				}
+			}
+		);
+
+		// app.addMessageModel.url = '/api/tickets/reply/' + this.model.id;
+		// app.addMessageModel.save(attributes,{
+		// 	success: _.bind(function(model){
+		// 		app.addMessageModel.clear();
+		// 		app.changed = false;
+		// 	}, this)
+		// });
 
 		this.saveModel();
 	},

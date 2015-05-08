@@ -39,6 +39,7 @@ var PeopleView = Backbone.View.extend({
 	initialize: function() {		
 		this.listenTo(this.collection, "add change remove", this.render);
 		this.listenTo(app.users, "sync", this.render);
+
 		this.collection.view = this;
 		this.clientsView = new ClientsView({collection: app.clients}); 
 
@@ -171,13 +172,23 @@ var PeopleView = Backbone.View.extend({
 
 		var attributes = { "name": name };
 
-		app.addClientModel.save(attributes,{
-			success: _.bind(function(model){
-				app.addClientModel.clear();
-				app.changed = false;
-			}, this)
-		});
+		app.currentView.clientsView.collection.create(
+			attributes,
+			{
+				wait: true,
+				success: function(){
+					app.changed = false;
+					console.log('clientssuccess');
+				}
+			}
+		);			
 
+		// app.addClientModel.save(attributes,{
+		// 	success: _.bind(function(model){
+		// 		app.addClientModel.clear();
+		// 		app.changed = false;
+		// 	}, this)
+		// });
 	},	
 
 	editClient: function(e) {
@@ -220,16 +231,29 @@ var PeopleView = Backbone.View.extend({
 				"verify": false
 			};
 
-		app.addAgentModel.save(attributes,{
-			success: _.bind(function(model){
 
-				app.addAgentModel.clear();
-		    	app.changed = false;
-			}, this)
-		});
+		app.currentView.collection.create(
+			attributes,
+			{
+				wait: true,
+				success: function(){
+					app.changed = false;
+					console.log('agentsuccess');
+				}
+			}
+		);
+
+		// app.addAgentModel.save(attributes,{
+		// 	success: _.bind(function(model){
+
+		// 		app.addAgentModel.clear();
+		//     	app.changed = false;
+		// 	}, this)
+		// });
 	},
 
 	addUser: function(input) {
+		console.log('addUser');
 		var clientID = input.data('model');
 		var attributes = 
 			{
@@ -237,13 +261,27 @@ var PeopleView = Backbone.View.extend({
 				"clientID": clientID
 			};
 
-		app.addClientUserModel.save(attributes,{
-			success: _.bind(function(model){
-				app.addClientUserModel.clear();
-				app.changed = false;
-				console.log('user-added');
-			}, this)
-		});
+		app.currentView.clientsView.collection.get(clientID).usersCollection.create(
+			attributes,
+			{
+				wait: true,
+				success: function(){
+					app.changed = false;
+					console.log('clientUsersuccess');
+					app.currentView.cancelForm();
+				}
+			}
+		);	
+
+		// console.log(app.currentView.clientsView.collection.get(clientID).usersCollection);			
+
+		// app.addClientUserModel.save(attributes,{
+		// 	success: _.bind(function(model){
+		// 		app.addClientUserModel.clear();
+		// 		app.changed = false;
+		// 		console.log('user-added');
+		// 	}, this)
+		// });
 	}
 	
 });
