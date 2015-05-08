@@ -201,14 +201,6 @@ var TicketDetailView = Backbone.View.extend({
 			}
 		);
 
-		// app.addMessageModel.url = '/api/tickets/reply/' + this.model.id;
-		// app.addMessageModel.save(attributes,{
-		// 	success: _.bind(function(model){
-		// 		app.addMessageModel.clear();
-		// 		app.changed = false;
-		// 	}, this)
-		// });
-
 		this.saveModel();
 	},
 
@@ -228,7 +220,6 @@ var TicketDetailView = Backbone.View.extend({
 		app.preview = new PreviewWindow({collection: app.files.filesPreviewCollection});
 		app.preview.render();
 		app.modalWindow.html(app.preview.$el);
-
 	}
 	
 });

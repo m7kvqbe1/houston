@@ -37,10 +37,6 @@ var ClientsView = Backbone.View.extend({
 		_.bindAll(this, "renderClient");
 	},
 
-	logSomething: function(){
-		console.log('log');
-	},
-
 	onClose: function(){
 		this.stopListening();
 		this.collection.each(function(model){
@@ -56,6 +52,7 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
+		console.log(this.collection.models);
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
 		return this;
@@ -82,6 +79,7 @@ var ClientView = Backbone.View.extend({
 
 	initialize: function(){	
 		this.listenTo(this.model, "sync", this.render);	
+
 		// Create usersView as a child of the client view, populate it with the model's usersCollection
 		this.usersView = new UsersView({ collection: this.model.usersCollection});
 		this.usersView.parent = this;
@@ -93,7 +91,6 @@ var ClientView = Backbone.View.extend({
 	},
 
 	render: function(){	
-		console.log('clientViewRender');
 		this.$el.html(this.template(this.model));
 		//render the usersView child view
 		this.usersView.render();
@@ -107,7 +104,14 @@ var ClientView = Backbone.View.extend({
 		var theModel = this.model;
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + theModel.attributes.name +' and all of its users?', cancel: true},
 	    	function(){
-	    		theModel.destroy({ wait:true });			
+	    		theModel.destroy(
+	    			{
+	    				wait:true,
+	    				// success: function(){
+	    				// 	app.clients.fetch();
+	    				// }
+	    			}
+    			);			
 			}
 	    );		
 	}
@@ -137,7 +141,7 @@ var UsersView = Backbone.View.extend({
 	},
 
 	render: function(){
-		console.log('usersViewRender')
+		// console.log('usersViewRender')
 		this.parent.$el.find('.client-user-stream').html(''); //clear out existing userViews
 		if(this.collection.length == 0){
 			this.parent.$el.find('.client-user-stream').html(this.template);

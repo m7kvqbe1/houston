@@ -1,15 +1,4 @@
-// var BufferClientUserModel = Backbone.Model.extend({
-// 	url: '/api/user',
-// 	initialize: function(){
-// 		this.on("sync", function(){
-// 			// Fetch the users Collection, which resets the client's userCollections
-// 			app.users.fetch({reset:true});
-// 		});
-// 	}
-// });
-
 var ClientUserModel = Backbone.Model.extend({
-	// url: '/api/user', // Removed for delete user method of people view
 	initialize: function(){
 		// Create model's view as an attribute of itself
 		this.modelView = new UserView({model: this});

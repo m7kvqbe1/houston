@@ -140,7 +140,7 @@ var PeopleView = Backbone.View.extend({
 		var form = this.$el.find('#modal-form');
 		form.find('.modal-buttons').removeClass('validated-input-resize');
 		form.find('.confirm').removeClass('agent-button client-button user-button edit-client-button');
-		form.hide().find('input').val('');
+		form.hide().find('input').removeClass('error').val('');
 		this.formActive = false;
 	},
 
@@ -182,13 +182,6 @@ var PeopleView = Backbone.View.extend({
 				}
 			}
 		);			
-
-		// app.addClientModel.save(attributes,{
-		// 	success: _.bind(function(model){
-		// 		app.addClientModel.clear();
-		// 		app.changed = false;
-		// 	}, this)
-		// });
 	},	
 
 	editClient: function(e) {
@@ -206,7 +199,6 @@ var PeopleView = Backbone.View.extend({
 				app.clients.sort();
 			}, this)
 		});
-
 	},	
 
 	validateAgent: function(){
@@ -231,7 +223,6 @@ var PeopleView = Backbone.View.extend({
 				"verify": false
 			};
 
-
 		app.currentView.collection.create(
 			attributes,
 			{
@@ -242,14 +233,6 @@ var PeopleView = Backbone.View.extend({
 				}
 			}
 		);
-
-		// app.addAgentModel.save(attributes,{
-		// 	success: _.bind(function(model){
-
-		// 		app.addAgentModel.clear();
-		//     	app.changed = false;
-		// 	}, this)
-		// });
 	},
 
 	addUser: function(input) {
@@ -272,16 +255,6 @@ var PeopleView = Backbone.View.extend({
 				}
 			}
 		);	
-
-		// console.log(app.currentView.clientsView.collection.get(clientID).usersCollection);			
-
-		// app.addClientUserModel.save(attributes,{
-		// 	success: _.bind(function(model){
-		// 		app.addClientUserModel.clear();
-		// 		app.changed = false;
-		// 		console.log('user-added');
-		// 	}, this)
-		// });
 	}
 	
 });

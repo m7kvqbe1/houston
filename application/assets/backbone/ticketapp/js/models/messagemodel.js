@@ -13,11 +13,3 @@ var MessageModel = Backbone.Model.extend({
 		return response;
 	}
 });
-
-// var BufferMessageModel = Backbone.Model.extend({
-// 	initialize: function(){
-// 		this.on('sync', function(){
-// 			app.ticketDetailModel.messagesCollection.fetch({reset:true});
-// 		});
-// 	}
-// });
