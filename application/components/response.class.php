@@ -37,7 +37,7 @@ class ApiResponse extends Response
 
 	private static function fetchErrorMessage($code)
 	{
-		return constant("\Houston\Component\ErrorMessageDefinition::$code");
+		return constant("\Houston\Component\ApiResponseMessageDefinition::$code");
 	}
 
 	private static function encodeResponse(array $response)
@@ -98,7 +98,7 @@ class ApiResponse extends Response
 	}
 }
 
-class ErrorMessageDefinition
+class ApiResponseMessageDefinition
 {
 	const DEFAULT_RESPONSE_SUCCESS = 'The API action was succesfully completed.';
 
