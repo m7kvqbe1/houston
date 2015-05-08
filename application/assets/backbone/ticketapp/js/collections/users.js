@@ -4,17 +4,23 @@ var Users = Backbone.Collection.extend({
 
 	initialize: function() {
 		this.on("sync", function() {
+
 			//Reset agentsCollection with all agent/admins
 			app.agentsCollection.set(this.agentUsers());
 
-			//Add usersCollection to Client Models
-			var theModel;
-			for(var i=0; i<app.clients.length; i++) {
-			  theModel = app.clients.models[i];
-			  theModel.usersCollection.set(this.usersByClient(theModel.id));
-			}
+			// this.addUsersToClient(); //Removed as now triggered in app.fetchClients
 		});
 
+	},
+
+	addUsersToClient: function(){
+		console.log(app.clients.length);
+		var theModel;
+		for(var i=0; i<app.clients.length; i++) {
+			theModel = app.clients.models[i];
+	        theModel.usersCollection.set(this.usersByClient(theModel.id));	
+	        console.log(i);
+	    }
 	},
 
 	usersByClient: function(clientID){
@@ -29,9 +35,5 @@ var Users = Backbone.Collection.extend({
 			return data.get('role') !== 'USER';
 		});
 		return filtered;
-	},
-
-	logSomething: function(){
-		console.log('something');
 	}
 });

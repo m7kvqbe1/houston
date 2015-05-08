@@ -10,7 +10,7 @@ var ClientsView = Backbone.View.extend({
 									'<h3>Text</h3>'+
 									'<h4>Text</h4>'+
 									'<div class="modal-buttons">'+
-										'<input type="text" />'+
+										'<input id="modal-form-input" type="text" />'+
 										'<div class="validated-marker">'+
 					                        '<div class="vrf-cir">'+
 					                            '<i class="icon-cancel"></i>'+
@@ -52,7 +52,6 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log(this.collection.models);
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
 		return this;
@@ -175,7 +174,7 @@ var UserView = Backbone.View.extend({
 	),
 
 	render: function(){
-		// console.log('userViewRender');
+		console.log('userViewRender');
 		this.$el.html(this.template(this.model));
 
 		this.delegateEvents({

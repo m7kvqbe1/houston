@@ -36,7 +36,7 @@ var AppRouter = Backbone.Router.extend({
 		this.ticketDetailModel = new TicketDetailModel();
 		
 		// CLIENTS COLLECTION
-		this.clients = new Clients();
+		// this.clients = new Clients();
 
 		// AGENTS COLLECTION
 		this.agentsCollection =  new Agents();
@@ -44,9 +44,24 @@ var AppRouter = Backbone.Router.extend({
 		//FILES COLLECTION
 		this.files = new Files();
 
-		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch({error: this.clients.errorHandler}))
-		.then(this.initializeSuccess, this.initializeError);
+		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
+		// .then(this.initializeSuccess, this.initializeError);
 
+		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch())
+		.then(this.fetchClients, this.initializeError);
+
+	},
+
+	fetchClients: function(){
+		console.log('fetchClientsMethod');
+		app.clients = new Clients();
+
+		$.when(app.clients.fetch())
+		.done(function(){
+			app.users.addUsersToClient();
+			console.log('fetchClientsDone');
+			app.initializeSuccess();
+		});
 	},
 
 	initializeSuccess: function(){
@@ -176,7 +191,10 @@ var AppRouter = Backbone.Router.extend({
 var app = new AppRouter();
 
 
-
+		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
+		// .done(function(){
+		// 	app.initializeSuccess();
+		// });
 
 		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
 		// .done(function(){

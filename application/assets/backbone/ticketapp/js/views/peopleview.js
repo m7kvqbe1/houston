@@ -83,7 +83,7 @@ var PeopleView = Backbone.View.extend({
 
 	keyFormHandler: function(){
 		var button = this.$el.find('.confirm');
-		var input = this.$el.find('form input');
+		var input = this.$el.find('#modal-form-input');
 		if(button.hasClass('user-button')){
 			this.validateUser(input);
 		} else if (button.hasClass('agent-button')) {
@@ -145,7 +145,7 @@ var PeopleView = Backbone.View.extend({
 	},
 
 	validateClient: function(){
-		var input = this.$el.find('form input');
+		var input = this.$el.find('#modal-form-input');
 		var name = input.val();
 		var nameInUse = false;
 
@@ -202,12 +202,13 @@ var PeopleView = Backbone.View.extend({
 	},	
 
 	validateAgent: function(){
-		var input = this.$el.find('form input');
+		var input = this.$el.find('#modal-form-input');
         houston.validateAndApproveEmail(input,this.addAgent, this.validateFail);
 	},
 
 	validateUser: function(){
-		var input = this.$el.find('form input');
+		var input = this.$el.find('#modal-form-input');
+
         houston.validateAndApproveEmail(input, this.addUser, this.validateFail);
 	},
 
@@ -236,8 +237,8 @@ var PeopleView = Backbone.View.extend({
 	},
 
 	addUser: function(input) {
-		console.log('addUser');
-		var clientID = input.data('model');
+		var clientID = input.attr('data-model');
+
 		var attributes = 
 			{
 				"emailAddress": input.val(),
@@ -250,7 +251,6 @@ var PeopleView = Backbone.View.extend({
 				wait: true,
 				success: function(){
 					app.changed = false;
-					console.log('clientUsersuccess');
 					app.currentView.cancelForm();
 				}
 			}
