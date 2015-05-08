@@ -147,7 +147,7 @@ $secure = function(Request $request, Application $app) {
     require $fileName;
 });*/
 
-// Autoload houston components - MOVE THESE INTO SERVICE PROVIDERS!
+// Autoload houston components
 foreach(glob(DOCUMENT_ROOT."/application/components/*.php") as $filename) {
     require_once $filename;
 }
