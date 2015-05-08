@@ -26,7 +26,12 @@ class AuthController
 		$json = json_decode(file_get_contents('php://input'));
 
 		$userModel = new UserModel($this->app);
-		$userModel->loadUser($json->user);
+		
+		try {
+			$userModel->loadUser($json->user);	
+		} catch(\Exception $e) {
+			return ApiResponse::error('USER_NOT_FOUND');
+		}
 
 		// Does verified user exist?
 		if(!$userModel->isVerified($json->user)) return ApiResponse::error('USER_UNVERIFIED');
