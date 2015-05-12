@@ -1,7 +1,7 @@
 var ClientUserModel = Backbone.Model.extend({
 	initialize: function(){
 		// Create model's view as an attribute of itself
-		this.modelView = new UserView({model: this});
+		// this.modelView = new UserView({model: this});
 	},
 	
 	parse: function(response){

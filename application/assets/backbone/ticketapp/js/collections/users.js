@@ -14,12 +14,12 @@ var Users = Backbone.Collection.extend({
 	},
 
 	addUsersToClient: function(){
-		console.log(app.clients.length);
+		// console.log(app.clients.length);
 		var theModel;
 		for(var i=0; i<app.clients.length; i++) {
 			theModel = app.clients.models[i];
 	        theModel.usersCollection.set(this.usersByClient(theModel.id));	
-	        console.log(i);
+	        // console.log(i);
 	    }
 	},
 

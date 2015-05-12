@@ -45,10 +45,15 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	renderClient: function(model) {
-		var clientView = model.modelView;
-		clientView.parent = this;
-		this.$el.find('#clients-stream').append(clientView.$el);
-		clientView.render();
+		// var clientView = model.modelView;
+		// clientView.parent = this;
+		// this.$el.find('#clients-stream').append(clientView.$el);
+		// clientView.render();
+
+		model.modelView = new ClientView({model: model});
+		model.modelView.parent = this;
+		this.$el.find('#clients-stream').append(model.modelView.$el);
+		model.modelView.render();	
 	},
 
 	render: function() {
@@ -130,17 +135,24 @@ var UsersView = Backbone.View.extend({
 
 	onClose: function(){
 		this.stopListening();
+		this.collection.each(function(model){
+			model.modelView.close();
+		});
 	},
 
 	renderUser: function(model) {
-		var userView = model.modelView;
-		userView.parent = this;
-		this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
-		userView.render();
+		// var userView = model.modelView;
+		// userView.parent = this;
+		// this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
+		// userView.render();
+
+		model.modelView = new UserView({model: model});
+		model.modelView.parent = this;
+		this.parent.$el.find('.client-user-stream').append(model.modelView.$el);
+		model.modelView.render();	
 	},
 
 	render: function(){
-		// console.log('usersViewRender')
 		this.parent.$el.find('.client-user-stream').html(''); //clear out existing userViews
 		if(this.collection.length == 0){
 			this.parent.$el.find('.client-user-stream').html(this.template);
@@ -173,8 +185,11 @@ var UserView = Backbone.View.extend({
 		'<a class="delete-user">Delete</a>'
 	),
 
+	onClose: function(){
+		this.stopListening();
+	},
+
 	render: function(){
-		console.log('userViewRender');
 		this.$el.html(this.template(this.model));
 
 		this.delegateEvents({

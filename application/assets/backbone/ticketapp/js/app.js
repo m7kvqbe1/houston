@@ -53,13 +53,13 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	fetchClients: function(){
-		console.log('fetchClientsMethod');
+		// console.log('fetchClientsMethod');
 		app.clients = new Clients();
 
 		$.when(app.clients.fetch())
 		.done(function(){
 			app.users.addUsersToClient();
-			console.log('fetchClientsDone');
+			// console.log('fetchClientsDone');
 			app.initializeSuccess();
 		});
 	},
@@ -129,6 +129,16 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverviewFrontController: function() {
+		// this.clients.each(function(model){
+		// 	model.modelView = new ClientView({model: model});
+
+		// 	if(model.usersCollection.length !== 0){
+		// 		model.usersCollection.each(function(model){
+		// 			model.modelView = new UserView({model: model});
+		// 		});
+		// 	}
+		// });
+
 		var peopleView = new PeopleView({collection: this.agentsCollection});
 		this.showView(peopleView);
 	},

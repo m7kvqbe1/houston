@@ -5,7 +5,7 @@ var ClientModel = Backbone.Model.extend({
 		// this.usersCollection = new ClientUsers(app.users.usersByClient(this.id)); //Removed as now clientUsers are fetched in app.fetchClients
 
 		// Create model's view as an attribute of itself
-		this.modelView = new ClientView({model: this});
+		// this.modelView = new ClientView({model: this});
 	},
 	
 	parse: function(response){
