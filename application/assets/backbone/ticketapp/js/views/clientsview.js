@@ -57,6 +57,7 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
+		console.log('clinetsRender');
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
 		return this;
@@ -111,9 +112,10 @@ var ClientView = Backbone.View.extend({
 	    		theModel.destroy(
 	    			{
 	    				wait:true,
-	    				// success: function(){
-	    				// 	app.clients.fetch();
-	    				// }
+	    				success: function(){
+	    					// app.clients.fetch();
+	    					app.currentView.clientsView.render();
+	    				}
 	    			}
     			);			
 			}

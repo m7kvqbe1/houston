@@ -62,7 +62,7 @@ var PeopleView = Backbone.View.extend({
 			'click .edit-client': 'setupForm',
 			'click button.btn-can': 'cancelForm',
 			'click .agent-button': 'validateAgent',
-			'click .client-button': 'addClient',
+			'click .client-button': 'validateClient',
 			'click .user-button': 'validateUser',
 			'click .edit-client-button': 'editClient',
 			'input input': 'markAsChanged'
@@ -84,11 +84,13 @@ var PeopleView = Backbone.View.extend({
 	keyFormHandler: function(){
 		var button = this.$el.find('.confirm');
 		var input = this.$el.find('#modal-form-input');
+console.log(button);
 		if(button.hasClass('user-button')){
 			this.validateUser(input);
 		} else if (button.hasClass('agent-button')) {
 			this.validateAgent(input);
 		} else if (button.hasClass('client-button')) {
+			console.log(input);
 			this.validateClient(input);
 		}
 
@@ -149,27 +151,25 @@ var PeopleView = Backbone.View.extend({
 		var name = input.val();
 		var nameInUse = false;
 
-		if(!name) return; 
+		if(!name){
+			this.validateFail(input);
+			return; 
+		}
 
 		app.clients.each(function(model){
-			if(name.toLowerCase() == model.attributes.name.toLowerCase()){
+			if(name.toLowerCase() === model.attributes.name.toLowerCase()){
 				nameInUse = true;
 			}
 		});
 
 		if(nameInUse) {
-			this.validateFail(input);
-			return false;
+			this.validateFail(input);			
 		} else {
-			return input;
+			this.addClient(name);			
 		}	
 	},
 
-	addClient: function(e) {
-		var input = $(this.validateClient());
-		var name = input.val();
-		if(!name) return;
-
+	addClient: function(name) {
 		var attributes = { "name": name };
 
 		app.currentView.clientsView.collection.create(
