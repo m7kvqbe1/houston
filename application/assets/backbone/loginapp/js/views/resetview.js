@@ -10,8 +10,20 @@ var ResetView = Backbone.View.extend({
 			'<h2>Change Password</h2>'+
 			'<h3 class="log-tag">Please enter a new password below</h3>'+
 			'<form id="form-pass-confirm">'+
-				'<input class="required" type="password" name="pass" placeholder="Password" />'+
-				'<input class="required" type="password" name="pass-c" placeholder="Confirm Password" />'+			
+				'<div class="reg-vrf">'+
+					'<input class="reg-p required pass-input" type="password" name="pass" placeholder="Password" />'+
+					'<div class="vrf">'+
+						'<div class="vrf-cir vrf-count">8</div>'+
+						'<div class="vrf-msg"></div>'+
+					'</div>'+						
+				'</div>'+
+				'<div class="reg-vrf">'+					
+					'<input class="inp-lst required" type="password" name="pass-c" placeholder="Confirm Password" />'+			
+					'<div class="vrf">'+
+						'<div class="vrf-cir ok"><i class="icon-ok-1"></i></i></div>'+
+						'<div class="vrf-msg"></div>'+
+					'</div>'+
+				'</div>'+						
 				'<button class="reset" type="button">Confirm</button>'+
 				'<div class="beige">or</div>'+
 				'<a href="/" class="btn-can">Cancel</a>'+
@@ -28,10 +40,26 @@ var ResetView = Backbone.View.extend({
 		this.$el.html(this.template());
 		this.delegateEvents({
 			'click .reset': 'reset',
-			'input input': 'resetErrorMessage'
+			'input input': 'resetErrorMessage',
+			'focus .reg-p': 'showCount',
+			'input .reg-p': 'passCount',
+			'input .inp-lst': 'passMatch'
 		});
 		return this;
 	},
+
+	passMatch: function(e){
+		console.log('match');
+		login.registerPasswordMatch(e.currentTarget);
+	},
+	
+	passCount: function(e){
+		login.registerPasswordCount(e.currentTarget, this.$el);
+	},
+	
+	showCount: function(e){	
+		login.registerPasswordShowCount(e.currentTarget);
+	},	
 
 	resetErrorMessage: function(){
 		this.$el.find('h2').show().removeClass('text-animate');
@@ -78,15 +106,13 @@ var ValidateView = Backbone.View.extend({
 			'<h3 class="verify-tag">Please set your password below</h3>'+
 			'<form id="form-verify">'+
 				'<div class="reg-vrf">'+
-					// '<input type="password" class="reg-p vld-aa" name="reg-p" placeholder="Password" class="vld-aa" data-vld="vld-a" />'+
 					'<input class="reg-p required pass-input" type="password" name="pass" placeholder="Password" />'+
 					'<div class="vrf">'+
 						'<div class="vrf-cir vrf-count">8</div>'+
 						'<div class="vrf-msg"></div>'+
 					'</div>'+						
 				'</div>'+
-				'<div class="reg-vrf">'+
-					// '<input class="inp-lst vld-bb" type="password" name="register-password-confirm" placeholder="Repeat Password" data-vld="vld-b" disabled="disabled" />'+
+				'<div class="reg-vrf">'+					
 					'<input class="inp-lst required" type="password" name="pass-c" placeholder="Confirm Password" />'+			
 					'<div class="vrf">'+
 						'<div class="vrf-cir ok"><i class="icon-ok-1"></i></i></div>'+
@@ -111,7 +137,7 @@ var ValidateView = Backbone.View.extend({
 			'input input': 'resetErrorMessage',
 			'focus .reg-p': 'showCount',
 			'input .reg-p': 'passCount',
-			'input .inp-lst': 'passMatch',
+			'input .inp-lst': 'passMatch'
 		});
 		return this;
 	},
