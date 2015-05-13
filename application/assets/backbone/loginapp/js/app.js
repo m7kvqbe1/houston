@@ -12,7 +12,7 @@ var AppRouter = Backbone.Router.extend({
 	//set up routes
 		"": "login",
 		"reset/:token": "reset",
-		"verify/:token": "validate",	
+		"verify/:token": "validate",
 		"register": "register",
 		"*notFound": "login"
 	},

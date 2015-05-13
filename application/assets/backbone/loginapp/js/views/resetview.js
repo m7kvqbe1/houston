@@ -92,7 +92,8 @@ var ValidateView = Backbone.View.extend({
 						'<div class="vrf-cir ok"><i class="icon-ok-1"></i></i></div>'+
 						'<div class="vrf-msg"></div>'+
 					'</div>'+
-				'</div>'+								
+				'</div>'+	
+				'<h3>Just this final step and your new Houston account will be good to go!</h3>'+							
 				'<button class="validate" type="button">Login</button>'+
 			'</form>'+			
 		'</div>'+
@@ -110,7 +111,6 @@ var ValidateView = Backbone.View.extend({
 			'input input': 'resetErrorMessage',
 			'focus .reg-p': 'showCount',
 			'input .reg-p': 'passCount',
-			// 'blur .reg-p': 'hideCount',
 			'input .inp-lst': 'passMatch',
 		});
 		return this;
@@ -127,11 +127,7 @@ var ValidateView = Backbone.View.extend({
 	
 	showCount: function(e){	
 		login.registerPasswordShowCount(e.currentTarget);
-	},
-
-	// hideCount: function(e){
-
-	// }	
+	},	
 
 	resetErrorMessage: function(){
 		this.$el.find('h2').show().removeClass('text-animate');

@@ -2949,7 +2949,7 @@ button.grayscale.gray .c {
 
 /* Register */
 	#form-reg,
-	.reg-vrf{
+	#form-reg .reg-vrf{
 		width: 408px;
 	}
 
@@ -2971,7 +2971,7 @@ button.grayscale.gray .c {
 		margin-left: 0;
 	}
 	
-	.vrf {
+	#form-reg .vrf {
 		right: 0;
 		width: 94px;
 	}
@@ -2988,7 +2988,7 @@ button.grayscale.gray .c {
 
 /* Set Password */
 	#form-verify .validate {
-		margin: 14px 0 62px;
+		margin: 0 0 12px;
 	}
 
 
