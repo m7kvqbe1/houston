@@ -113,7 +113,7 @@ var ClientView = Backbone.View.extend({
 	    			{
 	    				wait:true,
 	    				success: function(){
-	    					// app.clients.fetch();
+	    					// app.clients.fetch(); //Could use either or, depends on whether changes to clients collection will trigger through socket
 	    					app.currentView.clientsView.render();
 	    				}
 	    			}

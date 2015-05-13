@@ -572,6 +572,7 @@ input.inp-lst {
 #form-pass,
 #form-pass-confirm,
 #form-verify {
+		width: 258px;
 	margin: 24px auto 0px;
 }
 
@@ -619,8 +620,10 @@ input.inp-lst {
 	display: inline-block;
 }
 
-.vld-wrap .password-resize,
-.vld-wrap .in-use {
+/*.vld-wrap .password-resize,
+.vld-wrap .in-use {*/
+.reg-vrf .password-resize,
+.reg-vrf .in-use {
 	width: 192px;
 	margin-right: 44px;
 }

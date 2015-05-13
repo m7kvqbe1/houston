@@ -156,6 +156,7 @@ var login = {
 
 			inpLst.val('');
 			inpLst.prop('disabled', true);
+			inpLst.removeClass('password-resize');
 			inpLst.closest('.reg-vrf').find('.vrf').fadeOut();
 			inpLst.closest('.vld-wrap').removeClass('vld-a vld-b');
 		} else {
@@ -163,6 +164,11 @@ var login = {
 			counter.html('<i class="icon-ok-1"></i>');
 			counter.addClass('ok');
 			inpLst.prop('disabled', false);
+
+			//Set this.validatedPassword for set/reset password views when using this method
+			if(input.hasClass('pass-input')){
+				this.validatedPassword = input.val();
+			}
 		}
 	},
 
@@ -184,6 +190,7 @@ var login = {
 		} else {
 			vrf.fadeOut();
 			wrapper.removeClass(css); //added to give effect
+			input.removeClass('password-resize');
 		}	
 	},
 
