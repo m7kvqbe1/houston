@@ -62,7 +62,7 @@ var PeopleView = Backbone.View.extend({
 			'click .edit-client': 'setupForm',
 			'click button.btn-can': 'cancelForm',
 			'click .agent-button': 'validateAgent',
-			'click .client-button': 'validateClient',
+			'click .client-button': 'addClient',
 			'click .user-button': 'validateUser',
 			'click .edit-client-button': 'editClient',
 			'input input': 'markAsChanged'
@@ -84,7 +84,7 @@ var PeopleView = Backbone.View.extend({
 	keyFormHandler: function(){
 		var button = this.$el.find('.confirm');
 		var input = this.$el.find('#modal-form-input');
-console.log(button);
+
 		if(button.hasClass('user-button')){
 			this.validateUser(input);
 		} else if (button.hasClass('agent-button')) {
@@ -153,7 +153,7 @@ console.log(button);
 
 		if(!name){
 			this.validateFail(input);
-			return; 
+			return false; 
 		}
 
 		app.clients.each(function(model){
@@ -163,13 +163,18 @@ console.log(button);
 		});
 
 		if(nameInUse) {
-			this.validateFail(input);			
-		} else {
-			this.addClient(name);			
+			this.validateFail(input);	
+			return false;		
+		} else {		
+			return input;
 		}	
 	},
 
-	addClient: function(name) {
+	addClient: function() {
+		var input = $(this.validateClient());
+		if(!input) return;
+
+		var name = input.val();
 		var attributes = { "name": name };
 
 		app.currentView.clientsView.collection.create(
@@ -178,7 +183,6 @@ console.log(button);
 				wait: true,
 				success: function(){
 					app.changed = false;
-					console.log('clientssuccess');
 				}
 			}
 		);			
@@ -186,10 +190,10 @@ console.log(button);
 
 	editClient: function(e) {
 		var input = $(this.validateClient());
-		var name = input.val();
-		if(!name) return;
+		if(!input) return;
 
-		var clientID = input.data('model');
+		var name = input.val();
+		var clientID = input.attr('data-model');
 		var client = app.clients.get(clientID);
 		var attributes = { "name": name };
 

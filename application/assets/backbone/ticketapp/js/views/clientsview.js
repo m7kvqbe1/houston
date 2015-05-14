@@ -57,7 +57,6 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log('clinetsRender');
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
 		return this;
