@@ -38,7 +38,7 @@ var PeopleView = Backbone.View.extend({
 	
 	initialize: function() {		
 		this.listenTo(this.collection, "add change remove", this.render);
-		this.listenTo(app.users, "sync", this.render);
+		this.listenTo(app.users, "sync", this.render); //Is this necessary?
 
 		this.collection.view = this;
 		this.clientsView = new ClientsView({collection: app.clients}); 
@@ -54,6 +54,7 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
+		console.log('peopleRender');
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({

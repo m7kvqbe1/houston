@@ -34,7 +34,7 @@ var ClientsView = Backbone.View.extend({
 
 	initialize: function() {	
 		this.listenTo(this.collection, 'sync sort', this.render);		
-		_.bindAll(this, "renderClient");
+		_.bindAll(this, 'renderClient');
 	},
 
 	onClose: function(){
@@ -45,11 +45,6 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	renderClient: function(model) {
-		// var clientView = model.modelView;
-		// clientView.parent = this;
-		// this.$el.find('#clients-stream').append(clientView.$el);
-		// clientView.render();
-
 		model.modelView = new ClientView({model: model});
 		model.modelView.parent = this;
 		this.$el.find('#clients-stream').append(model.modelView.$el);
@@ -65,8 +60,8 @@ var ClientsView = Backbone.View.extend({
 });
 
 var ClientView = Backbone.View.extend({
-	tagName: "li",
-	className: "client",
+	tagName: 'li',
+	className: 'client',
 	template: Handlebars.compile(
 		'<div class="company-info">'+
 			'<h3>{{attributes.name}}</h3>'+
@@ -83,9 +78,7 @@ var ClientView = Backbone.View.extend({
 
 	initialize: function(){	
 		this.listenTo(this.model, "sync", this.render);	
-
-		// Create usersView as a child of the client view, populate it with the model's usersCollection
-		this.usersView = new UsersView({ collection: this.model.usersCollection});
+		this.usersView = new UsersView({collection: this.model.usersCollection});
 		this.usersView.parent = this;
 	},
 
@@ -96,42 +89,40 @@ var ClientView = Backbone.View.extend({
 
 	render: function(){	
 		this.$el.html(this.template(this.model));
-		//render the usersView child view
 		this.usersView.render();
-
 		this.delegateEvents({
 			'click .delete-client': 'deleteClient'
 		});
+		return this;
 	},
 
 	deleteClient: function(){
 		var theModel = this.model;
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + theModel.attributes.name +' and all of its users?', cancel: true},
 	    	function(){
-	    		theModel.destroy(
-	    			{
-	    				wait:true,
-	    				success: function(){
-	    					// app.clients.fetch(); //Could use either or, depends on whether changes to clients collection will trigger through socket
-	    					app.currentView.clientsView.render();
-	    				}
-	    			}
-    			);			
+	    		theModel.destroy({
+    				wait:true,
+    				success: function(){
+    					app.clients.fetch({
+    						success: function(){
+    							app.users.addUsersToClient();
+    						}
+    					}); 
+    				}
+    			});			
 			}
 	    );		
 	}
-
 });
 
 var UsersView = Backbone.View.extend({
-
 	template: Handlebars.compile(
 		'<h4 class="client-has-no-users">This client currently has no users</h4>'
 	),
 
 	initialize: function(){
 		this.listenTo(this.collection, 'add change remove', this.render);			
-		_.bindAll(this, "renderUser");
+		_.bindAll(this, 'renderUser');
 	},
 
 	onClose: function(){
@@ -142,11 +133,6 @@ var UsersView = Backbone.View.extend({
 	},
 
 	renderUser: function(model) {
-		// var userView = model.modelView;
-		// userView.parent = this;
-		// this.parent.$el.find('.client-user-stream').append(userView.$el); //find from the parentViews $el
-		// userView.render();
-
 		model.modelView = new UserView({model: model});
 		model.modelView.parent = this;
 		this.parent.$el.find('.client-user-stream').append(model.modelView.$el);
@@ -162,27 +148,19 @@ var UsersView = Backbone.View.extend({
 		}
 		return this;
 	}
-
 });
 
 var UserView = Backbone.View.extend({
-	tagName: "li",
-	className: "person",
+	tagName: 'li',
+	className: 'person',
 	template: Handlebars.compile(
 		'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
 		'<h3>{{#if attributes.firstName}}{{attributes.firstName}} {{attributes.lastName}}{{else}}{{attributes.emailAddress}}{{/if}}</h3>'+
-		// '{{#ifCond attributes.verify true}}'+
-		// 	'<h4>{{attributes.role}}</h4>'+
-		// '{{else}}'+
-		// 	'<h4>Awaiting Verification</h4>'+
-		// '{{/ifCond}}'+
-		'{{#if attributes.verify}}'+
-			'<h4>{{attributes.role}}</h4>'+
-			// {{getCompanyName id}} 
+		'{{#ifCond attributes.verify true}}'+
+			'<h4>{{getCompanyName id}} {{convertUserRole attributes.role}}</h4>'+
 		'{{else}}'+
 			'<h4>Awaiting Verification</h4>'+
-		'{{/if}}'+
-
+		'{{/ifCond}}'+
 		'<a class="delete-user">Delete</a>'
 	),
 
@@ -192,13 +170,13 @@ var UserView = Backbone.View.extend({
 
 	render: function(){
 		this.$el.html(this.template(this.model));
-
 		this.delegateEvents({
 			'click .delete-user': 'deleteUser'
 		});
+		return this;
 	},
 
-	deleteUser: function(e){
+	deleteUser: function(){
 		var theModel = this.model
 		var attributes = theModel.attributes;
 		var name;
@@ -209,9 +187,8 @@ var UserView = Backbone.View.extend({
 		}
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + name +'?', cancel: true},
 	    	function(){
-	    		theModel.destroy({ wait:true });			
+	    		theModel.destroy({wait:true});			
 			}
 	    );		
 	}
-
 });
