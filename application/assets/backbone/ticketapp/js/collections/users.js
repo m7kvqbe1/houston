@@ -12,16 +12,6 @@ var Users = Backbone.Collection.extend({
 		});
 	},
 
-	addUsersToClient: function(){
-		// console.log(app.clients.length);
-		var theModel;
-		for(var i=0; i<app.clients.length; i++) {
-			theModel = app.clients.models[i];
-	        theModel.usersCollection.set(this.usersByClient(theModel.id));	
-	        // console.log(i);
-	    }
-	},
-
 	usersByClient: function(clientID){
 		filtered = this.filter(function(data){
 			return data.get('clientID') === clientID;
@@ -34,5 +24,18 @@ var Users = Backbone.Collection.extend({
 			return data.get('role') !== 'USER';
 		});
 		return filtered;
+	},
+
+	addUsersToClient: function(){
+		// console.log(app.clients.length);
+		var theModel;
+		for(var i=0; i<app.clients.length; i++) {
+			theModel = app.clients.models[i];
+	        theModel.usersCollection.set(app.users.usersByClient(theModel.id));	
+	        // console.log(i);
+	    }
+	},	
+
+	fetchPeopleAndClients(){
 	}
 });

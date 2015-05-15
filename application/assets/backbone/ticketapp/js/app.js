@@ -129,18 +129,18 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverviewFrontController: function() {
-		// this.clients.each(function(model){
-		// 	model.modelView = new ClientView({model: model});
-
-		// 	if(model.usersCollection.length !== 0){
-		// 		model.usersCollection.each(function(model){
-		// 			model.modelView = new UserView({model: model});
-		// 		});
-		// 	}
-		// });
-
-		var peopleView = new PeopleView({collection: this.agentsCollection});
-		this.showView(peopleView);
+		if(!app.currentView) {
+			var peopleView = new PeopleView({collection: this.agentsCollection});
+			this.showView(peopleView);
+		} else {
+			$.when(app.users.fetch())
+			.done(app.clients.fetch({reset:true}))
+			.done(app.users.addUsersToClient)
+			.done(function(){
+					var peopleView = new PeopleView({collection: app.agentsCollection});
+					app.showView(peopleView);	
+			});
+		}
 	},
 
 	profileFrontController: function() {

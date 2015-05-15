@@ -39,7 +39,9 @@ var ClientsView = Backbone.View.extend({
 
 	onClose: function(){
 		this.stopListening();
-		this.collection.each(function(model){
+		// console.log(app.clients);
+		app.clients.each(function(model){
+			console.log(model);
 			model.modelView.close();
 		});
 	},
