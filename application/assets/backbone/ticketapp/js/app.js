@@ -1,6 +1,3 @@
-//danialk.github.io/blog/2013/06/08/backbone-tips-after-and-before-methods-for-router/
-//lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/
-//lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/
 var AppRouter = Backbone.Router.extend({
 	root: '/',
 	routes: {
@@ -23,44 +20,35 @@ var AppRouter = Backbone.Router.extend({
 		// Check for File API support
 		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File API is not fully supported by this browser');
 
-		// AUTHENTICATED SESSION USER MODEL
 		this.user = new UserModel();
-		
-		// USERS COLLECTION
 		this.users = new Users();
-	
-		// TICKETS COLLECTION
 		this.tickets = new Tickets();
-		
-		// TICKET MODEL
 		this.ticketDetailModel = new TicketDetailModel();
-		
-		// CLIENTS COLLECTION
-		// this.clients = new Clients();
-
-		// AGENTS COLLECTION
 		this.agentsCollection =  new Agents();
-
-		//FILES COLLECTION
+		this.clients = new Clients();
 		this.files = new Files();
 
-		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
-		// .then(this.initializeSuccess, this.initializeError);
+		this.fetchData();
+	},
 
-		$.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch())
-		.then(this.fetchClients, this.initializeError);
-
+	fetchData: function(){
+		console.log('fetchData');
+		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
+		.then(this.fetchClients, this.fetchError);		
 	},
 
 	fetchClients: function(){
-		// console.log('fetchClientsMethod');
-		app.clients = new Clients();
+		// app.clients = new Clients();
 
-		$.when(app.clients.fetch())
+		$.when(app.clients.fetch({reset:true}))
 		.done(function(){
 			app.users.addUsersToClient();
-			// console.log('fetchClientsDone');
-			app.initializeSuccess();
+			if(!app.currentView){
+				app.initializeSuccess();
+			} else { //Needs to be changed because socketsuse this method, but this fixes fecth order
+				var peopleView = new PeopleView({collection: app.agentsCollection});
+				app.showView(peopleView);
+			}
 		});
 	},
 
@@ -69,8 +57,8 @@ var AppRouter = Backbone.Router.extend({
 		app.startHistory();
 	},
 
-	initializeError: function(a,b,c){
-		console.log(a);
+	fetchError: function(a,b,c){
+		console.log(a); //Use global error handler 
 	},
 
 	setUpSocket: function(){
@@ -83,9 +71,7 @@ var AppRouter = Backbone.Router.extend({
 			$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
 			socket.emit('response', 'success');
 
-			app.tickets.fetch({reset:true});
-			app.users.fetch({reset:true});
-			app.clients.fetch({reset:true});
+			app.fetchData();
 		});
 	},
 
@@ -129,17 +115,19 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverviewFrontController: function() {
+		//Amend to use fetchData in attempt to enforce order of fetches
 		if(!app.currentView) {
 			var peopleView = new PeopleView({collection: this.agentsCollection});
 			this.showView(peopleView);
 		} else {
-			$.when(app.users.fetch())
-			.done(app.clients.fetch({reset:true}))
-			.done(app.users.addUsersToClient)
-			.done(function(){
-					var peopleView = new PeopleView({collection: app.agentsCollection});
-					app.showView(peopleView);	
-			});
+			// $.when(app.users.fetch({reset: true}))
+			// .done(app.clients.fetch({reset:true}))
+			// .done(app.users.addUsersToClient)
+			// .done(function(){
+			// 		var peopleView = new PeopleView({collection: app.agentsCollection});
+			// 		app.showView(peopleView);	
+			// });
+			app.fetchData();
 		}
 	},
 
@@ -199,15 +187,3 @@ var AppRouter = Backbone.Router.extend({
 });
 
 var app = new AppRouter();
-
-
-		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
-		// .done(function(){
-		// 	app.initializeSuccess();
-		// });
-
-		// $.when(this.user.fetch(), this.users.fetch(), this.tickets.fetch(), this.clients.fetch())
-		// .done(function(){
-		// 	app.setUpSocket();
-		// 	app.startHistory();
-		// });

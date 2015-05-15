@@ -1,9 +1,4 @@
-var ClientUserModel = Backbone.Model.extend({
-	initialize: function(){
-		// Create model's view as an attribute of itself
-		// this.modelView = new UserView({model: this});
-	},
-	
+var ClientUserModel = Backbone.Model.extend({	
 	parse: function(response){
 		if(response._id){
 			response.id = response._id['$id'];

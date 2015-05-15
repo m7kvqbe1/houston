@@ -4,7 +4,7 @@ var Users = Backbone.Collection.extend({
 
 	initialize: function() {
 		this.on("sync", function() {
-
+			console.log('A');
 			//Reset agentsCollection with all agent/admins
 			app.agentsCollection.set(this.agentUsers());
 
@@ -32,7 +32,7 @@ var Users = Backbone.Collection.extend({
 		for(var i=0; i<app.clients.length; i++) {
 			theModel = app.clients.models[i];
 	        theModel.usersCollection.set(app.users.usersByClient(theModel.id));	
-	        // console.log(i);
+	        console.log(i);
 	    }
 	},	
 
