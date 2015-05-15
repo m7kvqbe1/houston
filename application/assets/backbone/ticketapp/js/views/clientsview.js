@@ -33,7 +33,7 @@ var ClientsView = Backbone.View.extend({
 	),
 
 	initialize: function() {	
-		this.listenTo(this.collection, 'sync sort', this.render);		
+		this.listenTo(this.collection, 'add change remove sort', this.render);
 		_.bindAll(this, 'renderClient');
 	},
 
@@ -77,7 +77,6 @@ var ClientView = Backbone.View.extend({
 	),	
 
 	initialize: function(){	
-		this.listenTo(this.model, "sync", this.render);	
 		this.usersView = new UsersView({collection: this.model.usersCollection});
 		this.usersView.parent = this;
 	},
@@ -102,12 +101,17 @@ var ClientView = Backbone.View.extend({
 	    	function(){
 	    		theModel.destroy({
     				wait:true,
-    				success: function(){
-    					app.clients.fetch({
+    				success: function(model){
+    					app.users.fetch({
     						success: function(){
-    							app.users.addUsersToClient();
+		    					app.clients.fetch({
+		    						reset: true,
+		    						success: function(){
+		    							app.users.addUsersToClient();
+		    						}
+		    					}); 
     						}
-    					}); 
+    					});
     				}
     			});			
 			}
@@ -121,8 +125,12 @@ var UsersView = Backbone.View.extend({
 	),
 
 	initialize: function(){
-		this.listenTo(this.collection, 'add change remove', this.render);			
+		this.listenTo(this.collection, 'add change remove', this.render);
 		_.bindAll(this, 'renderUser');
+	},
+
+	logSomething: function(){
+		console.log('log');
 	},
 
 	onClose: function(){
@@ -160,6 +168,7 @@ var UserView = Backbone.View.extend({
 			'<h4>{{getCompanyName id}} {{convertUserRole attributes.role}}</h4>'+
 		'{{else}}'+
 			'<h4>Awaiting Verification</h4>'+
+			'<a class="resend-verification">Resend</a> '+
 		'{{/ifCond}}'+
 		'<a class="delete-user">Delete</a>'
 	),
@@ -185,9 +194,15 @@ var UserView = Backbone.View.extend({
 		} else {
 			name = attributes.emailAddress;
 		}
+		console.log(theModel.attributes);
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + name +'?', cancel: true},
 	    	function(){
-	    		theModel.destroy({wait:true});			
+	    		theModel.destroy({
+	    			wait:true,
+	    			success: function(){
+	    				console.log('userDestroyed');
+	    			}
+	    		});		    				
 			}
 	    );		
 	}
