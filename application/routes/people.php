@@ -19,4 +19,4 @@ $app->put('/api/clients/{clientID}', 'people.controller:putClientAction')->befor
 
 $app->post('/api/agents', 'people.controller:postAgentAction')->before($secure);
 
-$app->post('/api/user', 'people.controller:postUserAction')->before($secure);
+$app->post('/api/users', 'people.controller:postUserAction')->before($secure);
