@@ -2,15 +2,15 @@ var FileUploadView = Backbone.View.extend({
 //paydirtapp.com/blog/backbone-in-practice-dirty-object-handling/
 //blog.soom.la/2014/04/backbone-js-a-better-fetch-function.html
 	template: Handlebars.compile(
-		'<div class="attach-files">' +
-			'<a class="attach-link">Attach files to this ticket</a>' + 
-			'<div class="supported">Supported -</div>' + 
-			'<ul class="filetypes">' +
-				'<li>Jpg</li>' +
-				'<li>Png</li>' +
-				'<li>Gif</li>' +
-				'<li>Pdf</li>' +
-			'</ul>' +
+		'<div class="attach-files">'+
+			'<a class="attach-link">Attach files to this ticket</a>'+ 
+			'<div class="supported">Supported -</div>'+ 
+			'<ul class="filetypes">'+
+				'<li>Jpg</li>'+
+				'<li>Png</li>'+
+				'<li>Gif</li>'+
+				'<li>Pdf</li>'+
+			'</ul>'+
 			'<div class="file-input-wrapper">'+
 				'<div id="drop_zone">Drop files here</div>'+
 				'<input type="file" id="filesInput" name="files[]" multiple />'+
@@ -40,7 +40,7 @@ var FileUploadView = Backbone.View.extend({
 					'</div>'+					
 				'</li>'+
 			'{{/each}}'+
-			'</ul>' +	
+			'</ul>'+	
 		'</div>'
 	),
 

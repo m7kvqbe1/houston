@@ -23,6 +23,7 @@ var PeopleView = Backbone.View.extend({
 							'<img class="avatar" src="application/assets/img/avatar.png" />'+
 							'<h3>{{attributes.emailAddress}}</h3>'+
 							'<h4>Awaiting Verification</h4>'+
+							'<a class="resend-verification">Resend</a> '+
 						'{{/ifCond}}'+
 						'<a class="delete-agent" data-id="{{id}}">Delete</a>'+
 					'</li>'+
@@ -37,8 +38,7 @@ var PeopleView = Backbone.View.extend({
 	),
 	
 	initialize: function() {		
-		this.listenTo(this.collection, "add change remove", this.render);
-		this.listenTo(app.users, "sync", this.render); //Is this necessary?
+		this.listenTo(this.collection, 'add change remove', this.render);
 
 		this.collection.view = this;
 		this.clientsView = new ClientsView({collection: app.clients}); 
@@ -54,7 +54,7 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log('peopleRender');
+		// console.log('peopleRender');
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({
@@ -84,17 +84,13 @@ var PeopleView = Backbone.View.extend({
 
 	keyFormHandler: function(){
 		var button = this.$el.find('.confirm');
-		var input = this.$el.find('#modal-form-input');
-
 		if(button.hasClass('user-button')){
-			this.validateUser(input);
-		} else if (button.hasClass('agent-button')) {
-			this.validateAgent(input);
-		} else if (button.hasClass('client-button')) {
-			console.log(input);
-			this.validateClient(input);
+			this.validateUser();
+		} else if (button.hasClass('agent-button')){
+			this.validateAgent();
+		} else if (button.hasClass('client-button')){		
+			this.addClient();
 		}
-
 	},    
 
 	formData: [
@@ -106,8 +102,8 @@ var PeopleView = Backbone.View.extend({
 
 	setupForm: function(e){
 		var input = $(e.currentTarget);
-		var formData = input.data('form');
-		var modelData = input.data('model');
+		var formData = input.attr('data-form');
+		var modelData = input.attr('data-model');
 		var form = this.$el.find('#modal-form');
 		
 		//Add client name to formData if adding a User
@@ -118,7 +114,6 @@ var PeopleView = Backbone.View.extend({
 
 			form.find('h3').text(formHeader);
 			form.find('h4').text(formMessage);
-
 			form.find('input').attr('data-model', modelData);
 
 		} else {
@@ -153,8 +148,10 @@ var PeopleView = Backbone.View.extend({
 		var nameInUse = false;
 
 		if(!name){
-			this.validateFail(input);
-			return false; 
+			input.addClass('error');
+			return false;
+		} else {
+			input.removeClass('error');
 		}
 
 		app.clients.each(function(model){
@@ -172,11 +169,14 @@ var PeopleView = Backbone.View.extend({
 	},
 
 	addClient: function() {
-		var input = $(this.validateClient());
-		if(!input) return;
-
+		var validate = this.validateClient();
+		console.log(validate);
+		if(!validate) return;
+		
+		var input = $(validate);
+		console.log(input);
 		var name = input.val();
-		var attributes = { "name": name };
+		var attributes = {'name': name};
 
 		app.currentView.clientsView.collection.create(
 			attributes,
@@ -196,7 +196,7 @@ var PeopleView = Backbone.View.extend({
 		var name = input.val();
 		var clientID = input.attr('data-model');
 		var client = app.clients.get(clientID);
-		var attributes = { "name": name };
+		var attributes = {'name': name};
 
 		client.save(attributes,{
 			success: _.bind(function(model){
@@ -213,7 +213,6 @@ var PeopleView = Backbone.View.extend({
 
 	validateUser: function(){
 		var input = this.$el.find('#modal-form-input');
-
         houston.validateAndApproveEmail(input, this.addUser, this.validateFail);
 	},
 
@@ -223,11 +222,10 @@ var PeopleView = Backbone.View.extend({
     },
 
 	addAgent: function(input) {
-		var attributes = 
-			{
-				"emailAddress": input.val(),
-				"verify": false
-			};
+		var attributes = {
+			'emailAddress': input.val(),
+			'verify': false
+		};
 
 		app.currentView.collection.create(
 			attributes,
@@ -244,11 +242,10 @@ var PeopleView = Backbone.View.extend({
 	addUser: function(input) {
 		var clientID = input.attr('data-model');
 
-		var attributes = 
-			{
-				"emailAddress": input.val(),
-				"clientID": clientID
-			};
+		var attributes = {
+			'emailAddress': input.val(),
+			'clientID': clientID
+		};
 
 		app.currentView.clientsView.collection.get(clientID).usersCollection.create(
 			attributes,
@@ -260,6 +257,5 @@ var PeopleView = Backbone.View.extend({
 				}
 			}
 		);	
-	}
-	
+	}	
 });

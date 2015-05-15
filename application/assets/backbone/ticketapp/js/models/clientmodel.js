@@ -1,4 +1,5 @@
 var ClientModel = Backbone.Model.extend({
+	urlRoot: '/api/clients',
 	initialize: function(){
 		// Create usersCollection
 		this.usersCollection = new ClientUsers();

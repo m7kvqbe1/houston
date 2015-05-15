@@ -10,7 +10,6 @@ var Users = Backbone.Collection.extend({
 
 			// this.addUsersToClient(); //Removed as now triggered in app.fetchClients
 		});
-
 	},
 
 	addUsersToClient: function(){
