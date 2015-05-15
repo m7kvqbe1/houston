@@ -26,6 +26,7 @@ class UserModel
 	);
 
 	protected $app;
+	
 	public $user;
 
 	public function __construct(Application $app, $userID = null)
