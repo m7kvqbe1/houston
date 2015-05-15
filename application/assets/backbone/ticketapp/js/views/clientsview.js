@@ -125,8 +125,12 @@ var UsersView = Backbone.View.extend({
 	),
 
 	initialize: function(){
-		this.listenTo(this.collection, 'add change remove', this.render);		
+		this.listenTo(this.collection, 'add change remove', this.render);
 		_.bindAll(this, 'renderUser');
+	},
+
+	logSomething: function(){
+		console.log('log');
 	},
 
 	onClose: function(){
@@ -190,9 +194,15 @@ var UserView = Backbone.View.extend({
 		} else {
 			name = attributes.emailAddress;
 		}
+		console.log(theModel.attributes);
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + name +'?', cancel: true},
 	    	function(){
-	    		theModel.destroy({wait:true});			
+	    		theModel.destroy({
+	    			wait:true,
+	    			success: function(){
+	    				console.log('userDestroyed');
+	    			}
+	    		});		    				
 			}
 	    );		
 	}

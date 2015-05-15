@@ -63,6 +63,7 @@ var PeopleView = Backbone.View.extend({
 			'click .edit-client': 'setupForm',
 			'click button.btn-can': 'cancelForm',
 			'click .agent-button': 'validateAgent',
+			'click .delete-agent': 'deleteAgent',
 			'click .client-button': 'addClient',
 			'click .user-button': 'validateUser',
 			'click .edit-client-button': 'editClient',
@@ -170,11 +171,9 @@ var PeopleView = Backbone.View.extend({
 
 	addClient: function() {
 		var validate = this.validateClient();
-		console.log(validate);
 		if(!validate) return;
 		
 		var input = $(validate);
-		console.log(input);
 		var name = input.val();
 		var attributes = {'name': name};
 
@@ -238,6 +237,35 @@ var PeopleView = Backbone.View.extend({
 			}
 		);
 	},
+
+	deleteAgent: function(e){
+		var theModel = this.collection.get($(e.currentTarget).attr('data-model'));
+		var name;
+		if(theModel.attributes.firstName){
+			name = theModel.attributes.firstName + ' ' + theModel.attributes.lastName;
+		} else {
+			name = theModel.attributes.emailAddress;
+		}
+		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + name +'?', cancel: true},
+	    	function(){
+	    		theModel.destroy({
+    				wait:true,
+    				success: function(model){
+    					app.users.fetch({
+    						success: function(){
+		    					app.clients.fetch({
+		    						reset: true,
+		    						success: function(){
+		    							app.users.addUsersToClient();
+		    						}
+		    					}); 
+    						}
+    					});
+    				}
+    			});			
+			}
+	    );				
+	},	
 
 	addUser: function(input) {
 		var clientID = input.attr('data-model');

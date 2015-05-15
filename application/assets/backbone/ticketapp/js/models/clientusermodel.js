@@ -21,5 +21,5 @@ var ClientUserModel = Backbone.Model.extend({
 
 var ClientUsers = Backbone.Collection.extend({
 	model: ClientUserModel,	
-	url: '/api/user'
+	url: '/api/users'
 });
