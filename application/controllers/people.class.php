@@ -97,7 +97,7 @@ class PeopleController {
 		$clientModel = new ClientModel($this->app);
 
 		if($clientModel->updateClientName($clientID, $data->name)) {
-			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+			return json_encode($data);
 		} else {
 			return ApiResponse::error('CLIENT_EDIT_FAIL');
 		}
@@ -122,7 +122,7 @@ class PeopleController {
 
 			$this->app['mailer']->send($message);
 
-			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+			return json_encode($data);
 		} else {
 			return ApiResponse::error('USER_ADD_FAIL');
 		}
