@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 					'../assets/backbone/lib/*.js'
 				],
 				
-				dest: '../../public/js/lib.compiled.js'
+				dest: '../../public/js/lib.min.js'
 			},
 
 			loginapp: {
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 					'../assets/backbone/loginapp/js/login.js'
 				],
 
-				dest: '../../public/js/loginapp.compiled.js'
+				dest: '../../public/js/loginapp.min.js'
 			},
 
 			ticketapp: {
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 					'../assets/backbone/ticketapp/js/app.js'
 				],
 
-				dest: '../../public/js/ticketapp.compiled.js'
+				dest: '../../public/js/ticketapp.min.js'
 			}
 		}
 	});
