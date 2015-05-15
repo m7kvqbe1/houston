@@ -13,7 +13,7 @@ $app->put('/api/user/self', 'user.controller:putUserSelfAction')->before($secure
 
 $app->get('/api/users', 'user.controller:getUsersAction')->before($secure);
 
-$app->delete('/api/user/{userID}', 'user.controller:deleteUserAction')->before($secure);
+$app->delete('/api/users/{userID}', 'user.controller:deleteUserAction')->before($secure);
 
 $app->put('/api/user/update/{userID}/{property}', 'user.controller:putUserPropertyAction')->before($secure);
 
