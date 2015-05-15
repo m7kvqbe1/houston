@@ -25,7 +25,7 @@ var PeopleView = Backbone.View.extend({
 							'<h4>Awaiting Verification</h4>'+
 							'<a class="resend-verification">Resend</a> '+
 						'{{/ifCond}}'+
-						'<a class="delete-agent" data-id="{{id}}">Delete</a>'+
+						'<a class="delete-agent" data-model="{{id}}">Delete</a>'+
 					'</li>'+
 				'{{/each}}'+
 				'</ul>'+
@@ -131,7 +131,7 @@ var PeopleView = Backbone.View.extend({
 	formActive: false,
 
 	showForm: function(){
-		this.$el.find('#modal-form').show();
+		this.$el.find('#modal-form').show().find('input').focus();
 		this.formActive = true;
 	},
 
@@ -240,6 +240,7 @@ var PeopleView = Backbone.View.extend({
 
 	deleteAgent: function(e){
 		var theModel = this.collection.get($(e.currentTarget).attr('data-model'));
+		console.log(theModel);
 		var name;
 		if(theModel.attributes.firstName){
 			name = theModel.attributes.firstName + ' ' + theModel.attributes.lastName;
