@@ -33,7 +33,8 @@ var ClientsView = Backbone.View.extend({
 	),
 
 	initialize: function() {	
-		this.listenTo(this.collection, 'add change remove sort', this.render);
+		// this.listenTo(this.collection, 'add change remove sort', this.render);
+		this.listenTo(this.collection, 'sync sort', this.render);
 		_.bindAll(this, 'renderClient');
 	},
 
@@ -52,6 +53,7 @@ var ClientsView = Backbone.View.extend({
 	},
 
 	render: function() {
+		console.log('clientsRender')
 		this.$el.html(this.template());	
 		this.collection.each(this.renderClient);
 		return this;
@@ -99,22 +101,7 @@ var ClientView = Backbone.View.extend({
 		var theModel = this.model;
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + theModel.attributes.name +' and all of its users?', cancel: true},
 	    	function(){
-	    		theModel.destroy({
-    				wait:true,
-    				success: function(model){
-    					app.users.fetch({
-    						reset:true,
-    						success: function(){
-		    					app.clients.fetch({
-		    						reset: true,
-		    						success: function(){
-		    							app.users.addUsersToClient();
-		    						}
-		    					}); 
-    						}
-    					});
-    				}
-    			});			
+	    		theModel.destroy({wait:true});			
 			}
 	    );		
 	}

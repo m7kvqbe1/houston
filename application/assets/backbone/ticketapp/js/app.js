@@ -38,6 +38,13 @@ var AppRouter = Backbone.Router.extend({
 		});		
 	},
 
+	fetchUsers: function(callback){
+		$.when(this.users.fetch({reset:true}))
+		.done(function(){
+			app.fetchClients(callback)
+		});				
+	},
+
 	fetchClients: function(callback){
 		$.when(app.clients.fetch({reset:true}))
 		.done(function(){

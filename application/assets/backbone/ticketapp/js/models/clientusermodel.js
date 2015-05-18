@@ -11,6 +11,12 @@ var ClientUserModel = Backbone.Model.extend({
 			response.companyID = response.companyID['$id'];
 		}
 		return response;
+	},
+	initialize: function() {
+		this.on('destroy', function(){
+			console.log('clientusersOn');
+			app.fetchUsers();
+		});
 	}
 });
 

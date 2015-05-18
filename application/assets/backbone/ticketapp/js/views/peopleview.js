@@ -47,6 +47,10 @@ var PeopleView = Backbone.View.extend({
         $(document).bind('keydown', this.keyEvent);
 	},
 
+	logSomething: function(){
+		console.log('ask');
+	},
+
 	onClose: function(){
 		$(document).unbind('keydown', this.keyEvent);
 		this.stopListening();
@@ -54,7 +58,7 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		// console.log('peopleRender');
+		console.log('peopleRender');
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({
@@ -232,6 +236,7 @@ var PeopleView = Backbone.View.extend({
 				wait: true,
 				success: function(){
 					app.changed = false;
+					app.fetchUsers();
 					console.log('agentsuccess');
 				}
 			}
@@ -251,17 +256,8 @@ var PeopleView = Backbone.View.extend({
 	    	function(){
 	    		theModel.destroy({
     				wait:true,
-    				success: function(model){
-    					app.users.fetch({
-    						success: function(){
-		    					app.clients.fetch({
-		    						reset: true,
-		    						success: function(){
-		    							app.users.addUsersToClient();
-		    						}
-		    					}); 
-    						}
-    					});
+    				success: function(){
+    					app.fetchUsers();
     				}
     			});			
 			}
@@ -282,7 +278,8 @@ var PeopleView = Backbone.View.extend({
 				wait: true,
 				success: function(){
 					app.changed = false;
-					app.currentView.cancelForm();
+					app.fetchUsers();
+					app.currentView.cancelForm(); //Is this needed?
 				}
 			}
 		);	

@@ -34,8 +34,5 @@ var Users = Backbone.Collection.extend({
 	        theModel.usersCollection.set(app.users.usersByClient(theModel.id));	
 	        console.log(i);
 	    }
-	},	
-
-	fetchPeopleAndClients(){
 	}
 });

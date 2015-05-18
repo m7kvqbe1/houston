@@ -6,5 +6,10 @@ var Clients = Backbone.Collection.extend({
 		this.on("sync", function() {
 			console.log('B');
 		});
+
+		this.on('add change destroy', function(){
+			console.log('destroy');
+			app.fetchUsers();
+		});
 	}
 });
