@@ -38,9 +38,9 @@ var PeopleView = Backbone.View.extend({
 	),
 	
 	initialize: function() {		
-		this.listenTo(this.collection, 'add change remove', this.render);
+		this.listenTo(app.agentsCollection, 'add change remove', this.render);
 
-		this.collection.view = this;
+		app.agentsCollection.view = this;
 		this.clientsView = new ClientsView({collection: app.clients}); 
 
         _.bindAll(this, 'keyEvent');

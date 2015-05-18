@@ -10,13 +10,6 @@ var UserModel = Backbone.Model.extend({
 		}
 		return response;
 	},
-	initialize: function(){
-		this.on('sync', function(){ 
-			if(app.currentView) {
-				app.users.fetch({reset:true});
-			}
-		});
-	},
 	defaults: {
 		firstName: '',
 		lastName: '',

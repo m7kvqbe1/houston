@@ -31,23 +31,21 @@ var AppRouter = Backbone.Router.extend({
 		this.fetchData();
 	},
 
-	fetchData: function(){
-		console.log('fetchData');
+	fetchData: function(callback){
 		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
-		.then(this.fetchClients, this.fetchError);		
+		.done(function(){
+			app.fetchClients(callback)
+		});		
 	},
 
-	fetchClients: function(){
-		// app.clients = new Clients();
-
+	fetchClients: function(callback){
 		$.when(app.clients.fetch({reset:true}))
 		.done(function(){
 			app.users.addUsersToClient();
 			if(!app.currentView){
 				app.initializeSuccess();
-			} else { //Needs to be changed because socketsuse this method, but this fixes fecth order
-				var peopleView = new PeopleView({collection: app.agentsCollection});
-				app.showView(peopleView);
+			} else if(callback){
+				callback();
 			}
 		});
 	},
@@ -115,20 +113,16 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverviewFrontController: function() {
-		//Amend to use fetchData in attempt to enforce order of fetches
 		if(!app.currentView) {
-			var peopleView = new PeopleView({collection: this.agentsCollection});
-			this.showView(peopleView);
+			this.createAndShowPeopleView();
 		} else {
-			// $.when(app.users.fetch({reset: true}))
-			// .done(app.clients.fetch({reset:true}))
-			// .done(app.users.addUsersToClient)
-			// .done(function(){
-			// 		var peopleView = new PeopleView({collection: app.agentsCollection});
-			// 		app.showView(peopleView);	
-			// });
-			app.fetchData();
+			app.fetchData(this.createAndShowPeopleView);
 		}
+	},
+
+	createAndShowPeopleView: function(){
+		var peopleView = new PeopleView({collection: app.agentsCollection});
+		app.showView(peopleView);
 	},
 
 	profileFrontController: function() {
