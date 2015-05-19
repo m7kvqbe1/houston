@@ -63,7 +63,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	fetchError: function(a,b,c){
-		console.log(a); //Use global error handler 
+		console.log(a); //Create a global error handler 
 	},
 
 	setUpSocket: function(){

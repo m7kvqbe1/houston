@@ -47,10 +47,6 @@ var PeopleView = Backbone.View.extend({
         $(document).bind('keydown', this.keyEvent);
 	},
 
-	logSomething: function(){
-		console.log('ask');
-	},
-
 	onClose: function(){
 		$(document).unbind('keydown', this.keyEvent);
 		this.stopListening();
@@ -58,7 +54,6 @@ var PeopleView = Backbone.View.extend({
 	},
 		
 	render: function() {
-		console.log('peopleRender');
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
 		this.delegateEvents({
@@ -202,10 +197,10 @@ var PeopleView = Backbone.View.extend({
 		var attributes = {'name': name};
 
 		client.save(attributes,{
-			success: _.bind(function(model){
+			success: function(){
 				app.changed = false;
 				app.clients.sort();
-			}, this)
+			}
 		});
 	},	
 
@@ -236,8 +231,7 @@ var PeopleView = Backbone.View.extend({
 				wait: true,
 				success: function(){
 					app.changed = false;
-					app.fetchUsers();
-					console.log('agentsuccess');
+					// app.fetchUsers(); //Not needed as now uses listener on the collection
 				}
 			}
 		);
@@ -245,7 +239,6 @@ var PeopleView = Backbone.View.extend({
 
 	deleteAgent: function(e){
 		var theModel = this.collection.get($(e.currentTarget).attr('data-model'));
-		console.log(theModel);
 		var name;
 		if(theModel.attributes.firstName){
 			name = theModel.attributes.firstName + ' ' + theModel.attributes.lastName;
@@ -257,7 +250,7 @@ var PeopleView = Backbone.View.extend({
 	    		theModel.destroy({
     				wait:true,
     				success: function(){
-    					app.fetchUsers();
+    					// app.fetchUsers(); //Not needed as now uses listener on the collection
     				}
     			});			
 			}
@@ -278,8 +271,8 @@ var PeopleView = Backbone.View.extend({
 				wait: true,
 				success: function(){
 					app.changed = false;
-					app.fetchUsers();
-					app.currentView.cancelForm(); //Is this needed?
+					app.fetchUsers(); //Needed as didnt work with listener on the collection
+					app.currentView.cancelForm();
 				}
 			}
 		);	

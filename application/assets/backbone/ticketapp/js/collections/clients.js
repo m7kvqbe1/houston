@@ -3,12 +3,8 @@ var Clients = Backbone.Collection.extend({
 	url: '/api/clients',	
 	comparator: 'name',
 	initialize: function() {
-		this.on("sync", function() {
-			console.log('B');
-		});
-
+		//Fetch user data when client is added, removed or amended
 		this.on('add change destroy', function(){
-			console.log('destroy');
 			app.fetchUsers();
 		});
 	}
