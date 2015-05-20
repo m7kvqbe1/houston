@@ -1,6 +1,7 @@
 var handlebarsHelpers = {
 	bindHelpers: function(){
 		Handlebars.registerHelper('ifCond', function(v1, v2, options){
+			console.log(v1);
 		if(v1 === v2) {
 			return options.fn(this);
 		}
@@ -131,6 +132,13 @@ var handlebarsHelpers = {
 
 		Handlebars.registerHelper('maxWidthImg', function(){
 			return new Handlebars.SafeString(houston.previewImageResizeWidth());	
+		});
+
+		//PeopleView Helpers
+		Handlebars.registerHelper('displayAgentDelete', function(id){
+			if(app.user.attributes.role === 'ADMIN'){
+				return new Handlebars.SafeString('<a class="delete-agent" data-model="'+id+'">Delete</a>');	
+			}
 		});
 	}
 }

@@ -25,7 +25,7 @@ var PeopleView = Backbone.View.extend({
 							'<h4>Awaiting Verification</h4>'+
 							'<a class="resend-verification">Resend</a> '+
 						'{{/ifCond}}'+
-						'<a class="delete-agent" data-model="{{id}}">Delete</a>'+
+						'{{displayAgentDelete id}}'+
 					'</li>'+
 				'{{/each}}'+
 				'</ul>'+
@@ -231,7 +231,7 @@ var PeopleView = Backbone.View.extend({
 			'emailAddress': input.val(),
 			'verify': false
 		};
-		
+
 		app.currentView.collection.create(attributes,{wait: true});
 	},
 
