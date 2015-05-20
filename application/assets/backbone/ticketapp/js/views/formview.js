@@ -1,41 +1,28 @@
-Backbone.View.prototype.markAsChanged = function () {
-	app.changed = Backbone.history.fragment;
-};
-
-Backbone.View.prototype.close = function(){
-	this.remove();
-	this.unbind();
-	if (this.onClose){
-	this.onClose();
-	}
-};
-
 var FormView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
-				'<div class="box-app-top">' +
-					'<h2>Create Ticket</h2>' +
-				'</div>' +
+				'<div class="box-app-top">'+
+					'<h2>Create Ticket</h2>'+
+				'</div>'+
 			'</div>'+
 		'</div>'+
-		'<div class="box-app" style="{{fullHeightPage}}">' +
-			'<form id="form-new">' +
-				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />' +
-				'<div class="char-count"><span>75</span> Characters Remaining</div>' +
-				'<textarea class="required" name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>' +
+		'<div class="box-app" style="{{fullHeightPage}}">'+
+			'<form id="form-new">'+
+				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />'+
+				'<div class="char-count"><span>75</span> Characters Remaining</div>'+
+				'<textarea class="required" name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>'+
 				'<div id="file-upload-view-wrap">'+	
 
 				'</div>'+
-				'<button class="save" type="button">Create Ticket</button>' +
-				'<div class="beige or">or</div>' +
-				'<a class="cancel-btn ib">Cancel</a>' +
-			'</form>' +
+				'<button class="save" type="button">Create Ticket</button>'+
+				'<div class="beige or">or</div>'+
+				'<a class="cancel-btn ib">Cancel</a>'+
+			'</form>'+
 		'</div>'
 	),
 
 	initialize: function() {
-		//FILES VIEW
 		this.fileUploadView = new FileUploadView({collection: app.files});
 		this.fileUploadView.parent = this;
 
@@ -62,11 +49,13 @@ var FormView = Backbone.View.extend({
 			'input input': 'markAsChanged',
 			'input textarea': 'markAsChanged'
 		});
+
 		return this;
 	},
 
     keyEvent: function(e){
         var keyCode = e.which;
+
 		if(keyCode == 13){
 			e.preventDefault();
 			this.saveModel();
@@ -81,6 +70,7 @@ var FormView = Backbone.View.extend({
 	
 	saveModel: function(){
 		if(!houston.validateForm(this.$el.find('.save'))) return;
+
 		this.setModelData();		
 		this.model.save(this.model.attributes,
 			{
@@ -104,9 +94,9 @@ var FormView = Backbone.View.extend({
 		});		
 	},
 
-	cancelTicket: function(){ //Change to empty the form
-		this.$el.find('input[type="text"], textarea').val('');	
+	cancelTicket: function(){ 
+		this.$el.find('input[type="text"], textarea').val('');
+			
 		app.files.emptyCollection();	
 	}
-
 });

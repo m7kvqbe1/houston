@@ -4,6 +4,7 @@ var Tickets = Backbone.Collection.extend({
 	
 	initialize: function(models){
 		this.filtered = new Backbone.Collection(models);
+
 		this.filtered.comparator = function(a,b) {
 			if(a.get('date') > b.get('date')) {
 				return -1;	
@@ -12,6 +13,7 @@ var Tickets = Backbone.Collection.extend({
 			}
 			return 0;
 		}
+
 		this.on("reset add", function(){		
 			this.filtered.reset(this.allTickets());
 			this.countUpdated();
@@ -22,16 +24,19 @@ var Tickets = Backbone.Collection.extend({
 		filtered = this.filter(function(data){
 			return data.get('status') !== 'Completed';
 		});
+
 		return filtered;
 	},
 
 	updatedTickets: function(){
 		var updated = [];
+
 		this.filter(function(model){
 			if(!houston.updateCheck(model.get('updated'))){
 				updated.push(model);
 			}
 		});
+
 		return updated;
 	},
 	
@@ -40,6 +45,7 @@ var Tickets = Backbone.Collection.extend({
 		filtered = this.filter(function(data){
 			return data.get('agent') == app.user.id && data.get('status') !== 'Completed';
 		});
+
 		return filtered;	
 	},
 	
@@ -47,6 +53,7 @@ var Tickets = Backbone.Collection.extend({
 		filtered = this.filter(function(data){
 			return data.get('status') === 'Completed';
 		});
+
 		return filtered;	
 	},
 
@@ -54,15 +61,18 @@ var Tickets = Backbone.Collection.extend({
 		filtered = this.filter(function(data){
 			return data.get(key) === value;
 		});
+
 		return filtered;
 	},
 
 	countUpdated: function(){	
 		if(!app.updateElem) return;
 		var updated = 0;
+
 		this.filter(function(model){
 			if(!houston.updateCheck(model.get('updated'))) updated++;
 		});
+
 		houston.displayUpdates(updated);
 	},
 	
@@ -86,6 +96,7 @@ var Tickets = Backbone.Collection.extend({
 				return model.get('date');
 			}			
 		}
+
 		this.filtered.sort();
 	},
 
@@ -110,6 +121,7 @@ var Tickets = Backbone.Collection.extend({
 				return 0;
 			};			
 		}
+		
 		this.filtered.sort();
 	}
 });

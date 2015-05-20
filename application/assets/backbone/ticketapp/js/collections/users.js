@@ -6,7 +6,6 @@ var Users = Backbone.Collection.extend({
 		this.on("sync", function() {
 			//On fetch reset agentsCollection with all agent/admin users
 			app.agentsCollection.reset(this.agentUsers());
-			// this.addUsersToClient(); //Removed as now triggered in app.fetchClients
 		});
 	},
 
@@ -14,6 +13,7 @@ var Users = Backbone.Collection.extend({
 		filtered = this.filter(function(data){
 			return data.get('clientID') === clientID;
 		});
+
 		return filtered;
 	},
 	
@@ -21,6 +21,7 @@ var Users = Backbone.Collection.extend({
 		filtered = this.filter(function(data){
 			return data.get('role') !== 'USER';
 		});
+		
 		return filtered;
 	},
 

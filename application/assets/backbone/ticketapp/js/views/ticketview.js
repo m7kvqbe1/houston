@@ -60,11 +60,11 @@ var TicketDetailView = Backbone.View.extend({
 						'</div>'+
 						'{{outputMarkAsCompleted}}'+
 						'<div class="reply-submit-buttons">'+
-							'<button class="add-message" type="button">Submit</button>' +
-							'<div class="beige or">or</div>' +
-							'<a class="cancel-btn ib">Cancel</a>' +
+							'<button class="add-message" type="button">Submit</button>'+
+							'<div class="beige or">or</div>'+
+							'<a class="cancel-btn ib">Cancel</a>'+
 						'</div>'+
-					'</form>' +
+					'</form>'+
 				'</div>'+					
 				'{{/if}}'+						
 			'</li>'+
@@ -75,26 +75,13 @@ var TicketDetailView = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model.messagesCollection, "sync", this.render);
+		this.listenTo(this.model.messagesCollection, 'sync', this.render);
 
-		//TICKET HEADER VIEW
 		this.ticketHeaderView = new TicketHeaderView({model: this.model});
 		this.ticketHeaderView.parent = this;
 
-		//MESSAGES VIEW
 		this.messagesView = new MessagesView({collection: this.model.messagesCollection});
 		this.messagesView.parent = this;	
-
-		Handlebars.registerHelper("showFilePreviewLink", function(type, index){ 
-			if(!type) return;
-			if(houston.isDisplayableImage(type)){
-				return new Handlebars.SafeString('<a data-index="'+index+'" class="file-preview">Preview</a>');
-			}
-		});
-	},
-
-	logSomething: function(){
-		console.log('log');
 	},
 
 	onClose: function(){
@@ -127,6 +114,7 @@ var TicketDetailView = Backbone.View.extend({
 			'click .file-preview': 'filePreview',
 			'input textarea': 'markAsChanged'
 		});
+
 		return this;
 	},
 		
@@ -136,6 +124,7 @@ var TicketDetailView = Backbone.View.extend({
 	
 	dropDown: function(e){
 		var changed = houston.dropDown(e.currentTarget);
+
 		if(changed.param == 'status') {
 			this.model.set({
 				status: changed.value
@@ -152,6 +141,7 @@ var TicketDetailView = Backbone.View.extend({
 				});
 			}			
 		}
+
 		this.saveModel();
 	},
 	
@@ -163,6 +153,7 @@ var TicketDetailView = Backbone.View.extend({
 		this.model.set({			
 			updated: this.model.get('updated').concat(app.user.id)
 		});
+
 		this.model.save(this.model.attributes);	
 	},
 	
@@ -171,6 +162,7 @@ var TicketDetailView = Backbone.View.extend({
 		this.model.set({			
 			updated: [app.user.id]
 		});
+
 		this.model.save(this.model.attributes);	
 	},
 	
@@ -185,9 +177,9 @@ var TicketDetailView = Backbone.View.extend({
 		}
 		
 		var attributes = {
-			"authorID": app.user.id,
-			"message": this.$el.find('textarea[name="new-textarea"]').val(),
-			"files": app.files.createFilesArray()
+			'authorID': app.user.id,
+			'message': this.$el.find('textarea[name="new-textarea"]').val(),
+			'files': app.files.createFilesArray()
 		};
 
 		this.model.messagesCollection.create(
@@ -209,6 +201,7 @@ var TicketDetailView = Backbone.View.extend({
 		var index = button.data("index");
 		//If a reply get the reference of the reply
 		var ul = button.closest('ul');
+		
 		if (ul.data("reply")){
 			var messageRef = ul.data("reply");
 			app.files.createImagesCollectionFromArray(this.model.messagesCollection.get(messageRef).attributes.files);
@@ -217,65 +210,10 @@ var TicketDetailView = Backbone.View.extend({
 		}
 
 		app.files.filesPreviewCollection.models[index].set({preview:true});
+
 		app.preview = new PreviewWindow({collection: app.files.filesPreviewCollection});
+
 		app.preview.render();
 		app.modalWindow.html(app.preview.$el);
-	}
-	
-});
-
-var TicketHeaderView = Backbone.View.extend({
-	className: 'box-app-top msg-top',
-	agentTemplate: Handlebars.compile(
-		'<h2>Ticket #{{attributes.reference}}</h2>'+
-		'{{#if attributes.agent}}'+
-			'{{generateDropSwitch attributes.status}}'+					
-			'<div class="dropdown droplist">'+
-				'<div class="drop-top rounded">'+
-					'<div class="btn in-progress drop-slct"><span>{{getUserName attributes.agent}}</span><i class="icon-down-dir-1"></i></div>'+
-				'</div>'+						
-				'<ul class="drop">'+
-					'{{populateAgentDropdown}}'+
-				'</ul>'+
-			'</div>'+
-		'{{else}}'+
-			'<div class="btn new">New</div>'+
-			'<div class="dropdown droplist">'+
-				'<div class="drop-top rounded">'+
-					'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
-				'</div>'+						
-				'<ul class="drop">'+
-					'{{populateAgentDropdown}}'+
-				'</ul>'+
-			'</div>'+
-		'{{/if}}'
-	),
-
-	userTemplate: Handlebars.compile(
-		'<h2>Ticket #{{attributes.reference}}</h2>'+
-		'{{#if attributes.agent}}'+
-			'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>'+
-			'<div class="btn ticketheader-agent">{{getUserName attributes.agent}}</div>'+
-		'{{else}}'+
-			'<div class="btn new">New</div>'+
-			'<div class="btn on-hold">Awaiting Agent</div>'+
-		'{{/if}}'
-	),
-
-	initialize: function() {
-		this.listenTo(this.model, "sync", this.render);
-	},
-
-	onClose: function(){
-		this.stopListening();
-	},
-
-	render: function (){
-		if(app.user.attributes.role === 'USER'){
-			this.$el.html(this.userTemplate(this.model));
-		} else {
-			this.$el.html(this.agentTemplate(this.model));
-		}
-	}
-
+	}	
 });

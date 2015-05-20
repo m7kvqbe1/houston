@@ -19,10 +19,12 @@ var ModalView = Backbone.View.extend({
 	),
 	render: function(){
 		this.$el.html(this.template(this.model.attributes));
+
 		this.delegateEvents({
 			'click .confirm': 'confirm',
 			'click .btn-can': 'cancel'
 		});
+		
 		app.modalWindow.show();
 	},
 
@@ -52,7 +54,7 @@ var ModalView = Backbone.View.extend({
 
 		//Render preview window if exists
 		if(app.preview){
-			app.modalWindow.html(app.preview.$el); //Why does this only work with $ and seperate render?
+			app.modalWindow.html(app.preview.$el);
 			app.preview.render();
 		}	
 	},

@@ -7,12 +7,12 @@ var AccountView = Backbone.View.extend({
 				'</div>' +
 			'</div>'+
 		'</div>'+
-		'<div class="box-app" style="{{fullHeightPage}}">' +
+		'<div class="box-app" style="{{fullHeightPage}}">'+
 		'</div>'
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "sync", this.render);	
+		this.listenTo(this.model, 'sync', this.render);	
 	},
 
 	onClose: function(){
@@ -21,7 +21,7 @@ var AccountView = Backbone.View.extend({
 	
 	render: function() {
 		this.$el.html(this.template());
-		
+			
 		return this;
 	}
 });

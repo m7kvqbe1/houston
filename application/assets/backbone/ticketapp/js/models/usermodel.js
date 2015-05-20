@@ -8,6 +8,7 @@ var UserModel = Backbone.Model.extend({
 		if(response.companyID && response.companyID.$id){
 			response.companyID = response.companyID['$id'];
 		}
+		
 		return response;
 	},
 	defaults: {

@@ -2,49 +2,49 @@ var TicketsView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
 			'<div class="box-app-fixed-inner">'+
-				'<div class="box-app-top">' +
-					'<h2>Open Tickets</h2>' +
-					'<a href="/tickets/new" class="btn">New Ticket</a>' +
-				'</div>' +
+				'<div class="box-app-top">'+
+					'<h2>Open Tickets</h2>'+
+					'<a href="/tickets/new" class="btn">New Ticket</a>'+
+				'</div>'+
 				
-				'<div class="box-app-nav">' +
+				'<div class="box-app-nav">'+
 					'<div class="helper">'+
 						'<div class="box-app-nav-inner">'+
-							'<div class="sort">' +
-								'<a class="sortByDate">Sort By Date {{dateArrow}}</a>' +
-								'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>' +
-							'</div>' +
-							'<div class="filter">' +
+							'<div class="sort">'+
+								'<a class="sortByDate">Sort By Date {{dateArrow}}</a>'+
+								'<a class="sortByCompany mid-link">Sort By Company {{companyArrow}}</a>'+
+							'</div>'+
+							'<div class="filter">'+
 								
-								'<a class="allTickets">All<span> Tickets</span></a>' +
-								'<a class="updatedTickets">Updated<span> Tickets</span></a>' +
-								'<a class="myTickets"><span class="mine">Mine</span><span>My Tickets</span></a>' +
-								'<a class="completedTickets">Completed<span> Tickets</span></a>' +
-							'</div>' +
+								'<a class="allTickets">All<span> Tickets</span></a>'+
+								'<a class="updatedTickets">Updated<span> Tickets</span></a>'+
+								'<a class="myTickets"><span class="mine">Mine</span><span>My Tickets</span></a>'+
+								'<a class="completedTickets">Completed<span> Tickets</span></a>'+
+							'</div>'+
 						'</div>'+
-					'</div>' +
+					'</div>'+
 				'</div>'+
 			'</div>'+
 		'</div>'+
-		'<div class="box-app tickets-box-app" style="{{fullHeightPage}}">' +
-			'<ul id="ticket-stream">' +
+		'<div class="box-app tickets-box-app" style="{{fullHeightPage}}">'+
+			'<ul id="ticket-stream">'+
 			'{{#if models}}'+
 			'{{#each models}}'+
-				'<li class="ticket">' +
+				'<li class="ticket">'+
 					'<a href="/tickets/{{attributes.id}}">'+
-						'<div class="update-alert {{updateCheck attributes.updated}}"></div>' +
-						'<div class="ticket-info">' +					
-							'<div class="date">{{convertToDate attributes.date}}</div>' +
-							'<div class="ticket-info-inner">' +
-								'<div class="name">{{getUserName attributes.authorID}}</div>' +
-								'<div class="company-name">{{getCompanyName attributes.authorID}}</div>' +
-								'<div class="summary"><span>#{{attributes.reference}}</span> {{attributes.subject}}</div>' +
-							'</div>' +
-						'</div>' +
-						'<div class="ticket-status">' +
-							'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>' +
+						'<div class="update-alert {{updateCheck attributes.updated}}"></div>'+
+						'<div class="ticket-info">'+					
+							'<div class="date">{{convertToDate attributes.date}}</div>'+
+							'<div class="ticket-info-inner">'+
+								'<div class="name">{{getUserName attributes.authorID}}</div>'+
+								'<div class="company-name">{{getCompanyName attributes.authorID}}</div>'+
+								'<div class="summary"><span>#{{attributes.reference}}</span> {{attributes.subject}}</div>'+
+							'</div>'+
+						'</div>'+
+						'<div class="ticket-status">'+
+							'<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>'+
 							'{{#if attributes.agent}}'+
-								'<div class="ticket-agent">{{getUserName attributes.agent}}</div>' +
+								'<div class="ticket-agent">{{getUserName attributes.agent}}</div>'+
 							'{{else}}'+
 								'<div class="ticket-agent">Awaiting Agent</div>'+
 							'{{/if}}'+								
@@ -63,7 +63,7 @@ var TicketsView = Backbone.View.extend({
 	),
 	
 	initialize: function() {	
-		this.listenTo(this.collection, "reset add remove change sort sync", this.render);		
+		this.listenTo(this.collection, 'reset add remove change sort sync', this.render);		
 	},
 
 	onClose: function(){
@@ -72,6 +72,7 @@ var TicketsView = Backbone.View.extend({
 		
 	render: function() {
 		this.$el.html(this.template(this.collection));	
+		
 		this.delegateEvents({
 			'click .sortByDate': 'sortByDate',
 			'click .sortByCompany': 'sortByCompany',
@@ -81,8 +82,6 @@ var TicketsView = Backbone.View.extend({
 			'click .allTickets': 'all'
 		});
 
-		//reset filesCollection (after a cancelled new ticket)
-		// app.filesCollection.reset();
 		return this;		
 	},
 	

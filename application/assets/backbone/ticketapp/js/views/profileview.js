@@ -1,4 +1,3 @@
-// define Selection draw method
 var ProfileView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box-app-fixed">'+
@@ -108,7 +107,7 @@ var ProfileView = Backbone.View.extend({
 	),
 	
 	initialize: function() {
-		this.listenTo(this.model, "add change", this.render);	
+		this.listenTo(this.model, 'add change', this.render);	
 
         _.bindAll(this, 'keyEvent');
         $(document).bind('keydown', this.keyEvent);
@@ -139,6 +138,7 @@ var ProfileView = Backbone.View.extend({
 	
 	render: function() {
 		this.$el.html(this.template(this.model));
+
 		this.delegateEvents({
             'input input': 'markAsChanged',
 			'click .update-avatar-link': 'fileDialogTrigger',
@@ -172,6 +172,7 @@ var ProfileView = Backbone.View.extend({
 
     cancelUpdatePassword: function(){
         var inputs = this.$el.find('#form-profile-password input');
+
         inputs.each(function(){
             var input = $(this);
             input.val('');
@@ -193,15 +194,16 @@ var ProfileView = Backbone.View.extend({
 
         if(!currentPassword || !newPassword || !repeatPassword){
             return;
+            
         } else if(currentPassword && newPassword === repeatPassword){
             var request = $.ajax({
-                url: "/api/user/update/password",
-                method: "POST",
+                url: '/api/user/update/password',
+                method: 'POST',
                 data: { 
                     currentPassword: currentPassword,
                     newPassword: newPassword   
                 },
-                dataType: "json"
+                dataType: 'json'
             });
 
             request.done(function( msg ) {
@@ -223,6 +225,7 @@ var ProfileView = Backbone.View.extend({
         var value = input.val();
         var firstValue = this.$el.find('.new-password').val();
         var div = input.closest('div');
+
         if(value == firstValue){
             div.addClass('validated-input-resize')
         } else {
@@ -238,6 +241,7 @@ var ProfileView = Backbone.View.extend({
     passwordCounterHide: function(evt){
         var input = $(evt.currentTarget);
         var div = input.closest('div');
+
         if(!div.find('.vrf-cir').hasClass('ok')){
             div.removeClass('validated-input-resize');
         }
@@ -261,7 +265,6 @@ var ProfileView = Backbone.View.extend({
         if(length < 8){
             counter.text(counterValue - length);
             counter.removeClass('ok');
-
             regVrf.find('.vrf-cir').fadeIn();
             nextInput.attr('disabled', true);
 
@@ -279,7 +282,7 @@ var ProfileView = Backbone.View.extend({
         if(value.length <= 7) {
             input.closest('div').removeClass('validated-input-resize');
         } else if (value.length > 7){
-            var request = $.get("/api/check/password?password=" + value);
+            var request = $.get('/api/check/password?password=' + value);
             
             request.done(function(msg) {
                 var div = input.closest('div');
@@ -297,16 +300,19 @@ var ProfileView = Backbone.View.extend({
     updateDetails: function(evt){
         var updated = false;
         var form = $(evt.currentTarget).closest('form');
-        var inputs = form.find('input');        
+        var inputs = form.find('input'); 
+
         inputs.each(function(){
             var input = $(this);
             var value = input.val();
+
             if(!input.hasClass('error') && value){
                 var name = input.attr('name');
                 app.user.set(name, value);
                 updated = true;
             }
         });
+
         if(updated){
             this.model.save(this.model.attributes,{
                 success: _.bind(function(model){
@@ -320,7 +326,8 @@ var ProfileView = Backbone.View.extend({
     cancelUpdateDetails: function(evt){
         var form = $(evt.currentTarget).closest('form');
         form.find('.validated-input-resize').removeClass('validated-input-resize');
-        var inputs = form.find('input');        
+        var inputs = form.find('input'); 
+
         inputs.each(function(){
             var input = $(this);
             input.val('');
@@ -330,6 +337,7 @@ var ProfileView = Backbone.View.extend({
 
     validateEmail: function(evt){
         var input = $(evt.currentTarget);
+
         houston.validateAndApproveEmail(input,this.validateEmailSuccess, this.validateEmailFail);
     },
 
@@ -360,6 +368,7 @@ var ProfileView = Backbone.View.extend({
 	handleDragFileSelect: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
+
 	    $(evt.currentTarget).removeClass('drop-highlight');
 	    this.addAvatar(evt.dataTransfer.files[0]);
 	},
@@ -367,6 +376,7 @@ var ProfileView = Backbone.View.extend({
 	handleDragOver: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
+
 	    $(evt.currentTarget).addClass('drop-highlight');
 	    evt.dataTransfer.dropEffect = 'copy';     
 	},
@@ -374,6 +384,7 @@ var ProfileView = Backbone.View.extend({
 	handleDragLeave: function(evt){
 		evt.stopPropagation();
 	    evt.preventDefault();
+
 	    $(evt.currentTarget).removeClass('drop-highlight');
 	},
 
@@ -387,22 +398,26 @@ var ProfileView = Backbone.View.extend({
 
 	addAvatar: function(file){
 		var reader = new FileReader();
+
 	    reader.onloadend = _.bind((function(theFile) {
 	        return function(e) {
                 this.addImageToCanvas(e.target.result);
 	        };
         })(file), this);
+
         reader.readAsDataURL(file);
 	}, 
 
     grayscaleImage: false,
     grayscaleHandler: function(evt){
         $(evt.currentTarget).toggleClass('gray');
+
         if(!this.grayscaleImage){
             this.grayscaleImage = true;
         } else {
             this.grayscaleImage = false;
         }
+
         this.drawScene();
     },
 
@@ -439,6 +454,7 @@ var ProfileView = Backbone.View.extend({
         //If image too tall give modal warning
         if(originalHeight > maxHeight) {
             houston.createModal({type: 'Error', message: 'The image you are attempting to add is of an unusable ratio.'});
+
             return;
         } 
 
@@ -488,8 +504,6 @@ var ProfileView = Backbone.View.extend({
         $('.canvas').html(this.canvas)
 
         $('#canvas-wrap').addClass('active');
-
-        //www.htmlgoodies.com/html5/javascript/display-images-in-black-and-white-using-the-html5-canvas.html#fbid=vq-yqyDCNdi
 
         // create initial selection
         this.theSelection = new this.selection(200, 200, 200, 200);
@@ -660,9 +674,11 @@ var ProfileView = Backbone.View.extend({
 
     canvasMouseup: function(e) { // binding mouseup event
         this.theSelection.bDragAll = false;
+
         for (i = 0; i < 4; i++) {
             this.theSelection.bDrag[i] = false;
         }
+        
         this.theSelection.px = 0;
         this.theSelection.py = 0;
     },
@@ -679,14 +695,8 @@ var ProfileView = Backbone.View.extend({
         var vData = temp_canvas.toDataURL();
 
         this.model.set('avatar', vData);
-        this.model.save(this.model.attributes,{
-            success: function(){
-                //Fetch users to update people view
-                // console.log('success');
-                // app.users.fetch({reset: true});
-            }
-        });
+        this.model.save(this.model.attributes);
+
         this.previewClose();
     }
-
 });

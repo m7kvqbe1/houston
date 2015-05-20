@@ -12,6 +12,7 @@ var Files = Backbone.Collection.extend({
 
 	createImagesCollectionFromArray: function(models){
 		var imagesArray = [];
+
 		models.filter(function(model){
 			if(model.type){
 				if(houston.isDisplayableImage(model.type)){
@@ -19,11 +20,13 @@ var Files = Backbone.Collection.extend({
 				}	
 			}		
 		});
+
 		this.filesPreviewCollection.reset(imagesArray);
 	},
 
 	createImagesCollection: function(){
 		var imagesArray = [];
+
 		this.filter(function(model){
 			if(model.get('type')){
 				if(houston.isDisplayableImage(model.get('type'))){
@@ -31,11 +34,13 @@ var Files = Backbone.Collection.extend({
 				}	
 			}		
 		});
+
 		return imagesArray;
 	},
 
 	createFilesArray: function(){
 		var filesArray = [];
+
 		this.each(function(model){
 			var fileData = {
 				ref: model.attributes.id,
@@ -45,6 +50,7 @@ var Files = Backbone.Collection.extend({
 			}
 			filesArray.push(fileData);
 		});
+		
 		return filesArray;
 	},
 

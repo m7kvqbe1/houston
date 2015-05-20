@@ -10,6 +10,7 @@ var ClientUserModel = Backbone.Model.extend({
 		if(response.companyID){
 			response.companyID = response.companyID['$id'];
 		}
+		
 		return response;
 	},
 	initialize: function() {
@@ -18,9 +19,4 @@ var ClientUserModel = Backbone.Model.extend({
 			app.fetchUsers();
 		});
 	}
-});
-
-var ClientUsers = Backbone.Collection.extend({
-	model: ClientUserModel,	
-	url: '/api/users'
 });

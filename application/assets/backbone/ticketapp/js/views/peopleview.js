@@ -56,6 +56,7 @@ var PeopleView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template(this.collection));	
 		this.$('#clients-wrap').append(this.clientsView.render().$el); 
+
 		this.delegateEvents({
 			'click .btn':'setupForm',
 			'click .new-client-user': 'setupForm',
@@ -68,12 +69,15 @@ var PeopleView = Backbone.View.extend({
 			'click .edit-client-button': 'editClient',
 			'input input': 'markAsChanged'
 		});
+
 		return this;		
 	},
 
     keyEvent: function(e){
     	if(!this.formActive) return;
+
         var keyCode = e.which;
+
 		if(keyCode == 13){
 			e.preventDefault();
 			this.keyFormHandler();
@@ -84,6 +88,7 @@ var PeopleView = Backbone.View.extend({
 
 	keyFormHandler: function(){
 		var button = this.$el.find('.confirm');
+
 		if(button.hasClass('user-button')){
 			this.validateUser();
 		} else if (button.hasClass('agent-button')){
@@ -131,6 +136,7 @@ var PeopleView = Backbone.View.extend({
 
 	showForm: function(){
 		this.$el.find('#modal-form').show().find('input').focus();
+
 		this.formActive = true;
 	},
 
@@ -139,6 +145,7 @@ var PeopleView = Backbone.View.extend({
 		form.find('.modal-buttons').removeClass('validated-input-resize');
 		form.find('.confirm').removeClass('agent-button client-button user-button edit-client-button');
 		form.hide().find('input').removeClass('error').val('');
+
 		this.formActive = false;
 	},
 
@@ -224,35 +231,23 @@ var PeopleView = Backbone.View.extend({
 			'emailAddress': input.val(),
 			'verify': false
 		};
-
-		app.currentView.collection.create(
-			attributes,
-			{
-				wait: true,
-				success: function(){
-					app.changed = false;
-					// app.fetchUsers(); //Not needed as now uses listener on the collection
-				}
-			}
-		);
+		
+		app.currentView.collection.create(attributes,{wait: true});
 	},
 
 	deleteAgent: function(e){
 		var theModel = this.collection.get($(e.currentTarget).attr('data-model'));
 		var name;
+
 		if(theModel.attributes.firstName){
 			name = theModel.attributes.firstName + ' ' + theModel.attributes.lastName;
 		} else {
 			name = theModel.attributes.emailAddress;
 		}
+		
 		houston.createModal({type: 'Warning', message: 'Are you sure you would like to delete ' + name +'?', cancel: true},
 	    	function(){
-	    		theModel.destroy({
-    				wait:true,
-    				success: function(){
-    					// app.fetchUsers(); //Not needed as now uses listener on the collection
-    				}
-    			});			
+	    		theModel.destroy({wait:true});			
 			}
 	    );				
 	},	

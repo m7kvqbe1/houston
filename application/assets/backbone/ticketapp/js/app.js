@@ -1,16 +1,14 @@
 var AppRouter = Backbone.Router.extend({
 	root: '/',
 	routes: {
-		"": "indexFrontController",
-		"tickets/new": "ticketFormFrontController",
-		"tickets/:ticket": "ticketDetailsFrontController",
-		"people": "peopleOverviewFrontController",
-		"profile": "profileFrontController",
-		"account": "accountMainFrontController",
-		"analytics": "analyticsMainFrontController",
-		"*notFound": "indexFrontController"
+		'': 'indexFrontController',
+		'tickets/new': 'ticketFormFrontController',
+		'tickets/:ticket': 'ticketDetailsFrontController',
+		'people': 'peopleOverviewFrontController',
+		'profile': 'profileFrontController',
+		'account': 'accountMainFrontController',
+		'*notFound': 'indexFrontController'
 	},
-
 
 	initialize: function() {
 		$.ajaxSetup({timeout:720000000});
@@ -71,9 +69,9 @@ var AppRouter = Backbone.Router.extend({
 		var socket = io('http://houstonsupportdesk.com:3000/'+app.user.attributes.companyID);
 		
 		// On receiving a notify event display the notification popup
-		socket.on('notify', function(data) {	
+		socket.on('notify', function(data){	
 			$('#notice span').html(data);
-			$('#notice').fadeIn(1000, function() { $(this).delay(5000).fadeOut(1000); });
+			$('#notice').fadeIn(1000, function(){ $(this).delay(5000).fadeOut(1000) });
 			socket.emit('response', 'success');
 
 			app.fetchData();
@@ -84,16 +82,16 @@ var AppRouter = Backbone.Router.extend({
 		handlebarsHelpers.bindHelpers();
 		events.bindEvents();
 		this.modalWindow = $('#modal-window');
-		this.appElement = $("#app");
-		this.updateElem = $("update-alert");
+		this.appElement = $('#app');
+		this.updateElem = $('update-alert');
 		this.tickets.countUpdated();
 
-		$(function() { Backbone.history.start({ pushState: true, root: app.root })});		
+		$(function(){ Backbone.history.start({ pushState: true, root: app.root })});		
 	},
 	
  	currentView: false,
 	showView: function(view) {
-		if (this.currentView) this.currentView.close();
+		if(this.currentView) this.currentView.close();
 		this.currentView = view;
 		this.appElement.html(this.currentView.render().el);
 	},
@@ -141,11 +139,6 @@ var AppRouter = Backbone.Router.extend({
 		var accountView = new AccountView({model: this.user});
 		this.showView(accountView);
 	},
-	
-	analyticsMainFrontController: function() {
-		var analyticsView = new AnalyticsView({model: this.user});
-		this.showView(analyticsView);
-	},
 
 	modal: false,
 	preview: false,
@@ -184,7 +177,6 @@ var AppRouter = Backbone.Router.extend({
 		    );			    
 	    }
     }
-
 });
 
 var app = new AppRouter();

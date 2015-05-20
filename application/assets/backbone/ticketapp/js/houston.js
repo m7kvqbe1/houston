@@ -4,7 +4,8 @@ var houston = {
 		var date = dateObject.toString();			
 		var day = date.substring(8,10);
 		var month = date.substring(5,7) -1;
-		date = day+' '+monthNames[month];	
+		date = day+' '+monthNames[month];
+
 		return date;	
 	},
 	
@@ -16,7 +17,7 @@ var houston = {
 				case 3: return 'rd';
 			}
 		}
-		
+
 		return 'th';
 	},
 
@@ -25,40 +26,43 @@ var houston = {
 		var date = dateObject.toString();			
 		var day = date.substring(8,10);
 		var month = date.substring(5,7) -1;
-		var year = date.substring(0,4);
-					
-		var suffix = this.ordinalSuffix(day);
-			
+		var year = date.substring(0,4);				
+		var suffix = this.ordinalSuffix(day);		
 		var period = 'am';
 		var hour = date.substring(11,13);
+
 		if (hour > 12){
 			hour = hour - 12;
 			period = 'pm';
 		} else if (hour == 12){
 			period = 'pm';
 		}
+
 		var min = date.substring(14,16);
 						
-		date = day+suffix+' '+monthNames[month]+' '+year+' '+hour+':'+min+period;	
+		date = day+suffix+' '+monthNames[month]+' '+year+' '+hour+':'+min+period;
+			
 		return date;	
 	},
 	
 	convertToClass: function(attribute){
 		var cssClass = attribute.toLowerCase().split(' ').join('-');
+
 		return cssClass;
 	},
 
 	convertUserRole: function(attribute){
 		var userRole = 'Unknown Role';
-		if(typeof attribute !== "undefined"){
-			if(attribute === "ADMIN"){
+		if(typeof attribute !== 'undefined'){
+			if(attribute === 'ADMIN'){
 				userRole = 'Administrator';
-			} else if(attribute === "AGENT"){
+			} else if(attribute === 'AGENT'){
 				userRole = 'Support Agent';
-			} else if(attribute === "USER"){
+			} else if(attribute === 'USER'){
 				userRole = 'User'
 			}
 		} 
+
 		return userRole;
 	},	
 		
@@ -96,6 +100,7 @@ var houston = {
 					li.toggleClass('slct');	
 					li.toggleClass('n-slct');
 				});
+
 				houston.dropDownAttribute = 'status';
 			} else {
 				drop.find('li').removeClass('slct');
@@ -107,7 +112,7 @@ var houston = {
 		var output; 
 		if(dropdown.hasClass('dropswitch')){
 			output = {param: 'status', value: val}; 
-		}else {
+		} else {
 			val = item.data('id');
 			output = {param: 'agent', value: val};
 		}
@@ -150,35 +155,35 @@ var houston = {
 		view.find('#form-reply textarea').focus();
 		var scroll = view.closest(document).scrollTop()+ 310;
 
-		view.closest("html, body").animate({ scrollTop: scroll });
+		view.closest('html, body').animate({ scrollTop: scroll });
 	},
 
 	updateCheck: function(arr){
 		var updateSeen = false;
 		var i;
+
 		for (i = 0; i < arr.length; ++i) {
-			//did use app.user.attributes.id
-			// console.log(app.user.id);
 			if(arr[i] == app.user.id) {					
 				updateSeen = true;
 			}
 		}
+
 		return updateSeen;
 	},
 
 	populateAgentDropdown: function(){
 		var arr = app.users.filter(function(data){
-			// return data.get('role') !== 'USER' && data.get('verify') === true;
 			return data.get('role') !== 'USER';
 		});
+
 		var i;
 		var str = '';
+
 		for (i = 0; i < arr.length; ++i) {
-			// str += '<li>'+arr[i].attributes.firstName+' '+arr[i].attributes.lastName+'</li>';
 			str += '<li data-id="'+arr[i].id+'">'+dataHelper.getUserName(arr[i].id)+'</li>';
 		}
-		return str;
 
+		return str;
 	},
 
 	dateArrow: function(){
@@ -218,6 +223,7 @@ var houston = {
 		var input = view.find('.new-sub');
 		var value = input.val();
 		var length = value.length;
+		
 		if(length >= max){
 			input.val(value.substr(0, max));
 			length = max;
@@ -226,6 +232,7 @@ var houston = {
 		var count = max - length;
 		var charSpan = view.find('.char-count span');
 		charSpan.text(count);
+		
 		if(count <= 10){
 			charSpan.addClass('count');
 		} else {
@@ -242,6 +249,7 @@ var houston = {
 	calculateBoxHeight: function(){
 		var windowHeight = $(window).height();
 		var idealHeight = windowHeight - 270;
+
 		return idealHeight;
 	},
 
@@ -249,6 +257,7 @@ var houston = {
 		if(type.indexOf('jpeg') == -1 && type.indexOf('png') == -1 && type.indexOf('pdf') == -1){
 			return false;
 		}
+
 		return true;
 	},
 
@@ -257,6 +266,7 @@ var houston = {
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 		var form = $(button).closest('form');
 		var inputs = form.find('.required');
+
 		inputs.each(function(){
 			var input = $(this);
 			if(input.val() == ''){
@@ -268,7 +278,6 @@ var houston = {
 
 			if(input.is('input[type=email]')){
 				address = input.val();
-				// if(!re.test(address)){
 				if(!houston.validateEmail(address)){
 					valid = false;
 					input.addClass('error');		
@@ -277,11 +286,13 @@ var houston = {
 				}
 			}
 		});
+
 		return valid;
 	},
 
 	validateEmail: function(address){
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+		
 		if(re.test(address)){
 			return true;
 		} else {
@@ -291,6 +302,7 @@ var houston = {
 
 	validateAndApproveEmail: function(input, successCallback, errorCallback){
 		var address = input.val();
+		
 		if(!this.validateEmail(address)){
 			input.addClass('error');
 			return
@@ -298,7 +310,7 @@ var houston = {
 			input.removeClass('error');
 		}
 
-		var request = $.get("/api/check/email?email=" + address);
+		var request = $.get('/api/check/email?email=' + address);
         
         request.done(function(msg) {
             if(successCallback) successCallback(input);
@@ -306,12 +318,12 @@ var houston = {
          
         request.fail(function(jqXHR, textStatus) {
             if(errorCallback) errorCallback(input);
-        });
-	    
+        });	    
 	},
 
 	formatFileType: function(type){
 		var fileType = 'FILE';
+		
 		if(type){ 
 			switch(type.split('/')[1]){
 				case 'jpeg':
@@ -334,18 +346,21 @@ var houston = {
 					break;
 			}
 		}
+
 		return fileType;
 	},
 
 	previewImageResize: function(){
 		var windowHeight = $(window).height();
 		var maxHeight = windowHeight - 190;
+
 		return maxHeight;
 	},
 
 	previewImageResizeWidth: function(){
 		var windowWidth = $(window).width();
 		var maxWidth = windowWidth - 80;
+
 		return maxWidth;
 	},
 
@@ -359,29 +374,17 @@ var houston = {
 		} else {
 			html = '<div class="update-alert">'+updated+'</div>';
 		}
+
 		$('#update-alert').html(html);
 	},
 
-	// createModal: function(attributesObj, confirmCallback, cancelCallback){
-	// 	modal = new ModalView({model: new Backbone.Model(attributesObj)});
-	// 	if(confirmCallback) modal.confirmBehaviour = confirmCallback;
-	// 	if(cancelCallback) modal.cancelBehaviour = cancelCallback;
-	// 	app.modalWindow.html(modal.$el); //Why does this only work with $ and seperate render?
-	// 	modal.render();
-
-	// 	if(!app.modal){
-	// 		app.modal = modal;
-	// 	} else {
-	// 		app.modalB = modal;
-	// 	}
-	// }
-
 	createModal: function(attributesObj, confirmCallback, cancelCallback){
 		app.modal = new ModalView({model: new Backbone.Model(attributesObj)});
+
 		if(confirmCallback) app.modal.confirmBehaviour = confirmCallback;
 		if(cancelCallback) app.modal.cancelBehaviour = cancelCallback;
-		app.modalWindow.html(app.modal.$el); //Why does this only work with $ and seperate render?
+
+		app.modalWindow.html(app.modal.$el); 
 		app.modal.render();
 	}
-
 }

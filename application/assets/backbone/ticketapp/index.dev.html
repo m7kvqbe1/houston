@@ -36,6 +36,8 @@
 
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/houston.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/datahelper.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/handlebarshelpers.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/events.js"></script>
 
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/models/usermodel.js"></script>	
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/models/clientmodel.js"></script>
@@ -51,18 +53,25 @@
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/collections/messages.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/collections/agents.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/collections/users.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/collections/clientusers.js"></script>
 	
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/view.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/ticketview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/ticketheaderview.js"></script>	
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/ticketsview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/formview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/peopleview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/fileuploadview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/messagesview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/clientsview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/clientview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/usersview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/userview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/accountview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/analyticsview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/modalview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/profileview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/views/previewwindow.js"></script>
 	
 	<script type="text/javascript" src="/application/assets/backbone/ticketapp/js/app.js"></script>
 </head>
@@ -78,7 +87,6 @@
 		<li><a href="/"><i class="icon-comment"></i>All Tickets</a></li>
 		<li><a href="/people"><i class="icon-user"></i>People</a></li>
 		<li><a href="/profile"><i class="icon-cog"></i>Profile</a></li>
-		<li><a href="/analytics"><i class="icon-cog"></i>Analytics</a></li>
 		<li><a href="/account"><i class="icon-cog"></i>Account</a></li>
 		<li><a class="log-out"><i class="icon-logout"></i>Log Out</a></li>
 	</ul>
@@ -96,7 +104,6 @@
 				<a href="/">Tickets</a>
 				<a href="/people">People</a>
 				<a href="/profile">Profile</a>
-				<a href="/analytics">Analytics</a>
 				<a href="/account">Account</a>
 				<a class="log-out">Log Out</a>
 			</nav>
