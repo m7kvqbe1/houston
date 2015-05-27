@@ -15,6 +15,7 @@ class CompanyModel
 	);
 
 	protected $app;
+	
 	public $company;
 
 	public function __construct(Application $app, $companyID = null)
