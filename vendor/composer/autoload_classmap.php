@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
+    'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Resources/stubs/SessionHandlerInterface.php',
     'Stripe' => $vendorDir . '/stripe/stripe-php/lib/Stripe/Stripe.php',
     'Stripe_Account' => $vendorDir . '/stripe/stripe-php/lib/Stripe/Account.php',
     'Stripe_ApiConnectionError' => $vendorDir . '/stripe/stripe-php/lib/Stripe/ApiConnectionError.php',
