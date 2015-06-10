@@ -95,8 +95,7 @@ var handlebarsHelpers = {
 				});
 
 				params = params.substring(0, params.length -1);
-				
-				return new Handlebars.SafeString('<a class="attachments-link" data-bypass="true" href="http://edd.houston.com/api/tickets/file/zip?'+params+'">Download All Attachments</a>');
+				return new Handlebars.SafeString('<a class="attachments-link" data-bypass="true" href="http://' + window.location.hostname + '/api/tickets/file/zip?'+params+'">Download All Attachments</a>');
 			}
 		});
 

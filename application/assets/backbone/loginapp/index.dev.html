@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="cleartype" content="on">
+    <meta name="viewport" content="width=device-width">
     
     <!--
 	 _   _                 _              
@@ -36,23 +37,29 @@
 	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script type="text/javascript">Stripe.setPublishableKey('pk_0BVRc6J0uTEMvHQ4aPHjbudmFY8TN');</script>
 		
-	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/models/registermodel.js"></script>	
+	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/models/registermodel.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/view.js"></script>	
 	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/loginview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/loginformview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/resetpassview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/registerview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/planview.js"></script>
+	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/paymentview.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/views/resetview.js"></script>
 	
 	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/app.js"></script>
 	<script type="text/javascript" src="/application/assets/backbone/loginapp/js/login.js"></script>
 </head>
-<body>
-    <div class="wrapper login">
-		<header><img class="logo" src="/application/assets/img/logo@2x.png" /></header>
-		<div id="app">
-		
+	<body>
+	    <div class="wrapper login">
+			<header><img class="logo" src="/application/assets/img/logo@2x.png" /></header>
+			<div id="app">
+			
+			</div>			
+			<footer>
+				<div class="copy">&copy;Copyright 2015 Houston Support Desk</div>
+			</footer>
 		</div>
-		<footer>
-			<div class="copy">&copy;Copyright 2015 Houston Support Desk</div>
-		</footer>
-	</div>
-</body>
+		 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js"></script>
+	</body>
 </html>

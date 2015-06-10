@@ -789,6 +789,16 @@ input.inp-lst {
 .pricing-plan .vld-cir {
 	position: relative;
 	margin: 0 auto;
+
+	-webkit-transition: background 400ms ease-out;
+	-moz-transition: background 400ms ease-out;
+	-ms-transition: background 400ms ease-out;
+	-o-transition: background 400ms ease-out;
+	transition: background 400ms ease-out;
+}
+
+.pricing-plan .vld-cir.delayed-icon-animate {
+	background: #01d48f;
 }
 
 .pricing-plan h3 {
@@ -2480,18 +2490,258 @@ button.grayscale.gray .c {
 	}
 
 	/* Pricing Plan */
-
-
-
 	.box-plan {
+		position: relative;
+		overflow: hidden;
 		width: 100%;
+		background: url(../img/branch.png) no-repeat 91% 70%;
+		background-size: 453px;
+
+/*		background: url(../img/tree-cropped.png) no-repeat 81% 0%;
+		background-size: 469px;*/
+
 	}
 
-	.pricing-plan {
+	.plan-buttons {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+	}
+
+	.svg-wrapper {
 		float: left;
+		width: 246px;
+		height: 458px;
+	}
+
+	.svg-wrapper svg {
+		display: block;
 		width: 50%;
-		margin: 74px 0 75px;
+		height: 458px;
+		padding: 0 25%;
+	}
+
+	#eyes,
+	.eyes {
+		position: relative;
+	}
+
+	h2 span {
+		position: relative;
+	}
+
+	/*.default-anim .left-wing {
+		animation-name: l-wing;
+		-webkit-animation-name: l-wing;	
+
+		animation-duration: 7s;	
+		-webkit-animation-duration: 7s;
+
+		animation-iteration-count: infinite;
+		-webkit-animation-iteration-count: infinite;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes l-wing {
+		65% {
+			transform: translate(0,0);
+		}	
+		70% {
+			transform: translate(5px, -26px) rotate(1deg);
+		}
+		72% {
+			transform: translate(5px, -26px) rotate(1deg);
+		}
+		76% {
+			transform: translate(0,0);
+		}			
+	}
+
+	.plan-one .left-wing {
+		animation-name: l-wing-one;
+		-webkit-animation-name: l-wing-one;	
+
+		animation-duration: 500ms;	
+		-webkit-animation-duration: 500ms;
+
+		animation-iteration-count: 1;
+		-webkit-animation-iteration-count: 1;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes l-wing-one {
+
+		55% {
+			transform: translate(400px, 140px) rotate(60deg);
+		}	
+
+		70% {
+			transform: translate(540px, 280px) rotate(96deg);
+		}
+
+		100% {
+			transform: translate(540px, 550px) rotate(123deg);
+		}			
+	}
+
+	.plan-two .right-wing {
+		animation-name: r-wing-two;
+		-webkit-animation-name: r-wing-two;	
+
+		animation-duration: 500ms;	
+		-webkit-animation-duration: 500ms;
+
+		animation-iteration-count: 1;
+		-webkit-animation-iteration-count: 1;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes r-wing-two {
+
+		100% {
+			transform: rotate(-123deg);
+			transform-origin: 50% 0;
+		}			
+	}
+
+	.default-anim .right-wing {
+		animation-name: r-wing;
+		-webkit-animation-name: r-wing;	
+
+		animation-duration: 7s;	
+		-webkit-animation-duration: 7s;
+
+		animation-iteration-count: infinite;
+		-webkit-animation-iteration-count: infinite;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes r-wing {
+		65% {
+			transform: translate(0,0);
+		}	
+		70% {
+			transform: translate(-5px, -26px) rotate(-1deg);
+		}
+		72% {
+			transform: translateY(-5px, -26px) rotate(-1deg);
+		}
+		76% {
+			transform: translate(0,0);
+		}			
+	}		
+
+	.default-anim .eyes {
+		animation-name: eye-animate;
+		-webkit-animation-name: eye-animate;	
+
+		animation-duration: 7s;	
+		-webkit-animation-duration: 7s;
+
+		animation-iteration-count: infinite;
+		-webkit-animation-iteration-count: infinite;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes eye-animate {
+		10% {
+			transform: translateX(0px);
+		}
+		16% {
+			transform: translateX(24px);		
+		}
+		32% {
+			transform: translateX(24px);		
+		}
+		38% {
+			transform: translateX(-32px);
+		}
+		50% {
+			transform: translateX(-32px);
+		}	
+		56% {
+			transform: translateX(0px);
+		}		
+	}
+
+	.plan-one .eyes {
+		animation-name: eye-animate-one;
+		-webkit-animation-name: eye-animate-one;	
+
+		animation-duration: 250ms;	
+		-webkit-animation-duration: 250ms;
+
+		animation-iteration-count: 1;
+		-webkit-animation-iteration-count: 1;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes eye-animate-one {
+
+		100% {
+			transform: translateX(-32px);
+		}				
+	}	
+
+	.plan-two .eyes {
+		animation-name: eye-animate-two;
+		-webkit-animation-name: eye-animate-two;	
+
+		animation-duration: 250ms;	
+		-webkit-animation-duration: 250ms;
+
+		animation-iteration-count: 1;
+		-webkit-animation-iteration-count: 1;
+
+		animation-timing-function: ease-in;	
+		-webkit-animation-timing-function: ease-in;	
+	}
+
+	@keyframes eye-animate-two {
+
+		100% {
+			transform: translateX(24px);
+		}				
+	}	*/
+
+	.pricing-plan {
+		box-sizing: border-box;
+		float: left;
+		width: 200px;
+		padding: 24px 0 18px;
+		border: 1px solid #cfc3af;
+		-webkit-border-radius: 6px;
+		border-radius: 6px;
 		text-align: center;
+		background-color: #fff;
+	}
+
+	.left-plan {
+		margin: 74px 0 75px 18px;
+	}
+
+	.right-plan {
+		margin: 74px 18px 75px 0;
+	}
+
+	.price {
+		margin: 24px 0 20px;
+	}
+
+	.pricing-plan h3 {
+		margin: 10px 0 20px;
 	}
 
 	.pricing-plan p {
