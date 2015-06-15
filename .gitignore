@@ -1,4 +1,5 @@
-/application/log/development.log
 /tmp/data
 /tmp/dummy_reply_email.html
+/application/log/development.log
 /application/node/node_modules/.bin
+.npm-debug.log
