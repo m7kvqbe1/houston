@@ -36,10 +36,6 @@ class AuthController
 		// Does verified user exist?
 		if(!$userModel->isVerified($json->user)) return ApiResponse::error('USER_UNVERIFIED');
 
-		var_dump($json->password);
-		var_dump($userModel::hashPassword($json->password));
-		var_dump($userModel->user['password']);
-
 		// Do password hashes match?
 		if(!password_verify($json->password, $userModel->user['password'])) return ApiResponse::error('PASSWORD_INVALID');
 
