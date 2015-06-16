@@ -188,8 +188,7 @@ class UserModel
 
 	public static function hashPassword($password)
 	{
-		$password = crypt($password, DEFAULT_SALT);
-		return $password;
+		return password_hash($password, PASSWORD_BCRYPT);
 	}
 
 	public function rememberMeLookup($token)
