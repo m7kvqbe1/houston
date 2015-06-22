@@ -3,3 +3,5 @@
 /application/log/development.log
 /application/node/node_modules/.bin
 /.npm-debug.log
+/application/node/node_modules
+/vendor
