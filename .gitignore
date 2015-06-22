@@ -2,6 +2,6 @@
 /tmp/dummy_reply_email.html
 /application/log/development.log
 /application/node/node_modules/.bin
-/.npm-debug.log
 /application/node/node_modules
 /vendor
+npm-debug.log
