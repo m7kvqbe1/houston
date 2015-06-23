@@ -37,7 +37,7 @@ class IndexController
 		return System::generateAssets($request, $this->app);
 	}
 	
-	public function sessionCheck() 
+	public function sessionCheckAction() 
 	{
 		if($this->app['session']->get('isAuthenticated')) {
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
