@@ -41,6 +41,7 @@ class Helper
 		// Generate unique hash from timestamp for temporary archive
 		$filename = (isset($filename)) ? self::urlFriendly($filename) : md5(time()).'.zip';	
 		
+		// Note that /tmp/zip directory must be writable
 		$zip = new \ZipArchive;
 		$zip->open('tmp/zip/'.$filename, \ZipArchive::CREATE);
 		foreach ($files as $file) {
