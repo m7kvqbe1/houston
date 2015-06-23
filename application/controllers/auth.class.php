@@ -37,7 +37,7 @@ class AuthController
 		if(!$userModel->isVerified($json->user)) return ApiResponse::error('USER_UNVERIFIED');
 
 		// Do password hashes match?
-		if($userModel::hashPassword($json->password) !== $userModel->user['password']) return ApiResponse::error('PASSWORD_INVALID');
+		if(!password_verify($json->password, $userModel->user['password'])) return ApiResponse::error('PASSWORD_INVALID');
 
 		$companyModel = new CompanyModel($this->app);
 		$companyModel->loadCompanyByID($userModel->user['companyID']);

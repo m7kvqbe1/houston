@@ -1,7 +1,7 @@
 // Setup database connection
 var mongojs = require('mongojs');
 var uri = 'mongodb://houston:ZB~fljf023943!F@localhost:27017/houston';
-var db = mongojs.connect(uri, ['companies']);
+var db = mongojs(uri, ['companies']);
 
 module.exports = {
 	getAllCompanyIds: function(callback) {
