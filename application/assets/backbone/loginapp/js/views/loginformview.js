@@ -52,7 +52,7 @@ var LoginFormView = Backbone.View.extend({
 		app.currentView.render();
 	},	
 
-	login: function() {
+	login: function(){
 		if(!login.validateForm(this.$el.find('#form-log'))) return;
 
 		this.$el.find('h2').show().removeClass('text-animate');
@@ -73,11 +73,11 @@ var LoginFormView = Backbone.View.extend({
 			dataType: "json",
 		});
 
-		request.done(function( msg ) {
+		request.done(function(msg) {
 			window.location.reload();
 		});
 
-		request.fail(function( jqXHR, textStatus ) {
+		request.fail(function(jqXHR, textStatus){
 			app.currentView.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
 			app.currentView.$el.find('.box-log h3.log-tag').hide().text('Please try again').addClass('text-animate');
 			app.currentView.$el.find('.login').removeClass('loading');

@@ -284,11 +284,25 @@ footer {
 	min-width: 320px;
 }
 
-.wrapper.login {
+.login-outer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.login-table {
 	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-54%);
-	transform: translateY(-54%);
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	height: 100%;	
+}
+
+.login-cell {
+	display: table-cell;
+	vertical-align: middle;
 }
 
 .box {
@@ -782,8 +796,16 @@ input.inp-lst {
 	margin: 0 auto;
 }
 
+.svg-wrapper {
+	display: none;
+}
+
 .pricing-plan {
 	margin-top: 30px;
+}
+
+.right-plan {
+	margin-bottom: 30px;
 }
 
 .pricing-plan .vld-cir {
@@ -2509,6 +2531,7 @@ button.grayscale.gray .c {
 	}
 
 	.svg-wrapper {
+		display: block;
 		float: left;
 		width: 246px;
 		height: 458px;
@@ -3207,7 +3230,8 @@ button.grayscale.gray .c {
 		width: 356px;
 	}
 
-	.vld-pair-three .vrf{
+	#form-reg .vld-pair-three .vrf{
+		right: 52px;
 		width: 42px;
 	}
 

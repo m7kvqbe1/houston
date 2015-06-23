@@ -74,13 +74,6 @@ var PlanView = Backbone.View.extend({
 			'click .plan-confirm': 'planConfirm',
 			'click .plan-back': 'planBack'
 		});
-
-		//nocircleno.com/blog/svg-and-handlebars-js-templates/
-		//nocircleno.com/blog/getting-starting-with-svg-and-javascript/
-		//css-tricks.com/animating-svg-css/
-		//css-tricks.com/guide-svg-animations-smil/
-		//www.dreamstime.com/stock-illustration-cat-tree-branch-street-flat-design-cartoon-vector-pets-wild-animals-zoo-nature-children-collection-image45880046
-		//ihatetomatoes.net/how-to-animate-svg-with-greensock/
 	
 		this.owlAnimation();
 
@@ -110,9 +103,6 @@ var PlanView = Backbone.View.extend({
 		.to(this.leftWing, 0.35, {rotation: 0, transformOrigin:"45% 0%", ease: Power1.easeOut}, 'flapDown2')
 		.to(this.rightWing, 0.35, {rotation: 0, transformOrigin:"55% 0%", ease: Power1.easeOut}, 'flapDown2')
 
-		// .to(this.leftWing, 0.4, {rotation: 90, transformOrigin:"45% 0%", ease: Back.easeOut.config(1)}, 'flapUp3')
-		// .to(this.rightWing, 0.4, {rotation: -90, transformOrigin:"55% 0%", ease: Back.easeOut.config(1)}, 'flapUp3')
-
 		.to(this.leftWing, 0.4, {rotation: 120, transformOrigin:"45% 0%", ease: Power1.easeIn}, 'flapUp3')
 		.to(this.rightWing, 0.4, {rotation: -120, transformOrigin:"55% 0%", ease: Power1.easeIn}, 'flapUp3')		
 
@@ -123,9 +113,9 @@ var PlanView = Backbone.View.extend({
 		this.tl.set(this.owl, {y: 2460, x: -200});
 
 		this.tl.to(this.owl, 2.5, {y: -300, x: 0, ease: Back.easeOut.config(1)})
-		.to(this.eyes, 0.8, {x:25, delay: 0.7})
-		.to(this.eyes, 0.8, {x:-33, delay: 0.2})
-		.to(this.eyes, 0.6, {x:0, delay: 0.2})
+		.to(this.eyes, 0.5, {x:25, delay: 0.7})
+		.to(this.eyes, 0.8, {x:-33, delay: 0.5})
+		.to(this.eyes, 0.5, {x:0, delay: 0.5})
 		.to(this.leftWing, 0.5, {x:5, y:-26, rotation: 4, transformOrigin:"top right", delay: 0.4}, 'shrugUp')
 		.to(this.rightWing, 0.5, {x:-5, y:-26, rotation: -4, transformOrigin:"top left", delay: 0.4}, 'shrugUp')
 		.to(this.leftWing, 0.5, {x:0, y:0, rotation: 0, transformOrigin:"top right"}, 'shrugDown')

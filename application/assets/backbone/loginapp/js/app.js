@@ -45,15 +45,9 @@ var AppRouter = Backbone.Router.extend({
 	register: function(){
 		var registerModel = new RegisterModel();
 
-		// var registerView = new RegisterView({model: registerModel});
+		var registerView = new RegisterView({model: registerModel});
 
-		// this.showView(registerView);
-
-		var planView = new PlanView({model: registerModel});
-		app.showView(planView);	
-
-		// var paymentView = new PaymentView({model: registerModel});
-		// app.showView(paymentView);
+		this.showView(registerView);
 	}
 });
 
