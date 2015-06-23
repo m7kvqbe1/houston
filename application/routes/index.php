@@ -12,4 +12,4 @@ $app->get('/{uri}', 'index.controller:indexAction')->assert('uri', '^((?!api).)*
 
 $app->get('/', 'index.controller:indexAction');
 
-$app->get('/api/session-check', 'index.controller:sessionCheck');
+$app->get('/api/session/check', 'index.controller:sessionCheck');
