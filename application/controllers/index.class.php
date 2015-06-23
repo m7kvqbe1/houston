@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Houston\Core\System;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
+use Houston\Component\ApiResponse;
 
 class IndexController 
 {
@@ -34,5 +35,14 @@ class IndexController
 		}
 		
 		return System::generateAssets($request, $this->app);
+	}
+	
+	public function sessionCheck() 
+	{
+		if($this->app['session']->get('isAuthenticated')) {
+			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+		} else {
+			return ApiResponse::error('SESSION_EXPIRED');
+		}
 	}
 }

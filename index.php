@@ -1,4 +1,5 @@
 <?php
+// Start timer for profiling
 define('PHP_START', microtime(true));
 
 // Character encoding
