@@ -25,7 +25,7 @@ var RegisterView = Backbone.View.extend({
 							'</div>'+
 						'</div>'+
 						'<div class="reg-vrf">'+
-							'<input type="email" name="reg-e" placeholder="Email Address" class="email vld-aa" data-vld="vld-a" value="{{attributes.emailAddress}}" />'+
+							'<input type="email" name="reg-e" placeholder="Email Address" class="email vld-aa" data-vld="vld-a" value="{{attributes.emailAddress}}" spellcheck="false" />'+
 							'<div class="vrf">'+
 								'<div class="vrf-cir"><i class="icon-cancel"></i></div>'+
 								'<div class="vrf-msg">Already<br />In Use</div>'+
