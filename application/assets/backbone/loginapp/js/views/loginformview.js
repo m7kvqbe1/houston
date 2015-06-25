@@ -4,7 +4,7 @@ var LoginFormView = Backbone.View.extend({
 		'<h2>Login Here</h2>'+
 		'<h3 class="log-tag">Great to see you again!</h3>'+
 		'<form id="form-log">'+
-			'<input class="required" type="email" name="log-e" placeholder="Email Address" autofocus />'+
+			'<input class="required" type="email" name="log-e" placeholder="Email Address" autofocus spellcheck="false" />'+
 			'<input class="required" type="password" name="log-p" placeholder="Password" />'+			
 			'<label>'+
 				'<input id="log-rem" type="checkbox" name="log-r" value="remember" />'+
