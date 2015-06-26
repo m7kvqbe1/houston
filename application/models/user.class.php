@@ -352,7 +352,7 @@ class UserModel
 		$user->password = $this->hashPassword($user->password);
 
 		// Generate email verification token
-		$user->verify = $this->generateVerificationToken($user->emailAddress);
+		$user->verify = self::generateVerificationToken($user->emailAddress);
 
 		$user->role = 'ADMIN';
 
@@ -363,7 +363,7 @@ class UserModel
 	public function addAgent($user)
 	{
 		// Generate email verification token
-		$user->verify = $this->generateVerificationToken($user->emailAddress);
+		$user->verify = self::generateVerificationToken($user->emailAddress);
 
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('uid'));
@@ -378,7 +378,7 @@ class UserModel
 	public function addUser($user)
 	{
 		// Generate email verification token
-		$user->verify = $this->generateVerificationToken($user->emailAddress);
+		$user->verify = self::generateVerificationToken($user->emailAddress);
 
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('uid'));
