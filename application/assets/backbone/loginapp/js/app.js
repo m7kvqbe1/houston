@@ -21,6 +21,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	login: function(){
+		//clean url
 		var loginView = new LoginView();
 
 		this.showView(loginView);
