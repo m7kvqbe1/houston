@@ -261,8 +261,7 @@ class UserModel
 		$db = $db->houston;
 
 		// Generate url friendly token
-		$token = self::hashPassword(rand(0,999999));
-		$token = \Houston\Component\Helper::urlFriendly($token);
+		$token = \Houston\Component\Helper::urlFriendly(uniqid());
 
 		try {
 			$collection = $db->users;
