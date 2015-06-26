@@ -1679,6 +1679,7 @@ h4.client-has-no-users {
 .msg-tri {
 	position: absolute;
 	bottom: 0;	
+	left: 82px;
 	width: 0px;
 	height: 0px;
 	border-style: solid;
@@ -1691,10 +1692,6 @@ h4.client-has-no-users {
 .from-AGENT .msg-tri,
 .from-ADMIN .msg-tri  {
 	right: 82px;
-}
-
-.from-USER .msg-tri {
-	left: 82px;
 }
 
 .msg-body {
@@ -1892,7 +1889,7 @@ h4.client-has-no-users {
 	margin-top: 24px;
 }
 
-.update-alert {
+#update-alert .update-alert {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
