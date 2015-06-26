@@ -82,7 +82,7 @@ var ResetView = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					window.location.href = '/';
+					window.location.href = '';
 				},
 				error: _.bind(function(){
 					this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
