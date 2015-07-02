@@ -3218,7 +3218,9 @@ Backbone.View.prototype.close = function(){
 		jQuery.event.props.push("dataTransfer");
 
 		// Check for File API support
-		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File API is not fully supported by this browser');
+		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+			console.warn('The File API is not fully supported by this browser');
+		}
 
 		this.user = new UserModel();
 		this.users = new Users();
@@ -3263,7 +3265,7 @@ Backbone.View.prototype.close = function(){
 	},
 
 	fetchError: function(a,b,c){
-		console.log(a); //Create a global error handler 
+		console.log(a);
 	},
 
 	setUpSocket: function(){
@@ -3345,7 +3347,7 @@ Backbone.View.prototype.close = function(){
 	modal: false,
 	preview: false,
 
-	// 	CUSTOM EXECUTE METHOD
+	// Custom Execute Method
 	changed: false,
 	executeArguments: false,
 	execute: function(callback, args, name) {
@@ -3368,11 +3370,19 @@ Backbone.View.prototype.close = function(){
 		    	args: args,
 		    	name: name
 		    }
-	    	houston.createModal({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true},
+		    
+	    	houston.createModal(
+	    		{
+		    		type: 'Warning', 
+					message: 'Any unsaved changes will be lost, would you like to continue?', 
+					cancel: true
+		    	},
+		    	
 		    	function(){
 					app.changed = false;
 					app.execute();
 				},
+				
 				function(){
 					app.navigate(app.changed, {trigger: false});
 				}
@@ -3381,6 +3391,20 @@ Backbone.View.prototype.close = function(){
     }
 });
 
-var app = new AppRouter();
+// Session timeout polling
+(function timeout() {
+	setTimeout(function() {
+		$.get('/api/session/check', function(data) {
+			var obj = JSON.parse(data);
+			
+			if(obj.code === 'SESSION_CHECK' && obj.status === 'error') {
+				window.location.href = '/logout';
+			} else {
+				timeout();
+			}
+		});
+	}, 5000);
+})();
 
+var app = new AppRouter();
 //# sourceMappingURL=ticketapp.js.map

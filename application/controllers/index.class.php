@@ -40,9 +40,9 @@ class IndexController
 	public function sessionCheckAction() 
 	{
 		if($this->app['session']->get('isAuthenticated')) {
-			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
+			return ApiResponse::success('SESSION_CHECK', 'An authenticated session exists.');
 		} else {
-			return ApiResponse::error('SESSION_EXPIRED');
+			return ApiResponse::error('SESSION_CHECK', 'Your session has expired.');
 		}
 	}
 }

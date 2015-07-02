@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ApiResponse extends Response
 {
 	public static function error($code, $customMessage = null)
-	{
+	{		
 		return self::responseFactory($code, 'error', $customMessage);
 	}
 
@@ -48,6 +48,7 @@ class ApiResponse extends Response
 	private static function setResponseStatusCode($response, $code)
 	{
 		switch($code) {
+			case 'SESSION_CHECK':
 			case 'DEFAULT_RESPONSE_SUCCESS':
 				// 200 - Success
 				$response->setStatusCode(Response::HTTP_OK);
