@@ -11,7 +11,10 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	initialize: function() {
-		$.ajaxSetup({timeout:720000000});
+		$.ajaxSetup({
+			timeout: 0
+		});
+		
 		// Add dataTransfer to jquery events
 		jQuery.event.props.push("dataTransfer");
 
@@ -35,7 +38,7 @@ var AppRouter = Backbone.Router.extend({
 		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
 		.done(function(){
 			app.fetchClients(callback)
-		});		
+		});
 	},
 
 	fetchUsers: function(callback){
@@ -189,7 +192,7 @@ var AppRouter = Backbone.Router.extend({
     }
 });
 
-// Session timeout polling
+// Session timeout polling (every 5 seconds)
 (function timeout() {
 	setTimeout(function() {
 		$.get('/api/session/check', function(data) {

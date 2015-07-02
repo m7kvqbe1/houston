@@ -4,7 +4,7 @@ var Users = Backbone.Collection.extend({
 
 	initialize: function() {
 		this.on("sync", function() {
-			//On fetch reset agentsCollection with all agent/admin users
+			// On fetch reset agentsCollection with all agent/admin users
 			app.agentsCollection.reset(this.agentUsers());
 		});
 	},

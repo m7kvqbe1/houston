@@ -4,8 +4,10 @@ Backbone.View.prototype.markAsChanged = function () {
 
 Backbone.View.prototype.close = function(){
 	this.remove();
+	
 	this.unbind();
-	if (this.onClose){
+	
+	if(this.onClose){
 		this.onClose();
 	}
 };

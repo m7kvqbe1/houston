@@ -41,7 +41,6 @@ var Tickets = Backbone.Collection.extend({
 	},
 	
 	byAgent: function(){
-		//Needs to change to use id
 		filtered = this.filter(function(data){
 			return data.get('agent') == app.user.id && data.get('status') !== 'Completed';
 		});

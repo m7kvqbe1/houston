@@ -3213,7 +3213,10 @@ Backbone.View.prototype.close = function(){
 	},
 
 	initialize: function() {
-		$.ajaxSetup({timeout:720000000});
+		$.ajaxSetup({
+			timeout: 0
+		});
+		
 		// Add dataTransfer to jquery events
 		jQuery.event.props.push("dataTransfer");
 
@@ -3237,7 +3240,7 @@ Backbone.View.prototype.close = function(){
 		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
 		.done(function(){
 			app.fetchClients(callback)
-		});		
+		});
 	},
 
 	fetchUsers: function(callback){
@@ -3391,7 +3394,7 @@ Backbone.View.prototype.close = function(){
     }
 });
 
-// Session timeout polling
+// Session timeout polling (every 5 seconds)
 (function timeout() {
 	setTimeout(function() {
 		$.get('/api/session/check', function(data) {

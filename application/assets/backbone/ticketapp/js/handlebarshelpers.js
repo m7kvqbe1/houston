@@ -48,7 +48,7 @@ var handlebarsHelpers = {
 			return new Handlebars.SafeString('<object data="/api/tickets/file/inline/'+ data +'" type="application/pdf" width="100%" height="100%" frameborder="0"> alt : <a href="/api/tickets/file/'+ data +'">test.pdf</a> </object>');
 		});
 
-		//TicketsView Helpers
+		// TicketsView Helpers
 		Handlebars.registerHelper('updateCheck', function(arr){ 
 			return new Handlebars.SafeString(houston.updateCheck(arr));			
 		});
@@ -61,7 +61,7 @@ var handlebarsHelpers = {
 			return new Handlebars.SafeString(houston.companyArrow());	
 		});
 
-		//TicketView Helpers		
+		// TicketView Helpers		
 		Handlebars.registerHelper('populateAgentDropdown', function(){
 			return new Handlebars.SafeString(houston.populateAgentDropdown());
 		});
@@ -99,7 +99,7 @@ var handlebarsHelpers = {
 			}
 		});
 
-		//FileUploadView Helpers
+		// FileUploadView Helpers
 		Handlebars.registerHelper('showFileUploadPreviewLink', function(type, target, cid){ 
 			if(!target) return;
 			if(houston.isDisplayableImage(type)){
@@ -112,7 +112,7 @@ var handlebarsHelpers = {
 			return new Handlebars.SafeString(houston.formatFileType(type));
 		});
 
-		//FilePreviewView Helpers
+		// FilePreviewView Helpers
 		Handlebars.registerHelper('generateFilePreviousLink', function(index){
 			if(index > 0){
 				return new Handlebars.SafeString('<a class="prev" data-index="'+index+'"><i class="icon-angle-circled-left"></i></a>');
@@ -133,7 +133,7 @@ var handlebarsHelpers = {
 			return new Handlebars.SafeString(houston.previewImageResizeWidth());	
 		});
 
-		//PeopleView Helpers
+		// PeopleView Helpers
 		Handlebars.registerHelper('displayAgentDelete', function(id){
 			if(app.user.attributes.role === 'ADMIN'){
 				return new Handlebars.SafeString('<a class="delete-agent" data-model="'+id+'">Delete</a>');	

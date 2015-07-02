@@ -77,6 +77,11 @@ class ApiResponse extends Response
 				// 400 - Bad Request
 				$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 				break;
+				
+			case 'STRIPE_INVALID_SUBSCRIPTION':
+				// 402 - Payment Required
+				$response->setStatusCode(Response::HTTP_PAYMENT_REQUIRED);
+				break;
 
 			case 'SESSION_EXPIRED':
 			case 'PASSWORD_INVALID':
@@ -84,11 +89,6 @@ class ApiResponse extends Response
 			case 'INVALID_VERIFICATION_CODE':
 				// 403 - Unauthorized
 				$response->setStatusCode(Response::HTTP_FORBIDDEN);
-				break;
-
-			case 'STRIPE_INVALID_SUBSCRIPTION':
-				// 402 - Payment Required
-				$response->setStatusCode(Response::HTTP_PAYMENT_REQUIRED);
 				break;
 
 			default:

@@ -256,7 +256,7 @@ var ProfileView = Backbone.View.extend({
         var counterValue = 8;
         var nextInput = this.$el.find('.repeat-password');
 
-        //Remove repeat passwords validation if new password is altered
+        // Remove repeat passwords validation if new password is altered
         if(value !== nextInput.val()){
             nextInput.closest('div').removeClass('validated-input-resize');
             nextInput.attr('disabled', true);
@@ -426,13 +426,13 @@ var ProfileView = Backbone.View.extend({
             var pixels  = imgData.data;
             for (var i = 0, n = pixels.length; i < n; i += 4) {
             var grayscale = pixels[i] * .3 + pixels[i+1] * .59 + pixels[i+2] * .11;
-            pixels[i  ] = grayscale;        // red
-            pixels[i+1] = grayscale;        // green
-            pixels[i+2] = grayscale;        // blue
-            //pixels[i+3]              is alpha
+            pixels[i  ] = grayscale;	// Red
+            pixels[i+1] = grayscale;	// Green
+            pixels[i+2] = grayscale;	// Blue
+            //pixels[i+3] is alpha
         }
 
-        //redraw the image in black & white
+        // Redraw the image in black & white
         canvasContext.putImageData(imgData, 0, 0);
     },    
 
@@ -443,7 +443,7 @@ var ProfileView = Backbone.View.extend({
 	theSelection: null,
 
     addImageToCanvas: function(imgSrc){
-        //Create Image object and pass it uploaded data
+        // Create image object and pass it uploaded data
         this.image = new Image();
         this.image.src = imgSrc;
         var originalWidth = this.image.width;
@@ -451,14 +451,14 @@ var ProfileView = Backbone.View.extend({
         var maxWidth = $(window).width() - 40;
         var maxHeight = $(window).height() - 70;
 
-        //If image too tall give modal warning
+        // If image too tall give modal warning
         if(originalHeight > maxHeight) {
             houston.createModal({type: 'Error', message: 'The image you are attempting to add is of an unusable ratio.'});
 
             return;
         } 
 
-        //If image too wide then resize
+        // If image too wide then resize
         if(originalWidth > maxWidth) {
             var imageWidth = maxWidth;
             var widthDifference = originalWidth - imageWidth;
@@ -469,7 +469,7 @@ var ProfileView = Backbone.View.extend({
             this.image.height = imageHeight;
 
 
-            //Draw resized image onto temporary canvas and set that to this.image
+            // Draw resized image onto temporary canvas and set that to this.image
             var temp_ctx, temp_canvas;
             temp_canvas = document.createElement('canvas');
             temp_ctx = temp_canvas.getContext('2d');
@@ -547,13 +547,13 @@ var ProfileView = Backbone.View.extend({
         if(this.grayscaleImage) this.makeGrayscale(this.ctx);
     },
 
-    canvasMousemove: function(e) { // binding mouse move event
+    canvasMousemove: function(e) {
         var canvasOffset = $(this.canvas).offset();
 
         this.iMouseX = Math.floor(e.pageX - canvasOffset.left);
         this.iMouseY = Math.floor(e.pageY - canvasOffset.top);
 
-        // in case of drag of whole selector
+        // In case of drag of whole selector
         if (this.theSelection.bDragAll) {
             this.theSelection.x = this.iMouseX - this.theSelection.px;
             this.theSelection.y = this.iMouseY - this.theSelection.py;
@@ -564,7 +564,7 @@ var ProfileView = Backbone.View.extend({
             this.theSelection.iCSize[i] = this.theSelection.csize;
         }
 
-        // hovering over resize cubes
+        // Hovering over resize cubes
         if (this.iMouseX > this.theSelection.x - this.theSelection.csizeh && this.iMouseX < this.theSelection.x + this.theSelection.csizeh &&
             this.iMouseY > this.theSelection.y - this.theSelection.csizeh && this.iMouseY < this.theSelection.y + this.theSelection.csizeh) {
 
@@ -590,7 +590,7 @@ var ProfileView = Backbone.View.extend({
             this.theSelection.iCSize[3] = this.theSelection.csizeh;
         }
 
-        // in case of dragging of resize cubes
+        // In case of dragging of resize cubes
         var iFW, iFH;
         if (this.theSelection.bDrag[0]) {
             var iFX = this.iMouseX - this.theSelection.px;
@@ -629,7 +629,7 @@ var ProfileView = Backbone.View.extend({
         this.drawScene();
     },
 
-    canvasMousedown: function(e) { // binding mousedown event
+    canvasMousedown: function(e) {
         var canvasOffset = $(this.canvas).offset();
 
         this.iMouseX = Math.floor(e.pageX - canvasOffset.left);
@@ -672,7 +672,7 @@ var ProfileView = Backbone.View.extend({
         }
     },
 
-    canvasMouseup: function(e) { // binding mouseup event
+    canvasMouseup: function(e) {
         this.theSelection.bDragAll = false;
 
         for (i = 0; i < 4; i++) {
@@ -690,7 +690,8 @@ var ProfileView = Backbone.View.extend({
         temp_canvas.width = this.theSelection.w;
         temp_canvas.height = this.theSelection.h;
         temp_ctx.drawImage(this.image, this.theSelection.x, this.theSelection.y, this.theSelection.w, this.theSelection.h, 0, 0, this.theSelection.w, this.theSelection.h);
-        //add grayscale effect if selected 
+        
+        // Add grayscale effect if selected 
         if(this.grayscaleImage)this.makeGrayscale(temp_ctx);
         var vData = temp_canvas.toDataURL();
 
