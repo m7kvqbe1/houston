@@ -246,7 +246,7 @@ class UserModel
 				array('$set' => array('password' => $newPassword, 'reset' => ''))
 			);
 
-			$this->loadUser($doc['emailAddress']);	// Refactor this call out into relevant places in controllers
+			$this->loadUser($doc['emailAddress']);
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -349,7 +349,7 @@ class UserModel
 	public function registerUser($user)
 	{
 		// Hash password
-		$user->password = $this->hashPassword($user->password);
+		$user->password = self::hashPassword($user->password);
 
 		// Generate email verification token
 		$user->verify = self::generateVerificationToken($user->emailAddress);
