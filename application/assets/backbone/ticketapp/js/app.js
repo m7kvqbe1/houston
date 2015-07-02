@@ -155,15 +155,18 @@ var AppRouter = Backbone.Router.extend({
 	    //If nothing has been changed  and no arguments have been set then continue with execute as normal
 	    if(!this.changed && !this.executeArguments){
 	    	if (callback) callback.apply(this, args);
+	    	
 	    	//Close preview view if exists
 	    	if (app.preview) {
 	    		app.preview.close();
 	    		app.preview = false;
 	    	}
+	    
 	    //If something has been changed and arguments have been previously set by an attempted execute use the arguments
 		} else if (!this.changed && this.executeArguments){
 			this.executeArguments.callback.apply(this, this.executeArguments.args);
 	    	this.executeArguments = false;
+	    
 	    //If something has changed set the arguments to global variables to be use in the future and create modal
 	    } else {
 	    	this.executeArguments = {
@@ -187,7 +190,7 @@ var AppRouter = Backbone.Router.extend({
 				function(){
 					app.navigate(app.changed, {trigger: false});
 				}
-		    );			    
+			);			    
 	    }
     }
 });

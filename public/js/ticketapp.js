@@ -437,7 +437,7 @@ var houston = {
 			return new Handlebars.SafeString('<object data="/api/tickets/file/inline/'+ data +'" type="application/pdf" width="100%" height="100%" frameborder="0"> alt : <a href="/api/tickets/file/'+ data +'">test.pdf</a> </object>');
 		});
 
-		//TicketsView Helpers
+		// TicketsView Helpers
 		Handlebars.registerHelper('updateCheck', function(arr){ 
 			return new Handlebars.SafeString(houston.updateCheck(arr));			
 		});
@@ -450,7 +450,7 @@ var houston = {
 			return new Handlebars.SafeString(houston.companyArrow());	
 		});
 
-		//TicketView Helpers		
+		// TicketView Helpers		
 		Handlebars.registerHelper('populateAgentDropdown', function(){
 			return new Handlebars.SafeString(houston.populateAgentDropdown());
 		});
@@ -488,7 +488,7 @@ var houston = {
 			}
 		});
 
-		//FileUploadView Helpers
+		// FileUploadView Helpers
 		Handlebars.registerHelper('showFileUploadPreviewLink', function(type, target, cid){ 
 			if(!target) return;
 			if(houston.isDisplayableImage(type)){
@@ -501,7 +501,7 @@ var houston = {
 			return new Handlebars.SafeString(houston.formatFileType(type));
 		});
 
-		//FilePreviewView Helpers
+		// FilePreviewView Helpers
 		Handlebars.registerHelper('generateFilePreviousLink', function(index){
 			if(index > 0){
 				return new Handlebars.SafeString('<a class="prev" data-index="'+index+'"><i class="icon-angle-circled-left"></i></a>');
@@ -522,7 +522,7 @@ var houston = {
 			return new Handlebars.SafeString(houston.previewImageResizeWidth());	
 		});
 
-		//PeopleView Helpers
+		// PeopleView Helpers
 		Handlebars.registerHelper('displayAgentDelete', function(id){
 			if(app.user.attributes.role === 'ADMIN'){
 				return new Handlebars.SafeString('<a class="delete-agent" data-model="'+id+'">Delete</a>');	
@@ -587,11 +587,10 @@ var houston = {
 
 		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
-		//Mobile menu
+		// Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){
 			$('.outer-wrap, .mob-menu').fadeToggle(300);
 			$('.nav-icon').toggleClass('cross');
-			// $('body').toggleClass('dark');
 		});
 		
 		// Close notification popup
@@ -607,7 +606,7 @@ var houston = {
 		    );
 		});
 
-		//PushState handler
+		// PushState handler
 		$(document).on("click", "a[href]:not([data-bypass])", function(evt) {
 		  var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
 		  var root = location.protocol + "//" + location.host + app.root;
@@ -656,7 +655,7 @@ var houston = {
 		return response;
 	},
 	initialize: function() {
-		//On deletion of model fetch all user data
+		// On deletion of model fetch all user data
 		this.on('destroy', function(){
 			app.fetchUsers();
 		});
@@ -710,7 +709,7 @@ var houston = {
 
 	initialize: function(){
 		this.on("sync", function(model){
-			//when a new ticket is saved fetch the tickets collection
+			// When a new ticket is saved fetch the tickets collection
 			app.tickets.fetch({reset: true});
 		});
 	},
@@ -751,7 +750,7 @@ var houston = {
 });;var Agents = Backbone.Collection.extend({
 	model: AgentModel,
 	initialize: function() {
-		//Fetch user data when agent is added, removed or amended
+		// Fetch user data when agent is added, removed or amended
 		this.on('add change destroy', function(){
 			app.fetchUsers();
 		});
@@ -761,7 +760,7 @@ var houston = {
 	url: '/api/clients',	
 	comparator: 'name',
 	initialize: function() {
-		//Fetch user data when client is added, removed or amended
+		// Fetch user data when client is added, removed or amended
 		this.on('add change destroy', function(){
 			app.fetchUsers();
 		});
@@ -888,7 +887,6 @@ var houston = {
 	},
 	
 	byAgent: function(){
-		//Needs to change to use id
 		filtered = this.filter(function(data){
 			return data.get('agent') == app.user.id && data.get('status') !== 'Completed';
 		});
@@ -977,7 +975,7 @@ var houston = {
 
 	initialize: function() {
 		this.on("sync", function() {
-			//On fetch reset agentsCollection with all agent/admin users
+			// On fetch reset agentsCollection with all agent/admin users
 			app.agentsCollection.reset(this.agentUsers());
 		});
 	},
@@ -1215,7 +1213,8 @@ var houston = {
 
 	onClose: function(){
 		this.stopListening();
-		//Delete files from unsaved tickets/replies
+		
+		// Delete files from unsaved tickets/replies
 		if(app.files.length) {
 			app.files.emptyCollection();
 		}
@@ -1258,12 +1257,14 @@ var houston = {
 				if(name.length > 30){
 					name = this.formatFileNameForModal(name);
 				}
-				houston.createModal({type: 'File Error', message: 'The file "' + name + '" is over the 100mb limit.'});	
+				houston.createModal({type: 'File Error', message: 'The file "' + name + '" is over the 100MB limit.'});	
+			    
 			    continue;
 			}
 
 			//Create model as property of the file
 			f.model = new FileUploadModel();
+			
 			//Create a fileReader object
 			var reader = new FileReader();
 
@@ -1609,7 +1610,7 @@ var houston = {
 		if(this.cancelBehaviour) this.cancelBehaviour();
 		this.close();	
 
-		//Render preview window if exists
+		// Render preview window if exists
 		if(app.preview){
 			app.modalWindow.html(app.preview.$el);
 			app.preview.render();
@@ -1620,7 +1621,7 @@ var houston = {
 		if(this.confirmBehaviour) this.confirmBehaviour();
 		this.close();
 
-		//Close preview window if exists
+		// Close preview window if exists
 		if(app.preview){
 			app.preview.close();
 		}	
@@ -1738,7 +1739,7 @@ var houston = {
 		var modelData = input.attr('data-model');
 		var form = this.$el.find('#modal-form');
 		
-		//Add client name to formData if adding a User
+		// Add client name to formData if adding a User
 		if(modelData) {
 			var clientName = app.clients.get(modelData).attributes.name;
 			var formHeader = this.formData[formData][0].replace('%ClientName%', clientName);
@@ -1893,7 +1894,7 @@ var houston = {
 				wait: true,
 				success: function(){
 					app.changed = false;
-					app.fetchUsers(); //Needed as didnt work with listener on the collection
+					app.fetchUsers();	// Needed as didnt work with listener on the collection
 					app.currentView.cancelForm();
 				}
 			}
@@ -2281,7 +2282,7 @@ var houston = {
         var counterValue = 8;
         var nextInput = this.$el.find('.repeat-password');
 
-        //Remove repeat passwords validation if new password is altered
+        // Remove repeat passwords validation if new password is altered
         if(value !== nextInput.val()){
             nextInput.closest('div').removeClass('validated-input-resize');
             nextInput.attr('disabled', true);
@@ -2451,13 +2452,13 @@ var houston = {
             var pixels  = imgData.data;
             for (var i = 0, n = pixels.length; i < n; i += 4) {
             var grayscale = pixels[i] * .3 + pixels[i+1] * .59 + pixels[i+2] * .11;
-            pixels[i  ] = grayscale;        // red
-            pixels[i+1] = grayscale;        // green
-            pixels[i+2] = grayscale;        // blue
-            //pixels[i+3]              is alpha
+            pixels[i  ] = grayscale;	// Red
+            pixels[i+1] = grayscale;	// Green
+            pixels[i+2] = grayscale;	// Blue
+            //pixels[i+3] is alpha
         }
 
-        //redraw the image in black & white
+        // Redraw the image in black & white
         canvasContext.putImageData(imgData, 0, 0);
     },    
 
@@ -2468,7 +2469,7 @@ var houston = {
 	theSelection: null,
 
     addImageToCanvas: function(imgSrc){
-        //Create Image object and pass it uploaded data
+        // Create image object and pass it uploaded data
         this.image = new Image();
         this.image.src = imgSrc;
         var originalWidth = this.image.width;
@@ -2476,14 +2477,14 @@ var houston = {
         var maxWidth = $(window).width() - 40;
         var maxHeight = $(window).height() - 70;
 
-        //If image too tall give modal warning
+        // If image too tall give modal warning
         if(originalHeight > maxHeight) {
             houston.createModal({type: 'Error', message: 'The image you are attempting to add is of an unusable ratio.'});
 
             return;
         } 
 
-        //If image too wide then resize
+        // If image too wide then resize
         if(originalWidth > maxWidth) {
             var imageWidth = maxWidth;
             var widthDifference = originalWidth - imageWidth;
@@ -2494,7 +2495,7 @@ var houston = {
             this.image.height = imageHeight;
 
 
-            //Draw resized image onto temporary canvas and set that to this.image
+            // Draw resized image onto temporary canvas and set that to this.image
             var temp_ctx, temp_canvas;
             temp_canvas = document.createElement('canvas');
             temp_ctx = temp_canvas.getContext('2d');
@@ -2572,13 +2573,13 @@ var houston = {
         if(this.grayscaleImage) this.makeGrayscale(this.ctx);
     },
 
-    canvasMousemove: function(e) { // binding mouse move event
+    canvasMousemove: function(e) {
         var canvasOffset = $(this.canvas).offset();
 
         this.iMouseX = Math.floor(e.pageX - canvasOffset.left);
         this.iMouseY = Math.floor(e.pageY - canvasOffset.top);
 
-        // in case of drag of whole selector
+        // In case of drag of whole selector
         if (this.theSelection.bDragAll) {
             this.theSelection.x = this.iMouseX - this.theSelection.px;
             this.theSelection.y = this.iMouseY - this.theSelection.py;
@@ -2589,7 +2590,7 @@ var houston = {
             this.theSelection.iCSize[i] = this.theSelection.csize;
         }
 
-        // hovering over resize cubes
+        // Hovering over resize cubes
         if (this.iMouseX > this.theSelection.x - this.theSelection.csizeh && this.iMouseX < this.theSelection.x + this.theSelection.csizeh &&
             this.iMouseY > this.theSelection.y - this.theSelection.csizeh && this.iMouseY < this.theSelection.y + this.theSelection.csizeh) {
 
@@ -2615,7 +2616,7 @@ var houston = {
             this.theSelection.iCSize[3] = this.theSelection.csizeh;
         }
 
-        // in case of dragging of resize cubes
+        // In case of dragging of resize cubes
         var iFW, iFH;
         if (this.theSelection.bDrag[0]) {
             var iFX = this.iMouseX - this.theSelection.px;
@@ -2654,7 +2655,7 @@ var houston = {
         this.drawScene();
     },
 
-    canvasMousedown: function(e) { // binding mousedown event
+    canvasMousedown: function(e) {
         var canvasOffset = $(this.canvas).offset();
 
         this.iMouseX = Math.floor(e.pageX - canvasOffset.left);
@@ -2697,7 +2698,7 @@ var houston = {
         }
     },
 
-    canvasMouseup: function(e) { // binding mouseup event
+    canvasMouseup: function(e) {
         this.theSelection.bDragAll = false;
 
         for (i = 0; i < 4; i++) {
@@ -2715,7 +2716,8 @@ var houston = {
         temp_canvas.width = this.theSelection.w;
         temp_canvas.height = this.theSelection.h;
         temp_ctx.drawImage(this.image, this.theSelection.x, this.theSelection.y, this.theSelection.w, this.theSelection.h, 0, 0, this.theSelection.w, this.theSelection.h);
-        //add grayscale effect if selected 
+        
+        // Add grayscale effect if selected 
         if(this.grayscaleImage)this.makeGrayscale(temp_ctx);
         var vData = temp_canvas.toDataURL();
 
@@ -3024,8 +3026,10 @@ var houston = {
 			this.model.set({
 				agent: changed.value
 			});
+			
 			//If setting agent for the first time add status of in progress
 			var currentStatus = this.model.get('status');
+			
 			if(currentStatus == 'New'){
 				this.model.set({
 					status: 'In Progress'
@@ -3196,8 +3200,10 @@ var houston = {
 
 Backbone.View.prototype.close = function(){
 	this.remove();
+	
 	this.unbind();
-	if (this.onClose){
+	
+	if(this.onClose){
 		this.onClose();
 	}
 };;var AppRouter = Backbone.Router.extend({
