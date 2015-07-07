@@ -11,12 +11,17 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	initialize: function() {
-		$.ajaxSetup({timeout:720000000});
+		$.ajaxSetup({
+			timeout: 0
+		});
+		
 		// Add dataTransfer to jquery events
 		jQuery.event.props.push("dataTransfer");
 
 		// Check for File API support
-		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) console.warn('The File API is not fully supported by this browser');
+		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+			console.warn('The File API is not fully supported by this browser');
+		}
 
 		this.user = new UserModel();
 		this.users = new Users();
@@ -33,7 +38,7 @@ var AppRouter = Backbone.Router.extend({
 		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
 		.done(function(){
 			app.fetchClients(callback)
-		});		
+		});
 	},
 
 	fetchUsers: function(callback){
@@ -61,7 +66,7 @@ var AppRouter = Backbone.Router.extend({
 	},
 
 	fetchError: function(a,b,c){
-		console.log(a); //Create a global error handler 
+		console.log(a);
 	},
 
 	setUpSocket: function(){
@@ -143,22 +148,25 @@ var AppRouter = Backbone.Router.extend({
 	modal: false,
 	preview: false,
 
-	// 	CUSTOM EXECUTE METHOD
+	// Custom Execute Method
 	changed: false,
 	executeArguments: false,
 	execute: function(callback, args, name) {
 	    //If nothing has been changed  and no arguments have been set then continue with execute as normal
 	    if(!this.changed && !this.executeArguments){
 	    	if (callback) callback.apply(this, args);
+	    	
 	    	//Close preview view if exists
 	    	if (app.preview) {
 	    		app.preview.close();
 	    		app.preview = false;
 	    	}
+	    
 	    //If something has been changed and arguments have been previously set by an attempted execute use the arguments
 		} else if (!this.changed && this.executeArguments){
 			this.executeArguments.callback.apply(this, this.executeArguments.args);
 	    	this.executeArguments = false;
+	    
 	    //If something has changed set the arguments to global variables to be use in the future and create modal
 	    } else {
 	    	this.executeArguments = {
@@ -166,17 +174,40 @@ var AppRouter = Backbone.Router.extend({
 		    	args: args,
 		    	name: name
 		    }
-	    	houston.createModal({type: 'Warning', message: 'Any unsaved changes will be lost, would you like to continue?', cancel: true},
+		    
+	    	houston.createModal(
+	    		{
+		    		type: 'Warning', 
+					message: 'Any unsaved changes will be lost, would you like to continue?', 
+					cancel: true
+		    	},
+		    	
 		    	function(){
 					app.changed = false;
 					app.execute();
 				},
+				
 				function(){
 					app.navigate(app.changed, {trigger: false});
 				}
-		    );			    
+			);			    
 	    }
     }
 });
+
+// Session timeout polling (every 5 seconds)
+(function timeout() {
+	setTimeout(function() {
+		$.get('/api/session/check', function(data) {
+			var obj = JSON.parse(data);
+			
+			if(obj.code === 'SESSION_CHECK' && obj.status === 'error') {
+				window.location.href = '/logout';
+			} else {
+				timeout();
+			}
+		});
+	}, 5000);
+})();
 
 var app = new AppRouter();

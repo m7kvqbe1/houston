@@ -82,7 +82,6 @@ var ResetView = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					//stackoverflow.com/questions/8901574/how-to-refresh-a-page-in-a-backbone-application
 					Backbone.history.navigate('');
 					Backbone.history.loadUrl();
 				},

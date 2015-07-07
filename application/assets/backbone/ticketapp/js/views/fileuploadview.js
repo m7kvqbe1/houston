@@ -48,7 +48,8 @@ var FileUploadView = Backbone.View.extend({
 
 	onClose: function(){
 		this.stopListening();
-		//Delete files from unsaved tickets/replies
+		
+		// Delete files from unsaved tickets/replies
 		if(app.files.length) {
 			app.files.emptyCollection();
 		}
@@ -91,12 +92,14 @@ var FileUploadView = Backbone.View.extend({
 				if(name.length > 30){
 					name = this.formatFileNameForModal(name);
 				}
-				houston.createModal({type: 'File Error', message: 'The file "' + name + '" is over the 100mb limit.'});	
+				houston.createModal({type: 'File Error', message: 'The file "' + name + '" is over the 100MB limit.'});	
+			    
 			    continue;
 			}
 
 			//Create model as property of the file
 			f.model = new FileUploadModel();
+			
 			//Create a fileReader object
 			var reader = new FileReader();
 

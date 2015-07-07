@@ -111,7 +111,7 @@ var PeopleView = Backbone.View.extend({
 		var modelData = input.attr('data-model');
 		var form = this.$el.find('#modal-form');
 		
-		//Add client name to formData if adding a User
+		// Add client name to formData if adding a User
 		if(modelData) {
 			var clientName = app.clients.get(modelData).attributes.name;
 			var formHeader = this.formData[formData][0].replace('%ClientName%', clientName);
@@ -266,7 +266,7 @@ var PeopleView = Backbone.View.extend({
 				wait: true,
 				success: function(){
 					app.changed = false;
-					app.fetchUsers(); //Needed as didnt work with listener on the collection
+					app.fetchUsers();	// Needed as didnt work with listener on the collection
 					app.currentView.cancelForm();
 				}
 			}

@@ -52,7 +52,7 @@ var ModalView = Backbone.View.extend({
 		if(this.cancelBehaviour) this.cancelBehaviour();
 		this.close();	
 
-		//Render preview window if exists
+		// Render preview window if exists
 		if(app.preview){
 			app.modalWindow.html(app.preview.$el);
 			app.preview.render();
@@ -63,7 +63,7 @@ var ModalView = Backbone.View.extend({
 		if(this.confirmBehaviour) this.confirmBehaviour();
 		this.close();
 
-		//Close preview window if exists
+		// Close preview window if exists
 		if(app.preview){
 			app.preview.close();
 		}	

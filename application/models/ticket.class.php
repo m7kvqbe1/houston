@@ -255,10 +255,6 @@ class TicketModel
 			array_push($fileArr, $meta);
 		}
 
-		if(empty($fileArr)) {
-			return false;
-		} else {
-			return $fileArr;
-		}
+		return (empty($fileArr)) ? false : $fileArr;
 	}
 }

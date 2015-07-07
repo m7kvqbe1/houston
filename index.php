@@ -114,7 +114,7 @@ $app->error(function(\Exception $e, $code) use ($app) {
 			break;
 	}
 
-	return new Response($message);	// Update this to custom error template
+	return new Response($message);
 });
 
 // Define security middleware
@@ -132,21 +132,6 @@ $secure = function(Request $request, Application $app) {
 		}
 	}
 };
-
-// Autoload only required classes (PSR-4) - MAKE THIS WORK!
-/*spl_autoload_register( function ($className) {
-    $className = ltrim($className, '\\');
-    $fileName  = '';
-    $namespace = '';
-    if ($lastNsPos = strrpos($className, '\\')) {
-        $namespace = substr($className, 0, $lastNsPos);
-        $className = substr($className, $lastNsPos + 1);
-        $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-    }
-    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-    require $fileName;
-});*/
 
 // Autoload houston components
 foreach(glob(DOCUMENT_ROOT."/application/components/*.php") as $filename) {

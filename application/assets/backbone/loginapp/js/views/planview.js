@@ -78,8 +78,6 @@ var PlanView = Backbone.View.extend({
 		this.owlAnimation();
 
 		return this;
-
-
 	},
 
 	owlAnimation: function(){

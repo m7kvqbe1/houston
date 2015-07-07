@@ -759,7 +759,9 @@ var RegisterModel = Backbone.Model.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					window.location.href = '';
+					//stackoverflow.com/questions/8901574/how-to-refresh-a-page-in-a-backbone-application
+					Backbone.history.navigate('');
+					Backbone.history.loadUrl();
 				},
 				error: _.bind(function(){
 					this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
@@ -853,7 +855,8 @@ var ValidateView = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					window.location.href = '/profile';
+					Backbone.history.navigate('/profile');
+					Backbone.history.loadUrl();
 				},
 				error: _.bind(function(model, response){
 					console.log(response);
@@ -1097,6 +1100,7 @@ var login = {
 	},
 	
 	login: function(){
+		//clean url
 		var loginView = new LoginView();
 
 		this.showView(loginView);

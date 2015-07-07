@@ -11,11 +11,10 @@ var events = {
 
 		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
-		//Mobile menu
+		// Mobile menu
 		$('.nav-icon, .mob-menu a').click(function(){
 			$('.outer-wrap, .mob-menu').fadeToggle(300);
 			$('.nav-icon').toggleClass('cross');
-			// $('body').toggleClass('dark');
 		});
 		
 		// Close notification popup
@@ -31,7 +30,7 @@ var events = {
 		    );
 		});
 
-		//PushState handler
+		// PushState handler
 		$(document).on("click", "a[href]:not([data-bypass])", function(evt) {
 		  var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
 		  var root = location.protocol + "//" + location.host + app.root;

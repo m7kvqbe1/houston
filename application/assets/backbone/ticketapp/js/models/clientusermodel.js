@@ -14,7 +14,7 @@ var ClientUserModel = Backbone.Model.extend({
 		return response;
 	},
 	initialize: function() {
-		//On deletion of model fetch all user data
+		// On deletion of model fetch all user data
 		this.on('destroy', function(){
 			app.fetchUsers();
 		});

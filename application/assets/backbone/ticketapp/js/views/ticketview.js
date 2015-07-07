@@ -133,8 +133,10 @@ var TicketDetailView = Backbone.View.extend({
 			this.model.set({
 				agent: changed.value
 			});
+			
 			//If setting agent for the first time add status of in progress
 			var currentStatus = this.model.get('status');
+			
 			if(currentStatus == 'New'){
 				this.model.set({
 					status: 'In Progress'

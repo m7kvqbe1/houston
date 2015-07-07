@@ -246,7 +246,7 @@ class UserModel
 				array('$set' => array('password' => $newPassword, 'reset' => ''))
 			);
 
-			$this->loadUser($doc['emailAddress']);	// Refactor this call out into relevant places in controllers
+			$this->loadUser($doc['emailAddress']);
 			return true;
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);
@@ -349,10 +349,10 @@ class UserModel
 	public function registerUser($user)
 	{
 		// Hash password
-		$user->password = $this->hashPassword($user->password);
+		$user->password = self::hashPassword($user->password);
 
 		// Generate email verification token
-		$user->verify = $this->generateVerificationToken($user->emailAddress);
+		$user->verify = self::generateVerificationToken($user->emailAddress);
 
 		$user->role = 'ADMIN';
 
@@ -363,7 +363,7 @@ class UserModel
 	public function addAgent($user)
 	{
 		// Generate email verification token
-		$user->verify = $this->generateVerificationToken($user->emailAddress);
+		$user->verify = self::generateVerificationToken($user->emailAddress);
 
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('uid'));
@@ -378,7 +378,7 @@ class UserModel
 	public function addUser($user)
 	{
 		// Generate email verification token
-		$user->verify = $this->generateVerificationToken($user->emailAddress);
+		$user->verify = self::generateVerificationToken($user->emailAddress);
 
 		// Lookup current authenticated session company ID
 		$this->loadUserByID($this->app['session']->get('uid'));

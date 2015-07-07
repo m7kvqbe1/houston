@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ApiResponse extends Response
 {
 	public static function error($code, $customMessage = null)
-	{
+	{		
 		return self::responseFactory($code, 'error', $customMessage);
 	}
 
@@ -48,6 +48,7 @@ class ApiResponse extends Response
 	private static function setResponseStatusCode($response, $code)
 	{
 		switch($code) {
+			case 'SESSION_CHECK':
 			case 'DEFAULT_RESPONSE_SUCCESS':
 				// 200 - Success
 				$response->setStatusCode(Response::HTTP_OK);
@@ -76,6 +77,11 @@ class ApiResponse extends Response
 				// 400 - Bad Request
 				$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 				break;
+				
+			case 'STRIPE_INVALID_SUBSCRIPTION':
+				// 402 - Payment Required
+				$response->setStatusCode(Response::HTTP_PAYMENT_REQUIRED);
+				break;
 
 			case 'SESSION_EXPIRED':
 			case 'PASSWORD_INVALID':
@@ -83,11 +89,6 @@ class ApiResponse extends Response
 			case 'INVALID_VERIFICATION_CODE':
 				// 403 - Unauthorized
 				$response->setStatusCode(Response::HTTP_FORBIDDEN);
-				break;
-
-			case 'STRIPE_INVALID_SUBSCRIPTION':
-				// 402 - Payment Required
-				$response->setStatusCode(Response::HTTP_PAYMENT_REQUIRED);
 				break;
 
 			default:
