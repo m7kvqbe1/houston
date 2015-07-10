@@ -9,7 +9,7 @@ var FormView = Backbone.View.extend({
 		'</div>'+
 		'<div class="box-app" style="{{fullHeightPage}}">'+
 			'<form id="form-new">'+
-				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />'+
+				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one sentence" />'+
 				'<div class="char-count"><span>75</span> Characters Remaining</div>'+
 				'<textarea class="required" name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>'+
 				'<div id="file-upload-view-wrap">'+	
