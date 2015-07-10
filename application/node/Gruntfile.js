@@ -45,9 +45,10 @@ module.exports = function(grunt) {
 			
 			lib: {
 				src: [
-					'../assets/backbone/lib/underscore-min.js',
-					'../assets/backbone/lib/backbone-min.js',
-					'../assets/backbone/lib/handlebars.js'
+					'../assets/lib/jquery-1.11.3.js',
+					'../assets/lib/underscore-min.js',
+					'../assets/lib/backbone-min.js',
+					'../assets/lib/handlebars.js'
 				],
 
 				dest: '../../public/js/lib.min.js'
