@@ -132,7 +132,6 @@ html {
 }
 
 body {
-	/*position: absolute;*/
 	width: 100%;
 	height: 100%;
 	font-family: 'Lato', sans-serif;
@@ -348,7 +347,6 @@ footer {
 }
 
 .box-pass {
-	/*margin-bottom: 25px;*/
 	margin: 25px 15px;
 	padding: 24px 0 25px;
 }
@@ -641,8 +639,6 @@ input.inp-lst {
 	display: inline-block;
 }
 
-/*.vld-wrap .password-resize,
-.vld-wrap .in-use {*/
 .reg-vrf .password-resize,
 .reg-vrf .in-use {
 	width: 192px;
@@ -844,7 +840,6 @@ input.inp-lst {
 }
 
 /* Card Details */
-
 #form-payment label {
 	display: block;
 	padding-bottom: 5px;
@@ -1066,7 +1061,6 @@ input.inp-lst {
 	background: #f8835e;
 }
 
-/**/
 .droplist .drop-slct span{
 	display: inline-block;
 	overflow: hidden;
@@ -1113,9 +1107,9 @@ input.inp-lst {
 	display: block;
 	float: left;
 	margin: 15px 0 0 10px;
-	-webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
+	-webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;
 }
 
 .box-app-nav a span {
@@ -1131,7 +1125,7 @@ input.inp-lst {
 	margin-left: 0;
 }
 
-.box-app-nav a.mid-link { /*May be unnecessary*/
+.box-app-nav a.mid-link { 
 	margin: 15px 20px 0;
 }
 
@@ -1305,11 +1299,9 @@ h4.no-tickets {
 .company-info {
 	margin-bottom: 30px;
 	padding-top: 30px;
-	/*border-top: 1px solid #cfc3af;*/
 }
 
 .client:first-child .company-info {
-	/*border-top: none;*/
 	padding-top: 0;
 }
 
@@ -1322,16 +1314,6 @@ h4.no-tickets {
 	margin: 0 10px 0 0;
 }
 
-/*.add-person {
-	overflow: hidden;
-	margin-bottom: 30px;
-	text-align: center;
-}*/
-
-/*.add-person h4 {
-	margin-bottom: 15px;
-}
-*/
 #company-stream {
 	padding-top: 30px;
 }
@@ -1441,11 +1423,6 @@ h4.client-has-no-users {
 	color: #ff9472;
 }
 
-/*.attach-files .files {
-	margin-top: 20px;
-	width: 290px;
-}*/
-
 .attach-link {
 	display: block;
 }
@@ -1479,19 +1456,13 @@ h4.client-has-no-users {
 .file {
 	position: relative;
 	display: block;
-	/*width: 290px;*/
 	margin: 0 auto;
-	/*padding: 30px 0;*/
 	padding: 15px 0 0;
 	text-align: left;
 }
 
 .attach-files .file {
 	width: 290px;
-}
-
-.msg-body .file:first-child {
-	/*padding-top: 0;*/
 }
 
 .file a {
@@ -1713,7 +1684,7 @@ h4.client-has-no-users {
 	margin-bottom: 15px;
 }
 
-/*MODAL WINDOW*/
+/*Modal Window*/
 #modal-window {
 	display: none;
 	position: fixed;
@@ -1781,7 +1752,7 @@ h4.client-has-no-users {
 	display: inline-block;
 }
 
-/*PREVIEW WINDOW*/
+/*Preview Window*/
 .preview-window-inner {
 	position: absolute;
 	top: 20px;
@@ -1887,7 +1858,7 @@ h4.client-has-no-users {
 	height: 30px;
 }
 
-/*UPDATE ALERT*/
+/*Update Alert*/
 #update-alert {
 	float: right;
 	display: none;
@@ -2388,7 +2359,6 @@ button.grayscale.gray .c {
 }
 
 /* Modal Form */
-
 #modal-form .validated-input-resize input[type="text"] {
 	float: left;
 	width: 194px;
@@ -2524,10 +2494,6 @@ button.grayscale.gray .c {
 		width: 100%;
 		background: url(../img/branch.png) no-repeat 91% 70%;
 		background-size: 453px;
-
-/*		background: url(../img/tree-cropped.png) no-repeat 81% 0%;
-		background-size: 469px;*/
-
 	}
 
 	.plan-buttons {
@@ -2558,192 +2524,6 @@ button.grayscale.gray .c {
 	h2 span {
 		position: relative;
 	}
-
-	/*.default-anim .left-wing {
-		animation-name: l-wing;
-		-webkit-animation-name: l-wing;	
-
-		animation-duration: 7s;	
-		-webkit-animation-duration: 7s;
-
-		animation-iteration-count: infinite;
-		-webkit-animation-iteration-count: infinite;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes l-wing {
-		65% {
-			transform: translate(0,0);
-		}	
-		70% {
-			transform: translate(5px, -26px) rotate(1deg);
-		}
-		72% {
-			transform: translate(5px, -26px) rotate(1deg);
-		}
-		76% {
-			transform: translate(0,0);
-		}			
-	}
-
-	.plan-one .left-wing {
-		animation-name: l-wing-one;
-		-webkit-animation-name: l-wing-one;	
-
-		animation-duration: 500ms;	
-		-webkit-animation-duration: 500ms;
-
-		animation-iteration-count: 1;
-		-webkit-animation-iteration-count: 1;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes l-wing-one {
-
-		55% {
-			transform: translate(400px, 140px) rotate(60deg);
-		}	
-
-		70% {
-			transform: translate(540px, 280px) rotate(96deg);
-		}
-
-		100% {
-			transform: translate(540px, 550px) rotate(123deg);
-		}			
-	}
-
-	.plan-two .right-wing {
-		animation-name: r-wing-two;
-		-webkit-animation-name: r-wing-two;	
-
-		animation-duration: 500ms;	
-		-webkit-animation-duration: 500ms;
-
-		animation-iteration-count: 1;
-		-webkit-animation-iteration-count: 1;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes r-wing-two {
-
-		100% {
-			transform: rotate(-123deg);
-			transform-origin: 50% 0;
-		}			
-	}
-
-	.default-anim .right-wing {
-		animation-name: r-wing;
-		-webkit-animation-name: r-wing;	
-
-		animation-duration: 7s;	
-		-webkit-animation-duration: 7s;
-
-		animation-iteration-count: infinite;
-		-webkit-animation-iteration-count: infinite;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes r-wing {
-		65% {
-			transform: translate(0,0);
-		}	
-		70% {
-			transform: translate(-5px, -26px) rotate(-1deg);
-		}
-		72% {
-			transform: translateY(-5px, -26px) rotate(-1deg);
-		}
-		76% {
-			transform: translate(0,0);
-		}			
-	}		
-
-	.default-anim .eyes {
-		animation-name: eye-animate;
-		-webkit-animation-name: eye-animate;	
-
-		animation-duration: 7s;	
-		-webkit-animation-duration: 7s;
-
-		animation-iteration-count: infinite;
-		-webkit-animation-iteration-count: infinite;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes eye-animate {
-		10% {
-			transform: translateX(0px);
-		}
-		16% {
-			transform: translateX(24px);		
-		}
-		32% {
-			transform: translateX(24px);		
-		}
-		38% {
-			transform: translateX(-32px);
-		}
-		50% {
-			transform: translateX(-32px);
-		}	
-		56% {
-			transform: translateX(0px);
-		}		
-	}
-
-	.plan-one .eyes {
-		animation-name: eye-animate-one;
-		-webkit-animation-name: eye-animate-one;	
-
-		animation-duration: 250ms;	
-		-webkit-animation-duration: 250ms;
-
-		animation-iteration-count: 1;
-		-webkit-animation-iteration-count: 1;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes eye-animate-one {
-
-		100% {
-			transform: translateX(-32px);
-		}				
-	}	
-
-	.plan-two .eyes {
-		animation-name: eye-animate-two;
-		-webkit-animation-name: eye-animate-two;	
-
-		animation-duration: 250ms;	
-		-webkit-animation-duration: 250ms;
-
-		animation-iteration-count: 1;
-		-webkit-animation-iteration-count: 1;
-
-		animation-timing-function: ease-in;	
-		-webkit-animation-timing-function: ease-in;	
-	}
-
-	@keyframes eye-animate-two {
-
-		100% {
-			transform: translateX(24px);
-		}				
-	}	*/
 
 	.pricing-plan {
 		box-sizing: border-box;
@@ -2823,10 +2603,6 @@ button.grayscale.gray .c {
 		padding: 0;
 	}
 
-	.box-app-nav a {
-
-	}
-
 	.helper {
 		position: relative;
 		top: 5px;
@@ -2876,8 +2652,6 @@ button.grayscale.gray .c {
 	.box-app-nav a.mid-link {
 		margin: 15px 10px 0;
 	}
-
-/*****************************/
 
 	#ticket-stream {
 		margin-top: 52px;
@@ -3004,7 +2778,6 @@ button.grayscale.gray .c {
 	
 	.person .avatar {
 		float: left;
-		/*margin: 0 24px 0 30px;*/
 		margin: 0 24px 0 0;
 	}
 	
@@ -3035,28 +2808,6 @@ button.grayscale.gray .c {
 	.company-info a {
 		margin: 4px 10px 0 0;
 	}
-
-	/*.add-person {
-		margin-bottom: 15px;
-		text-align: left;
-	}*/
-
-	/*.add-person h4 {
-		margin-left: 30px;
-		font-size: 16px;
-	}*/
-
-
-/*	.add-person input[type="text"],
-	.add-person input[type="email"]{
-		float: left;
-		width: 64%;
-		margin: 0 15px 15px 30px;	
-	}*/
-
-/*	.add-person button {
-		margin-top: 5px;
-	}*/
 
 	h4.client-has-no-users  {
 		height: 66px;
@@ -3176,7 +2927,7 @@ button.grayscale.gray .c {
 		background: #f3f0ea;
 	}
 
-/* Single Ticket */
+	/* Single Ticket */
 	#msg-stream {
 		padding-bottom: 30px;
 	}
@@ -3230,7 +2981,7 @@ button.grayscale.gray .c {
 		margin-right: 0;
 	}
 
-/* Register */
+	/* Register */
 	#form-reg,
 	#form-reg .reg-vrf{
 		width: 408px;
@@ -3270,14 +3021,13 @@ button.grayscale.gray .c {
 		margin-right: auto;
 	}
 
-/* Set Password */
+	/* Set Password */
 	#form-verify .validate {
 		margin: 0 0 12px;
 	}
 
 
 	/* Payment */
-
 	.payment-form-wrap {
 		position: relative;
 		width: 630px;
@@ -3452,7 +3202,6 @@ button.grayscale.gray .c {
 	}
 
 	.profile form button {
-		/*margin-top: 20px;*/
 		margin-top: 15px;
 	}
 
@@ -3495,7 +3244,6 @@ button.grayscale.gray .c {
 	}
 
 	/* Modal Form */
-
 	#modal-form .box {
 		width: 390px;
 	}
