@@ -252,7 +252,7 @@ header {
 	display: block;
 	width: 208px;
 	height: 49px;
-	margin: 0 auto;
+	margin: 12px auto 0;
 	padding-top: 14px;
 }
 
@@ -348,7 +348,8 @@ footer {
 }
 
 .box-pass {
-	margin-bottom: 25px;
+	/*margin-bottom: 25px;*/
+	margin: 25px 15px;
 	padding: 24px 0 25px;
 }
 
@@ -362,12 +363,18 @@ footer {
 }
 
 .box-suc {
+	margin: 25px 15px 0;
 	padding: 24px 0 0;
 }
 
-.box-suc h2{
+.box-suc h2 {
 	width: 220px;
 	margin: 0 auto 8px;
+	line-height: 1.3em;
+}
+
+.payment-header h2 {
+	line-height: 1.3em;
 }
 
 h2 {
@@ -2444,6 +2451,7 @@ button.grayscale.gray .c {
 	}
 	
 	.box-suc {
+		margin-top: 0;
 		padding: 24px 28px 0;
 		background: #fff url(../img/success.png) no-repeat 100% 98px;
 		text-align: left;		
@@ -2451,6 +2459,7 @@ button.grayscale.gray .c {
 	
 	.box-suc h2 {
 		width: 100%;
+		line-height: 21px;
 	}
 	
 	header {
@@ -2766,6 +2775,10 @@ button.grayscale.gray .c {
 
 	.pricing-plan p {
 		margin: 0 34px 15px;
+	}
+
+	.payment-header h2 {
+		line-height: 21px;
 	}
 
 	/* Ticket View */

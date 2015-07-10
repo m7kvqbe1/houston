@@ -453,7 +453,7 @@ var ProfileView = Backbone.View.extend({
 
         // If image too tall give modal warning
         if(originalHeight > maxHeight) {
-            houston.createModal({type: 'Error', message: 'The image you are attempting to add is of an unusable ratio.'});
+            houston.createModal({type: 'Error', message: 'The image you are attempting to use is too large please try a smaller image.'});
 
             return;
         } 
