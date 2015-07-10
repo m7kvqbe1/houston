@@ -50,15 +50,15 @@ var ResetView = Backbone.View.extend({
 
 	passMatch: function(e){
 		console.log('match');
-		login.registerPasswordMatch(e.currentTarget);
+		validate.registerPasswordMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
-		login.registerPasswordCount(e.currentTarget, this.$el);
+		validate.registerPasswordCount(e.currentTarget, this.$el);
 	},
 	
 	showCount: function(e){	
-		login.registerPasswordShowCount(e.currentTarget);
+		validate.registerPasswordShowCount(e.currentTarget);
 	},	
 
 	resetErrorMessage: function(){
@@ -67,7 +67,7 @@ var ResetView = Backbone.View.extend({
 	},
 		
 	reset: function() {
-		if(!login.validateForm(this.$el.find('#form-pass-confirm'))) return;
+		if(!validate.validateForm(this.$el.find('#form-pass-confirm'))) return;
 
 		if(this.$el.find('input[name=pass]').val() !== this.$el.find('input[name="pass-c"]').val()) {
 			this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');

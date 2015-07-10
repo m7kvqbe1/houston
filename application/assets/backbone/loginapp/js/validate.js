@@ -2,7 +2,7 @@ String.prototype.capitalize = function() {
 	return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 };
 
-var login = {
+var validate = {
 	validateForm: function(form){
 		var valid = true;
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -75,11 +75,11 @@ var login = {
 		var request = $.get("/api/check/email?email=" + address);
 		
 		request.done(function(msg) {
-			login.successfulAjaxValidation(input, wrapper, css);
+			validate.successfulAjaxValidation(input, wrapper, css);
 		});
 		 
 		request.fail(function(jqXHR, textStatus) {
-			login.failedAjaxValidation(input, wrapper, css);
+			validate.failedAjaxValidation(input, wrapper, css);
 		});
 	},
 
@@ -88,11 +88,11 @@ var login = {
 		var request = $.get("/api/check/company?company=" + companyName);
 
 		request.done(function(msg) {
-			login.successfulAjaxValidation(input, wrapper, css);
+			validate.successfulAjaxValidation(input, wrapper, css);
 		});
 		 
 		request.fail(function(jqXHR, textStatus) {
-			login.failedAjaxValidation(input, wrapper, css);
+			validate.failedAjaxValidation(input, wrapper, css);
 		});
 	},
 
@@ -128,7 +128,7 @@ var login = {
 
 	registerPasswordShowCount: function(input) {	
 		var input = $(input);
-		if(login.validatedPassword !== input.val()){
+		if(validate.validatedPassword !== input.val()){
 			input.addClass('password-resize');
 			input.closest('.reg-vrf').find('.vrf').show().addClass('delayed-icon-animate');
 		}

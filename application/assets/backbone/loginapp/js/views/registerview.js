@@ -104,23 +104,23 @@ var RegisterView = Backbone.View.extend({
 	},
 	
 	passMatch: function(e){
-		login.registerPasswordMatch(e.currentTarget);
+		validate.registerPasswordMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
-		login.registerPasswordCount(e.currentTarget, this.$el);
+		validate.registerPasswordCount(e.currentTarget, this.$el);
 	},
 	
 	showCount: function(e) {	
-		login.registerPasswordShowCount(e.currentTarget);
+		validate.registerPasswordShowCount(e.currentTarget);
 	},
 	
 	validate: function(e){
-		login.inputValidation(e.currentTarget);
+		validate.inputValidation(e.currentTarget);
 	},
 	
 	detailsConfirm: function(){
-		if(login.registerCreateValidate(this.$el)){
+		if(validate.registerCreateValidate(this.$el)){
 			this.model.set({
 				firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
 				lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),

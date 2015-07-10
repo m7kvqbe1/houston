@@ -48,7 +48,7 @@ var ResetPassView = Backbone.View.extend({
 	},
 
 	resetPassword: function() {
-		if(!login.validateForm(this.$el.find('#form-pass'))) return;
+		if(!validate.validateForm(this.$el.find('#form-pass'))) return;
 
 		this.$el.find('h2').show().removeClass('text-animate');
 		this.$el.find('h3.pass-tag').show().removeClass('text-animate');
