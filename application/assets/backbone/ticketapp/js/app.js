@@ -34,22 +34,22 @@ var AppRouter = Backbone.Router.extend({
 		this.fetchData();
 	},
 
-	fetchData: function(callback){
-		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
+	fetchData: function(callback) {
+		$.when(this.user.fetch({ reset: true }), this.users.fetch({ reset: true }), this.tickets.fetch({ reset: true }))
 		.done(function(){
 			app.fetchClients(callback)
 		});
 	},
 
-	fetchUsers: function(callback){
-		$.when(this.users.fetch({reset:true}))
+	fetchUsers: function(callback) {
+		$.when(this.users.fetch({ reset: true }))
 		.done(function(){
 			app.fetchClients(callback)
 		});				
 	},
 
-	fetchClients: function(callback){
-		$.when(app.clients.fetch({reset:true}))
+	fetchClients: function(callback) {
+		$.when(app.clients.fetch({ reset: true }))
 		.done(function(){
 			app.users.addUsersToClient();
 			if(!app.currentView){
@@ -60,18 +60,18 @@ var AppRouter = Backbone.Router.extend({
 		});
 	},
 
-	initializeSuccess: function(){
+	initializeSuccess: function() {
 		app.setUpSocket();
 		app.startHistory();
 	},
 
-	fetchError: function(a,b,c){
+	fetchError: function(a,b,c) {
 		console.log(a);
 	},
 
-	setUpSocket: function(){
+	setUpSocket: function() {
 		// Connect to namespaced socket using company ID
-		var socket = io('http://' + location.host + '/' + app.user.attributes.companyID);
+		var socket = io('http://' + window.location.hostname + '/' + app.user.attributes.companyID);
 		
 		// On receiving a notify event display the notification popup
 		socket.on('notify', function(data){	
@@ -103,16 +103,16 @@ var AppRouter = Backbone.Router.extend({
 
 	// Define controllers
 	indexFrontController: function() {
-		var ticketsView = new TicketsView({collection: this.tickets.filtered});
+		var ticketsView = new TicketsView({ collection: this.tickets.filtered });
 		this.showView(ticketsView);
 	},
 
 	ticketDetailsFrontController: function(ticket) {
 		this.ticketDetailModel.messagesCollection.url = '/api/tickets/reply/' + ticket;
 		this.ticketDetailModel.set(this.tickets.get(ticket).attributes);
-		$.when(this.ticketDetailModel.messagesCollection.fetch({reset: true}))
+		$.when(this.ticketDetailModel.messagesCollection.fetch({ reset: true }))
 		.done(function(){
-			var ticketDetailView = new TicketDetailView({model: app.ticketDetailModel});
+			var ticketDetailView = new TicketDetailView({ model: app.ticketDetailModel });
 			app.showView(ticketDetailView);
 		});
 	},
@@ -130,18 +130,18 @@ var AppRouter = Backbone.Router.extend({
 		}
 	},
 
-	createAndShowPeopleView: function(){
-		var peopleView = new PeopleView({collection: app.agentsCollection});
+	createAndShowPeopleView: function() {
+		var peopleView = new PeopleView({ collection: app.agentsCollection });
 		app.showView(peopleView);
 	},
 
 	profileFrontController: function() {
-		var profileView = new ProfileView({model: this.user});
+		var profileView = new ProfileView({ model: this.user });
 		this.showView(profileView);
 	},
 	
 	accountMainFrontController: function() {
-		var accountView = new AccountView({model: this.user});
+		var accountView = new AccountView({ model: this.user });
 		this.showView(accountView);
 	},
 
@@ -154,7 +154,7 @@ var AppRouter = Backbone.Router.extend({
 	execute: function(callback, args, name) {
 	    // If nothing has been changed  and no arguments have 
 	    // been set then continue with execute as normal
-	    if(!this.changed && !this.executeArguments){
+	    if(!this.changed && !this.executeArguments) {
 	    	if (callback) callback.apply(this, args);
 	    	
 	    	//Close preview view if exists
@@ -185,13 +185,13 @@ var AppRouter = Backbone.Router.extend({
 					cancel: true
 		    	},
 		    	
-		    	function(){
+		    	function() {
 					app.changed = false;
 					app.execute();
 				},
 				
-				function(){
-					app.navigate(app.changed, {trigger: false});
+				function() {
+					app.navigate(app.changed, { trigger: false });
 				}
 			);			    
 	    }

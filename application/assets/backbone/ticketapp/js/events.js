@@ -8,7 +8,7 @@ var events = {
 	},
 
 	bindEvents: function(){
-
+		// Window resize
 		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
 		// Mobile menu
@@ -24,7 +24,7 @@ var events = {
 
 		$('.log-out').click(function(){
 			houston.createModal({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true},
-		    	function(){
+		    	function() {
 					window.location.href = 'http://' + window.location.hostname + '/logout';
 				}
 		    );
@@ -32,12 +32,12 @@ var events = {
 
 		// PushState handler
 		$(document).on("click", "a[href]:not([data-bypass])", function(evt) {
-		  var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
-		  var root = location.protocol + "//" + location.host + app.root;
-		  if(href.prop.slice(0, root.length) === root) {
-		    evt.preventDefault();
-		    Backbone.history.navigate(href.attr, true);
-		  }
+			var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
+			var root = location.protocol + "//" + location.host + app.root;
+			if(href.prop.slice(0, root.length) === root) {
+				evt.preventDefault();
+				Backbone.history.navigate(href.attr, true);
+			}
 		});
 	}
 }

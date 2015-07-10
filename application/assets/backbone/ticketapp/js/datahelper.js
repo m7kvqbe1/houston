@@ -42,5 +42,4 @@ var dataHelper = {
 		} 
 		return avatar;
 	}
-
 }

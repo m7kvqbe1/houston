@@ -1,14 +1,4 @@
 var houston = {
-	convertToDate: function(dateObject){
-		var monthNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); 
-		var date = dateObject.toString();			
-		var day = date.substring(8,10);
-		var month = date.substring(5,7) -1;
-		date = day+' '+monthNames[month];
-
-		return date;	
-	},
-	
 	ordinalSuffix: function($num){
 		if($num < 11 || $num > 13){
 			switch($num % 10){
@@ -19,6 +9,16 @@ var houston = {
 		}
 
 		return 'th';
+	},
+	
+	convertToDate: function(dateObject){
+		var monthNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); 
+		var date = dateObject.toString();			
+		var day = date.substring(8,10);
+		var month = date.substring(5,7) -1;
+		date = day + ' ' + monthNames[month];
+
+		return date;	
 	},
 
 	convertToDateTime: function(dateObject){
@@ -40,7 +40,7 @@ var houston = {
 
 		var min = date.substring(14,16);
 						
-		date = day+suffix+' '+monthNames[month]+' '+year+' '+hour+':'+min+period;
+		date = day + suffix + ' ' + monthNames[month] + ' ' + year + ' ' + hour + ':' + min + period;
 			
 		return date;	
 	},
@@ -122,28 +122,28 @@ var houston = {
 
 	generateDropSwitch: function(attribute){
 		if(attribute === 'In Progress') {
-			return '<div class="dropdown dropswitch">'+
-						'<div class="drop-inner">'+				
-							'<div class="drop-top on-hold rounded">'+
-								'<div class="btn in-progress drop-slct"><span>In Progress</span><i class="icon-down-dir-1"></i></div>'+
+			return '<div class="dropdown dropswitch">' +
+						'<div class="drop-inner">' +				
+							'<div class="drop-top on-hold rounded">' +
+								'<div class="btn in-progress drop-slct"><span>In Progress</span><i class="icon-down-dir-1"></i></div>' +
 							'</div>'+
 							'<ul class="drop on-hold">'+
-								'<li class="slct" data-class="in-progress">In Progress</li>'+
-								'<li class="n-slct" data-class="on-hold">On Hold</li>'+
-							'</ul>'+
-						'</div>'+
+								'<li class="slct" data-class="in-progress">In Progress</li>' +
+								'<li class="n-slct" data-class="on-hold">On Hold</li>' +
+							'</ul>' +
+						'</div>' +
 					'</div>';
 		} else if(attribute === 'On Hold'){
-			return '<div class="dropdown dropswitch">'+
-						'<div class="drop-inner">'+				
-							'<div class="drop-top in-progress rounded">'+
-								'<div class="btn on-hold drop-slct"><span>On Hold</span><i class="icon-down-dir-1"></i></div>'+
-							'</div>'+
-							'<ul class="drop in-progress">'+
-								'<li class="slct" data-class="on-hold">On Hold</li>'+
-								'<li class="n-slct" data-class="in-progress">In Progress</li>'+
-							'</ul>'+
-						'</div>'+
+			return '<div class="dropdown dropswitch">' +
+						'<div class="drop-inner">' +				
+							'<div class="drop-top in-progress rounded">' +
+								'<div class="btn on-hold drop-slct"><span>On Hold</span><i class="icon-down-dir-1"></i></div>' +
+							'</div>' +
+							'<ul class="drop in-progress">' +
+								'<li class="slct" data-class="on-hold">On Hold</li>' +
+								'<li class="n-slct" data-class="in-progress">In Progress</li>' +
+							'</ul>' +
+						'</div>' +
 					'</div>';
 		} else if(attribute === 'Completed'){
 			return '<div class="btn completed">Completed</div>';
@@ -180,7 +180,7 @@ var houston = {
 		var str = '';
 
 		for (i = 0; i < arr.length; ++i) {
-			str += '<li data-id="'+arr[i].id+'">'+dataHelper.getUserName(arr[i].id)+'</li>';
+			str += '<li data-id="'+arr[i].id+'">' + dataHelper.getUserName(arr[i].id) + '</li>';
 		}
 
 		return str;
@@ -370,9 +370,9 @@ var houston = {
 		} else if (updated > 99){
 			var html = '<div class="update-alert">99</div>';
 		} else if (updated > 9){
-			var html = '<div class="update-alert"><span>'+updated+'</span></div>'
+			var html = '<div class="update-alert"><span>' + updated + '</span></div>'
 		} else {
-			html = '<div class="update-alert">'+updated+'</div>';
+			html = '<div class="update-alert">' + updated + '</div>';
 		}
 
 		$('#update-alert').html(html);

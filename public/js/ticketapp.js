@@ -1,14 +1,4 @@
 var houston = {
-	convertToDate: function(dateObject){
-		var monthNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); 
-		var date = dateObject.toString();			
-		var day = date.substring(8,10);
-		var month = date.substring(5,7) -1;
-		date = day+' '+monthNames[month];
-
-		return date;	
-	},
-	
 	ordinalSuffix: function($num){
 		if($num < 11 || $num > 13){
 			switch($num % 10){
@@ -19,6 +9,16 @@ var houston = {
 		}
 
 		return 'th';
+	},
+	
+	convertToDate: function(dateObject){
+		var monthNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); 
+		var date = dateObject.toString();			
+		var day = date.substring(8,10);
+		var month = date.substring(5,7) -1;
+		date = day + ' ' + monthNames[month];
+
+		return date;	
 	},
 
 	convertToDateTime: function(dateObject){
@@ -40,7 +40,7 @@ var houston = {
 
 		var min = date.substring(14,16);
 						
-		date = day+suffix+' '+monthNames[month]+' '+year+' '+hour+':'+min+period;
+		date = day + suffix + ' ' + monthNames[month] + ' ' + year + ' ' + hour + ':' + min + period;
 			
 		return date;	
 	},
@@ -122,28 +122,28 @@ var houston = {
 
 	generateDropSwitch: function(attribute){
 		if(attribute === 'In Progress') {
-			return '<div class="dropdown dropswitch">'+
-						'<div class="drop-inner">'+				
-							'<div class="drop-top on-hold rounded">'+
-								'<div class="btn in-progress drop-slct"><span>In Progress</span><i class="icon-down-dir-1"></i></div>'+
+			return '<div class="dropdown dropswitch">' +
+						'<div class="drop-inner">' +				
+							'<div class="drop-top on-hold rounded">' +
+								'<div class="btn in-progress drop-slct"><span>In Progress</span><i class="icon-down-dir-1"></i></div>' +
 							'</div>'+
 							'<ul class="drop on-hold">'+
-								'<li class="slct" data-class="in-progress">In Progress</li>'+
-								'<li class="n-slct" data-class="on-hold">On Hold</li>'+
-							'</ul>'+
-						'</div>'+
+								'<li class="slct" data-class="in-progress">In Progress</li>' +
+								'<li class="n-slct" data-class="on-hold">On Hold</li>' +
+							'</ul>' +
+						'</div>' +
 					'</div>';
 		} else if(attribute === 'On Hold'){
-			return '<div class="dropdown dropswitch">'+
-						'<div class="drop-inner">'+				
-							'<div class="drop-top in-progress rounded">'+
-								'<div class="btn on-hold drop-slct"><span>On Hold</span><i class="icon-down-dir-1"></i></div>'+
-							'</div>'+
-							'<ul class="drop in-progress">'+
-								'<li class="slct" data-class="on-hold">On Hold</li>'+
-								'<li class="n-slct" data-class="in-progress">In Progress</li>'+
-							'</ul>'+
-						'</div>'+
+			return '<div class="dropdown dropswitch">' +
+						'<div class="drop-inner">' +				
+							'<div class="drop-top in-progress rounded">' +
+								'<div class="btn on-hold drop-slct"><span>On Hold</span><i class="icon-down-dir-1"></i></div>' +
+							'</div>' +
+							'<ul class="drop in-progress">' +
+								'<li class="slct" data-class="on-hold">On Hold</li>' +
+								'<li class="n-slct" data-class="in-progress">In Progress</li>' +
+							'</ul>' +
+						'</div>' +
 					'</div>';
 		} else if(attribute === 'Completed'){
 			return '<div class="btn completed">Completed</div>';
@@ -180,7 +180,7 @@ var houston = {
 		var str = '';
 
 		for (i = 0; i < arr.length; ++i) {
-			str += '<li data-id="'+arr[i].id+'">'+dataHelper.getUserName(arr[i].id)+'</li>';
+			str += '<li data-id="'+arr[i].id+'">' + dataHelper.getUserName(arr[i].id) + '</li>';
 		}
 
 		return str;
@@ -370,9 +370,9 @@ var houston = {
 		} else if (updated > 99){
 			var html = '<div class="update-alert">99</div>';
 		} else if (updated > 9){
-			var html = '<div class="update-alert"><span>'+updated+'</span></div>'
+			var html = '<div class="update-alert"><span>' + updated + '</span></div>'
 		} else {
-			html = '<div class="update-alert">'+updated+'</div>';
+			html = '<div class="update-alert">' + updated + '</div>';
 		}
 
 		$('#update-alert').html(html);
@@ -388,95 +388,112 @@ var houston = {
 		app.modal.render();
 	}
 };var handlebarsHelpers = {
-	bindHelpers: function(){
-		Handlebars.registerHelper('ifCond', function(v1, v2, options){
-			console.log(v1);
-		if(v1 === v2) {
-			return options.fn(this);
+	bindHelpers: function() {
+		for(var name in handlebarsHelpers.helpers) {
+			Handlebars.registerHelper(name, handlebarsHelpers.helpers[name]);
 		}
-			return options.inverse(this);
-		});
-
-		Handlebars.registerHelper('forEach',function(arr,options){
-			return houston.forEach(arr, options);
-		});		
-		
-		Handlebars.registerHelper('fullHeightPage', function(){
-			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
-		});
-
-		Handlebars.registerHelper('getUserName', function(authorID){
-			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
-		});
-
-		Handlebars.registerHelper('getUserRoleAsClass', function(authorID){
-			return new Handlebars.SafeString(dataHelper.getUserRoleAsClass(authorID));
-		});
-
-		Handlebars.registerHelper('getCompanyName', function(authorID){
-			return new Handlebars.SafeString(dataHelper.getCompanyName(authorID));
-		});
-
-		Handlebars.registerHelper('getUserAvatar', function(authorID){
-			return new Handlebars.SafeString(dataHelper.getUserAvatar(authorID));
-		});
-
-		Handlebars.registerHelper('convertUserRole', function(attribute){
-			return new Handlebars.SafeString(houston.convertUserRole(attribute));
-		});		
-
-		Handlebars.registerHelper('convertToClass', function(attribute){
-			return houston.convertToClass(attribute);
-		});
-
-		Handlebars.registerHelper('convertToDate', function(attribute){
-			return houston.convertToDate(attribute);
-		});
-
-		Handlebars.registerHelper('isPDF', function(type, data){
-			return new Handlebars.SafeString('<object data="/api/tickets/file/inline/'+ data +'" type="application/pdf" width="100%" height="100%" frameborder="0"> alt : <a href="/api/tickets/file/'+ data +'">test.pdf</a> </object>');
-		});
-
-		// TicketsView Helpers
-		Handlebars.registerHelper('updateCheck', function(arr){ 
-			return new Handlebars.SafeString(houston.updateCheck(arr));			
-		});
-
-		Handlebars.registerHelper('dateArrow', function(){
-			return new Handlebars.SafeString(houston.dateArrow());
-		});
-
-		Handlebars.registerHelper('companyArrow', function(){
-			return new Handlebars.SafeString(houston.companyArrow());	
-		});
-
-		// TicketView Helpers		
-		Handlebars.registerHelper('populateAgentDropdown', function(){
-			return new Handlebars.SafeString(houston.populateAgentDropdown());
-		});
-		
-		Handlebars.registerHelper('convertToDateTime', function(attribute){
-			return houston.convertToDateTime(attribute);
-		});
-		
-		Handlebars.registerHelper('generateDropSwitch', function(attribute){
-			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));
-		});
-
-		Handlebars.registerHelper('outputMarkAsCompleted', function(attribute){
-			if(app.user.get('role') !== 'USER'){
-				return new Handlebars.SafeString('<input id="completed" type="checkbox" name="ticket-completed" value="completed" /><label for="completed">Mark ticket as completed</label>');
+	},
+	
+	helpers: {
+		ifCond: function(v1, v2, options) {
+			console.log(v1);
+			
+			if(v1 === v2) {
+				return options.fn(this);
 			}
-		});
-
-		Handlebars.registerHelper('showFilePreviewLink', function(type, index){ 
+			
+			return options.inverse(this);			
+		},
+		
+		forEach: function(arr, options) {
+			return houston.forEach(arr, options);
+		},
+		
+		fullHeightPage: function() {
+			return new Handlebars.SafeString('min-height:' + houston.calculateBoxHeight() +'px;');
+		},
+		
+		getUserName: function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserName(authorID));
+		},
+		
+		getUserRoleAsClass: function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserRoleAsClass(authorID));
+		},
+		
+		getCompanyName:  function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getCompanyName(authorID));
+		},
+		
+		getUserAvatar: function(authorID) {
+			return new Handlebars.SafeString(dataHelper.getUserAvatar(authorID));
+		},
+		
+		convertUserRole: function(attribute) {
+			return new Handlebars.SafeString(houston.convertUserRole(attribute));
+		},
+		
+		convertToClass: function(attribute) {
+			return houston.convertToClass(attribute);
+		},
+		
+		convertToDate: function(attribute) {
+			return houston.convertToDate(attribute);
+		},
+		
+		isPDF: function(type, data) {
+			return new Handlebars.SafeString(
+				'<object data="/api/tickets/file/inline/'+ data +'" type="application/pdf" ' + 
+				'width="100%" height="100%" frameborder="0"> alt : <a href="/api/tickets/file/'+ 
+				data +'">test.pdf</a> </object>'
+			);
+		},
+		
+		// TicketsView Helpers
+		updateCheck: function(arr) {
+			return new Handlebars.SafeString(houston.updateCheck(arr));
+		},
+		
+		dateArrow: function() {
+			return new Handlebars.SafeString(houston.dateArrow());
+		},
+		
+		companyArrow: function() {
+			return new Handlebars.SafeString(houston.companyArrow());		
+		},
+		
+		// TicketView Helpers
+		populateAgentDropdown: function() {
+			return new Handlebars.SafeString(houston.populateAgentDropdown());			
+		},
+		
+		convertToDateTime: function(attribute) {
+			return houston.convertToDateTime(attribute);			
+		},
+		
+		generateDropSwitch: function(attribute) {
+			return new Handlebars.SafeString(houston.generateDropSwitch(attribute));	
+		},
+		
+		outputMarkAsCompleted: function(attribute) {
+			if(app.user.get('role') !== 'USER'){
+				return new Handlebars.SafeString(
+					'<input id="completed" type="checkbox" name="ticket-completed" value="completed" />' + 
+					'<label for="completed">Mark ticket as completed</label>'
+				);
+			}	
+		},
+		
+		showFilePreviewLink: function(type, index) {
 			if(!type) return;
 			if(houston.isDisplayableImage(type)){
-				return new Handlebars.SafeString('<a data-index="'+index+'" class="file-preview">Preview</a>');
-			}
-		});
-
-		Handlebars.registerHelper('downloadTicketAttachments', function(attribute){
+				return new Handlebars.SafeString(
+					'<a data-index="'+index+'" class="file-preview">Preview</a>'
+				);
+			}	
+		},
+		
+		downloadTicketAttachments: function(attribute) {
 			if(attribute.length > 1) {
 				var params = '';
 				attribute.forEach(function(file) {
@@ -484,50 +501,64 @@ var houston = {
 				});
 
 				params = params.substring(0, params.length -1);
-				return new Handlebars.SafeString('<a class="attachments-link" data-bypass="true" href="http://' + window.location.hostname + '/api/tickets/file/zip?'+params+'">Download All Attachments</a>');
-			}
-		});
-
+				
+				return new Handlebars.SafeString(
+					'<a class="attachments-link" data-bypass="true" href="http://' + 
+					window.location.hostname + '/api/tickets/file/zip?'+params+'">Download All Attachments</a>'
+				);
+			}	
+		},
+		
 		// FileUploadView Helpers
-		Handlebars.registerHelper('showFileUploadPreviewLink', function(type, target, cid){ 
+		showFileUploadPreviewLink: function(type, target, cid) {
 			if(!target) return;
 			if(houston.isDisplayableImage(type)){
-				return new Handlebars.SafeString('<a data-cid="'+cid+'" class="file-preview">Preview</a>');
-			}
-		});
-
-		Handlebars.registerHelper('formatFileType', function(type){
-		    if(!type) return;
+				return new Handlebars.SafeString(
+					'<a data-cid="'+cid+'" class="file-preview">Preview</a>'
+				);
+			}			
+		},
+		
+		formatFileType: function(type) {
+			if(!type) return;
 			return new Handlebars.SafeString(houston.formatFileType(type));
-		});
-
+		},
+		
 		// FilePreviewView Helpers
-		Handlebars.registerHelper('generateFilePreviousLink', function(index){
+		generateFilePreviousLink: function(index) {
 			if(index > 0){
-				return new Handlebars.SafeString('<a class="prev" data-index="'+index+'"><i class="icon-angle-circled-left"></i></a>');
+				return new Handlebars.SafeString(
+					'<a class="prev" data-index="'+index+'">' + 
+					'<i class="icon-angle-circled-left"></i></a>'
+				);
 			} 
-		});
-
-		Handlebars.registerHelper('generateFileNextLink', function(index, length){
+		},
+		
+		generateFileNextLink: function(index, length) {
 			if((length - 1) > index){
-				return new Handlebars.SafeString('<a class="next" data-index="'+index+'"><i class="icon-angle-circled-right"></i></a>');
-			}
-		});
-
-		Handlebars.registerHelper('maxHeightImg', function(){
-			return new Handlebars.SafeString(houston.previewImageResize());
-		});	
-
-		Handlebars.registerHelper('maxWidthImg', function(){
-			return new Handlebars.SafeString(houston.previewImageResizeWidth());	
-		});
-
+				return new Handlebars.SafeString(
+					'<a class="next" data-index="'+index+'">' + 
+					'<i class="icon-angle-circled-right"></i></a>'
+				);
+			}	
+		},
+		
+		maxHeightImg: function() {
+			return new Handlebars.SafeString(houston.previewImageResize());	
+		},
+		
+		maxWidthImg: function() {
+			return new Handlebars.SafeString(houston.previewImageResizeWidth());		
+		},
+		
 		// PeopleView Helpers
-		Handlebars.registerHelper('displayAgentDelete', function(id){
+		displayAgentDelete: function(id) {
 			if(app.user.attributes.role === 'ADMIN'){
-				return new Handlebars.SafeString('<a class="delete-agent" data-model="'+id+'">Delete</a>');	
-			}
-		});
+				return new Handlebars.SafeString(
+					'<a class="delete-agent" data-model="'+id+'">Delete</a>'
+				);	
+			}	
+		}
 	}
 };var dataHelper = {
 	getUserName: function(userID){
@@ -573,7 +604,6 @@ var houston = {
 		} 
 		return avatar;
 	}
-
 };var events = {
 	pageResize: function(){
 		$('.box-app').css('min-height', houston.calculateBoxHeight());
@@ -584,7 +614,7 @@ var houston = {
 	},
 
 	bindEvents: function(){
-
+		// Window resize
 		$(window).on("resize", events.pageResize).on("resize", events.imgMaxHeight);
 
 		// Mobile menu
@@ -600,7 +630,7 @@ var houston = {
 
 		$('.log-out').click(function(){
 			houston.createModal({type: 'Warning', message: 'Are you sure you would like to log out?', cancel: true},
-		    	function(){
+		    	function() {
 					window.location.href = 'http://' + window.location.hostname + '/logout';
 				}
 		    );
@@ -608,12 +638,12 @@ var houston = {
 
 		// PushState handler
 		$(document).on("click", "a[href]:not([data-bypass])", function(evt) {
-		  var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
-		  var root = location.protocol + "//" + location.host + app.root;
-		  if(href.prop.slice(0, root.length) === root) {
-		    evt.preventDefault();
-		    Backbone.history.navigate(href.attr, true);
-		  }
+			var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
+			var root = location.protocol + "//" + location.host + app.root;
+			if(href.prop.slice(0, root.length) === root) {
+				evt.preventDefault();
+				Backbone.history.navigate(href.attr, true);
+			}
 		});
 	}
 };var AgentModel = Backbone.Model.extend({
@@ -3242,22 +3272,22 @@ Backbone.View.prototype.close = function(){
 		this.fetchData();
 	},
 
-	fetchData: function(callback){
-		$.when(this.user.fetch({reset:true}), this.users.fetch({reset:true}), this.tickets.fetch({reset:true}))
+	fetchData: function(callback) {
+		$.when(this.user.fetch({ reset: true }), this.users.fetch({ reset: true }), this.tickets.fetch({ reset: true }))
 		.done(function(){
 			app.fetchClients(callback)
 		});
 	},
 
-	fetchUsers: function(callback){
-		$.when(this.users.fetch({reset:true}))
+	fetchUsers: function(callback) {
+		$.when(this.users.fetch({ reset: true }))
 		.done(function(){
 			app.fetchClients(callback)
 		});				
 	},
 
-	fetchClients: function(callback){
-		$.when(app.clients.fetch({reset:true}))
+	fetchClients: function(callback) {
+		$.when(app.clients.fetch({ reset: true }))
 		.done(function(){
 			app.users.addUsersToClient();
 			if(!app.currentView){
@@ -3268,18 +3298,18 @@ Backbone.View.prototype.close = function(){
 		});
 	},
 
-	initializeSuccess: function(){
+	initializeSuccess: function() {
 		app.setUpSocket();
 		app.startHistory();
 	},
 
-	fetchError: function(a,b,c){
+	fetchError: function(a,b,c) {
 		console.log(a);
 	},
 
-	setUpSocket: function(){
+	setUpSocket: function() {
 		// Connect to namespaced socket using company ID
-		var socket = io('http://houstonsupportdesk.com:3000/'+app.user.attributes.companyID);
+		var socket = io('http://' + window.location.hostname + '/' + app.user.attributes.companyID);
 		
 		// On receiving a notify event display the notification popup
 		socket.on('notify', function(data){	
@@ -3311,16 +3341,16 @@ Backbone.View.prototype.close = function(){
 
 	// Define controllers
 	indexFrontController: function() {
-		var ticketsView = new TicketsView({collection: this.tickets.filtered});
+		var ticketsView = new TicketsView({ collection: this.tickets.filtered });
 		this.showView(ticketsView);
 	},
 
 	ticketDetailsFrontController: function(ticket) {
 		this.ticketDetailModel.messagesCollection.url = '/api/tickets/reply/' + ticket;
 		this.ticketDetailModel.set(this.tickets.get(ticket).attributes);
-		$.when(this.ticketDetailModel.messagesCollection.fetch({reset: true}))
+		$.when(this.ticketDetailModel.messagesCollection.fetch({ reset: true }))
 		.done(function(){
-			var ticketDetailView = new TicketDetailView({model: app.ticketDetailModel});
+			var ticketDetailView = new TicketDetailView({ model: app.ticketDetailModel });
 			app.showView(ticketDetailView);
 		});
 	},
@@ -3338,18 +3368,18 @@ Backbone.View.prototype.close = function(){
 		}
 	},
 
-	createAndShowPeopleView: function(){
-		var peopleView = new PeopleView({collection: app.agentsCollection});
+	createAndShowPeopleView: function() {
+		var peopleView = new PeopleView({ collection: app.agentsCollection });
 		app.showView(peopleView);
 	},
 
 	profileFrontController: function() {
-		var profileView = new ProfileView({model: this.user});
+		var profileView = new ProfileView({ model: this.user });
 		this.showView(profileView);
 	},
 	
 	accountMainFrontController: function() {
-		var accountView = new AccountView({model: this.user});
+		var accountView = new AccountView({ model: this.user });
 		this.showView(accountView);
 	},
 
@@ -3360,19 +3390,25 @@ Backbone.View.prototype.close = function(){
 	changed: false,
 	executeArguments: false,
 	execute: function(callback, args, name) {
-	    //If nothing has been changed  and no arguments have been set then continue with execute as normal
-	    if(!this.changed && !this.executeArguments){
+	    // If nothing has been changed  and no arguments have 
+	    // been set then continue with execute as normal
+	    if(!this.changed && !this.executeArguments) {
 	    	if (callback) callback.apply(this, args);
+	    	
 	    	//Close preview view if exists
 	    	if (app.preview) {
 	    		app.preview.close();
 	    		app.preview = false;
 	    	}
-	    //If something has been changed and arguments have been previously set by an attempted execute use the arguments
+	    
+	    // If something has been changed and arguments have been 
+	    // previously set by an attempted execute use the arguments
 		} else if (!this.changed && this.executeArguments){
 			this.executeArguments.callback.apply(this, this.executeArguments.args);
 	    	this.executeArguments = false;
-	    //If something has changed set the arguments to global variables to be use in the future and create modal
+	    
+	    // If something has changed set the arguments to global 
+	    // variables to be use in the future and create modal
 	    } else {
 	    	this.executeArguments = {
 		    	callback: callback,
@@ -3387,15 +3423,15 @@ Backbone.View.prototype.close = function(){
 					cancel: true
 		    	},
 		    	
-		    	function(){
+		    	function() {
 					app.changed = false;
 					app.execute();
 				},
 				
-				function(){
-					app.navigate(app.changed, {trigger: false});
+				function() {
+					app.navigate(app.changed, { trigger: false });
 				}
-		    );			    
+			);			    
 	    }
     }
 });
