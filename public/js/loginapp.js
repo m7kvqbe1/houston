@@ -55,7 +55,7 @@ var RegisterModel = Backbone.Model.extend({
 	},	
 
 	login: function(){
-		if(!login.validateForm(this.$el.find('#form-log'))) return;
+		if(!validate.validateForm(this.$el.find('#form-log'))) return;
 
 		this.$el.find('h2').show().removeClass('text-animate');
 		this.$el.find('h3.log-tag').show().removeClass('text-animate');
@@ -567,23 +567,23 @@ var RegisterModel = Backbone.Model.extend({
 	},
 	
 	passMatch: function(e){
-		login.registerPasswordMatch(e.currentTarget);
+		validate.registerPasswordMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
-		login.registerPasswordCount(e.currentTarget, this.$el);
+		validate.registerPasswordCount(e.currentTarget, this.$el);
 	},
 	
 	showCount: function(e) {	
-		login.registerPasswordShowCount(e.currentTarget);
+		validate.registerPasswordShowCount(e.currentTarget);
 	},
 	
 	validate: function(e){
-		login.inputValidation(e.currentTarget);
+		validate.inputValidation(e.currentTarget);
 	},
 	
 	detailsConfirm: function(){
-		if(login.registerCreateValidate(this.$el)){
+		if(validate.registerCreateValidate(this.$el)){
 			this.model.set({
 				firstName: this.$el.find('input[name="reg-fn"]').val().capitalize(),
 				lastName: this.$el.find('input[name="reg-ln"]').val().capitalize(),
@@ -646,7 +646,7 @@ var RegisterModel = Backbone.Model.extend({
 	},
 
 	resetPassword: function() {
-		if(!login.validateForm(this.$el.find('#form-pass'))) return;
+		if(!validate.validateForm(this.$el.find('#form-pass'))) return;
 
 		this.$el.find('h2').show().removeClass('text-animate');
 		this.$el.find('h3.pass-tag').show().removeClass('text-animate');
@@ -725,15 +725,15 @@ var RegisterModel = Backbone.Model.extend({
 
 	passMatch: function(e){
 		console.log('match');
-		login.registerPasswordMatch(e.currentTarget);
+		validate.registerPasswordMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
-		login.registerPasswordCount(e.currentTarget, this.$el);
+		validate.registerPasswordCount(e.currentTarget, this.$el);
 	},
 	
 	showCount: function(e){	
-		login.registerPasswordShowCount(e.currentTarget);
+		validate.registerPasswordShowCount(e.currentTarget);
 	},	
 
 	resetErrorMessage: function(){
@@ -742,7 +742,7 @@ var RegisterModel = Backbone.Model.extend({
 	},
 		
 	reset: function() {
-		if(!login.validateForm(this.$el.find('#form-pass-confirm'))) return;
+		if(!validate.validateForm(this.$el.find('#form-pass-confirm'))) return;
 
 		if(this.$el.find('input[name=pass]').val() !== this.$el.find('input[name="pass-c"]').val()) {
 			this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
@@ -757,8 +757,7 @@ var RegisterModel = Backbone.Model.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					Backbone.history.navigate('');
-					Backbone.history.loadUrl();
+					window.location.href = '';
 				},
 				error: _.bind(function(){
 					this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
@@ -767,9 +766,7 @@ var RegisterModel = Backbone.Model.extend({
 			}
 		);	
 	},
-});
-
-var ValidateView = Backbone.View.extend({
+});;var ValidateView = Backbone.View.extend({
 	template: Handlebars.compile(
 		'<div class="box box-wel">'+
 			'<h2>Welcome to Houston</h2>'+
@@ -820,15 +817,15 @@ var ValidateView = Backbone.View.extend({
 
 	passMatch: function(e){
 		console.log('match');
-		login.registerPasswordMatch(e.currentTarget);
+		validate.registerPasswordMatch(e.currentTarget);
 	},
 	
 	passCount: function(e){
-		login.registerPasswordCount(e.currentTarget, this.$el);
+		validate.registerPasswordCount(e.currentTarget, this.$el);
 	},
 	
 	showCount: function(e){	
-		login.registerPasswordShowCount(e.currentTarget);
+		validate.registerPasswordShowCount(e.currentTarget);
 	},	
 
 	resetErrorMessage: function(){
@@ -837,7 +834,7 @@ var ValidateView = Backbone.View.extend({
 	},
 		
 	validate: function() {
-		if(!login.validateForm(this.$el.find('#form-verify'))) return;
+		if(!validate.validateForm(this.$el.find('#form-verify'))) return;
 
 		if(this.$el.find('input[name=pass]').val() !== this.$el.find('input[name="pass-c"]').val()) {
 			this.$el.find('.box-log h2').hide().text('Oops!').addClass('text-animate');
@@ -852,8 +849,7 @@ var ValidateView = Backbone.View.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					Backbone.history.navigate('/profile');
-					Backbone.history.loadUrl();
+					window.location.href = '/profile';
 				},
 				error: _.bind(function(model, response){
 					console.log(response);
@@ -875,7 +871,7 @@ var ValidateView = Backbone.View.extend({
 	return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 };
 
-var login = {
+var validate = {
 	validateForm: function(form){
 		var valid = true;
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -948,11 +944,11 @@ var login = {
 		var request = $.get("/api/check/email?email=" + address);
 		
 		request.done(function(msg) {
-			login.successfulAjaxValidation(input, wrapper, css);
+			validate.successfulAjaxValidation(input, wrapper, css);
 		});
 		 
 		request.fail(function(jqXHR, textStatus) {
-			login.failedAjaxValidation(input, wrapper, css);
+			validate.failedAjaxValidation(input, wrapper, css);
 		});
 	},
 
@@ -961,11 +957,11 @@ var login = {
 		var request = $.get("/api/check/company?company=" + companyName);
 
 		request.done(function(msg) {
-			login.successfulAjaxValidation(input, wrapper, css);
+			validate.successfulAjaxValidation(input, wrapper, css);
 		});
 		 
 		request.fail(function(jqXHR, textStatus) {
-			login.failedAjaxValidation(input, wrapper, css);
+			validate.failedAjaxValidation(input, wrapper, css);
 		});
 	},
 
@@ -1001,7 +997,7 @@ var login = {
 
 	registerPasswordShowCount: function(input) {	
 		var input = $(input);
-		if(login.validatedPassword !== input.val()){
+		if(validate.validatedPassword !== input.val()){
 			input.addClass('password-resize');
 			input.closest('.reg-vrf').find('.vrf').show().addClass('delayed-icon-animate');
 		}

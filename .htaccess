@@ -7,7 +7,15 @@ Require valid-user
     Options -MultiViews
 
     RewriteEngine On
-    #RewriteBase /index.php
-    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    #RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # Rewrite requests for assets to /public (paths need updating in views)
+    RewriteRule ^application/assets/css/(.*)$ /public/css/$1 [R=301,L]
+    RewriteRule ^application/assets/img/(.*)$ /public/img/$1 [R=301,L]
+    RewriteRule ^application/font/(.*)$ /public/font/$1 [R=301,L]
+    
+    # Rewrite requests to application entry point (index.php)
+	RewriteRule ^(public|socket\.io|application/assets/backbone)($|/) - [L]
     RewriteRule ^ index.php [QSA,L]
 </IfModule>

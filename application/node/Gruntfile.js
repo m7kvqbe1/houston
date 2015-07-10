@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				src: [
 					'../assets/backbone/loginapp/js/models/*.js',
 					'../assets/backbone/loginapp/js/views/*.js',
-					'../assets/backbone/loginapp/js/login.js',
+					'../assets/backbone/loginapp/js/validate.js',
 					'../assets/backbone/loginapp/js/app.js'
 				],
 
@@ -45,9 +45,10 @@ module.exports = function(grunt) {
 			
 			lib: {
 				src: [
-					'../assets/backbone/lib/underscore-min.js',
-					'../assets/backbone/lib/backbone-min.js',
-					'../assets/backbone/lib/handlebars.js'
+					'../assets/lib/jquery-1.11.3.js',
+					'../assets/lib/underscore-min.js',
+					'../assets/lib/backbone-min.js',
+					'../assets/lib/handlebars.js'
 				],
 
 				dest: '../../public/js/lib.min.js'

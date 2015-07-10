@@ -963,7 +963,6 @@ input.inp-lst {
 }
 
 .msg-top .btn {
-/*Change*/
 	width: inherit;
 	padding: 0 10px;
 	text-align: left;
@@ -1125,7 +1124,11 @@ input.inp-lst {
 	margin-left: 0;
 }
 
+<<<<<<< HEAD:application/assets/css/styles.css
 .box-app-nav a.mid-link { 
+=======
+.box-app-nav a.mid-link {
+>>>>>>> 6fbaf47a7d042b82fcdd37e459293e87b5821301:public/css/styles.css
 	margin: 15px 20px 0;
 }
 
@@ -1232,7 +1235,6 @@ h4.no-tickets {
 .btn.in-progress,
 .drop-inner.in-progress,
 .drop-top.in-progress {
-/*CHANGE*/
 	background: #00c3d9;
 }
 
@@ -1240,7 +1242,6 @@ h4.no-tickets {
 .drop-inner.on-hold,
 .dropswitch .drop-top.on-hold,
 .dropswitch .drop.on-hold {
-/*CHANGE*/
 	background: #ff9472;
 }
 
@@ -1641,7 +1642,7 @@ h4.client-has-no-users {
 	color: #60b9b2;
 }
 
-/* uses same styles as: .ticket-info .date */
+/* Uses same styles as: .ticket-info .date */
 .msg-date {
 	line-height: 26px;
 	font-weight: 600;
@@ -1684,7 +1685,11 @@ h4.client-has-no-users {
 	margin-bottom: 15px;
 }
 
+<<<<<<< HEAD:application/assets/css/styles.css
 /*Modal Window*/
+=======
+/* Modal Window */
+>>>>>>> 6fbaf47a7d042b82fcdd37e459293e87b5821301:public/css/styles.css
 #modal-window {
 	display: none;
 	position: fixed;
@@ -1752,7 +1757,11 @@ h4.client-has-no-users {
 	display: inline-block;
 }
 
+<<<<<<< HEAD:application/assets/css/styles.css
 /*Preview Window*/
+=======
+/* Preview Window */
+>>>>>>> 6fbaf47a7d042b82fcdd37e459293e87b5821301:public/css/styles.css
 .preview-window-inner {
 	position: absolute;
 	top: 20px;
@@ -1858,7 +1867,11 @@ h4.client-has-no-users {
 	height: 30px;
 }
 
+<<<<<<< HEAD:application/assets/css/styles.css
 /*Update Alert*/
+=======
+/* Update Alert */
+>>>>>>> 6fbaf47a7d042b82fcdd37e459293e87b5821301:public/css/styles.css
 #update-alert {
 	float: right;
 	display: none;
@@ -2301,9 +2314,7 @@ h4.client-has-no-users {
 	}				
 }
 
-
 /* Crop View */
-
 #canvas-wrap.active .canvas-blackout-bg {
 	position: fixed;
 	top: 0;
@@ -2319,7 +2330,6 @@ h4.client-has-no-users {
 }
 
 #canvas-wrap .canvas-window-inner {
-	/*position: absolute;*/
 	position: fixed;
 	top: 20px;
 	right: 20px;
@@ -2700,7 +2710,6 @@ button.grayscale.gray .c {
 		font-size: 16px;
 	}
 
-
 	/* Recent */
 	.ticket-info .summary {
 		display: block;
@@ -3025,7 +3034,6 @@ button.grayscale.gray .c {
 	#form-verify .validate {
 		margin: 0 0 12px;
 	}
-
 
 	/* Payment */
 	.payment-form-wrap {

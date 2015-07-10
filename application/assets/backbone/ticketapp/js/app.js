@@ -71,7 +71,7 @@ var AppRouter = Backbone.Router.extend({
 
 	setUpSocket: function() {
 		// Connect to namespaced socket using company ID
-		var socket = io('http://' + window.location.hostname + '/' + app.user.attributes.companyID);
+		var socket = io('http://' + window.location.hostname + ':3000/' + app.user.attributes.companyID);
 		
 		// On receiving a notify event display the notification popup
 		socket.on('notify', function(data){	
@@ -157,7 +157,7 @@ var AppRouter = Backbone.Router.extend({
 	    if(!this.changed && !this.executeArguments) {
 	    	if (callback) callback.apply(this, args);
 	    	
-	    	//Close preview view if exists
+	    	// Close preview view if exists
 	    	if (app.preview) {
 	    		app.preview.close();
 	    		app.preview = false;

@@ -1410,7 +1410,7 @@ var houston = {
 		'</div>'+
 		'<div class="box-app" style="{{fullHeightPage}}">'+
 			'<form id="form-new">'+
-				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one short sentence / subject line" />'+
+				'<input type="text" class="required new-sub" name="new-sub" placeholder="The problem in one sentence" />'+
 				'<div class="char-count"><span>75</span> Characters Remaining</div>'+
 				'<textarea class="required" name="new-textarea" placeholder="Please provide the specifics of your problem here"></textarea>'+
 				'<div id="file-upload-view-wrap">'+	
@@ -2509,7 +2509,7 @@ var houston = {
 
         // If image too tall give modal warning
         if(originalHeight > maxHeight) {
-            houston.createModal({type: 'Error', message: 'The image you are attempting to add is of an unusable ratio.'});
+            houston.createModal({type: 'Error', message: 'The image you are attempting to use is too large please try a smaller image.'});
 
             return;
         } 
@@ -3309,7 +3309,7 @@ Backbone.View.prototype.close = function(){
 
 	setUpSocket: function() {
 		// Connect to namespaced socket using company ID
-		var socket = io('http://' + window.location.hostname + '/' + app.user.attributes.companyID);
+		var socket = io('http://' + window.location.hostname + ':3000/' + app.user.attributes.companyID);
 		
 		// On receiving a notify event display the notification popup
 		socket.on('notify', function(data){	
@@ -3395,7 +3395,7 @@ Backbone.View.prototype.close = function(){
 	    if(!this.changed && !this.executeArguments) {
 	    	if (callback) callback.apply(this, args);
 	    	
-	    	//Close preview view if exists
+	    	// Close preview view if exists
 	    	if (app.preview) {
 	    		app.preview.close();
 	    		app.preview = false;
