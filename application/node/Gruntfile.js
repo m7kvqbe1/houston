@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				src: [
 					'../assets/backbone/loginapp/js/models/*.js',
 					'../assets/backbone/loginapp/js/views/*.js',
-					'../assets/backbone/loginapp/js/login.js',
+					'../assets/backbone/loginapp/js/validate.js',
 					'../assets/backbone/loginapp/js/app.js'
 				],
 
