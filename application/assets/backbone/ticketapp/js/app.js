@@ -71,7 +71,7 @@ var AppRouter = Backbone.Router.extend({
 
 	setUpSocket: function(){
 		// Connect to namespaced socket using company ID
-		var socket = io('http://houstonsupportdesk.com:3000/'+app.user.attributes.companyID);
+		var socket = io('http://' + location.host + '/' + app.user.attributes.companyID);
 		
 		// On receiving a notify event display the notification popup
 		socket.on('notify', function(data){	
@@ -152,7 +152,8 @@ var AppRouter = Backbone.Router.extend({
 	changed: false,
 	executeArguments: false,
 	execute: function(callback, args, name) {
-	    //If nothing has been changed  and no arguments have been set then continue with execute as normal
+	    // If nothing has been changed  and no arguments have 
+	    // been set then continue with execute as normal
 	    if(!this.changed && !this.executeArguments){
 	    	if (callback) callback.apply(this, args);
 	    	
@@ -162,12 +163,14 @@ var AppRouter = Backbone.Router.extend({
 	    		app.preview = false;
 	    	}
 	    
-	    //If something has been changed and arguments have been previously set by an attempted execute use the arguments
+	    // If something has been changed and arguments have been 
+	    // previously set by an attempted execute use the arguments
 		} else if (!this.changed && this.executeArguments){
 			this.executeArguments.callback.apply(this, this.executeArguments.args);
 	    	this.executeArguments = false;
 	    
-	    //If something has changed set the arguments to global variables to be use in the future and create modal
+	    // If something has changed set the arguments to global 
+	    // variables to be use in the future and create modal
 	    } else {
 	    	this.executeArguments = {
 		    	callback: callback,
