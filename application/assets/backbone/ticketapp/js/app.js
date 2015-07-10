@@ -198,9 +198,8 @@ var AppRouter = Backbone.Router.extend({
     }
 });
 
-Session timeout polling (every 5 seconds)
-
-$((function timeout() {
+// Session timeout polling (every 5 seconds)
+(function timeout() {
 	setTimeout(function() {
 		$.get('/api/session/check', function(data) {
 			var obj = JSON.parse(data);
@@ -212,6 +211,6 @@ $((function timeout() {
 			}
 		});
 	}, 5000);
-})());
+})();
 
 var app = new AppRouter();
