@@ -359,8 +359,6 @@ var RegisterModel = Backbone.Model.extend({
 		this.owlAnimation();
 
 		return this;
-
-
 	},
 
 	owlAnimation: function(){
@@ -759,7 +757,6 @@ var RegisterModel = Backbone.Model.extend({
 		this.model.save(this.model.attributes,
 			{
 				success: function(model,response,options){
-					//stackoverflow.com/questions/8901574/how-to-refresh-a-page-in-a-backbone-application
 					Backbone.history.navigate('');
 					Backbone.history.loadUrl();
 				},
@@ -868,7 +865,9 @@ var ValidateView = Backbone.View.extend({
 	},
 });;Backbone.View.prototype.close = function(){
 	this.remove();
+	
 	this.unbind();
+	
 	if (this.onClose){
 		this.onClose();
 	}
@@ -877,7 +876,6 @@ var ValidateView = Backbone.View.extend({
 };
 
 var login = {
-
 	validateForm: function(form){
 		var valid = true;
 		var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -911,7 +909,6 @@ var login = {
 		var value = input.val();
 		var length = value.length;
 		var css = input.data('vld');
-		// var dataID = input.data('id');
 		var wrapper = input.closest('.vld-wrap');
 
 		if(!value) valid = false;
@@ -927,8 +924,6 @@ var login = {
 		}
 
 		if(valid) {
-			// console.log(dataID);
-			// console.log(app.currentView.model.attributes);
 			wrapper.addClass(css);
 		} else {
 			wrapper.removeClass(css);
@@ -1004,8 +999,6 @@ var login = {
 		return false;
 	},
 
-	//////////////////////////////////////////////////////////
-
 	registerPasswordShowCount: function(input) {	
 		var input = $(input);
 		if(login.validatedPassword !== input.val()){
@@ -1034,12 +1027,11 @@ var login = {
 			inpLst.closest('.reg-vrf').find('.vrf').fadeOut();
 			inpLst.closest('.vld-wrap').removeClass('vld-a vld-b');
 		} else {
-			// input.removeClass('password-resize');
 			counter.html('<i class="icon-ok-1"></i>');
 			counter.addClass('ok');
 			inpLst.prop('disabled', false);
 
-			//Set this.validatedPassword for set/reset password views when using this method
+			// Set this.validatedPassword for set/reset password views when using this method
 			if(input.hasClass('pass-input')){
 				this.validatedPassword = input.val();
 			}
@@ -1063,7 +1055,7 @@ var login = {
 			wrapper.addClass(css);
 		} else {
 			vrf.fadeOut();
-			wrapper.removeClass(css); //added to give effect
+			wrapper.removeClass(css); // Added to give effect
 			input.removeClass('password-resize');
 		}	
 	},
