@@ -56,6 +56,10 @@ this["JST"]["resetpassview"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta
 
 this["JST"]["resetview"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     return "<div class=\"box box-wel\">\n	<h2>Welcome to Houston</h2>\n	<h3 class=\"wel-tag\">Super-fast, easy to use frontline support</h3>\n		<h3>Get Houston!</h3>\n		<a href=\"/#/register\">Try Houston for 60 days, absolutely free!</a>\n</div>\n<div class=\"box box-log\">\n	<h2>Change Password</h2>\n	<h3 class=\"log-tag\">Please enter a new password below</h3>\n	<form id=\"form-pass-confirm\">\n		<div class=\"reg-vrf\">\n			<input class=\"reg-p required pass-input\" type=\"password\" name=\"pass\" placeholder=\"Password\" />\n			<div class=\"vrf\">\n				<div class=\"vrf-cir vrf-count\">8</div>\n				<div class=\"vrf-msg\"></div>\n			</div>				\n		</div>\n		<div class=\"reg-vrf\">	\n			<input class=\"inp-lst required\" type=\"password\" name=\"pass-c\" placeholder=\"Confirm Password\" />\n			<div class=\"vrf\">\n				<div class=\"vrf-cir ok\"><i class=\"icon-ok-1\"></i></i></div>\n				<div class=\"vrf-msg\"></div>\n			</div>\n		</div>'+				\n		<button class=\"reset\" type=\"button\">Confirm</button>\n		<div class=\"beige\">or</div>\n		<a href=\"/\" class=\"btn-can\">Cancel</a>\n	</form>	\n</div>\n<div class=\"box box-try\">\n	<h2>Try Houston</h2>\n	<h3>Get your clients and support team using Houston with a 60 day free trial!</h3>\n	<a class=\"btn\" href=\"/#/register\">Lets Go</a>\n</div>";
+},"useData":true});
+
+this["JST"]["validateview"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<div class=\"box box-wel\">\n	<h2>Welcome to Houston</h2>\n	<h3 class=\"wel-tag\">Super-fast, easy to use frontline support</h3>\n		<h3>Get Houston!</h3>\n		<a href=\"/register\">Try Houston for 60 days, absolutely free!</a>\n</div>\n<div class=\"box box-log\">\n	<h2>Set Password</h2>\n	<h3 class=\"verify-tag\">Please set your password below</h3>\n	<form id=\"form-verify\">\n		<div class=\"reg-vrf\">\n			<input class=\"reg-p required pass-input\" type=\"password\" name=\"pass\" placeholder=\"Password\" />\n			<div class=\"vrf\">\n				<div class=\"vrf-cir vrf-count\">8</div>\n				<div class=\"vrf-msg\"></div>\n			</div>						\n		</div>\n		<div class=\"reg-vrf\">					\n			<input class=\"inp-lst required\" type=\"password\" name=\"pass-c\" placeholder=\"Confirm Password\" />			\n			<div class=\"vrf\">\n				<div class=\"vrf-cir ok\"><i class=\"icon-ok-1\"></i></i></div>\n				<div class=\"vrf-msg\"></div>\n			</div>\n		</div>	\n		<h3>Just this final step and your new Houston account will be good to go!</h3>							\n		<button class=\"validate\" type=\"button\">Login</button>\n	</form>			\n</div>\n<div class=\"box box-try\">\n	<h2>Try Houston</h2>\n	<h3>Get your clients and support team using Houston with a 60 day free trial!</h3>\n	<a class=\"btn\" href=\"/register\">Lets Go</a>	\n</div>";
 },"useData":true});;var RegisterModel = Backbone.Model.extend({
 	url:'/api/register'
 });;var LoginFormView = Backbone.View.extend({
@@ -132,7 +136,7 @@ this["JST"]["resetview"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"]
 	passReset: false,
 	render: function (){
 		var formView;
-
+		console.log(this.template);
 		this.$el.html(this.template());
 
 		if(!this.passReset){

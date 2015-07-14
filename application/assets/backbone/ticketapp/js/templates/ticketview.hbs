@@ -37,7 +37,7 @@
 		  				<div class="file-info">
 							<div class="filename">{{name}}</div>
 							{{showFilePreviewLink type @index}}
-							<a data-bypass="true" href="http://' + window.location.hostname + '/api/tickets/file/{{ref}}">Download</a>
+							<a data-bypass="true" href="/api/tickets/file/{{ref}}">Download</a>
 						</div>
 					</div>
 				</li>	
@@ -50,8 +50,8 @@
 		<a class="btn reply-btn">Reply</a>
 		</div>
 		<div class="reply">
-			'<form id="form-reply">' +
-				'<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>' +		
+			<form id="form-reply">
+				<textarea class="required" name="new-textarea" placeholder="Please add your comments here..."></textarea>	
 				<div id="file-upload-view-wrap">	
 				</div>
 				{{outputMarkAsCompleted}}

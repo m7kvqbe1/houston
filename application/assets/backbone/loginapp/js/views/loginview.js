@@ -4,7 +4,7 @@ var LoginView = Backbone.View.extend({
 	passReset: false,
 	render: function (){
 		var formView;
-
+		console.log(this.template);
 		this.$el.html(this.template());
 
 		if(!this.passReset){

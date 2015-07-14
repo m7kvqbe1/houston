@@ -123,11 +123,14 @@ var AppRouter = Backbone.Router.extend({
 	},
 	
 	peopleOverviewFrontController: function() {
-		if(!app.currentView) {
-			this.createAndShowPeopleView();
-		} else {
-			app.fetchData(this.createAndShowPeopleView);
-		}
+		// if(!app.currentView) {
+		// 	this.createAndShowPeopleView();
+		// } else {
+		// 	app.fetchUsers(this.createAndShowPeopleView);
+		// }
+
+		var peopleView = new PeopleView({ collection: app.agentsCollection });
+		app.showView(peopleView);
 	},
 
 	createAndShowPeopleView: function() {

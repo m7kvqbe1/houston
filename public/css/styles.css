@@ -1478,6 +1478,15 @@ h4.client-has-no-users {
 	white-space: nowrap;
 }
 
+.app-loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100px;
+	margin: -50px 0 0 -50px;
+	z-index: 10;
+}
+
 .svg-loader {
 	position: absolute;
 	z-index: 1;
