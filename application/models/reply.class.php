@@ -51,7 +51,7 @@ class ReplyModel
 
 		$docs = array();
 		foreach($result as $doc) {
-		    array_push($docs, $doc);
+		    $docs[] = $doc;
 		}
 
 		return $docs;

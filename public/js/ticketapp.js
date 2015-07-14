@@ -45,7 +45,11 @@ this["JST"]["fileuploadview"] = Handlebars.template({"1":function(depth0,helpers
     + alias2(((helper = (helper = helpers.cid || (depth0 != null ? depth0.cid : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"cid","hash":{},"data":data}) : helper)))
     + "\" class=\"file-del\">Delete</a>\n"
     + ((stack1 = helpers.unless.call(depth0,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.status : stack1),{"name":"unless","hash":{},"fn":this.program(6, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
+<<<<<<< HEAD
     + "				</div>\n			</div>			\n		</li>\n";
+=======
+    + "'\n				</div>\n			</div>			\n		</li>\n";
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
 },"2":function(depth0,helpers,partials,data) {
     var stack1;
 
@@ -59,7 +63,11 @@ this["JST"]["fileuploadview"] = Handlebars.template({"1":function(depth0,helpers
 
   return "						"
     + this.escapeExpression((helpers.showFileUploadPreviewLink || (depth0 && depth0.showFileUploadPreviewLink) || helpers.helperMissing).call(depth0,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.type : stack1),((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.target : stack1),(depth0 != null ? depth0.cid : depth0),{"name":"showFileUploadPreviewLink","hash":{},"data":data}))
+<<<<<<< HEAD
     + "\n";
+=======
+    + "\n					";
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
@@ -159,7 +167,11 @@ this["JST"]["peopleview"] = Handlebars.template({"1":function(depth0,helpers,par
 },"2":function(depth0,helpers,partials,data) {
     var stack1, alias1=this.lambda, alias2=this.escapeExpression;
 
+<<<<<<< HEAD
   return "					<img class=\"avatar\" src=\""
+=======
+  return "					'<img class=\"avatar\" src=\""
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
     + ((stack1 = helpers['if'].call(depth0,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.avatar : stack1),{"name":"if","hash":{},"fn":this.program(3, data, 0),"inverse":this.program(5, data, 0),"data":data})) != null ? stack1 : "")
     + "\" alt=\""
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.firstName : stack1), depth0))
@@ -199,7 +211,11 @@ this["JST"]["peopleview"] = Handlebars.template({"1":function(depth0,helpers,par
     + this.escapeExpression(((helper = (helper = helpers.fullHeightPage || (depth0 != null ? depth0.fullHeightPage : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"fullHeightPage","hash":{},"data":data}) : helper)))
     + "\">\n	<div id=\"agent-stream\">\n	<h2>Support Agents</h2>\n		<ul>\n"
     + ((stack1 = helpers.each.call(depth0,(depth0 != null ? depth0.models : depth0),{"name":"each","hash":{},"fn":this.program(1, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
+<<<<<<< HEAD
     + "		</ul>\n	</div>\n	<h2 class=\"people-clients-header\">Clients</h2>\n	<div id=\"clients-wrap\">\n	</div>\n</div>";
+=======
+    + "		</ul>\n	</div>\n	<h2 class=\"people-clients-header\">Clients</h2>\n	<div id=\"clients-wrap\">'\n	</div>\n</div>";
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
 },"useData":true});
 
 this["JST"]["previewwindow"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
@@ -241,7 +257,11 @@ this["JST"]["previewwindow"] = Handlebars.template({"1":function(depth0,helpers,
 },"6":function(depth0,helpers,partials,data) {
     var stack1;
 
+<<<<<<< HEAD
   return "/api/tickets/file/"
+=======
+  return "http://' + window.location.hostname + '/api/tickets/file/"
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.ref : stack1), depth0));
 },"8":function(depth0,helpers,partials,data) {
     var stack1;
@@ -392,7 +412,11 @@ this["JST"]["ticketview"] = Handlebars.template({"1":function(depth0,helpers,par
     + alias3(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
     + "</div>\n							"
     + alias3((helpers.showFilePreviewLink || (depth0 && depth0.showFilePreviewLink) || alias1).call(depth0,(depth0 != null ? depth0.type : depth0),(data && data.index),{"name":"showFilePreviewLink","hash":{},"data":data}))
+<<<<<<< HEAD
     + "\n							<a data-bypass=\"true\" href=\"/api/tickets/file/"
+=======
+    + "\n							<a data-bypass=\"true\" href=\"http://' + window.location.hostname + '/api/tickets/file/"
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
     + alias3(((helper = (helper = helpers.ref || (depth0 != null ? depth0.ref : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"ref","hash":{},"data":data}) : helper)))
     + "\">Download</a>\n						</div>\n					</div>\n				</li>	\n";
 },"2":function(depth0,helpers,partials,data) {
@@ -406,7 +430,11 @@ this["JST"]["ticketview"] = Handlebars.template({"1":function(depth0,helpers,par
 },"8":function(depth0,helpers,partials,data) {
     var helper;
 
+<<<<<<< HEAD
   return "		<a class=\"btn reply-btn\">Reply</a>\n		</div>\n		<div class=\"reply\">\n			<form id=\"form-reply\">\n				<textarea class=\"required\" name=\"new-textarea\" placeholder=\"Please add your comments here...\"></textarea>	\n				<div id=\"file-upload-view-wrap\">	\n				</div>\n				"
+=======
+  return "		<a class=\"btn reply-btn\">Reply</a>\n		</div>\n		<div class=\"reply\">\n			'<form id=\"form-reply\">' +\n				'<textarea class=\"required\" name=\"new-textarea\" placeholder=\"Please add your comments here...\"></textarea>' +		\n				<div id=\"file-upload-view-wrap\">	\n				</div>\n				"
+>>>>>>> 21ec292289b4e2c9960834b1aa80aaff3d81c68f
     + this.escapeExpression(((helper = (helper = helpers.outputMarkAsCompleted || (depth0 != null ? depth0.outputMarkAsCompleted : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"outputMarkAsCompleted","hash":{},"data":data}) : helper)))
     + "\n				<div class=\"reply-submit-buttons\">\n					<button class=\"add-message\" type=\"button\">Submit</button>\n					<div class=\"beige or\">or</div>\n					<a class=\"cancel-btn ib\">Cancel</a>\n				</div>\n			</form>\n		</div>					\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {

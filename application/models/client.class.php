@@ -35,7 +35,7 @@ class ClientModel
 
 		$docs = array();
 		foreach($result as $doc) {
-			array_push($docs, $doc);
+			$docs[] = $doc;
 		}
 
 		if(isset($docs[0]['clients'])) {

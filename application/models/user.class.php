@@ -88,7 +88,7 @@ class UserModel
 		$docs = array();
 		foreach($result as $doc) {
 			unset($doc['password']);
-		    array_push($docs, $doc);
+			$docs[] = $doc;
 		}
 
 		if(empty($docs)) throw new \Exception('No users found');
@@ -118,7 +118,7 @@ class UserModel
 		$docs = array();
 		foreach($result as $doc) {
 			unset($doc['password']);
-			array_push($docs, $doc);
+			$docs[] = $doc;
 		}
 
 		return $docs;
