@@ -182,7 +182,8 @@ class TicketController
 		return $response;
 	}
 
-	public function getAttachmentsZipAction(Request $request) {
+	public function getAttachmentsZipAction(Request $request) 
+	{
 		$fileIDs = $request->query->get('id');
 
 		$ticketModel = new TicketModel($this->app);

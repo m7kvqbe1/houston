@@ -1,16 +1,6 @@
 var ResetPassView = Backbone.View.extend({
 	className: "box box-pass",
-	template: Handlebars.compile(
-		'<h2>Reset Your Password</h2>'+
-		'<h3 class="pass-tag">Out with the old in with the new!</h3>'+
-		'<form id="form-pass">'+
-			'<input class="required" type="email" name="pass-e" placeholder="Email Address" />'+
-			'<h3>A reset link will be sent to this email address, click the link and follow the simple directions.</h3>'+
-			'<button class="reset" type="button">Reset</button>'+
-		'</form>'+
-		'<div class="beige">or</div>'+
-		'<a class="btn-can">Cancel</a>'
-	),
+	template: JST.resetpassview,
 
 	initialize: function() {
 		_.bindAll(this, 'keyEvent');

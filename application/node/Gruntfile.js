@@ -2,6 +2,29 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		
+		handlebars: {
+			options: {
+				namespace: 'JST',
+				
+				// Remove path and extension from template name
+				processName: function(filePath) {
+					return filePath.replace(/^(.*[\\\/])/, '').replace(/\.hbs$/, '');
+				}	
+			},
+			
+			loginapp: {				
+				files: {
+					'../assets/backbone/loginapp/js/templates/compiled.js': '../assets/backbone/loginapp/js/templates/*.hbs'
+				}
+			},
+			
+			ticketapp: {
+				files: {
+					'../assets/backbone/ticketapp/js/templates/compiled.js': '../assets/backbone/ticketapp/js/templates/*.hbs'
+				}
+			}
+		},
+		
 		concat: {
 			options: {
 				sourceMap: true,
@@ -10,6 +33,7 @@ module.exports = function(grunt) {
 
 			loginapp: {
 				src: [
+					'../assets/backbone/loginapp/js/templates/compiled.js',
 					'../assets/backbone/loginapp/js/models/*.js',
 					'../assets/backbone/loginapp/js/views/*.js',
 					'../assets/backbone/loginapp/js/validate.js',
@@ -21,6 +45,7 @@ module.exports = function(grunt) {
 
 			ticketapp: {
 				src: [
+					'../assets/backbone/ticketapp/js/templates/compiled.js',
 					'../assets/backbone/ticketapp/js/houston.js',
 					'../assets/backbone/ticketapp/js/handlebarshelpers.js',
 					'../assets/backbone/ticketapp/js/datahelper.js',
@@ -48,7 +73,7 @@ module.exports = function(grunt) {
 					'../assets/lib/jquery-1.11.3.js',
 					'../assets/lib/underscore-min.js',
 					'../assets/lib/backbone-min.js',
-					'../assets/lib/handlebars.js'
+					'../assets/lib/handlebars.runtime-v3.0.3.js'
 				],
 
 				dest: '../../public/js/lib.min.js'
@@ -69,17 +94,24 @@ module.exports = function(grunt) {
 		
 		watch: {			
 			js: {
-				files: ['../assets/backbone/**/*.js', '../assets/backbone/**/**/*.js', '../assets/backbone/**/**/**/*.js'],
-				tasks: ['concat', 'uglify']
+				files: [
+					'../assets/backbone/**/*.js', 
+					'../assets/backbone/**/**/*.js', 
+					'../assets/backbone/**/**/**/*.js', 
+					'../assets/backbone/**/js/templates/*.hbs'
+				],
+				
+				tasks: ['handlebars', 'concat', 'uglify']
 			}
 		}
 	});
 
 	// Load the plugins that prvide the various Grunt tasks
+	grunt.loadNpmTasks('grunt-contrib-handlebars');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Default task(s).
-	grunt.registerTask('default', ['concat', 'uglify']);
+	grunt.registerTask('default', ['handlebars', 'concat', 'uglify']);
 }

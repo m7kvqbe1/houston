@@ -1,23 +1,6 @@
 var LoginFormView = Backbone.View.extend({
 	className: "box box-log",
-	template: Handlebars.compile(
-		'<h2>Login Here</h2>'+
-		'<h3 class="log-tag">Great to see you again!</h3>'+
-		'<form id="form-log">'+
-			'<input class="required" type="email" name="log-e" placeholder="Email Address" autofocus spellcheck="false" />'+
-			'<input class="required" type="password" name="log-p" placeholder="Password" />'+			
-			'<label>'+
-				'<input id="log-rem" type="checkbox" name="log-r" value="remember" />'+
-				'Remember me on this computer'+
-			'</label>'+
-			'<button class="login" type="button">'+
-				'<span>Sign In</span>'+
-				'<img class="svg-dots" src="/application/assets/img/three-dots.svg" width="52" alt="Loading">'+
-			'</button>'+				
-		'</form>'+
-		'<h3 class="ib">Help!</h3>&nbsp;'+
-		'<a class="forgot">Ive forgotten my password</a>'
-	),
+	template: JST.loginformview,
 
 	initialize: function() {
 		_.bindAll(this, 'keyEvent');

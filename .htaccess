@@ -17,5 +17,5 @@ Require valid-user
     
     # Rewrite requests to application entry point (index.php)
 	RewriteRule ^(public|socket\.io|application/assets/backbone)($|/) - [L]
-    RewriteRule ^ index.php [QSA,L]
+	RewriteRule ^ index.php [QSA,L]
 </IfModule>

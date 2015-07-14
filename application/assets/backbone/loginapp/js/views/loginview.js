@@ -1,5 +1,5 @@
 var LoginView = Backbone.View.extend({
-	template: Handlebars.templates.loginview,
+	template: JST.loginview,
 
 	passReset: false,
 	render: function (){
