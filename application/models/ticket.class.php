@@ -49,7 +49,7 @@ class TicketModel
 
 		$docs = array();
 		foreach($result as $doc) {
-		    array_push($docs, $doc);
+		    $docs[] = $doc;
 		}
 
 		return $docs;
@@ -251,8 +251,8 @@ class TicketModel
 				'contentType' => $file->file['contentType'],
 				'lastModifiedDate' => $file->file['lastModifiedDate']
 			);
-
-			array_push($fileArr, $meta);
+			
+			$fileArr[] = $meta;
 		}
 
 		return (empty($fileArr)) ? false : $fileArr;
