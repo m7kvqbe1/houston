@@ -34,10 +34,13 @@ var FormView = Backbone.View.extend({
 
     keyEvent: function(e){
         var keyCode = e.which;
-
 		if(keyCode == 13){
-			e.preventDefault();
-			this.saveModel();
+			
+			if($(e.target).is('input')){
+				e.preventDefault();
+				this.saveModel();
+			} 		
+
 		} else if (keyCode == 27){
 			this.cancelTicket();
 		}
