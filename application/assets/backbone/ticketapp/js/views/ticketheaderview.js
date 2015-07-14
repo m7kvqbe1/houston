@@ -1,29 +1,6 @@
 var TicketHeaderView = Backbone.View.extend({
 	className: 'box-app-top msg-top',
-	agentTemplate: Handlebars.compile(
-		'<h2>Ticket #{{attributes.reference}}</h2>'+
-		'{{#if attributes.agent}}'+
-			'{{generateDropSwitch attributes.status}}'+					
-			'<div class="dropdown droplist">'+
-				'<div class="drop-top rounded">'+
-					'<div class="btn in-progress drop-slct"><span>{{getUserName attributes.agent}}</span><i class="icon-down-dir-1"></i></div>'+
-				'</div>'+						
-				'<ul class="drop">'+
-					'{{populateAgentDropdown}}'+
-				'</ul>'+
-			'</div>'+
-		'{{else}}'+
-			'<div class="btn new">New</div>'+
-			'<div class="dropdown droplist">'+
-				'<div class="drop-top rounded">'+
-					'<div class="btn in-progress drop-slct">Awaiting Agent<i class="icon-down-dir-1"></i></div>'+
-				'</div>'+						
-				'<ul class="drop">'+
-					'{{populateAgentDropdown}}'+
-				'</ul>'+
-			'</div>'+
-		'{{/if}}'
-	),
+	agentTemplate: JST.ticketheaderview,
 
 	userTemplate: Handlebars.compile(
 		'<h2>Ticket #{{attributes.reference}}</h2>'+

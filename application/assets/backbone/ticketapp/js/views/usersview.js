@@ -1,7 +1,5 @@
 var UsersView = Backbone.View.extend({
-	template: Handlebars.compile(
-		'<h4 class="client-has-no-users">This client currently has no users</h4>'
-	),
+	template: JST.usersview,
 
 	initialize: function(){
 		this.listenTo(this.collection, 'add change remove', this.render);

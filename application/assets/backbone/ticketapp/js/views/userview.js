@@ -1,17 +1,7 @@
 var UserView = Backbone.View.extend({
 	tagName: 'li',
 	className: 'person',
-	template: Handlebars.compile(
-		'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
-		'<h3>{{#if attributes.firstName}}{{attributes.firstName}} {{attributes.lastName}}{{else}}{{attributes.emailAddress}}{{/if}}</h3>'+
-		'{{#ifCond attributes.verify true}}'+
-			'<h4>{{getCompanyName id}} {{convertUserRole attributes.role}}</h4>'+
-		'{{else}}'+
-			'<h4>Awaiting Verification</h4>'+
-			'<a class="resend-verification">Resend</a> '+
-		'{{/ifCond}}'+
-		'<a class="delete-user">Delete</a>'
-	),
+	template: JST.userview,
 
 	onClose: function(){
 		this.stopListening();

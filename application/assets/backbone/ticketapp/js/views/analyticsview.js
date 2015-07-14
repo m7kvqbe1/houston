@@ -1,15 +1,5 @@
 var AnalyticsView = Backbone.View.extend({
-	template: Handlebars.compile(
-		'<div class="box-app-fixed">'+
-			'<div class="box-app-fixed-inner">'+
-				'<div class="box-app-top">' +
-					'<h2>System Analytics</h2>' +
-				'</div>' +
-			'</div>'+
-		'</div>'+
-		'<div class="box-app" style="{{fullHeightPage}}">' +
-		'</div>'
-	),
+	template: JST.analyticsview,
 	
 	initialize: function() {
 		this.listenTo(this.model, "sync", this.render);	

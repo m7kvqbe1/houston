@@ -1,45 +1,5 @@
 var FileUploadView = Backbone.View.extend({
-	template: Handlebars.compile(
-		'<div class="attach-files">'+
-			'<a class="attach-link">Attach files to this ticket</a>'+ 
-			'<div class="supported">Supported -</div>'+ 
-			'<ul class="filetypes">'+
-				'<li>Jpg</li>'+
-				'<li>Png</li>'+
-				'<li>Gif</li>'+
-				'<li>Pdf</li>'+
-			'</ul>'+
-			'<div class="file-input-wrapper">'+
-				'<div id="drop_zone">Drop files here</div>'+
-				'<input type="file" id="filesInput" name="files[]" multiple />'+
-			'</div>'+
-			'<ul id="files" class="files">'+
-			'{{#each models}}'+
-				'<li class="file">'+
-					'<div class="file-text {{attributes.status}}">'+		
-						'<img class="svg-loader" src="/application/assets/img/oval.svg" width="52" alt="Loading">'+
-		  				'<div class="file-icon">'+
-		  					'<span>'+
-		  					'{{#if attributes.type}}'+
-		  					'{{formatFileType attributes.type}}'+
-		  					'{{else}}'+
-		  					'FILE'+
-		  					'{{/if}}'+
-		  					'</span>'+
-		  				'</div>'+
-		  				'<div class="file-info">'+
-							'<div class="filename">{{attributes.name}}</div>'+
-							'<a data-cid="{{cid}}" class="file-del">Delete</a>'+
-							'{{#unless attributes.status}}'+
-								'{{showFileUploadPreviewLink attributes.type attributes.target cid}}'+
-							'{{/unless}}'+	
-						'</div>'+
-					'</div>'+					
-				'</li>'+
-			'{{/each}}'+
-			'</ul>'+	
-		'</div>'
-	),
+	template: JST.fileuploadview,
 
 	initialize : function(){
 		this.listenTo(this.collection, 'reset add change remove', this.render);

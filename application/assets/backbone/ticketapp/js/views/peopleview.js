@@ -1,41 +1,5 @@
 var PeopleView = Backbone.View.extend({
-	template: Handlebars.compile(		
-		'<div class="box-app-fixed">'+
-			'<div class="box-app-fixed-inner">'+
-				'<div class="box-app-top">'+
-					'<h2>People</h2>'+
-					'<a class="btn new-client" data-form="1">New Client</a>'+
-					'<a class="btn" data-form="0">New Agent</a>'+
-				'</div>'+
-			'</div>'+
-		'</div>'+
-		'<div class="box-app box-people" style="{{fullHeightPage}}">'+
-			'<div id="agent-stream">'+
-			'<h2>Support Agents</h2>'+
-				'<ul>'+
-				'{{#each models}}'+
-					'<li class="person">'+
-						'{{#ifCond attributes.verify true}}'+					
-							'<img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" alt="{{attributes.firstName}} {{attributes.lastName}}" />'+
-							'<h3>{{#if attributes.firstName}}{{attributes.firstName}} {{attributes.lastName}}{{else}}{{attributes.emailAddress}}{{/if}}</h3>'+
-							'<h4>{{convertUserRole attributes.role}}</h4>'+
-						'{{else}}'+
-							'<img class="avatar" src="application/assets/img/avatar.png" />'+
-							'<h3>{{attributes.emailAddress}}</h3>'+
-							'<h4>Awaiting Verification</h4>'+
-							'<a class="resend-verification">Resend</a> '+
-						'{{/ifCond}}'+
-						'{{displayAgentDelete id}}'+
-					'</li>'+
-				'{{/each}}'+
-				'</ul>'+
-			'</div>'+
-			'<h2 class="people-clients-header">Clients</h2>'+
-			'<div id="clients-wrap">'+	
-
-			'</div>'+
-		'</div>'			
-	),
+	template: JST.peopleview,
 	
 	initialize: function() {		
 		this.listenTo(app.agentsCollection, 'add change remove', this.render);
