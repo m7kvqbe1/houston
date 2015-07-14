@@ -1,0 +1,8 @@
+<h2>Ticket #{{attributes.reference}}</h2>
+{{#if attributes.agent}}
+	<div class="btn {{convertToClass attributes.status}}">{{attributes.status}}</div>
+	<div class="btn ticketheader-agent">{{getUserName attributes.agent}}</div>
+{{else}}
+	<div class="btn new">New</div>
+	<div class="btn on-hold">Awaiting Agent</div>
+{{/if}}
