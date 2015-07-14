@@ -1,4 +1,4 @@
- <?php
+<?php
 namespace Houston\Model;
 
 use Silex\Application;
