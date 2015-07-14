@@ -1,0 +1,104 @@
+<div class="box-app-fixed">
+	<div class="box-app-fixed-inner">
+		<div class="box-app-top">
+			<h2>Manage Your Profile</h2>
+		</div>
+	</div>
+</div>
+<div class="box-app profile" style="{{fullHeightPage}}">
+	<form id="form-profile-details">	
+        <h3>Your Details</h3>			
+		<div class="profile-input-wrap">
+			<label for="first-name">First Name</label>
+			<input id="first-name" name="firstName" type="text" placeholder="{{attributes.firstName}}" />
+		</div>
+		<div class="profile-input-wrap">
+			<label for="last-name">Last Name</label>
+			<input id="last-name" name="lastName" type="text" placeholder="{{attributes.lastName}}" />
+		</div>
+		<div class="profile-input-wrap">
+			<label for="email-address">Email Address</label>
+			<input id="email-address" name="emailAddress" type="email" placeholder="{{attributes.emailAddress}}" />
+			<h4 class="profile-tooltip">A validation link will be sent to your email address for verification.</h4>
+            <div class="in-use-marker">
+                <div class="vrf-cir">
+                    <i class="icon-cancel"></i>
+                </div>
+            </div>
+		</div>
+		<button type="button">Update</button>
+		<div class="beige or">or</div>
+		<a class="cancel-btn">Cancel</a>
+		<div class="response">
+			<h3>Your profile was succesfully updated</h3>
+		</div>
+	</form>
+	<h3>Update Password</h3>
+	<form id="form-profile-password">
+        <div class="profile-input-wrap">
+			<input class="current-password" type="password" placeholder="Current Password" />
+            <div class="validated-marker">
+                <div class="vrf-cir ok">
+                    <i class="icon-ok-1"></i>
+                </div>
+            </div>
+        </div>    
+        <div class="profile-input-wrap">
+		    <input class="new-password" type="password" placeholder="New Password" disabled />
+            <div class="validated-marker">
+                <div class="vrf-cir vrf-count">8</div>
+            </div>
+        </div>
+        <div class="profile-input-wrap">
+		    <input class="repeat-password" type="password" placeholder="Repeat Password" disabled />
+            <div class="validated-marker">
+                <div class="vrf-cir ok">
+                    <i class="icon-ok-1"></i>
+                </div>
+            </div>
+        </div>
+		<button type="button">Update</button>
+		<div class="beige or">or</div>
+		<a class="cancel-btn">Cancel</a>
+		<div class="response">
+			<h3>Your password has been updated</h3>
+		</div>
+	</form>
+    <div class="profile-avatar">
+        <h3>Avatar</h3>                    
+        <div id="avatar-drop">
+            <img class="avatar" src="{{#if attributes.avatar}}{{attributes.avatar}}{{else}}application/assets/img/avatar.png{{/if}}" />
+        </div>
+        <h4 class="profile-avatar-prompt">Drag and drop image onto area above to update.</h4> 
+        <a class="update-avatar-link">Add image from file</a>
+        <input type="file" id="filesInput" name="files" />
+        <div id="canvas-wrap"></div>
+    </div>
+    <div class="email-notifications">
+        <h3>Email Notifications</h3>
+        <div class="toggle-button-wrap">
+            <div class="toggle-button-outer {{#if attributes.emailNotifications}}{{attributes.emailNotifications}}{{/if}}">
+                <div class="on">on</div>
+                <div class="off">off</div>
+                <div class="toggle-button"></div>
+            </div>
+            <label>Ticket Emails</label>
+        </div>
+        <div class="toggle-button-wrap">
+            <div class="toggle-button-outer {{#if attributes.emailNotifications}}{{attributes.emailNotifications}}{{/if}}">
+                <div class="on">on</div>
+                <div class="off">off</div>
+                <div class="toggle-button"></div>
+            </div>
+            <label>System Emails</label>
+        </div>
+        <div class="toggle-button-wrap">
+            <div class="toggle-button-outer {{#if attributes.emailNotifications}}{{attributes.emailNotifications}}{{/if}}">
+                <div class="on">on</div>
+                <div class="off">off</div>
+                <div class="toggle-button"></div>
+            </div>
+            <label>Houston Newsletter</label>
+        </div>
+    </div>
+</div>
