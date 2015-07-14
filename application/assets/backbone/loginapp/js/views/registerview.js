@@ -66,6 +66,7 @@ var RegisterView = Backbone.View.extend({
 					'<div class="beige or">or</div>'+
 					'<a class="btn-can" href="/">Cancel</a>'+
 				'</form>'+
+			'</div>'+
 		'</div>'
 	),
 

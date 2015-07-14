@@ -1,0 +1,48 @@
+<div class="box box-reg">
+	<div class="payment-header">
+		<h2><span>Enter Your Payment Details</span></h2>
+		<h3><span>Almost got your Houston account!</span></h3>
+	</div>
+	<div class="payment-form-wrap">
+	<div class="payment-houston"></div>
+		<form id="form-payment" action="">
+			<span class="payment-errors"></span>
+			<div class="card-front">
+				<div class="form-row">
+					<label for="card-number">Card Number</label>
+					<input id="card-number" type="text" maxlength="20" data-stripe="number" />			
+				</div>	
+				<div class="form-row expiration-date">
+					<label for="expiration-month">Expiration Date</label>
+					<input id="expiration-month" type="text" maxlength="2" data-stripe="exp-month" placeholder="MM"/>		
+					<input type="text" maxlength="4" data-stripe="exp-year" placeholder="YYYY"/>
+				</div>
+				<div class="form-row">
+					<label for="cardholder-name">Cardholder Name</label>
+					<input id="cardholder-name" type="text" />			
+				</div>
+			</div>
+			<div class="card-back">
+				<div class="form-row">
+					<label for="cvc">CVC/CVV</label>
+					<input id="cvc" type="text" maxlength="4" data-stripe="cvc" />
+					<div>
+						<span>The last </span>
+						<span>3 or 4 digits </span>
+						<span>on back </span>
+						<span>of the card</span>
+					</div>			
+				</div>'
+			</div>
+			<div class="payment-buttons">
+				<button class="payment-confirm" type="button">
+					<span>Confirm</span>
+					<img class="svg-dots" src="/application/assets/img/three-dots.svg" width="52" alt="Loading">
+				</button>
+				<div class="beige or">or</div>
+				<a class="btn-can payment-back">Back</a>
+			</div>
+			<div class="powered-by-stripe"></div>
+		</form>
+	</div>
+</div>
