@@ -10,30 +10,15 @@ app.use(bodyParser.json());
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-// Load custom modules
-var helper = require('./helper.js');
-var db = require('./database.js');
-
-// Basic HTTP authentication
-var secureRoute = function(req, res, next) {
-	var auth;
-
-	if (req.headers.authorization) {
-		auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
-	}
-
-	if (!auth || auth[0] !== 'cd8aec6611227907a7260e280fc87361' || auth[1] !== '0ec138408802d5aca30112cbd48478c6') {
-		res.statusCode = 401;
-		res.setHeader('WWW-Authenticate', 'Basic realm="Houston Support Desk"');
-		res.end('Unauthorized');
-	} else {
-		next();
-	}
-};
+// Require database component
+var db = require('./components/database.js');
 
 // Listening for http on port 3000
-http.listen(3000, function(){ console.log('listening on *:3000'); });
+http.listen(3000, function() { 
+	console.log('listening on *:3000'); 
+});
 
+// Log client WebSocket responses
 io.on('connection', function(socket) {
 	socket.on('response', function(data) {
 		// Output response from client server side
@@ -41,7 +26,7 @@ io.on('connection', function(socket) {
 	});
 });
 
-// Get all company IDs from MongoDB and create a new namespaced web socket for each one
+// Get all company IDs from MongoDB and create a WebSocket namespace for each one
 var namespaces = {};
 db.getAllCompanyIds(function(err, companyIds) {
 	companyIds.forEach(function(val) {
@@ -52,36 +37,7 @@ db.getAllCompanyIds(function(err, companyIds) {
 	});
 });
 
-// Broadcast new ticket notification event to the appropriate socket namespace
-app.post('/new/ticket', secureRoute, function(req, res) {
-	var msg = helper.trimMessage(req.body.message);
-
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body._id.$id+'"><strong>New Ticket:</strong>&nbsp;'+msg+'</a>');
-	res.end();
-});
-
-// Broadcast new reply notification event to the appropriate socket namespace
-app.post('/new/reply', secureRoute, function(req, res) {
-	var msg = helper.trimMessage(req.body.message);
-
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.ticketID.$id+'"><strong>New Reply:</strong>&nbsp;'+msg+'</a>');
-	res.end();
-});
-
-// Broadcast status update notificaiton event to the appropriate socket namespace
-app.post('/update/status', secureRoute, function(req, res) {
-	var status = req.body.status;
-	var subject = helper.trimMessage(req.body.subject);
-
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>'+status+': </strong>&nbsp;'+subject+'</a>');
-	res.end();
-});
-
-// Broadcast assignee update notificaiton event to the appropriate socket namespace
-app.post('/update/assignee', secureRoute, function(req, res) {
-	var status = req.body.status;
-	var subject = helper.trimMessage(req.body.subject);
-
-	namespaces[req.body.socketNamespace].emit('notify', '<a href="/tickets/'+req.body.id+'"><strong>New Assignee: </strong>&nbsp;'+subject+'</a>');
-	res.end();
-});
+// Require routes and associated controller logic 
+var Routes = require('./controllers/main.js');
+var routes = new Routes(namespaces);
+app.use(routes);
