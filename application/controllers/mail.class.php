@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Houston\Component\MailboxExtended as Mailbox;
 use Houston\Model\TicketModel;
 
-class MailController {
+class MailController 
+{
 	protected $app;
 	
 	public function __construct(Application $app) 

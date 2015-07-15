@@ -9,6 +9,7 @@ use Houston\Model\UserModel;
 class ClientModel
 {
 	protected $app;
+	
 	public $client;
 
 	public function __construct(Application $app)

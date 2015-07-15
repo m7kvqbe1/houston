@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyModel
 {
+	protected $app;
+	
 	protected static $validProperties = array(
 		'_id',
 		'companyName',
@@ -13,8 +15,7 @@ class CompanyModel
 		'stripeCustomerID',
 		'ticketCount'
 	);
-
-	protected $app;
+	
 	public $company;
 
 	public function __construct(Application $app, $companyID = null)

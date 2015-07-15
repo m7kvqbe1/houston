@@ -10,7 +10,8 @@ use Houston\Model\UserModel;
 use Houston\Model\ClientModel;
 use Houston\Model\CompanyModel;
 
-class PeopleController {
+class PeopleController 
+{
 	protected $app;
 
 	public function __construct(Application $app)

@@ -9,6 +9,7 @@ use Houston\Component\Helper;
 class TicketModel
 {
 	protected $app;
+	
 	public $ticket;
 
 	public function __construct(Application $app, $ticketID = null)
@@ -98,8 +99,13 @@ class TicketModel
 
 		// Increment and get/set ticket reference
 		$companyModel = new CompanyModel($this->app, $this->app['session']->get('cid'));
-
-		$ticket->reference = (isset($companyModel->company['ticketCount'])) ? $companyModel->company['ticketCount'] : 0;
+		
+		if(isset($companyModel->company['ticketCount'])) {
+			$ticket->reference = $companyModel->company['ticketCount'];
+		} else {
+			$ticket->reference = 0;
+		}
+		
 		$ticket->reference++;
 
 		// Update company ticketCount tally property
@@ -175,13 +181,18 @@ class TicketModel
 		// Remove MimeType from start of Base64 encoded binary string
 		$data = explode(',', $attachment->target);
 		$data = $data[1];
+		$data = base64_decode($data);
 
 		try {
 			$gridfs = $db->getGridFS();
 
 			return $gridfs->storeBytes(
-				base64_decode($data),
-				array('contentType' => $attachment->type, 'fileName' => $attachment->name, 'lastModifiedDate' => $attachment->lastModifiedDate)
+				$data,
+				array(
+					'contentType' => $attachment->type, 
+					'fileName' => $attachment->name, 
+					'lastModifiedDate' => $attachment->lastModifiedDate
+				)
 			);
 		} catch(\MongoException $e) {
 			$this->app['airbrake']->notifyOnException($e);

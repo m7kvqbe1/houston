@@ -9,6 +9,7 @@ use Houston\Component\Helper;
 class ReplyModel
 {
 	protected $app;
+
 	public $reply;
 
 	public function __construct(Application $app, $replyID = null)
