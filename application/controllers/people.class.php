@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 
 use Houston\Component\ApiResponse;
+use Houston\Component\Notify;
 use Houston\Model\UserModel;
 use Houston\Model\ClientModel;
 use Houston\Model\CompanyModel;
@@ -48,6 +49,8 @@ class PeopleController {
 		$clientModel = new ClientModel($this->app);
 
 		if($clientModel->addClient($data)) {
+			Notify::socketBroadcast('/update/users', null, $this->app['session']->get('cid'));
+			
 			return json_encode($data);
 		} else {
 			return ApiResponse::error('CLIENT_ADD_FAIL');
@@ -61,6 +64,8 @@ class PeopleController {
 		$userModel = new UserModel($this->app);
 
 		if($user = $userModel->addUser($data)) {
+			Notify::socketBroadcast('/update/users', null, $this->app['session']->get('cid'));
+			
 			// Send verification email
 			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
 			$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$data->verify, $template);
@@ -84,6 +89,8 @@ class PeopleController {
 		$clientModel = new ClientModel($this->app);
 
 		if($clientModel->removeClient($clientID)) {
+			Notify::socketBroadcast('/update/users', null, $this->app['session']->get('cid'));
+			
 			return ApiResponse::success('DEFAULT_RESPONSE_SUCCESS');
 		} else {
 			return ApiResponse::error('USER_REMOVE_FAIL');
@@ -97,6 +104,8 @@ class PeopleController {
 		$clientModel = new ClientModel($this->app);
 
 		if($clientModel->updateClientName($clientID, $data->name)) {
+			Notify::socketBroadcast('/update/users', null, $this->app['session']->get('cid'));
+			
 			return json_encode($data);
 		} else {
 			return ApiResponse::error('CLIENT_EDIT_FAIL');
@@ -110,6 +119,8 @@ class PeopleController {
 		$userModel = new UserModel($this->app);
 
 		if($userModel->addAgent($data)) {
+			Notify::socketBroadcast('/update/users', null, $this->app['session']->get('cid'));
+			
 			// Send verification email
 			$template = file_get_contents(DOCUMENT_ROOT.'/application/assets/email/welcome.phtml');
 			$emailBody = str_replace('{button_url}', DOMAIN."/verify/".$data->verify, $template);
