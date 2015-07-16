@@ -14,7 +14,7 @@ date_default_timezone_set('UTC');
 define('DOCUMENT_ROOT', __DIR__);
 
 // Import application config
-$ini_array = parse_ini_file(DOCUMENT_ROOT.'/application/config.ini');
+$ini_array = parse_ini_file(DOCUMENT_ROOT.'/src/config.ini');
 foreach($ini_array as $key => $val) {
 	define($key, $val);
 }
@@ -34,7 +34,7 @@ use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Mongo\Silex\Provider\MongoServiceProvider;
 use Merqlove\Silex\Provider\AirbrakeServiceProvider;
-use Houston\Core\System;
+use Houston\Component\System;
 use Houston\Component\ApiResponse;
 
 // Instantiate Silex
@@ -133,23 +133,8 @@ $secure = function(Request $request, Application $app) {
 	}
 };
 
-// Autoload houston components
-foreach(glob(DOCUMENT_ROOT."/application/components/*.php") as $filename) {
-    require_once $filename;
-}
-
-// Autoload models
-foreach(glob(DOCUMENT_ROOT."/application/models/*.php") as $filename) {
-    require_once $filename;
-}
-
-// Autoload controllers
-foreach(glob(DOCUMENT_ROOT."/application/controllers/*.php") as $filename) {
-    require_once $filename;
-}
-
-// Autoload routes
-foreach(glob(DOCUMENT_ROOT."/application/routes/*.php") as $filename) {
+// Load routes
+foreach(glob(DOCUMENT_ROOT."/src/Houston/Route/*.php") as $filename) {
     require_once $filename;
 }
 
