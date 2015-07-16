@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<phpunit bootstrap="./application/tests/bootstrap.php"
+<phpunit bootstrap="./src/Houston/Test/bootstrap.php"
 	convertWarningsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertErrorsToExceptions="true"
@@ -13,7 +13,7 @@
 		
     <testsuites>
         <testsuite name="Houston Support Desk - Default Test Suite">
-            <directory>./application/tests/</directory>
+            <directory>./src/Houston/Test/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
