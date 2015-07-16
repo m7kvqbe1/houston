@@ -1,7 +1,6 @@
 /tmp
-/application/log/development.log
-/application/node/node_modules
+/log
+/src/node/node_modules
 /vendor
 npm-debug.log
 .htpasswd
-phpunit
