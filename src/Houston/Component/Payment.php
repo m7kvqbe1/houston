@@ -6,18 +6,32 @@ use Silex\Application;
 use Houston\Model\UserModel;
 use Houston\Model\CompanyModel;
 
-class Payment 
+class Payment
 {
-	private static $subscriptionPlans = array(
-		1 => array('id' => 'houston-monthly', 'name' => 'Monthly Houston Subscription (Unlimited)', 'amount' => 9999, 'currency' => 'GBP'),
-		2 => array('id' => 'houston-annual', 'name' => 'Annual Houston Subscription (Unlimited)', 'amount' => 12000, 'currency' => 'GBP')
+	protected static $subscriptionPlans = array(
+		1 => array(
+			'id' => 'houston-monthly', 
+			'name' => 'Monthly Houston Subscription (Unlimited)', 
+			'amount' => 9999, 
+			'currency' => 'GBP'
+		),
+		
+		2 => array(
+			'id' => 'houston-annual', 
+			'name' => 'Annual Houston Subscription (Unlimited)', 
+			'amount' => 12000, 
+			'currency' => 'GBP'
+		)
 	);
 	
-	private $app;
+	protected $app;
 	
 	public $token;
+	
 	public $plan;
+	
 	public $customer;
+	
 	public $charge;
 	
 	public function __construct(Application $app) 
@@ -51,8 +65,11 @@ class Payment
 	
 	private static function checkValidPlan($planID) 
 	{
-		if(!array_key_exists($planID, self::$subscriptionPlans)) throw new \InvalidArgumentException('Invalid subscription plan');
-		return true;
+		if(array_key_exists($planID, self::$subscriptionPlans)) {
+			return true;
+		} else {
+			throw new \InvalidArgumentException('Invalid subscription plan');	
+		}
 	}
 	
 	public function fetchStripeCustomer($stripeCustomerID) {
@@ -85,8 +102,13 @@ class Payment
 	
 	public function validSubscription($stripeCustomerID) {
 		$this->fetchStripeSubscriptionPlan($stripeCustomerID);
-		if(!isset($this->plan->data[0]->current_period_end) || $this->plan->data[0]->current_period_end < time()) return false; // No active subscription found
-		return true;
+		
+		if(!isset($this->plan->data[0]->current_period_end) || $this->plan->data[0]->current_period_end < time()) {
+			// No active subscription found
+			return false;
+		} else {
+			return true;	
+		}
 	}
 	
 	public function fetchStripeSubscriptionPlan($stripeCustomerID)

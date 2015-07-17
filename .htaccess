@@ -15,7 +15,7 @@ Require valid-user
     RewriteRule ^application/assets/img/(.*)$ /public/img/$1 [R=301,L]
     RewriteRule ^application/font/(.*)$ /public/font/$1 [R=301,L]
 	
-	# Rewrite requests to application entry point (index.php)
+	# Rewrite requests to application entry point (app.php)
 	RewriteRule ^(public|socket\.io|application/assets/backbone)($|/) - [L]
-	RewriteRule ^ index.php [QSA,L]
+	RewriteRule ^ app.php [QSA,L]
 </IfModule>

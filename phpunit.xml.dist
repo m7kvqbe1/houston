@@ -16,4 +16,9 @@
             <directory>./src/Houston/Test/</directory>
         </testsuite>
     </testsuites>
+    
+    <php>
+        <server name="APP_DIR" value="/var/www/tom.houston.com/public_html/houston" />
+        <env name="env" value="test" />
+    </php>
 </phpunit>

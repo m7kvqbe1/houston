@@ -26,7 +26,7 @@ foreach($ini_array as $key => $val) {
 }
 
 // Require Composer autoloader
-require DOCUMENT_ROOT.'/vendor/autoload.php';
+require_once DOCUMENT_ROOT.'/vendor/autoload.php';
 
 // Instantiate Silex application
 $app = new Application();
@@ -76,3 +76,5 @@ $app['swiftmailer.options'] = array(
 	'encryption' => null,
 	'auth_mode' => null
 );
+
+return $app;
