@@ -1,12 +1,17 @@
 <?php
 namespace Houston\Test;
 
-use Silex\WebTestCase;
-
 class IndexControllerTest extends WebTestCase
 {	
-	public function createApplication()
+	public function setUp()
 	{
-		return require __DIR__ . '/../bootstrap.php';
+		parent::setUp();
+		
+		// Additional setup of Silex $app
+	}
+	
+	public function testInitialPage()
+	{
+		
 	}
 }

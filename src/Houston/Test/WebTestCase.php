@@ -7,13 +7,8 @@ class WebTestCase extends BaseWebTestCase
 {
     public function createApplication()
     {
-        $app = require $this->getApplicationDir().'/app.php';
+        $app = require $_SERVER['APP_DIR'] . '/src/app.php';
 
         return $app;
-    }
-
-    public function getApplicationDir()
-    {
-        return $_SERVER['APP_DIR'];
     }
 }

@@ -7,7 +7,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 {	
 	public function testSetPlan() 
 	{	
-		var_dump($app);
+		//var_dump($app);
 					
 		//$app = $this->getMock('\Silex\Application');
 		

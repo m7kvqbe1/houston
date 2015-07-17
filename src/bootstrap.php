@@ -1,4 +1,10 @@
 <?php
+// Require config loader
+require_once __DIR__ . '/config-loader.php';
+
+// Composer autoloader
+require_once __DIR__.'/../vendor/autoload.php';
+	
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +19,6 @@ use Merqlove\Silex\Provider\AirbrakeServiceProvider;
 use Houston\Component\System;
 use Houston\Component\ApiResponse;
 	
-// Start timer for profiling
-define('PHP_START', microtime(true));
-
 // Character encoding
 mb_internal_encoding('UTF-8');
 mb_detect_order(array('UTF-8', 'ASCII'));
@@ -24,21 +27,15 @@ mb_http_output('UTF-8');
 // Default timezone
 date_default_timezone_set('UTC');
 
-// Define document root
-define('DOCUMENT_ROOT', __DIR__);
-
-// Import application config
-$ini_array = parse_ini_file(DOCUMENT_ROOT.'/src/config.ini');
-foreach($ini_array as $key => $val) {
-	define($key, $val);
-}
-
-// Require Composer autoloader
-require_once DOCUMENT_ROOT.'/vendor/autoload.php';
-
 // Instantiate Silex
 $app = new Application();
+
+// Set character encoding
 $app['charset'] = 'UTF-8';
+
+// Set application environment
+$app['env'] = $_ENV['env'] ?: 'dev';
+
 if(DEBUG) {
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
@@ -133,8 +130,6 @@ $secure = function(Request $request, Application $app) {
 };
 
 // Load routes
-foreach(glob(DOCUMENT_ROOT."/src/Houston/Route/*.php") as $filename) {
+foreach(glob(DOCUMENT_ROOT . "/src/Houston/Route/*.php") as $filename) {
     require_once $filename;
 }
-
-$app->run();
