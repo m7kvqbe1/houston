@@ -1,4 +1,18 @@
 <?php
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
+use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
+use Mongo\Silex\Provider\MongoServiceProvider;
+use Merqlove\Silex\Provider\AirbrakeServiceProvider;
+use Houston\Component\System;
+use Houston\Component\ApiResponse;
+	
 // Start timer for profiling
 define('PHP_START', microtime(true));
 
@@ -21,21 +35,6 @@ foreach($ini_array as $key => $val) {
 
 // Require Composer autoloader
 require_once DOCUMENT_ROOT.'/vendor/autoload.php';
-
-// Class importing / aliasing
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler;
-use Silex\Provider\UrlGeneratorServiceProvider;
-use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\MonologServiceProvider;
-use Silex\Provider\SwiftmailerServiceProvider;
-use Mongo\Silex\Provider\MongoServiceProvider;
-use Merqlove\Silex\Provider\AirbrakeServiceProvider;
-use Houston\Component\System;
-use Houston\Component\ApiResponse;
 
 // Instantiate Silex
 $app = new Application();

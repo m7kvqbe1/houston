@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Tests;
+namespace Houston\Test;
 
 use Silex\Application;
 use Houston\Component\Notify;

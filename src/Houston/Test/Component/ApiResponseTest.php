@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Tests;
+namespace Houston\Test;
 	
 use Symfony\Component\HttpFoundation\Response;
 use Houston\Component\ApiResponse;

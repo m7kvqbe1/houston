@@ -1,17 +1,18 @@
 <?php
-namespace Houston\Tests;
+namespace Houston\Test;
 
-use Silex\Application;
 use Houston\Component\Payment;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
-{
+{	
 	public function testSetPlan() 
-	{
-		//$payment = new Payment($app);
+	{				
+		$app = $this->getMock('Silex\Application');
 		
-		//$result = $payment->setPlan(1);
+		$payment = new Payment($app);
 		
-		//$this->assertEquals(1, $result);
+		$result = $payment->setPlan(1);
+		
+		$this->assertEquals(1, $result);
 	}
 }

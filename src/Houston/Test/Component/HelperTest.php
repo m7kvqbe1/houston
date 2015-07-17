@@ -1,5 +1,5 @@
 <?php
-namespace Houston\Tests;
+namespace Houston\Test;
 	
 use Houston\Component\Helper;
 
